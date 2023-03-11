@@ -1,6 +1,22 @@
-<script lang="ts">
+<script>
 	import Fa from 'svelte-fa';
-	import { faBox, faCircle, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
+	import { faArrowUpRightFromSquare, faBox, faCircle, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
+	import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
+	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
+
+	const codiConfig = {
+		stars: 69,
+		owner: 'codicocodes',
+		ownerAvatar: 'https://avatars.githubusercontent.com/u/76068197?v=4',
+		name: 'dotfiles',
+		path: '/nvim',
+		language: 'lua',
+		pluginManager: 'packer.nvim',
+		plugins: 420
+	};
+
+	const configs = new Array(10).fill(codiConfig);
 </script>
 
 <!-- header -->
@@ -35,53 +51,27 @@
 			</div>
 
 			<div class="w-full flex justify-center items-center">
-				<button class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-3 rounded-full">
-					Add your config
+				<button
+					class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-1 items-center"
+				>
+					<Fa icon={faGithub} /> Get Started <Fa class="ml-1" size="xs" icon={faArrowUpRightFromSquare} />
 				</button>
 			</div>
 		</div>
 	</div>
 
 	<div class="mx-auto max-w-7xl px-4 pb-12 text-purple-100 sm:px-6 lg:px-8">
-		<div class="mb-10 md:text-center">
+		<div class="mb-4 md:text-center">
 			<h2 class="text-xl font-semibold md:text-2xl lg:text-2xl">Community configs</h2>
 		</div>
 
 		<div>
 			<div
-				class="space-y-10 sm:grid sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-3 sm:gap-x-6 sm:gap-y-14 sm:space-y-0 md:grid-cols-3 md:grid-rows-2 lg:gap-x-8"
+				class="space-y-10 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-8 sm:space-y-0 md:grid-cols-3 lg:gap-x-8"
 			>
-				<div
-					class="relative flex flex-col justify-between overflow-hidden rounded-md border border-purple-300/20 bg-white/5 transition-colors"
-				>
-					<div
-						class="flex items-center space-x-4 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20"
-					>
-						<img
-							src="https://avatars.githubusercontent.com/u/76068197?v=4"
-							alt=""
-							class="h-10 w-10 rounded-full"
-						/>
-						<div>
-							<p class="text-lg font-medium md:text-xl">codicocodes</p>
-							<p class="text-md font-medium md:text-lg">dotfiles/nvim</p>
-						</div>
-					</div>
-					<div class="my-4 m-2 flex font-medium">
-						<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
-              <Fa icon={faStar} /> 69 
-            </span>
-						<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
-              <Fa icon={faCircle} /> lua 
-            </span>
-						<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
-              <Fa icon={faBox} /> packer.nvim 
-            </span>
-						<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
-              <Fa icon={faPuzzlePiece} /> 420 
-            </span>
-					</div>
-				</div>
+				{#each configs as conf, _}
+					<NeovimConfigCard config={conf} />
+				{/each}
 			</div>
 		</div>
 	</div>
