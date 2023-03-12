@@ -16,7 +16,7 @@
 			<p class="text-md font-medium md:text-lg">{config.name}{config.path || ''}</p>
 		</div>
 	</div>
-	<div class="my-4 m-2 flex font-medium">
+	<div class="m-1 flex font-medium">
 		<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
 			<Fa icon={faStar} />
 			{config.stars}
