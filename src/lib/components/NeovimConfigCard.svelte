@@ -7,13 +7,13 @@
 </script>
 
 <div
-	class="relative flex flex-col justify-between overflow-hidden rounded-md border border-purple-300/20 bg-white/5 transition-colors"
+	class="relative flex flex-col justify-between overflow-hidden rounded-md border border-purple-300/20 bg-white/5 transition-colors w-full"
 >
 	<div class="flex items-center space-x-4 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20">
 		<img src={config.ownerAvatar} alt="" class="h-10 w-10 rounded-full" />
 		<div>
 			<p class="text-lg font-medium md:text-xl">{config.owner}</p>
-			<p class="text-md font-medium md:text-lg">{config.name}{config.path || ''}</p>
+			<p class="text-md font-medium md:text-lg truncate text-ellipsis">{config.name}{config.path || ''}</p>
 		</div>
 	</div>
 	<div class="m-1 flex font-medium">

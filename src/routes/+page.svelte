@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
+	import type { PageData } from './$types';
 
-	/** @type {import('./$types').PageData} */
-	export let data;
+	export let data: PageData
 
 	const logout = async () => {
 		await fetch('/api/auth', { method: 'DELETE' });

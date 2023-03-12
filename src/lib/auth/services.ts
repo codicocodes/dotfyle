@@ -50,7 +50,7 @@ export function verifyToken(cookies: Cookies): User | null {
 export async function login(c: Cookies, u: User): Promise<never> {
 	const token = createSignedJwtToken(u);
 	createCookie(c, token);
-	throw redirect(302, '/');
+	throw redirect(302, '/welcome');
 }
 
 export function logout(cookies: Cookies): string {
