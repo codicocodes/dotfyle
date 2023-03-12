@@ -1,4 +1,4 @@
-import type { UserDTO } from '$lib/prisma/users/schema';
+import type { UpsertUserSchema, UserDTO } from '$lib/prisma/users/schema';
 import { redirect } from '@sveltejs/kit';
 import { fetchGithubAccessToken, fetchGithubProfile } from './api';
 import { BASE_URL } from './settings';
@@ -6,7 +6,7 @@ import { BASE_URL } from './settings';
 export class GithubAuthFailed extends Error {
 	static status = 302 as const;
 	static failedLocation = `${BASE_URL}?error=authentication_failed`;
-  static retryLocation = '/api/auth/github'
+	static retryLocation = '/api/auth/github';
 }
 
 export const parseCode = (url: URL) => {
@@ -25,14 +25,14 @@ export const fetchAccessToken = async (code: string) => {
 	return access_token;
 };
 
-export const getGithubUser = async (url: URL): Promise<UserDTO> => {
+export const getGithubUserWithToken = async (url: URL): Promise<UpsertUserSchema> => {
 	const code = parseCode(url);
 	const accessToken = await fetchAccessToken(code);
-	const {id, login, avatar_url} = await fetchGithubProfile(accessToken);
+	const { id, login, avatar_url } = await fetchGithubProfile(accessToken);
 	return {
-    githubId: id,
-    username: login,
-    avatarUrl: avatar_url,
-    accessToken,
-  };
+		githubId: id,
+		username: login,
+		avatarUrl: avatar_url,
+		accessToken
+	};
 };

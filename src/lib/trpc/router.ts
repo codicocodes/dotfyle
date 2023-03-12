@@ -1,12 +1,14 @@
-import { COOKIE_NAME, logout } from '$lib/auth/services';
-import type { Context } from '$lib/trpc/context';
-import { initTRPC } from '@trpc/server';
-export const t = initTRPC.context<Context>().create();
+import { getGithubRepositories } from '$lib/repositories/github/services';
+import { isAuthenticated } from './middlewares/auth';
+import { t } from './t';
 
 export const router = t.router({
 	getUser: t.procedure.query(async ({ ctx }) => {
 		return ctx.user;
 	}),
+	getRepositories: t.procedure.use(isAuthenticated).query(async ({ ctx }) => {
+    return getGithubRepositories(ctx.user);
+	})
 });
 
 export type Router = typeof router;

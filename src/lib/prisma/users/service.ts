@@ -24,3 +24,8 @@ export async function upsertUser({ accessToken, ...userData }: UpsertUserSchema)
 	});
 	return user;
 }
+
+export async function getGithubToken(userId: number) {
+	const token = await prismaClient.githubToken.findUniqueOrThrow({ where: { userId } });
+  return token.accessToken
+}
