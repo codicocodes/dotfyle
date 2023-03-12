@@ -3,8 +3,9 @@ import { login } from '$lib/auth/services';
 import { upsertUser } from '$lib/prisma/users/service';
 import type { RequestEvent, RequestHandler } from '../$types';
 
-export const GET: RequestHandler = async function ({ request, url }: RequestEvent) {
-  const userData = await getGithubUser(url);
-  const user = await upsertUser(userData);
-  return await login(request, user)
+export const GET: RequestHandler = async function (event: RequestEvent): Promise<never> {
+	const { url } = event;
+	const userData = await getGithubUser(url);
+	const user = await upsertUser(userData);
+	return await login(event.cookies, user);
 };

@@ -1,20 +1,15 @@
 <script>
-
-  import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
+	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 
-	const codiConfig = {
-		stars: 69,
-		owner: 'codicocodes',
-		ownerAvatar: 'https://avatars.githubusercontent.com/u/76068197?v=4',
-		name: 'dotfiles',
-		path: '/nvim',
-		language: 'lua',
-		pluginManager: 'packer.nvim',
-		plugins: 420
+  /** @type {import('./$types').PageData} */
+  export let data;
+
+	const logout = async () => {
+		await fetch('/api/auth', { method: 'DELETE' })
 	};
 
-	const configs = new Array(10).fill(codiConfig);
+	console.log(data)
 </script>
 
 <!-- header -->
@@ -49,7 +44,8 @@
 			</div>
 
 			<div class="w-full flex justify-center items-center">
-        <GithubLoginButton />
+				<GithubLoginButton />
+				<button on:click={logout}> logout </button>
 			</div>
 		</div>
 	</div>
@@ -63,7 +59,7 @@
 			<div
 				class="space-y-10 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-8 sm:space-y-0 md:grid-cols-3 lg:gap-x-8"
 			>
-				{#each configs as conf, _}
+				{#each data.configs as conf, _}
 					<NeovimConfigCard config={conf} />
 				{/each}
 			</div>
