@@ -14,6 +14,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
   autoprefixer: ^10.4.14
+  delay: ^5.0.0
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
@@ -25,6 +26,7 @@ specifiers:
   svelte: ^3.54.0
   svelte-check: ^3.0.1
   svelte-fa: ^3.0.3
+  svelte-loading-spinners: ^0.3.4
   tailwindcss: ^3.2.7
   trpc-sveltekit: ^3.4.7
   tslib: ^2.4.1
@@ -40,6 +42,7 @@ dependencies:
   '@prisma/client': 4.11.0_prisma@4.11.0
   '@trpc/client': 10.15.0_@trpc+server@10.15.0
   '@trpc/server': 10.15.0
+  delay: 5.0.0
   jsonwebtoken: 9.0.0
   svelte-fa: 3.0.3
   trpc-sveltekit: 3.4.7_wcnyqssygvx3t3uika7bhqdnra
@@ -62,6 +65,7 @@ devDependencies:
   prisma: 4.11.0
   svelte: 3.56.0
   svelte-check: 3.1.2_ow7olcacshthqqeelqr3bj7eae
+  svelte-loading-spinners: 0.3.4
   tailwindcss: 3.2.7_postcss@8.4.21
   tslib: 2.5.0
   typescript: 4.9.5
@@ -1051,6 +1055,11 @@ packages:
   /defined/1.0.1:
     resolution: {integrity: sha512-hsBd2qSVCRE+5PmNdHt1uzyrFu5d3RwmFDKzyNZMFq/EwDNJF7Ee5+D5oEKF0hU6LhtoUF1macFvOe4AskQC1Q==}
     dev: true
+
+  /delay/5.0.0:
+    resolution: {integrity: sha512-ReEBKkIfe4ya47wlPYf/gu5ib6yUG0/Aez0JQZQz94kiWtRQvZIQbTiehsnwHvLSWJnQdhVeqYue7Id1dKr0qw==}
+    engines: {node: '>=10'}
+    dev: false
 
   /deprecation/2.3.1:
     resolution: {integrity: sha512-xmHIy4F3scKVwMsQ4WnVaS8bHOx0DmVwRywosKhaILI0ywMDWPtBSku2HNxRvF7jtwDRsoEwYQSfbxj8b7RlJQ==}
@@ -2182,6 +2191,10 @@ packages:
       svelte: '>=3.19.0'
     dependencies:
       svelte: 3.56.0
+    dev: true
+
+  /svelte-loading-spinners/0.3.4:
+    resolution: {integrity: sha512-vKaW71QMCBcTNijAGc0mUl8k3DQ66iYmp6MB8BMGCXyWk82bTrcLy8FOnSm9fE+8q6TwzD6PLUoYFHt0II93Xw==}
     dev: true
 
   /svelte-preprocess/5.0.1_43ik3n3dn3mv5h2n7glrsh2ngy:

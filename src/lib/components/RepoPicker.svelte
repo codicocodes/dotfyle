@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { GithubRepository } from "$lib/repositories/github/schema";
+	import { slide } from "svelte/transition";
 	import RepoPickerItem from "./RepoPickerItem.svelte";
   export let selectedConfig: GithubRepository | undefined
   export let repositoriesInput: GithubRepository[]
@@ -31,6 +32,7 @@
 				<button
 					on:click={() => handleSelectConfig(repo)}
 					on:keypress={() => handleSelectConfig(repo)}
+          in:slide 
 				>
 					<RepoPickerItem name={repo.name} selected={selectedId === repo.id} />
 				</button>
@@ -46,6 +48,7 @@
 				<button
 					on:click={() => handleSelectConfig(repo)}
 					on:keypress={() => handleSelectConfig(repo)}
+          in:slide 
 				>
 					<RepoPickerItem name={repo.name} selected={selectedId === repo.id} />
 				</button>
