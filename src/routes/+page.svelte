@@ -1,35 +1,28 @@
 <script>
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
+	import HeroTitle from '$lib/components/HeroTitle.svelte';
 
-  /** @type {import('./$types').PageData} */
-  export let data;
+	/** @type {import('./$types').PageData} */
+	export let data;
 
 	const logout = async () => {
-		await fetch('/api/auth', { method: 'DELETE' })
+		await fetch('/api/auth', { method: 'DELETE' });
 	};
 
-	console.log(data)
+	console.log(data);
 </script>
 
 <!-- header -->
 <div class="mx-auto xl:max-w-7xl">
 	<div class="flex flex-col justify-center items-center">
 		<div class="py-12 sm:py-8 md:py-12 lg:py-14 xl:py-12 2xl:py-28">
-			<div class="flex justify-center items-center">
-				<div
-					class="max-w-md px-4 sm:max-w-2xl sm:px-6 md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl"
-				>
-					<h1
-						class="text-center text-4xl font-bold tracking-tight text-white sm:text-6xl sm:tracking-tight lg:text-[4rem] xl:text-[6rem] xl:tracking-tight 2xl:text-[6.5rem]"
-					>
-						Discover and share <span
-							class="text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500"
-							>Neovim</span
-						> configs
-					</h1>
-				</div>
-			</div>
+			<HeroTitle>
+				Discover and share <span
+					class="text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500"
+					>Neovim</span
+				> configs
+			</HeroTitle>
 
 			<div class="flex justify-center items-center my-4 md:my-6 lg:my-8 xl:my-12">
 				<div
