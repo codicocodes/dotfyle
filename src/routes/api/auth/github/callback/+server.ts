@@ -7,5 +7,6 @@ export const GET: RequestHandler = async function (event: RequestEvent): Promise
 	const { url } = event;
 	const userData = await getGithubUser(url);
 	const user = await upsertUser(userData);
+  console.log({user})
 	return await login(event.cookies, user);
 };

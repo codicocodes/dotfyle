@@ -11,8 +11,16 @@ datasource db {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  username    String  @unique
-  avatarUrl   String
-  githubId    Int     @unique
+  id              Int           @id @default(autoincrement())
+  username        String        @unique
+  avatarUrl       String
+  githubId        Int           @unique
+  githubToken     GithubToken?
+}
+
+model GithubToken {
+  id              Int     @id @default(autoincrement())
+  accessToken     String
+  user            User    @relation(fields: [userId], references: [id])
+  userId          Int     @unique
 }

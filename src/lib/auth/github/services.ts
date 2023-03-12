@@ -33,5 +33,6 @@ export const getGithubUser = async (url: URL): Promise<UserDTO> => {
     githubId: id,
     username: login,
     avatarUrl: avatar_url,
+    accessToken,
   };
 };

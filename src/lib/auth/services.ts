@@ -29,7 +29,7 @@ export function createCookie(cookies: Cookies, token: string, maxAge: number = 6
 		httpOnly: true,
 		path: '/',
 		secure: NODE_ENV === 'production',
-		sameSite: 'strict',
+		sameSite: 'lax',
 		maxAge, 
 	});
   return cookies.get(COOKIE_NAME) as string
