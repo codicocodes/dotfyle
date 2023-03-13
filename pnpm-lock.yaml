@@ -6,6 +6,7 @@ specifiers:
   '@octokit/rest': ^19.0.7
   '@playwright/test': ^1.28.1
   '@prisma/client': ^4.11.0
+  '@skeletonlabs/skeleton': ^1.0.0
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.5.0
   '@trpc/client': ^10.15.0
@@ -50,6 +51,7 @@ dependencies:
 
 devDependencies:
   '@playwright/test': 1.31.2
+  '@skeletonlabs/skeleton': 1.0.0
   '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.11.0
   '@sveltejs/kit': 1.11.0_svelte@3.56.0+vite@4.1.4
   '@types/jsonwebtoken': 9.0.1
@@ -540,6 +542,12 @@ packages:
   /@prisma/engines/4.11.0:
     resolution: {integrity: sha512-0AEBi2HXGV02cf6ASsBPhfsVIbVSDC9nbQed4iiY5eHttW9ZtMxHThuKZE1pnESbr8HRdgmFSa/Kn4OSNYuibg==}
     requiresBuild: true
+
+  /@skeletonlabs/skeleton/1.0.0:
+    resolution: {integrity: sha512-xgH9NInf0md1FHr7BBSb8u8SsOOhC7fkSXhCcm1FVqaVBcVkd2/eLZhB1WFtmLB1lha1cteR+/jFN+/ZpviSBw==}
+    dependencies:
+      svelte: 3.56.0
+    dev: true
 
   /@sveltejs/adapter-auto/2.0.0_@sveltejs+kit@1.11.0:
     resolution: {integrity: sha512-b+gkHFZgD771kgV3aO4avHFd7y1zhmMYy9i6xOK7m/rwmwaRO8gnF5zBc0Rgca80B2PMU1bKNxyBTHA14OzUAQ==}

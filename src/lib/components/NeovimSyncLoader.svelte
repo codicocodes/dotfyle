@@ -2,11 +2,11 @@
 	import { faRotate } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
+	import GlossyCard from './GlossyCard.svelte';
 </script>
 
-<div
-	class="flex flex-col gap-2 p-4 overflow-hidden rounded-md border border-purple-300/20 bg-white/5 transition-colors w-80 md:w-auto lg:w-80 truncate text-ellipsis transition-colors"
->
+<GlossyCard>
+<div class="flex flex-col p-4 gap-2 w-80">
 	<h2 class="flex items-center gap-2 text-lg font-medium">
 		<Fa icon={faRotate} size="sm" />
 		Syncing your config
@@ -26,3 +26,4 @@
 		</div>
 	</div>
 </div>
+</GlossyCard>

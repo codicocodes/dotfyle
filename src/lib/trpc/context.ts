@@ -7,6 +7,7 @@ import type { inferAsyncReturnType } from '@trpc/server';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function createContext(event: RequestEvent) {
   const user = verifyToken(event.cookies)
+  user.username = 'creativenull'
 	return {
 		user,
     event,

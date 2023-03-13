@@ -2,7 +2,6 @@
 	import Fa from 'svelte-fa';
 	import { faBox, faCircle, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
 	import type { NeovimConfig } from '$lib/types';
-
 	export let config: NeovimConfig;
 </script>
 
@@ -13,7 +12,9 @@
 		<img src={config.ownerAvatar} alt="" class="h-10 w-10 rounded-full" />
 		<div>
 			<p class="text-lg font-medium md:text-xl">{config.owner}</p>
-			<p class="text-md font-medium md:text-lg truncate text-ellipsis">{config.name}{config.path || ''}</p>
+			{#if config.path}
+				<p class="text-md font-medium md:text-lg truncate text-ellipsis">{config.name}</p>
+			{/if}
 		</div>
 	</div>
 	<div class="m-1 flex font-medium">
