@@ -24,7 +24,6 @@ export const router = t.router({
   findRepoInitFiles: t.procedure.use(isAuthenticated).input((input: unknown) => {
     return z.object({repo: z.string()}).parse(input)
   }).query(async ({ ctx, input }) => {
-    ctx.user!.username = 'creativenull'
     const root = await getRepoFileTree(ctx.user!, input.repo)
     const initFiles = new InitFileFinder().findAllInitFile(root)
     return initFiles

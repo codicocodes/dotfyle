@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { InitFile } from '$lib/nvim-sync/services/init-file-finder';
+	import type { GithubRepository } from '$lib/repositories/github/schema';
 	import { trpc } from '$lib/trpc/client';
 	import { onMount } from 'svelte';
 	import { DoubleBounce } from 'svelte-loading-spinners';
@@ -9,13 +10,14 @@
 	let error: string | undefined;
 	let loading = true;
 	let files: InitFile[] | undefined;
+	export let selectedRepo: GithubRepository;
 	export let selectedFile: InitFile | undefined;
   export let handleSelectInitFile: (f: InitFile) => void
 
 	onMount(async () => {
 		await new Promise<void>((r) => setTimeout(() => r(), 4000));
 		await trpc()
-			.findRepoInitFiles.query({ repo: 'dotfiles' })
+			.findRepoInitFiles.query({ repo: selectedRepo.name})
 			.then((f) => {
 				files = f;
 			})

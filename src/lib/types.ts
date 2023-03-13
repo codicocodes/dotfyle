@@ -7,4 +7,5 @@ export interface NeovimConfig {
 	plugins: number;
 	pluginManager: string;
 	path?: string;
+  root?: string;
 }

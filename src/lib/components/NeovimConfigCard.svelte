@@ -13,7 +13,7 @@
 		<div>
 			<p class="text-lg font-medium md:text-xl">{config.owner}</p>
 			{#if config.path}
-				<p class="text-md font-medium md:text-lg truncate text-ellipsis">{config.name}</p>
+				<p class="text-md font-medium md:text-lg truncate text-ellipsis">{config.name}{config.root ? `/${config.root}` : ""}</p>
 			{/if}
 		</div>
 	</div>

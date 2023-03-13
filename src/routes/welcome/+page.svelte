@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
-	import { faFileCode, faRotate } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faFileCode,
+		faRotate
+	} from '@fortawesome/free-solid-svg-icons';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import type { GithubRepository } from '$lib/repositories/github/schema';
 	import type { PageData } from './$types';
@@ -11,12 +14,10 @@
 	import RepoPicker from '$lib/components/RepoPicker.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { page } from '$app/stores';
-	import NeovimSyncLoader from '$lib/components/NeovimSyncLoader.svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import InitFilePicker from '$lib/components/welcome-steps/InitFilePicker.svelte';
 	import type { InitFile } from '$lib/nvim-sync/services/init-file-finder';
-	import { DoubleBounce } from 'svelte-loading-spinners';
-	import GlossyCard from '$lib/components/GlossyCard.svelte';
+	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
 
 	export let data: PageData;
 
@@ -31,10 +32,11 @@
 		data.repositories.map((r) => [r.name, r])
 	);
 
-	$: selectedRepo = repoName && reposByName[repoName];
+	$: selectedRepo = repoName ? reposByName[repoName] : undefined;
 
 	let language = 'unknown';
 	let path = 'unknown';
+	let root: string | undefined;
 	let name = 'unknown';
 	let stars = 0;
 
@@ -63,6 +65,7 @@
 			if (name !== selectedRepo.name) {
 				initFile = undefined;
 				path = 'unknown';
+				root = undefined;
 			}
 			language = selectedRepo.language ?? 'unknown';
 			name = selectedRepo.name;
@@ -70,6 +73,7 @@
 		}
 		if (initFile) {
 			path = initFile.path;
+			root = initFile.root;
 		}
 	}
 
@@ -81,7 +85,8 @@
 		language,
 		plugins: 0,
 		pluginManager: 'unknown',
-		path
+		path,
+    root,
 	} as NeovimConfig;
 </script>
 
@@ -95,33 +100,10 @@
 			>
 		</HeroTitle>
 		<div class="mx-auto xl:max-w-7xl w-full" />
-		<!-- <div class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-12 my-2"> -->
-		<!-- 	<NeovimConfigCard config={fakeConfig} /> -->
-		<!-- 	<GlossyCard> -->
-		<!-- 		<div class="p-2 flex flex-col w-full"> -->
-		<!-- 			<p class="text-sm truncate text-ellipsis flex items-center justify-between w-full"> -->
-		<!-- 				<span class="px-2 rounded"> init file </span> -->
-		<!-- 				<span> -->
-		<!-- 					{fakeConfig.path ?? 'unknown'} -->
-		<!-- 				</span> -->
-		<!-- 			</p> -->
-		<!-- 		</div> -->
-		<!-- 	</GlossyCard> -->
-		<!-- 	<GlossyCard> -->
-		<!-- 		<div class="p-2 flex flex-col w-full"> -->
-		<!-- 			<p class="text-sm truncate text-ellipsis flex items-center justify-between w-full"> -->
-		<!-- 				<span class="px-2 rounded">plugin manager</span> -->
-		<!-- 				<span> -->
-		<!-- 					lazy.nvim -->
-		<!-- 				</span> -->
-		<!-- 			</p> -->
-		<!-- 		</div> -->
-		<!-- 	</GlossyCard> -->
-		<!-- </div> -->
 		{#if !syncing && !completed}
 			<div class="mx-auto xl:max-w-7xl sm:px-8 w-80 sm:w-full">
 				<Stepper
-					start={2}
+					start={0}
 					stepTerm=""
 					gap="gap-4"
 					badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-purple-300/20"
@@ -152,9 +134,15 @@
 						>
 							<Fa icon={faFileCode} size="sm" /> confirm the configs init file
 						</h2>
-						<div in:fade>
-							<InitFilePicker selectedFile={initFile} handleSelectInitFile={onSelectInitFile} />
-						</div>
+						{#if selectedRepo}
+							<div in:fade>
+								<InitFilePicker
+									{selectedRepo}
+									selectedFile={initFile}
+									handleSelectInitFile={onSelectInitFile}
+								/>
+							</div>
+						{/if}
 					</Step>
 					<Step>
 						<h2
@@ -164,40 +152,20 @@
 							<Fa icon={faRotate} size="sm" /> Sync your config with GitHub
 						</h2>
 						<div class="flex w-full items-center justify-center">
-						<div class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-0 md:mx-12 my-2">
-							<NeovimConfigCard config={fakeConfig} />
-							<GlossyCard>
-								<div class="p-2 flex flex-col w-full">
-									<p
-										class="text-sm truncate text-ellipsis flex items-center justify-between w-full"
-									>
-										<span class="px-2 rounded"> init file </span>
-										<span>
-											{fakeConfig.path ?? 'unknown'}
-										</span>
-									</p>
-								</div>
-							</GlossyCard>
-							<GlossyCard>
-								<div class="p-2 flex flex-col w-full">
-									<p
-										class="text-sm truncate text-ellipsis flex items-center justify-between w-full"
-									>
-										<span class="px-2 rounded">plugin manager</span>
-										<span> lazy.nvim </span>
-									</p>
-								</div>
-							</GlossyCard>
-						</div>
+							<div class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-0 md:mx-12 my-2">
+								<NeovimConfigCard config={fakeConfig} />
+                <NeovimConfigMetaData initFile={initFile} syncing={syncing} />
+							</div>
 						</div>
 					</Step>
 				</Stepper>
 			</div>
 		{/if}
 
-		{#if syncing}
-			<div in:fly={{ y: 100, duration: 1500 }}>
-				<NeovimSyncLoader />
+		{#if syncing || completed}
+			<div class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-12 my-2">
+				<NeovimConfigCard config={fakeConfig} />
+        <NeovimConfigMetaData initFile={initFile} syncing={syncing} />
 			</div>
 		{/if}
 	</div>
