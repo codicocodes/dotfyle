@@ -43,6 +43,7 @@ export class SyncManager {
 		for await (const content of this.treeTraverser.traverse()) {
 			await this.syncPluginManager(content);
       this.findPlugins(content)
+      this.findLeaderKey(content)
 		}
     this.config = await addPlugins(this.config.id, [...this.foundPlugins])
 	}
@@ -96,6 +97,20 @@ export class SyncManager {
 			}
 		}
 		return false;
+	}
+
+  // TODO:
+	findLeaderKey(content: string): string | undefined {
+    for (const line of content.split("\n")) {
+      if (line.includes('leader')) {
+        const leaderSplit = line.trim().split("=")
+        if (leaderSplit.length !== 2) continue
+        const leaderKey = leaderSplit[1]
+        // TODO: parse out to fix for trailing '<x>' and "<x>"
+        console.log({ leaderKey })
+        return leaderKey
+      }
+    }
 	}
 }
 

@@ -40,7 +40,7 @@
 		</div>
 	</div>
 
-	<div class="mx-auto max-w-7xl px-4 pb-12 text-purple-100 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
 		<div class="mb-4 md:text-center">
 			<h2 class="text-xl font-semibold md:text-2xl lg:text-2xl">Community configs</h2>
 		</div>

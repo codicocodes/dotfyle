@@ -110,7 +110,7 @@
 		{#if syncing || completed}
 			<div
 				transition:fly={{ y: 100, duration: 1000 }}
-				class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-12 my-2"
+				class="flex flex-col w-full max-w-md gap-2 mx-12 my-2"
 			>
 				<NeovimConfigCard config={fakeConfig} />
 				<NeovimConfigMetaData {initFile} {syncing} />
@@ -123,8 +123,8 @@
 					start={0}
 					stepTerm=""
 					gap="gap-4"
-					badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-purple-300/20"
-					active="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md border border-purple-300/20 bg-white/5 transition-colors truncate text-ellipsis transition-colors"
+					badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-green-300/25"
+					active="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md border border-green-300/25 bg-white/5 transition-colors truncate text-ellipsis transition-colors"
 					on:complete={syncSelectedRepository}
 					buttonBack="bg-white/50 px-4 py-2 rounded font-bold"
 					buttonBackLabel="Back"
@@ -175,7 +175,7 @@
 							<Fa icon={faRotate} size="sm" /> Sync your config with GitHub
 						</h2>
 						<div in:fade class="flex w-full items-center justify-center">
-							<div class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-0 md:mx-12 my-2">
+							<div class="flex flex-col w-full max-w-md gap-2 mx-0 md:mx-12 my-2">
 								<NeovimConfigCard config={fakeConfig} />
 								<NeovimConfigMetaData {initFile} {syncing} />
 							</div>
