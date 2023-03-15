@@ -1,12 +1,8 @@
 <script lang="ts">
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
-	import {
-		faFileCode,
-		faRotate
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faFileCode, faRotate } from '@fortawesome/free-solid-svg-icons';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
-	import type { GithubRepository } from '$lib/repositories/github/schema';
 	import type { PageData } from './$types';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import type { NeovimConfig } from '$lib/types';
@@ -14,10 +10,11 @@
 	import RepoPicker from '$lib/components/RepoPicker.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { page } from '$app/stores';
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import InitFilePicker from '$lib/components/welcome-steps/InitFilePicker.svelte';
 	import type { InitFile } from '$lib/nvim-sync/services/init-file-finder';
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
+	import type { GithubRepository } from '$lib/github/schema';
 
 	export let data: PageData;
 
@@ -41,15 +38,26 @@
 	let stars = 0;
 
 	async function syncSelectedRepository() {
+		if (!selectedRepo || !initFile || !repoName) {
+			return;
+		}
 		syncing = true;
 		const syncedRepo = await trpc($page)
-			.syncRepository.query({ repo: repoName as string })
+			.syncRepository.query({
+				repo: repoName,
+				initFile: initFile.type,
+				root: initFile.root,
+				branch: selectedRepo.default_branch
+			})
 			.catch((e) => {
 				console.log(e);
+				throw e;
 			});
 		completed = true;
 		syncing = false;
-		console.log({ syncedRepo });
+		console.log(syncedRepo);
+  //   const plugs = syncedRepo.plugins.map(p => p.name)
+		// console.log({plugs});
 	}
 
 	function onSelectInitFile(f: InitFile) {
@@ -86,7 +94,7 @@
 		plugins: 0,
 		pluginManager: 'unknown',
 		path,
-    root,
+		root
 	} as NeovimConfig;
 </script>
 
@@ -100,6 +108,17 @@
 			>
 		</HeroTitle>
 		<div class="mx-auto xl:max-w-7xl w-full" />
+
+		{#if syncing || completed}
+			<div
+				transition:fly={{ y: 100, duration: 1000 }}
+				class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-12 my-2"
+			>
+				<NeovimConfigCard config={fakeConfig} />
+				<NeovimConfigMetaData {initFile} {syncing} />
+			</div>
+		{/if}
+
 		{#if !syncing && !completed}
 			<div class="mx-auto xl:max-w-7xl sm:px-8 w-80 sm:w-full">
 				<Stepper
@@ -109,6 +128,12 @@
 					badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-purple-300/20"
 					active="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md border border-purple-300/20 bg-white/5 transition-colors truncate text-ellipsis transition-colors"
 					on:complete={syncSelectedRepository}
+					buttonBack="bg-white/50 px-4 py-2 rounded font-bold"
+					buttonBackLabel="Back"
+					buttonNext={`flex items-center bg-white/50 px-4 py-2 rounded font-bold`}
+					buttonNextLabel="Next"
+					buttonComplete="bg-emerald-500/90 px-4 py-2 rounded font-bold"
+					buttonCompleteLabel="Run sync"
 				>
 					<Step locked={!selectedRepo}>
 						<div slot="header">
@@ -151,21 +176,14 @@
 						>
 							<Fa icon={faRotate} size="sm" /> Sync your config with GitHub
 						</h2>
-						<div class="flex w-full items-center justify-center">
+						<div in:fade class="flex w-full items-center justify-center">
 							<div class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-0 md:mx-12 my-2">
 								<NeovimConfigCard config={fakeConfig} />
-                <NeovimConfigMetaData initFile={initFile} syncing={syncing} />
+								<NeovimConfigMetaData {initFile} {syncing} />
 							</div>
 						</div>
 					</Step>
 				</Stepper>
-			</div>
-		{/if}
-
-		{#if syncing || completed}
-			<div class="flex flex-col w-full max-w-xs md:w-96 gap-2 mx-12 my-2">
-				<NeovimConfigCard config={fakeConfig} />
-        <NeovimConfigMetaData initFile={initFile} syncing={syncing} />
 			</div>
 		{/if}
 	</div>

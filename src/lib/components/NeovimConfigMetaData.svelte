@@ -2,6 +2,7 @@
 	import type { InitFile } from '$lib/nvim-sync/services/init-file-finder';
 	import {
 		faBox,
+		faCodeFork,
 		faDeleteLeft,
 		faFileCode,
 		faFolderTree,
@@ -70,6 +71,16 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{initFile !== undefined ? (initFile.root ? 'yes' : 'no') : 'unknown'}
+			</span>
+		</p>
+
+    <p class="flex w-full items-center justify-between">
+			<span class="flex items-center gap-1">
+				<Fa icon={faCodeFork} />
+				fork
+			</span>
+			<span class="flex items-center gap-1">
+        unknown
 			</span>
 		</p>
 

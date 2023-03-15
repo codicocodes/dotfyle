@@ -8,7 +8,7 @@ export const GithubRepository = z.object({
 	stargazers_count: z.number(),
 	size: z.number(),
 	language: z.string().nullable(),
-  default_branch: z.string(),
+	default_branch: z.string(),
 	created_at: z.string(),
 	updated_at: z.string()
 });
@@ -30,7 +30,13 @@ export const GithubTree = z.object({
 	sha: z.string(),
 	url: z.string(),
 	truncated: z.boolean(),
-	tree: z.array(GithubNode),
-})
+	tree: z.array(GithubNode)
+});
 
 export type GithubTree = z.infer<typeof GithubTree>;
+
+export const GithubBlob = z.object({
+	content: z.string()
+});
+
+export type GithubBlob= z.infer<typeof GithubBlob>;

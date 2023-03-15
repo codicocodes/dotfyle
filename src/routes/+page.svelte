@@ -4,16 +4,13 @@
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData
+	export let data: PageData;
 
 	const logout = async () => {
 		await fetch('/api/auth', { method: 'DELETE' });
 	};
-
-	console.log(data);
 </script>
 
-<!-- header -->
 <div class="mx-auto xl:max-w-7xl">
 	<div class="flex flex-col justify-center items-center">
 		<div class="py-12 sm:py-8 md:py-12 lg:py-14 xl:py-12 2xl:py-28">

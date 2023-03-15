@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
 import { z } from 'zod';
-import { GithubRepository, GithubTree } from './schema';
+import { GithubBlob, GithubRepository, GithubTree } from './schema';
 
 export const fetchGithubRepositories = async (
 	username: string,
@@ -9,8 +9,10 @@ export const fetchGithubRepositories = async (
 	const gh = new Octokit({
 		auth: `token ${token}`
 	});
-	const reposResponse = await gh.repos.listForUser({ username });
-	const reposData = reposResponse.data;
+  const reposData = await gh.paginate(
+    gh.repos.listForUser,
+    { username, per_page: 100 }
+  )
 	const repos = z.array(GithubRepository).parse(reposData);
 	return repos;
 };
@@ -32,14 +34,22 @@ export const fetchGithubRepositoryByName = async (
 export const fetchRepoFileTree = async (
 	token: string,
 	owner: string,
-	repo: string
+	repo: string,
+  branch: string,
 ): Promise<GithubTree> => {
 	const gh = new Octokit({
 		auth: `token ${token}`
 	});
-	const { default_branch: tree_sha } = await fetchGithubRepositoryByName(token, owner, repo);
-	const pagesResponse = await gh.git.getTree({ owner, repo, tree_sha, recursive: 'true' });
+	const pagesResponse = await gh.git.getTree({ owner, repo, tree_sha: branch, recursive: 'true' });
 	const data = pagesResponse.data;
 	const tree = GithubTree.parse(data);
 	return tree;
 };
+
+export const fetchFile = async (token: string, owner: string, repo: string, file_sha: string): Promise<GithubBlob> => {
+	const gh = new Octokit({
+		auth: `token ${token}`
+	});
+  const blobResponse = await gh.git.getBlob({ owner, repo, file_sha})
+  return GithubBlob.parse(blobResponse.data)
+}

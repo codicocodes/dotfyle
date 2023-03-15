@@ -1,4 +1,6 @@
 import { verifyToken } from '$lib/auth/services';
+import { UserSchema } from '$lib/prisma/users/schema';
+import type { User } from '@prisma/client';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { inferAsyncReturnType } from '@trpc/server';
 
@@ -10,6 +12,9 @@ export async function createContext(event: RequestEvent) {
 	return {
 		user,
     event,
+    getAuthenticatedUser(): User {
+      return UserSchema.parse(this.user)
+    }
 	};
 }
 

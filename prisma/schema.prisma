@@ -11,16 +11,70 @@ datasource db {
 }
 
 model User {
-  id              Int           @id @default(autoincrement())
-  username        String        @unique
-  avatarUrl       String
-  githubId        Int           @unique
-  githubToken     GithubToken?
+  id            Int            @id @default(autoincrement())
+  username      String         @unique
+  avatarUrl     String
+  githubId      Int            @unique
+  githubToken   GithubToken?
+  neovimConfigs NeovimConfig[]
 }
 
 model GithubToken {
-  id              Int     @id @default(autoincrement())
-  accessToken     String
-  user            User    @relation(fields: [userId], references: [id])
-  userId          Int     @unique
+  id          Int                     @id @default(autoincrement())
+  accessToken String                  
+  user        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int                     @unique
+  createdAt   DateTime                @default(now())
+}
+
+model NeovimConfig {
+  id            Int                  @id @default(autoincrement())
+  owner         String
+  repo          String
+  root          String
+  initFile      String
+  branch        String
+  fork          Boolean
+  githubId      Int
+  stars         Int
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int
+  pluginManager NeovimPluginManager?
+  createdAt     DateTime             @default(now())
+
+  plugins             NeovimPlugin[]
+  neovimConfigPlugins NeovimConfigPlugins[]
+
+  @@unique([owner, repo, root])
+}
+
+enum NeovimPluginManager {
+  Lazy
+  Packer
+}
+
+model NeovimPlugin {
+  id                  Int           @id @default(autoincrement())
+  owner               String
+  name                String
+  type                String
+  source              String
+  category            String
+  link                String
+  shortDescription    String
+  createdAt           DateTime     @default(now())
+
+  configs             NeovimConfig[]
+  neovimConfigPlugins NeovimConfigPlugins[]
+
+  @@unique([owner, name])
+}
+
+model NeovimConfigPlugins {
+  config    NeovimConfig @relation(fields: [configId], references: [id])
+  configId  Int
+  plugin    NeovimPlugin @relation(fields: [pluginId], references: [id])
+  pluginId  Int
+  createdAt DateTime     @default(now())
+  @@id([configId, pluginId])
 }
