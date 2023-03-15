@@ -110,7 +110,7 @@
 		{#if syncing || completed}
 			<div
 				transition:fly={{ y: 100, duration: 1000 }}
-				class="flex flex-col w-full max-w-md gap-2 mx-12 my-2"
+				class="flex flex-col w-full max-w-md gap-2 mx-12 my-2 px-8"
 			>
 				<NeovimConfigCard config={fakeConfig} />
 				<NeovimConfigMetaData {initFile} {syncing} />
