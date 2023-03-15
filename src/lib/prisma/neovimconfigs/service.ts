@@ -1,6 +1,6 @@
 import type { NeovimConfig, NeovimPluginManager } from '@prisma/client';
 import { prismaClient } from '../client';
-import type { CreateNeovimConfigDTO } from './schema';
+import type { CreateNeovimConfigDTO, NeovimConfigWithPlugins, NestedNeovimConfigWithPlugins } from './schema';
 
 export async function upsertNeovimConfig(
 	userId: number,
@@ -19,31 +19,35 @@ export async function upsertNeovimConfig(
 	return user;
 }
 
-export async function updatePluginManager(id: number, pluginManager: NeovimPluginManager): Promise<NeovimConfig> {
+export async function updatePluginManager(
+	id: number,
+	pluginManager: NeovimPluginManager
+): Promise<NeovimConfig> {
 	const config = await prismaClient.neovimConfig.update({ where: { id }, data: { pluginManager } });
 	return config;
 }
 
-export async function getConfigWithPlugins(id: number) {
+export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWithPlugins> {
 	const config = await prismaClient.neovimConfig.findUniqueOrThrow({
 		where: {
 			id
 		},
-		include: { neovimConfigPlugins: {
-        include: {
-          plugin: true,
-        }
-      }
+		include: {
+			neovimConfigPlugins: {
+				include: {
+					plugin: true
+				}
+			}
 		}
 	});
-	return {
-		...config,
-		plugins: config.neovimConfigPlugins.map(p => p.plugin)
-	};
+	return attachPlugins(config);
 }
 
-export async function addPlugins(configId: number, pluginIds: number[]) {
-  // TODO: add sync id in create, or maybe config.sha?
+export async function addPlugins(
+	configId: number,
+	pluginIds: number[]
+): Promise<NeovimConfigWithPlugins> {
+	// TODO: add sync id in create, or maybe config.sha?
 	const upsert = pluginIds.map((pluginId) => ({
 		where: {
 			configId_pluginId: {
@@ -82,5 +86,12 @@ export async function addPlugins(configId: number, pluginIds: number[]) {
 				}
 			}
 		})
-		.then(({neovimConfigPlugins, ...c}) => ({ ...c, plugins: neovimConfigPlugins.map((p) => p.plugin) }));
+		.then(attachPlugins);
+}
+ 
+function attachPlugins({ neovimConfigPlugins, ...config }: NestedNeovimConfigWithPlugins): NeovimConfigWithPlugins {
+  return {
+    ...config,
+			plugins: neovimConfigPlugins.map((p) => p.plugin)
+  }
 }

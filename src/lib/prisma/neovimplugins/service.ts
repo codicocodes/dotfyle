@@ -1,7 +1,6 @@
-
-import type { PluginDTO } from '$lib/seeder/plugins';
 import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
+import type { NeovimPluginIdentifier, PluginDTO } from './schema';
 
 export async function upsertManyNeovimPlugins(
 	plugins: PluginDTO[]
@@ -20,19 +19,12 @@ export async function upsertManyNeovimPlugins(
   return await Promise.all(savedPluginsPromise)
 }
 
-export interface NeovimPluginIdentifier {
-  id: number;
-  owner: string;
-  name: string
-}
-
-export async function getManyPlugins(ids: number[]) {
+export async function getManyPlugins(ids: number[]): Promise<NeovimPlugin[]> {
   return prismaClient.neovimPlugin.findMany({
     where: {
       OR: ids.map(id => ({id}))        
     }
   })
-
 }
 
 export async function getAllNeovimPluginNames(): Promise<NeovimPluginIdentifier[]> {

@@ -1,7 +1,8 @@
 import { fetchFile, fetchRepoFileTree } from '$lib/github/api';
 import type { GithubTree } from '$lib/github/schema';
 import { addPlugins, updatePluginManager } from '$lib/prisma/neovimconfigs/service';
-import { getAllNeovimPluginNames, type NeovimPluginIdentifier } from '$lib/prisma/neovimplugins/service';
+import type { NeovimPluginIdentifier } from '$lib/prisma/neovimplugins/schema';
+import { getAllNeovimPluginNames } from '$lib/prisma/neovimplugins/service';
 import { getGithubToken } from '$lib/prisma/users/service';
 import { NeovimPluginManager, type NeovimConfig, type User } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
