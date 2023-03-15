@@ -1,6 +1,6 @@
 import { fetchFile, fetchRepoFileTree } from '$lib/github/api';
 import type { GithubTree } from '$lib/github/schema';
-import { addPlugins, addPlugins3, updatePluginManager } from '$lib/prisma/neovimconfigs/service';
+import { addPlugins, updatePluginManager } from '$lib/prisma/neovimconfigs/service';
 import { getAllNeovimPluginNames, type NeovimPluginIdentifier } from '$lib/prisma/neovimplugins/service';
 import { getGithubToken } from '$lib/prisma/users/service';
 import { NeovimPluginManager, type NeovimConfig, type User } from '@prisma/client';
@@ -14,7 +14,7 @@ export class SyncManager {
 	treeTraverser: FileContentTraverser;
 	syncedPluginManager = false;
 	constructor(
-		private token: string,
+    token: string,
 		private tree: GithubTree,
 		public config: NeovimConfig,
 		private trackedPlugins: NeovimPluginIdentifier[]
@@ -31,7 +31,6 @@ export class SyncManager {
 	async treeSync() {
 		const pluginManager = findPluginManager(this.tree, this.config);
     if (pluginManager) {
-      console.log("FOUND PLUGIN MANAGER IN TREE sYNC", pluginManager)
       this.config = await updatePluginManager(this.config.id, pluginManager);
       this.syncedPluginManager = true;
       // TODO: simple plugin finder to identify untracked plugins?
@@ -44,7 +43,7 @@ export class SyncManager {
 			await this.syncPluginManager(content);
       this.findPlugins(content)
 		}
-    this.config = await addPlugins3(this.config.id, [...this.foundPlugins])
+    this.config = await addPlugins(this.config.id, [...this.foundPlugins])
 	}
 
 	findPlugins(content: string) {
@@ -70,7 +69,6 @@ export class SyncManager {
 
 		if (this.usesLazy(content)) {
 			this.config = await updatePluginManager(this.config.id, NeovimPluginManager.Lazy);
-      console.log("FOUND PLUGIN MANAGER IN FILE")
 			this.syncedPluginManager = true;
 			return;
 		}
@@ -100,7 +98,7 @@ export class SyncManager {
 	}
 }
 
-function simplePluginFinderFactory(
+export function simplePluginFinderFactory(
 	pluginManager: NeovimPluginManager,
 	token: string,
 	config: NeovimConfig

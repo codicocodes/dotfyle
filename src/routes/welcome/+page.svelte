@@ -56,8 +56,6 @@
 		completed = true;
 		syncing = false;
 		console.log(syncedRepo);
-  //   const plugs = syncedRepo.plugins.map(p => p.name)
-		// console.log({plugs});
 	}
 
 	function onSelectInitFile(f: InitFile) {

@@ -1,6 +1,5 @@
-import type { NeovimConfig, NeovimConfigPlugins, NeovimPluginManager } from '@prisma/client';
+import type { NeovimConfig, NeovimPluginManager } from '@prisma/client';
 import { prismaClient } from '../client';
-import { getManyPlugins, type NeovimPluginIdentifier } from '../neovimplugins/service';
 import type { CreateNeovimConfigDTO } from './schema';
 
 export async function upsertNeovimConfig(
@@ -20,92 +19,30 @@ export async function upsertNeovimConfig(
 	return user;
 }
 
-export async function updatePluginManager(id: number, pluginManager: NeovimPluginManager) {
+export async function updatePluginManager(id: number, pluginManager: NeovimPluginManager): Promise<NeovimConfig> {
 	const config = await prismaClient.neovimConfig.update({ where: { id }, data: { pluginManager } });
 	return config;
 }
 
 export async function getConfigWithPlugins(id: number) {
-	return prismaClient.neovimConfig.findUniqueOrThrow({
+	const config = await prismaClient.neovimConfig.findUniqueOrThrow({
 		where: {
 			id
 		},
-		include: {
-			plugins: true
+		include: { neovimConfigPlugins: {
+        include: {
+          plugin: true,
+        }
+      }
 		}
 	});
-}
-
-export async function addPlugins(configId: number, pluginIds: number[]): Promise<void> {
-	await prismaClient.neovimConfig.update({
-		where: { id: configId },
-		data: {
-			plugins: {
-				connect: pluginIds.map((id) => ({
-					id
-				}))
-			}
-		}
-	});
-}
-
-export async function getConfigWithPlugins2(id: number) {
-	const { neovimConfigPlugins, ...config } = await prismaClient.neovimConfig.findUniqueOrThrow({
-		where: {
-			id
-		},
-		include: {
-			neovimConfigPlugins: true
-		}
-	});
-	const pluginIds = neovimConfigPlugins.map((ncp) => ncp.pluginId);
-	const plugins = await getManyPlugins(pluginIds);
 	return {
 		...config,
-		plugins
+		plugins: config.neovimConfigPlugins.map(p => p.plugin)
 	};
 }
 
-export async function addPlugins2(
-	configId: number,
-	pluginIds: number[]
-): Promise<NeovimConfigPlugins[]> {
-	const upsert = pluginIds.map((pluginId) => ({
-		where: {
-			configId_pluginId: {
-				configId,
-				pluginId
-			}
-		},
-		create: {
-			config: {
-				connect: {
-					id: configId
-				}
-			},
-			plugin: {
-				connect: {
-					id: pluginId
-				}
-			}
-		},
-		update: {
-			config: {
-				connect: {
-					id: configId
-				}
-			},
-			plugin: {
-				connect: {
-					id: pluginId
-				}
-			}
-		}
-	}));
-	return await Promise.all(upsert.map((u) => prismaClient.neovimConfigPlugins.upsert(u)));
-}
-
-export async function addPlugins3(configId: number, pluginIds: number[]) {
+export async function addPlugins(configId: number, pluginIds: number[]) {
   // TODO: add sync id in create, or maybe config.sha?
 	const upsert = pluginIds.map((pluginId) => ({
 		where: {

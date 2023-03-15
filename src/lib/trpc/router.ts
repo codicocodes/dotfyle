@@ -30,15 +30,12 @@ export const router = t.router({
     .query(async ({ ctx, input }) => {
       const user = ctx.getAuthenticatedUser()
       const token = await getGithubToken(user.id)
-      console.log({input})
       const tree = await fetchRepoFileTree(token, user.username, input.repo, input.branch)
       validateConfigPath(tree, input.root ? `${input.root}/${input.initFile}`: input.initFile)
       const config = await syncRepoInfo(user, user.username, input.repo, input.root, input.initFile)
       const syncer = await syncManagerFactory(user, config)
       await syncer.treeSync()
       return syncer.config
-      // const configWithPlugins = await getConfigWithPlugins(config.id)
-      // return configWithPlugins
     }),
 	findRepoInitFiles: t.procedure
 		.use(isAuthenticated)

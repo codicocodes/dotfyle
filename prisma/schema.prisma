@@ -42,7 +42,6 @@ model NeovimConfig {
   pluginManager NeovimPluginManager?
   createdAt     DateTime             @default(now())
 
-  plugins             NeovimPlugin[]
   neovimConfigPlugins NeovimConfigPlugins[]
 
   @@unique([owner, repo, root])
@@ -64,7 +63,6 @@ model NeovimPlugin {
   shortDescription    String
   createdAt           DateTime     @default(now())
 
-  configs             NeovimConfig[]
   neovimConfigPlugins NeovimConfigPlugins[]
 
   @@unique([owner, name])

@@ -16,9 +16,7 @@ export class FileContentTraverser {
 			.filter((n) => n.type === "blob")
 			.filter((n) => n.path?.startsWith(configRoot ? configRoot.concat("/") : ""))
 			.filter((n) => n.path?.endsWith(".lua") || n.path?.endsWith(".vim") || n.path?.endsWith(".vimrc"))
-      .map((n) => {console.log(n); return n})
 			.map((n) => n.sha) as string[];
-    console.log(this.shaQueue)
 	}
 
 	async *traverse(): AsyncGenerator<string, void, unknown>  {
