@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
-	import { faBox, faCircle, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
+	import { faBox, faChevronRight, faCircle, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
 	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
+	import CoolText from './CoolText.svelte';
 	export let avatar: string;
 </script>
 

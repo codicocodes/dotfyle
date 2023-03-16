@@ -88,6 +88,12 @@ export function parseCategory(plugin: RawPlugin) {
 	if (category === '(requires-neovim-0.5)') {
 		category = 'lsp';
 	}
+	if (category === 'neovim-lua-development') {
+		category = 'nvim-dev';
+	}
+	if (category === 'tree-sitter-supported-colorscheme') {
+		category = 'colorscheme';
+	}
 	return { ...plugin, category };
 }
 

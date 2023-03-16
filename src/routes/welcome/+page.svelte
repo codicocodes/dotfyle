@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
-	import { faFileCode, faRotate } from '@fortawesome/free-solid-svg-icons';
+	import { faChevronRight, faFileCode, faRotate } from '@fortawesome/free-solid-svg-icons';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import type { PageData } from './$types';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
@@ -9,12 +9,14 @@
 	import RepoPicker from '$lib/components/RepoPicker.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { page } from '$app/stores';
-	import { fade, fly } from 'svelte/transition';
+	import { fade, fly, slide } from 'svelte/transition';
 	import InitFilePicker from '$lib/components/welcome-steps/InitFilePicker.svelte';
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
 	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	import type { InitFileNames } from '$lib/server/nvim-sync/services/init-file-finder';
 	import type { NeovimPlugin } from '@prisma/client';
+	import PluginList from '$lib/components/PluginList.svelte';
+	import CoolText from '$lib/components/CoolText.svelte';
 
 	export let data: PageData;
 
@@ -22,7 +24,12 @@
 	let completed = false;
 
 	async function syncSelectedRepository() {
-		if (!$unsyncedConfig.repo || !$unsyncedConfig.initFile || !$unsyncedConfig.root || !$unsyncedConfig.branch) {
+		if (
+			!$unsyncedConfig.repo ||
+			!$unsyncedConfig.initFile ||
+			!$unsyncedConfig.root ||
+			!$unsyncedConfig.branch
+		) {
 			return;
 		}
 		syncing = true;
@@ -39,10 +46,11 @@
 			});
 		completed = true;
 		syncing = false;
-    unsyncedConfig.update(c => ({...c,
-      pluginManager: syncedConfig.pluginManager,
-      plugins: syncedConfig.plugins as unknown as NeovimPlugin[],
-    }))
+		unsyncedConfig.update((c) => ({
+			...c,
+			pluginManager: syncedConfig.pluginManager,
+			plugins: syncedConfig.plugins as unknown as NeovimPlugin[]
+		}));
 	}
 </script>
 
@@ -50,20 +58,29 @@
 <div class="mx-auto xl:max-w-7xl">
 	<div class="flex flex-col justify-center items-center">
 		<HeroTitle>
-			Welcome to <span
-				class="text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500"
-				>Dotfyle</span
-			>
+			Welcome to <CoolText text="Dotfyle" />
 		</HeroTitle>
 		<div class="mx-auto xl:max-w-7xl w-full" />
 
 		{#if syncing || completed}
 			<div
 				transition:fly={{ y: 100, duration: 1000 }}
-				class="flex flex-col w-full max-w-md gap-2 mx-12 my-2 px-8"
+				class="flex flex-col w-full max-w-xl gap-2 mx-12 my-2 px-8"
 			>
-				<NeovimConfigCard config={$unsyncedConfig} avatar={data.user?.avatarUrl??""} />
-				<NeovimConfigMetaData config={$unsyncedConfig} syncing={syncing} />
+      {#if completed}
+				<div in:slide class="flex justify-end gap-4">
+					<a
+						class="flex items-center gap-1 text-green-500 hover:cursor-not-allowed hover:underline underline-offset-4 decoration-2"
+					>
+						<CoolText text="see profile" />
+						<Fa icon={faChevronRight} size="xs" />
+					</a>
+				</div>
+        {/if}
+				<NeovimConfigCard avatar={data.user?.avatarUrl ?? ''} />
+
+				<NeovimConfigMetaData {syncing} />
+				<PluginList plugins={$unsyncedConfig.plugins ?? []} />
 			</div>
 		{/if}
 
@@ -118,8 +135,8 @@
 						</h2>
 						<div in:fade class="flex w-full items-center justify-center">
 							<div class="flex flex-col w-full max-w-md gap-2 mx-0 md:mx-12 my-2">
-								<NeovimConfigCard avatar={data.user?.avatarUrl ?? ""} />
-                <NeovimConfigMetaData syncing={syncing} />
+								<NeovimConfigCard avatar={data.user?.avatarUrl ?? ''} />
+								<NeovimConfigMetaData {syncing} />
 							</div>
 						</div>
 					</Step>

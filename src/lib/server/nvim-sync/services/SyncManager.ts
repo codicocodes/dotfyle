@@ -100,10 +100,10 @@ export class SyncManager {
 		return false;
 	}
 
-  // TODO:
+  // TODO: fix this and add parsing for more leaderkeys than space
 	findLeaderKey(content: string): string | undefined {
     for (const line of content.split("\n")) {
-      if (line.includes('leader')) {
+      if (line.includes('mapleader')) {
         const leaderSplit = line.trim().split("=")
         if (leaderSplit.length !== 2) continue
         const leaderKey = leaderSplit[1]

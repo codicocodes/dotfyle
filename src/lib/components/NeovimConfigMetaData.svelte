@@ -5,6 +5,7 @@
 		faDeleteLeft,
 		faFileCode,
 		faFolderTree,
+		faInfoCircle,
 		faLayerGroup,
 		faPuzzlePiece
 	} from '@fortawesome/free-solid-svg-icons';
@@ -15,37 +16,47 @@
 	export let syncing: boolean;
 </script>
 
+<h3 class="flex items-center gap-1 text-sm tracking-wide font-semibold pl-1">
+	<Fa icon={faInfoCircle} />
+	metadata
+</h3>
 <GlossyCard>
 	<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2">
 		<p class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
-				<Fa icon={faBox} />
+				<div class="w-[20px]">
+					<Fa icon={faBox} />
+				</div>
 				plugin manager
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
 					<DoubleBounce color="#15be97" size="8" />
 				{/if}
-				{$unsyncedConfig?.pluginManager ?? "unknown"}
+				{$unsyncedConfig?.pluginManager ?? 'unknown'}
 			</span>
 		</p>
 
 		<p class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
-				<Fa icon={faPuzzlePiece} />
+				<div class="w-[20px]">
+					<Fa icon={faPuzzlePiece} />
+				</div>
 				plugins
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
 					<DoubleBounce color="#15be97" size="8" />
 				{/if}
-        {$unsyncedConfig.plugins ? $unsyncedConfig.plugins.length : "unknown"}
+				{$unsyncedConfig.plugins ? $unsyncedConfig.plugins.length : 'unknown'}
 			</span>
 		</p>
 
 		<p class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
-				<Fa icon={faFolderTree} />
+				<div class="w-[20px]">
+					<Fa icon={faFolderTree} />
+				</div>
 				root
 			</span>
 			<span class="flex items-center gap-1">
@@ -55,7 +66,9 @@
 
 		<p class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
-				<Fa icon={faFileCode} />
+				<div class="w-[20px]">
+					<Fa icon={faFileCode} />
+				</div>
 				init file
 			</span>
 			<span class="flex items-center gap-1">
@@ -65,7 +78,9 @@
 
 		<p class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
-				<Fa icon={faLayerGroup} />
+				<div class="w-[20px]">
+					<Fa icon={faLayerGroup} />
+				</div>
 				monorepo
 			</span>
 			<span class="flex items-center gap-1">
@@ -73,19 +88,23 @@
 			</span>
 		</p>
 
-    <p class="flex w-full items-center justify-between">
+		<p class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
-				<Fa icon={faCodeFork} />
+				<div class="w-[20px]">
+					<Fa icon={faCodeFork} />
+				</div>
 				fork
 			</span>
 			<span class="flex items-center gap-1">
-				{$unsyncedConfig?.fork !== undefined ? $unsyncedConfig.fork ? "yes" : "no" : "unknown"}
+				{$unsyncedConfig?.fork !== undefined ? ($unsyncedConfig.fork ? 'yes' : 'no') : 'unknown'}
 			</span>
 		</p>
 
 		<p class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
-				<Fa icon={faDeleteLeft} />
+				<div class="w-[20px]">
+					<Fa icon={faDeleteLeft} />
+				</div>
 				leaderkey
 			</span>
 			<span class="flex items-center gap-1">

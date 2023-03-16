@@ -12,10 +12,6 @@
 	let files: InitFile[] | undefined;
 
 	function selectInitFile(f: InitFile) {
-		console.log(f, {
-			root: f.root,
-			initFile: f.type
-		});
 		unsyncedConfig.update((c) => ({
 			...c,
 			root: f.root,

@@ -1,0 +1,38 @@
+<script lang="ts">
+	import { faArrowRight, faChevronRight, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
+	import type { NeovimPlugin } from '@prisma/client';
+	import Fa from 'svelte-fa';
+	import { fly, slide } from 'svelte/transition';
+	import CoolText from './CoolText.svelte';
+
+	import GlossyCard from './GlossyCard.svelte';
+	export let plugins: NeovimPlugin[];
+
+	$: sorted = plugins.sort((a, b) => {
+		if (a.category === b.category) return 0;
+		return a.category > b.category ? 1 : -1;
+	});
+</script>
+
+{#if plugins.length > 0}
+<div class="flex items-center justify-between">
+	<h3 class="flex items-center gap-1 text-sm tracking-wide font-semibold pl-1">
+		<Fa icon={faPuzzlePiece} />
+		plugins
+	</h3>
+</div>
+	<GlossyCard>
+		<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2">
+			{#each sorted as plugin, _}
+				<p in:slide class="flex w-full items-center justify-between">
+					<span class="flex items-center gap-1">
+						{plugin.name}
+					</span>
+					<span class="flex items-center gap-1">
+						{plugin.category}
+					</span>
+				</p>
+			{/each}
+		</div>
+	</GlossyCard>
+{/if}

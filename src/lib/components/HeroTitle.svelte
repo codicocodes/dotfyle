@@ -1,4 +1,4 @@
-<div class="py-12 sm:py-8 md:py-12 lg:py-14 xl:py-12 2xl:py-28">
+<div class="py-6 sm:py-8 md:py-8 lg:py-14 xl:py-12 2xl:py-22">
 	<div class="flex justify-center items-center">
 		<div
 			class="max-w-md px-4 sm:max-w-2xl sm:px-6 md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl"

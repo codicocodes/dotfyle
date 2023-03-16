@@ -5,6 +5,7 @@
 	import type { PageData } from './$types';
 	import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
+	import CoolText from '$lib/components/CoolText.svelte';
 
 	export let data: PageData;
 
@@ -18,10 +19,7 @@
 	<div class="flex flex-col justify-center items-center">
 		<div class="py-12 sm:py-8 md:py-12 lg:py-14 xl:py-12 2xl:py-28">
 			<HeroTitle>
-				Discover and share <span
-					class="text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500"
-					>Neovim</span
-				> configs
+				Discover and share <CoolText text="Neovim"/> configs
 			</HeroTitle>
 
 			<div class="flex justify-center items-center my-4 md:my-6 lg:my-8 xl:my-12">
