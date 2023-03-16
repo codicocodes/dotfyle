@@ -16,12 +16,12 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 		ownerAvatar: 'https://avatars.githubusercontent.com/u/76068197?v=4',
 		name: 'dotfiles',
 		path: '/nvim',
-		language: 'lua',
-		pluginManager: 'packer.nvim',
+    initFile: 'init.lua',
+		pluginManager: 'Packer',
 		plugins: 420
 	} as NeovimConfig;
 
-	const configs: NeovimConfig[] = new Array(10).fill(codiConfig);
+	const configs: NeovimConfig[] = new Array(9).fill(codiConfig);
 
   return {
     user: await trpc(event).getUser.query(),

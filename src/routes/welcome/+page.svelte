@@ -17,6 +17,7 @@
 	import type { NeovimPlugin } from '@prisma/client';
 	import PluginList from '$lib/components/PluginList.svelte';
 	import CoolText from '$lib/components/CoolText.svelte';
+	import UnsyncedNeovimConfigCard from '$lib/components/UnsyncedNeovimConfigCard.svelte';
 
 	export let data: PageData;
 
@@ -77,8 +78,8 @@
 					</a>
 				</div>
         {/if}
-				<NeovimConfigCard avatar={data.user?.avatarUrl ?? ''} />
 
+				<UnsyncedNeovimConfigCard avatar={data.user?.avatarUrl ?? ''} />
 				<NeovimConfigMetaData {syncing} />
 				<PluginList plugins={$unsyncedConfig.plugins ?? []} />
 			</div>
@@ -135,7 +136,7 @@
 						</h2>
 						<div in:fade class="flex w-full items-center justify-center">
 							<div class="flex flex-col w-full max-w-md gap-2 mx-0 md:mx-12 my-2">
-								<NeovimConfigCard avatar={data.user?.avatarUrl ?? ''} />
+								<UnsyncedNeovimConfigCard avatar={data.user?.avatarUrl ?? ''} />
 								<NeovimConfigMetaData {syncing} />
 							</div>
 						</div>

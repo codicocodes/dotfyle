@@ -6,8 +6,8 @@ export interface NeovimConfig {
 	language: string;
 	plugins: number;
 	pluginManager: string;
-	fork?: boolean;
-	initFile?: string;
-	path?: string;
-  root?: string;
+	fork: boolean;
+	initFile: string;
+	path: string;
+  root: string;
 }

@@ -56,7 +56,16 @@
 				class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8"
 			>
 				{#each data.configs as conf, _}
-					<NeovimConfigCard config={conf} />
+					<NeovimConfigCard 
+            repo={conf.name}
+            owner={conf.owner}
+            avatar={conf.ownerAvatar}
+            initFile={conf.initFile}
+            root={conf.root}
+            stars={conf.stars.toString()}
+            pluginManager={conf.pluginManager}
+            pluginCount={conf.plugins.toString()}
+          />
 				{/each}
 			</div>
 		</div>
