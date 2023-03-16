@@ -11,7 +11,7 @@
 <div class="w-80 md:w-auto">
 	<GlossyCard>
 		<div
-			class={`flex items-center gap-2 px-2 py-1 w-full truncate text-ellipsis ${
+			class={`py-1 sm:py-2 flex items-center gap-2 px-2 py-1 w-full truncate text-ellipsis ${
 				selected ? '' : 'bg-white/5'
 			}`}
 		>

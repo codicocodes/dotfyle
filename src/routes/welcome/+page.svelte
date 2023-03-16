@@ -56,7 +56,6 @@
 </script>
 
 <!-- header -->
-<div class="mx-auto xl:max-w-7xl">
 	<div class="flex flex-col justify-center items-center">
 		<HeroTitle>
 			Welcome to <CoolText text="Dotfyle" />
@@ -145,4 +144,3 @@
 			</div>
 		{/if}
 	</div>
-</div>
