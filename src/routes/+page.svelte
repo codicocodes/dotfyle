@@ -6,6 +6,7 @@
 	import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import CoolText from '$lib/components/CoolText.svelte';
+	import CoolLink from '$lib/components/CoolLink.svelte';
 
 	// navbar
 	// profile page
@@ -19,6 +20,7 @@
 
 	export let data: PageData;
 
+console.log(data)
 	const logout = async () => {
 		await fetch('/api/auth', { method: 'DELETE' });
 	};
@@ -53,9 +55,12 @@
 </div>
 
 <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-	<div class="mb-4 md:text-center">
-		<h2 class="text-xl font-semibold md:text-2xl lg:text-2xl">Community configs</h2>
-	</div>
+<div class="mb-2 flex justify-between pl-1 tracking-wide">
+	<h3 class="flex items-center gap-1 text-lg font-semibold">
+
+  newest configs</h3>
+  <CoolLink text="see more configs" />
+</div>
 
 	<div>
 		<div
@@ -63,14 +68,14 @@
 		>
 			{#each data.configs as conf, _}
 				<NeovimConfigCard
-					repo={conf.name}
+					repo={conf.repo}
 					owner={conf.owner}
 					avatar={conf.ownerAvatar}
 					initFile={conf.initFile}
 					root={conf.root}
 					stars={conf.stars.toString()}
 					pluginManager={conf.pluginManager}
-					pluginCount={conf.plugins.toString()}
+					pluginCount={conf.pluginCount}
 				/>
 			{/each}
 		</div>

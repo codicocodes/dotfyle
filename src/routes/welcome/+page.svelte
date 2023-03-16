@@ -4,7 +4,6 @@
 	import { faChevronRight, faFileCode, faRotate } from '@fortawesome/free-solid-svg-icons';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import type { PageData } from './$types';
-	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import RepoPicker from '$lib/components/RepoPicker.svelte';
 	import { trpc } from '$lib/trpc/client';
@@ -18,6 +17,7 @@
 	import PluginList from '$lib/components/PluginList.svelte';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import UnsyncedNeovimConfigCard from '$lib/components/UnsyncedNeovimConfigCard.svelte';
+	import CoolLink from '$lib/components/CoolLink.svelte';
 
 	export let data: PageData;
 
@@ -69,9 +69,7 @@
 			>
       {#if completed}
 				<div in:slide class="flex justify-end gap-4">
-					<a
-						class="flex items-center gap-1 text-green-500 hover:cursor-not-allowed hover:underline underline-offset-4 decoration-2"
-					>
+					<a class="flex items-center gap-1 text-green-500 hover:cursor-not-allowed hover:underline underline-offset-4 decoration-2">
 						<CoolText text="see profile" />
 						<Fa icon={faChevronRight} size="xs" />
 					</a>

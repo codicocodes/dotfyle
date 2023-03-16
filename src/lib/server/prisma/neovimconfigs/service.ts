@@ -1,6 +1,10 @@
 import type { NeovimConfig, NeovimPluginManager } from '@prisma/client';
 import { prismaClient } from '../client';
-import type { CreateNeovimConfigDTO, NeovimConfigWithPlugins, NestedNeovimConfigWithPlugins } from './schema';
+import type {
+	CreateNeovimConfigDTO,
+	NeovimConfigWithPlugins,
+	NestedNeovimConfigWithPlugins
+} from './schema';
 
 export async function upsertNeovimConfig(
 	userId: number,
@@ -88,10 +92,42 @@ export async function addPlugins(
 		})
 		.then(attachPlugins);
 }
- 
-function attachPlugins({ neovimConfigPlugins, ...config }: NestedNeovimConfigWithPlugins): NeovimConfigWithPlugins {
-  return {
-    ...config,
-			plugins: neovimConfigPlugins.map((p) => p.plugin)
-  }
+
+export async function getNewestNeovimConfigs() {
+	const configs = await prismaClient.neovimConfig.findMany({
+		include: {
+			user: {
+				select: {
+					avatarUrl: true
+				}
+			},
+			neovimConfigPlugins: {
+				select: {
+					pluginId: true
+				}
+			}
+		},
+		orderBy: {
+			createdAt: 'asc'
+		},
+		take: 9
+	});
+
+  return configs.map(c => {
+    return {
+      ...c,
+      ownerAvatar: c.user.avatarUrl,
+      pluginCount: c.neovimConfigPlugins.length
+    }
+  })
+}
+
+function attachPlugins({
+	neovimConfigPlugins,
+	...config
+}: NestedNeovimConfigWithPlugins): NeovimConfigWithPlugins {
+	return {
+		...config,
+		plugins: neovimConfigPlugins.map((p) => p.plugin)
+	};
 }

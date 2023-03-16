@@ -7,6 +7,7 @@ import { getGithubToken } from '$lib/server/prisma/users/service';
 import { fetchRepoFileTree } from '$lib/server/github/api';
 import { syncRepoInfo, validateConfigPath } from '$lib/server/nvim-sync/services/sync-repo-info';
 import { syncManagerFactory } from '$lib/server/nvim-sync/services/SyncManager';
+import { getNewestNeovimConfigs } from '$lib/server/prisma/neovimconfigs/service';
 
 export const router = t.router({
 	getUser: t.procedure.query(async ({ ctx }) => {
@@ -16,6 +17,10 @@ export const router = t.router({
     const user = ctx.getAuthenticatedUser()
 		return getGithubRepositories(user);
 	}),
+  getNewestConfigs: t.procedure.query(async () => {
+    const configs = await getNewestNeovimConfigs()
+    return configs
+  }),
 	syncRepository: t.procedure
 		.use(isAuthenticated)
 		.input((input: unknown) => {

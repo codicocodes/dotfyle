@@ -10,21 +10,8 @@ export const actions: Actions = {
 };
 
 export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
-	const codiConfig = {
-		stars: 69,
-		owner: 'codicocodes',
-		ownerAvatar: 'https://avatars.githubusercontent.com/u/76068197?v=4',
-		name: 'dotfiles',
-		path: '/nvim',
-    initFile: 'init.lua',
-		pluginManager: 'Packer',
-		plugins: 420
-	} as NeovimConfig;
-
-	const configs: NeovimConfig[] = new Array(9).fill(codiConfig);
-
   return {
     user: await trpc(event).getUser.query(),
-    configs,
+    configs: await trpc(event).getNewestConfigs.query() as unknown as NeovimConfig[],
   };
 }
