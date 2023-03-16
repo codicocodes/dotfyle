@@ -1,5 +1,5 @@
-import { getGithubToken } from '$lib/prisma/users/service';
 import type { User } from '@prisma/client';
+import { getGithubToken } from '../prisma/users/service';
 import { fetchGithubRepositories, fetchRepoFileTree } from './api';
 
 export async function getGithubRepositories(user: User) {

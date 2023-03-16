@@ -1,6 +1,6 @@
-import { getGithubUserWithToken } from '$lib/auth/github/services';
-import { login } from '$lib/auth/services';
-import { upsertUser } from '$lib/prisma/users/service';
+import { getGithubUserWithToken } from '$lib/server/auth/github/services';
+import { login } from '$lib/server/auth/services';
+import { upsertUser } from '$lib/server/prisma/users/service';
 import type { RequestEvent, RequestHandler } from '../$types';
 
 export const GET: RequestHandler = async function (event: RequestEvent): Promise<never> {

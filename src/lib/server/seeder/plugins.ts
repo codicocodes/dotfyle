@@ -1,6 +1,6 @@
-import { PluginDTO } from '$lib/prisma/neovimplugins/schema';
 import { marked } from 'marked';
 import { z } from 'zod';
+import { PluginDTO } from '../prisma/neovimplugins/schema';
 
 export async function scrapeRockerBooAwesomeNeovim() {
 	const tree = await fetchReadme();

@@ -1,4 +1,4 @@
-import type { UpsertUserSchema, UserDTO } from '$lib/prisma/users/schema';
+import type { UpsertUserSchema } from '$lib/server/prisma/users/schema';
 import { redirect } from '@sveltejs/kit';
 import { fetchGithubAccessToken, fetchGithubProfile } from './api';
 import { BASE_URL } from './settings';

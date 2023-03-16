@@ -12,9 +12,9 @@
 	import { page } from '$app/stores';
 	import { fade, fly } from 'svelte/transition';
 	import InitFilePicker from '$lib/components/welcome-steps/InitFilePicker.svelte';
-	import type { InitFile } from '$lib/nvim-sync/services/init-file-finder';
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
-	import type { GithubRepository } from '$lib/github/schema';
+	import type { InitFile } from '$lib/server/nvim-sync/services/init-file-finder';
+	import type { GithubRepository } from '$lib/server/github/schema';
 
 	export let data: PageData;
 
@@ -33,9 +33,11 @@
 
 	let language = 'unknown';
 	let path = 'unknown';
+	let init = 'unknown';
 	let root: string | undefined;
 	let name = 'unknown';
 	let stars = 0;
+	let syncedConfig: NeovimConfig | undefined = undefined;
 
 	async function syncSelectedRepository() {
 		if (!selectedRepo || !initFile || !repoName) {
@@ -56,6 +58,16 @@
 		completed = true;
 		syncing = false;
 		console.log(syncedRepo);
+		syncedConfig = {
+			...syncedRepo,
+			pluginManager: syncedRepo.pluginManager ?? 'unknown',
+			owner: data.user?.username as string,
+			ownerAvatar: data.user?.avatarUrl as string,
+			name: syncedRepo.repo,
+			language,
+			plugins: syncedRepo.plugins.length
+		};
+    console.log({syncedConfig})
 	}
 
 	function onSelectInitFile(f: InitFile) {
@@ -72,12 +84,14 @@
 				initFile = undefined;
 				path = 'unknown';
 				root = undefined;
+				init = 'unknown';
 			}
 			language = selectedRepo.language ?? 'unknown';
 			name = selectedRepo.name;
 			stars = selectedRepo.stargazers_count;
 		}
 		if (initFile) {
+			init = initFile.type;
 			path = initFile.path;
 			root = initFile.root;
 		}
@@ -91,6 +105,7 @@
 		language,
 		plugins: 0,
 		pluginManager: 'unknown',
+    initFile: init,
 		path,
 		root
 	} as NeovimConfig;
@@ -112,8 +127,8 @@
 				transition:fly={{ y: 100, duration: 1000 }}
 				class="flex flex-col w-full max-w-md gap-2 mx-12 my-2 px-8"
 			>
-				<NeovimConfigCard config={fakeConfig} />
-				<NeovimConfigMetaData {initFile} {syncing} />
+				<NeovimConfigCard config={syncedConfig ?? fakeConfig} />
+				<NeovimConfigMetaData config={syncedConfig ?? fakeConfig} syncing={syncing} />
 			</div>
 		{/if}
 
@@ -177,7 +192,7 @@
 						<div in:fade class="flex w-full items-center justify-center">
 							<div class="flex flex-col w-full max-w-md gap-2 mx-0 md:mx-12 my-2">
 								<NeovimConfigCard config={fakeConfig} />
-								<NeovimConfigMetaData {initFile} {syncing} />
+                <NeovimConfigMetaData config={syncedConfig ?? fakeConfig} syncing={syncing} />
 							</div>
 						</div>
 					</Step>

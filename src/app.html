@@ -7,17 +7,22 @@
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
       function loadDarkmodeSettings() {
-        if (localStorage.theme === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
+        const availableThemes = ['dark', 'light']
+        const theme = localStorage.theme || 'dark';
+        console.log({ theme })
+        document.documentElement.classList.add(theme)
+
+        for (const aTheme of availableThemes) {
+          if (aTheme !== theme) {
+            document.documentElement.classList.remove(theme)
+          }
         }
       }
       loadDarkmodeSettings()
     </script>
 		%sveltekit.head%
 	</head>
-	<body class="dark:text-gray-100 bg-gradient-to-r dark:from-neutral-900 dark:to-slate-900">
+	<body class="light:text-gray-800 dark:text-gray-100 bg-gradient-to-r light:from-neutral-200 light:to-slate-200 dark:from-neutral-900 dark:to-slate-900">
 		<div id="svelte">%sveltekit.body%</div>
 	</body>
 </html>

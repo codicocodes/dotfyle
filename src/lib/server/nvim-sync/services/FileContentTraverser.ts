@@ -1,5 +1,5 @@
-import { fetchFile } from "$lib/github/api";
-import type { GithubTree } from "$lib/github/schema";
+import { fetchFile } from "$lib/server/github/api";
+import type { GithubTree } from "$lib/server/github/schema";
 
 export class FileContentTraverser {
 	private shaQueue: string[];

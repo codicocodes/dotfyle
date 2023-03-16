@@ -1,4 +1,4 @@
-import type { GithubNode, GithubTree } from '$lib/repositories/github/schema';
+import type { GithubNode, GithubTree } from '$lib/server/github/schema';
 import { TRPCError } from '@trpc/server';
 
 export enum InitFileNames {

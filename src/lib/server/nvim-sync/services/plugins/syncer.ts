@@ -1,4 +1,4 @@
-import type { GithubNode, GithubTree } from "$lib/github/schema";
+import type { GithubNode, GithubTree } from "$lib/server/github/schema";
 import { NeovimPluginManager, type NeovimConfig } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 

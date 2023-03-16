@@ -3,12 +3,15 @@
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import type { PageData } from './$types';
+	import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+	import Fa from 'svelte-fa';
 
 	export let data: PageData;
 
 	const logout = async () => {
 		await fetch('/api/auth', { method: 'DELETE' });
 	};
+
 </script>
 
 <div class="mx-auto xl:max-w-7xl">
@@ -33,9 +36,14 @@
 				</div>
 			</div>
 
+			<div 
+
+      class="flex justify-center mb-8">
+				<Fa icon={faArrowDown} />
+			</div>
 			<div class="w-full flex justify-center items-center">
 				<GithubLoginButton />
-				<button on:click={logout}> logout </button>
+				<!-- <button on:click={logout}> logout </button> -->
 			</div>
 		</div>
 	</div>

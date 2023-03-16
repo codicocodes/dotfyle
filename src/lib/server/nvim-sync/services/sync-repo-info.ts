@@ -1,8 +1,8 @@
-import { fetchGithubRepositoryByName } from '$lib/github/api';
-import type { GithubTree } from '$lib/github/schema';
-import type { CreateNeovimConfigDTO } from '$lib/prisma/neovimconfigs/schema';
-import { upsertNeovimConfig } from '$lib/prisma/neovimconfigs/service';
-import { getGithubToken } from '$lib/prisma/users/service';
+import { fetchGithubRepositoryByName } from '$lib/server/github/api';
+import type { GithubTree } from '$lib/server/github/schema';
+import type { CreateNeovimConfigDTO } from '$lib/server/prisma/neovimconfigs/schema';
+import { upsertNeovimConfig } from '$lib/server/prisma/neovimconfigs/service';
+import { getGithubToken } from '$lib/server/prisma/users/service';
 import type { NeovimConfig, User } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import type { InitFileNames } from './init-file-finder';

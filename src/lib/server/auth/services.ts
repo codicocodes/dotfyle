@@ -3,8 +3,7 @@ import { JWT_ACCESS_SECRET, NODE_ENV } from '$env/static/private';
 import jwt from 'jsonwebtoken';
 import { JwtSecretError } from './errors';
 import { redirect, type Cookies } from '@sveltejs/kit';
-import { UserSchema } from '$lib/prisma/users/schema';
-import type { RequestEvent } from '../../routes/$types';
+import { UserSchema } from '$lib/server/prisma/users/schema';
 
 export function getJwtAccessSecret(): string {
 	if (JWT_ACCESS_SECRET.length < 32) {

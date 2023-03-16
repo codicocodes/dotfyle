@@ -1,9 +1,9 @@
-import { fetchFile, fetchRepoFileTree } from '$lib/github/api';
-import type { GithubTree } from '$lib/github/schema';
-import { addPlugins, updatePluginManager } from '$lib/prisma/neovimconfigs/service';
-import type { NeovimPluginIdentifier } from '$lib/prisma/neovimplugins/schema';
-import { getAllNeovimPluginNames } from '$lib/prisma/neovimplugins/service';
-import { getGithubToken } from '$lib/prisma/users/service';
+import { fetchFile, fetchRepoFileTree } from '$lib/server/github/api';
+import type { GithubTree } from '$lib/server/github/schema';
+import { addPlugins, updatePluginManager } from '$lib/server/prisma/neovimconfigs/service';
+import type { NeovimPluginIdentifier } from '$lib/server/prisma/neovimplugins/schema';
+import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
+import { getGithubToken } from '$lib/server/prisma/users/service';
 import { NeovimPluginManager, type NeovimConfig, type User } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { LazyLockSchema } from '../schema';
@@ -45,7 +45,7 @@ export class SyncManager {
       this.findPlugins(content)
       this.findLeaderKey(content)
 		}
-    this.config = await addPlugins(this.config.id, [...this.foundPlugins])
+      return await addPlugins(this.config.id, [...this.foundPlugins])
 	}
 
 	findPlugins(content: string) {

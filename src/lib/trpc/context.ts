@@ -1,5 +1,5 @@
-import { verifyToken } from '$lib/auth/services';
-import { UserSchema } from '$lib/prisma/users/schema';
+import { verifyToken } from '$lib/server/auth/services';
+import { UserSchema } from '$lib/server/prisma/users/schema';
 import type { User } from '@prisma/client';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { inferAsyncReturnType } from '@trpc/server';
