@@ -1,5 +1,6 @@
 import { fetchFile, fetchRepoFileTree } from '$lib/server/github/api';
 import type { GithubTree } from '$lib/server/github/schema';
+import type { NeovimConfigWithPlugins } from '$lib/server/prisma/neovimconfigs/schema';
 import { addPlugins, updatePluginManager } from '$lib/server/prisma/neovimconfigs/service';
 import type { NeovimPluginIdentifier } from '$lib/server/prisma/neovimplugins/schema';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
@@ -29,7 +30,7 @@ export class SyncManager {
 		);
 	}
 
-	async treeSync() {
+	async treeSync(): Promise<NeovimConfigWithPlugins> {
 		const pluginManager = findPluginManager(this.tree, this.config);
     if (pluginManager) {
       this.config = await updatePluginManager(this.config.id, pluginManager);

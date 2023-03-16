@@ -1,15 +1,13 @@
 <script lang="ts">
 	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
-	import type { GithubRepository } from '$lib/repositories/github/schema';
 	import { slide } from 'svelte/transition';
 	import RepoPickerItem from './RepoPickerItem.svelte';
 	import Fa from 'svelte-fa';
 	import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 	import GridContainer from './GridContainer.svelte';
-	export let selectedRepo: string | undefined;
+	import type { GithubRepository } from '$lib/server/github/schema';
+	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	export let repositoriesInput: GithubRepository[];
-
-	export let handleSelectConfig: (r: string) => void;
 
 	const likelyConfigs = repositoriesInput.filter((r: GithubRepository) => {
 		return (
@@ -23,6 +21,10 @@
 	const likelyConfigIds = new Set(likelyConfigs.map((c) => c.id));
 
 	const repositories = repositoriesInput.filter((r) => !likelyConfigIds.has(r.id));
+
+	function selectConfigRepo({ owner: { login: owner }, name: repo, fork, default_branch: branch, stargazers_count: stars }: GithubRepository) {
+		unsyncedConfig.update((c) => ({ ...c, owner, repo, fork, branch, stars }));
+	}
 </script>
 
 <Accordion padding="">
@@ -39,11 +41,11 @@
 					<GridContainer>
 						{#each likelyConfigs as repo, _}
 							<button
-								on:click={() => handleSelectConfig(repo.name)}
-								on:keypress={() => handleSelectConfig(repo.name)}
+								on:click={() => selectConfigRepo(repo)}
+								on:keypress={() => selectConfigRepo(repo)}
 								in:slide
 							>
-								<RepoPickerItem name={repo.name} selected={selectedRepo === repo.name} />
+								<RepoPickerItem name={repo.name} selected={$unsyncedConfig.repo === repo.name} />
 							</button>
 						{/each}
 					</GridContainer>
@@ -62,11 +64,11 @@
 					<GridContainer>
 						{#each repositories as repo, _}
 							<button
-								on:click={() => handleSelectConfig(repo.name)}
-								on:keypress={() => handleSelectConfig(repo.name)}
+								on:click={() => selectConfigRepo(repo)}
+								on:keypress={() => selectConfigRepo(repo)}
 								in:slide
 							>
-								<RepoPickerItem name={repo.name} selected={selectedRepo === repo.name} />
+								<RepoPickerItem name={repo.name} selected={$unsyncedConfig.repo === repo.name} />
 							</button>
 						{/each}
 					</GridContainer>

@@ -13,6 +13,8 @@ export const fetchGithubRepositories = async (
     gh.repos.listForUser,
     { username, per_page: 100 }
   )
+
+  console.log(reposData)
 	const repos = z.array(GithubRepository).parse(reposData);
 	return repos;
 };

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { GithubRepository } from '$lib/github/schema';
-	import type { InitFile } from '$lib/nvim-sync/services/init-file-finder';
+	import type { InitFile } from '$lib/server/nvim-sync/services/init-file-finder';
+	import { unsyncedConfig, type UnsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	import { trpc } from '$lib/trpc/client';
 	import { onMount } from 'svelte';
 	import { DoubleBounce } from 'svelte-loading-spinners';
@@ -10,14 +10,29 @@
 	let error: string | undefined;
 	let loading = true;
 	let files: InitFile[] | undefined;
-	export let selectedRepo: GithubRepository;
-	export let selectedFile: InitFile | undefined;
-  export let handleSelectInitFile: (f: InitFile) => void
+
+	function selectInitFile(f: InitFile) {
+		console.log(f, {
+			root: f.root,
+			initFile: f.type
+		});
+		unsyncedConfig.update((c) => ({
+			...c,
+			root: f.root,
+			initFile: f.type
+		}));
+	}
+
+	function isSelectedFile(f: InitFile, u: UnsyncedConfig): boolean {
+		const selectedSlug = (u?.root ?? '') + (u?.initFile ?? '');
+		const currentFileSlug = f.root + f.type;
+		return selectedSlug === currentFileSlug;
+	}
 
 	onMount(async () => {
-		await new Promise<void>((r) => setTimeout(() => r(), 4000));
+		if (!$unsyncedConfig.repo || !$unsyncedConfig.branch) return;
 		await trpc()
-			.findRepoInitFiles.query({ repo: selectedRepo.name, branch: selectedRepo.default_branch })
+			.findRepoInitFiles.query({ repo: $unsyncedConfig.repo, branch: $unsyncedConfig.branch })
 			.then((f) => {
 				files = f;
 			})
@@ -46,11 +61,11 @@
 		<GridContainer>
 			{#each files as file, i}
 				<button
-					on:click={() => handleSelectInitFile(file)}
-					on:keypress={() => handleSelectInitFile(file)}
+					on:click={() => selectInitFile(file)}
+					on:keypress={() => selectInitFile(file)}
 					in:slide
 				>
-					<RepoPickerItem name={file.path} selected={selectedFile?.path === file.path} />
+					<RepoPickerItem name={file.path} selected={isSelectedFile(file, $unsyncedConfig)} />
 				</button>
 			{/each}
 		</GridContainer>

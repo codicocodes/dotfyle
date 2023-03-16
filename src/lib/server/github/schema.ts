@@ -2,6 +2,9 @@ import { z } from 'zod';
 
 export const GithubRepository = z.object({
 	id: z.number(),
+	owner: z.object({
+    login: z.string(),
+  }),
 	name: z.string(),
 	html_url: z.string(),
 	fork: z.boolean(),

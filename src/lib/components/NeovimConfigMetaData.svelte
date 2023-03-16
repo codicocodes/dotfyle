@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { NeovimConfig } from '$lib/types';
 	import {
 		faBox,
 		faCodeFork,
@@ -12,7 +11,7 @@
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
 	import GlossyCard from './GlossyCard.svelte';
-	export let config: NeovimConfig | undefined;
+	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	export let syncing: boolean;
 </script>
 
@@ -27,7 +26,7 @@
 				{#if syncing}
 					<DoubleBounce color="#15be97" size="8" />
 				{/if}
-				{config?.pluginManager ?? "unknown"}
+				{$unsyncedConfig?.pluginManager ?? "unknown"}
 			</span>
 		</p>
 
@@ -40,7 +39,7 @@
 				{#if syncing}
 					<DoubleBounce color="#15be97" size="8" />
 				{/if}
-				{config?.plugins ?? "unknown"}
+        {$unsyncedConfig.plugins ? $unsyncedConfig.plugins.length : "unknown"}
 			</span>
 		</p>
 
@@ -50,7 +49,7 @@
 				root
 			</span>
 			<span class="flex items-center gap-1">
-				{config?.root !== undefined ? `/${config.root}` : 'unknown'}
+				{$unsyncedConfig?.root !== undefined ? `/${$unsyncedConfig.root}` : 'unknown'}
 			</span>
 		</p>
 
@@ -60,7 +59,7 @@
 				init file
 			</span>
 			<span class="flex items-center gap-1">
-				{config?.initFile !== undefined ? `${config.initFile}` : 'unknown'}
+				{$unsyncedConfig?.initFile !== undefined ? `${$unsyncedConfig.initFile}` : 'unknown'}
 			</span>
 		</p>
 
@@ -70,7 +69,7 @@
 				monorepo
 			</span>
 			<span class="flex items-center gap-1">
-				{config !== undefined ? (config.root ? 'yes' : 'no') : 'unknown'}
+				{$unsyncedConfig !== undefined ? ($unsyncedConfig.root ? 'yes' : 'no') : 'unknown'}
 			</span>
 		</p>
 
@@ -80,7 +79,7 @@
 				fork
 			</span>
 			<span class="flex items-center gap-1">
-				{config?.fork !== undefined ? config.fork ? "yes" : "no" : "unknown"}
+				{$unsyncedConfig?.fork !== undefined ? $unsyncedConfig.fork ? "yes" : "no" : "unknown"}
 			</span>
 		</p>
 

@@ -5,7 +5,6 @@
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import type { PageData } from './$types';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
-	import type { NeovimConfig } from '$lib/types';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import RepoPicker from '$lib/components/RepoPicker.svelte';
 	import { trpc } from '$lib/trpc/client';
@@ -13,43 +12,26 @@
 	import { fade, fly } from 'svelte/transition';
 	import InitFilePicker from '$lib/components/welcome-steps/InitFilePicker.svelte';
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
-	import type { InitFile } from '$lib/server/nvim-sync/services/init-file-finder';
-	import type { GithubRepository } from '$lib/server/github/schema';
+	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
+	import type { InitFileNames } from '$lib/server/nvim-sync/services/init-file-finder';
+	import type { NeovimPlugin } from '@prisma/client';
 
 	export let data: PageData;
-
-	let repoName: string | undefined;
-
-	let initFile: InitFile | undefined;
 
 	let syncing = false;
 	let completed = false;
 
-	const reposByName: Record<string, GithubRepository> = Object.fromEntries(
-		data.repositories.map((r) => [r.name, r])
-	);
-
-	$: selectedRepo = repoName ? reposByName[repoName] : undefined;
-
-	let language = 'unknown';
-	let path = 'unknown';
-	let init = 'unknown';
-	let root: string | undefined;
-	let name = 'unknown';
-	let stars = 0;
-	let syncedConfig: NeovimConfig | undefined = undefined;
-
 	async function syncSelectedRepository() {
-		if (!selectedRepo || !initFile || !repoName) {
+		if (!$unsyncedConfig.repo || !$unsyncedConfig.initFile || !$unsyncedConfig.root || !$unsyncedConfig.branch) {
 			return;
 		}
 		syncing = true;
-		const syncedRepo = await trpc($page)
+		const syncedConfig = await trpc($page)
 			.syncRepository.query({
-				repo: repoName,
-				initFile: initFile.type,
-				root: initFile.root,
-				branch: selectedRepo.default_branch
+				repo: $unsyncedConfig.repo,
+				initFile: $unsyncedConfig.initFile as InitFileNames,
+				root: $unsyncedConfig.root,
+				branch: $unsyncedConfig.branch
 			})
 			.catch((e) => {
 				console.log(e);
@@ -57,58 +39,11 @@
 			});
 		completed = true;
 		syncing = false;
-		console.log(syncedRepo);
-		syncedConfig = {
-			...syncedRepo,
-			pluginManager: syncedRepo.pluginManager ?? 'unknown',
-			owner: data.user?.username as string,
-			ownerAvatar: data.user?.avatarUrl as string,
-			name: syncedRepo.repo,
-			language,
-			plugins: syncedRepo.plugins.length
-		};
-    console.log({syncedConfig})
+    unsyncedConfig.update(c => ({...c,
+      pluginManager: syncedConfig.pluginManager,
+      plugins: syncedConfig.plugins as unknown as NeovimPlugin[],
+    }))
 	}
-
-	function onSelectInitFile(f: InitFile) {
-		initFile = f;
-	}
-
-	function onSelectRepo(repo: string) {
-		repoName = repo;
-	}
-
-	$: {
-		if (selectedRepo) {
-			if (name !== selectedRepo.name) {
-				initFile = undefined;
-				path = 'unknown';
-				root = undefined;
-				init = 'unknown';
-			}
-			language = selectedRepo.language ?? 'unknown';
-			name = selectedRepo.name;
-			stars = selectedRepo.stargazers_count;
-		}
-		if (initFile) {
-			init = initFile.type;
-			path = initFile.path;
-			root = initFile.root;
-		}
-	}
-
-	$: fakeConfig = {
-		stars,
-		owner: data.user?.username as string,
-		ownerAvatar: data.user?.avatarUrl as string,
-		name,
-		language,
-		plugins: 0,
-		pluginManager: 'unknown',
-    initFile: init,
-		path,
-		root
-	} as NeovimConfig;
 </script>
 
 <!-- header -->
@@ -127,8 +62,8 @@
 				transition:fly={{ y: 100, duration: 1000 }}
 				class="flex flex-col w-full max-w-md gap-2 mx-12 my-2 px-8"
 			>
-				<NeovimConfigCard config={syncedConfig ?? fakeConfig} />
-				<NeovimConfigMetaData config={syncedConfig ?? fakeConfig} syncing={syncing} />
+				<NeovimConfigCard config={$unsyncedConfig} avatar={data.user?.avatarUrl??""} />
+				<NeovimConfigMetaData config={$unsyncedConfig} syncing={syncing} />
 			</div>
 		{/if}
 
@@ -148,7 +83,7 @@
 					buttonComplete="bg-emerald-500/90 px-4 py-2 rounded font-bold"
 					buttonCompleteLabel="Run sync"
 				>
-					<Step locked={!selectedRepo}>
+					<Step locked={!$unsyncedConfig.repo}>
 						<div slot="header">
 							<h2
 								class="mt-4 text-center font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
@@ -158,27 +93,19 @@
 						</div>
 
 						<div in:fade>
-							<RepoPicker
-								selectedRepo={repoName}
-								repositoriesInput={data.repositories}
-								handleSelectConfig={onSelectRepo}
-							/>
+							<RepoPicker repositoriesInput={data.repositories} />
 						</div>
 					</Step>
-					<Step locked={!initFile}>
+					<Step locked={!$unsyncedConfig.initFile}>
 						<h2
 							slot="header"
 							class="mt-4 text-center font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
 						>
 							<Fa icon={faFileCode} size="sm" /> confirm the configs init file
 						</h2>
-						{#if selectedRepo}
+						{#if $unsyncedConfig.repo}
 							<div in:fade>
-								<InitFilePicker
-									{selectedRepo}
-									selectedFile={initFile}
-									handleSelectInitFile={onSelectInitFile}
-								/>
+								<InitFilePicker />
 							</div>
 						{/if}
 					</Step>
@@ -191,8 +118,8 @@
 						</h2>
 						<div in:fade class="flex w-full items-center justify-center">
 							<div class="flex flex-col w-full max-w-md gap-2 mx-0 md:mx-12 my-2">
-								<NeovimConfigCard config={fakeConfig} />
-                <NeovimConfigMetaData config={syncedConfig ?? fakeConfig} syncing={syncing} />
+								<NeovimConfigCard avatar={data.user?.avatarUrl ?? ""} />
+                <NeovimConfigMetaData syncing={syncing} />
 							</div>
 						</div>
 					</Step>
