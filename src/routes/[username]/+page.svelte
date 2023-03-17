@@ -35,7 +35,7 @@
 			</span>
 			{#if me && me.id === profile.id}
 				<div class="flex items-center justify-center">
-					<a href="/add-config">
+					<a href="/add">
 						<Button text="add config" icon={faPlus} />
 					</a>
 				</div>

@@ -1,9 +1,6 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
 	import { faBox, faCircle, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
-	import CoolLink from './CoolLink.svelte';
-	import CoolText from './CoolText.svelte';
-	import CoolTextOnHover from './CoolTextOnHover.svelte';
   export let owner: string
   export let repo: string
   export let initFile: string
@@ -15,7 +12,7 @@
 </script>
 
 <div
-	class="relative flex flex-col justify-between overflow-hidden rounded-md border border-green-300/25 bg-white/5 transition-colors w-full shadow-md hover:shadow-green-300/25"
+	class="relative flex flex-col justify-between overflow-hidden rounded-md border border-green-300/25 bg-white/5 transition-colors w-full shadow-lg hover:shadow-green-300/25"
 >
 	<div class="flex items-center space-x-4 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20">
 		<img src={avatar} alt="" class="h-10 w-10 rounded-full" />
