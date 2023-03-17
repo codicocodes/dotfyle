@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { faArrowRight, faChevronRight, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
+	import { faChevronRight, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 	import type { NeovimPlugin } from '@prisma/client';
 	import Fa from 'svelte-fa';
-	import { fly, slide } from 'svelte/transition';
-	import CoolText from './CoolText.svelte';
+	import { slide } from 'svelte/transition';
+	import CoolTextOnHover from './CoolTextOnHover.svelte';
 
 	import GlossyCard from './GlossyCard.svelte';
 	export let plugins: NeovimPlugin[];
@@ -25,21 +25,31 @@
 		<GlossyCard>
 			<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2">
 				{#each sorted as plugin, _}
-					<div in:slide class="flex w-full items-center justify-between">
-						<span class="flex items-center gap-1">
-							{plugin.name}
-						</span>
-            <div class="flex gap-4">
-						<span class="hidden sm:inline flex items-center gap-1">
-							{plugin.category}
-						</span>
-						<button class="px-4 py-1 rounded bg-white/25 flex items-center justify-end">
-							<Fa icon={faChevronRight} size="xs" />
-						</button>
-            </div>
-					</div>
+					<CoolTextOnHover>
+						<a in:slide class="flex w-full items-center justify-between">
+							<span class="flex items-center gap-1">
+								{plugin.name}
+							</span>
+							<div class="flex gap-4">
+								<span class="flex hidden sm:inline items-center gap-1">
+									{plugin.category}
+								</span>
+								<button
+									class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
+								>
+									<Fa icon={faChevronRight} size="xs" />
+								</button>
+							</div>
+						</a>
+					</CoolTextOnHover>
 				{/each}
 			</div>
 		</GlossyCard>
 	{/if}
 </div>
+
+<style>
+.force-white-text {
+  color: white !important;
+}
+</style>

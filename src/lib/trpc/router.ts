@@ -3,13 +3,27 @@ import { t } from './t';
 import { z } from 'zod';
 import { getGithubRepositories, getRepoFileTree } from '$lib/server/github/services';
 import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/services/init-file-finder';
-import { getGithubToken } from '$lib/server/prisma/users/service';
+import { getGithubToken, getUserByUsername } from '$lib/server/prisma/users/service';
 import { fetchRepoFileTree } from '$lib/server/github/api';
 import { syncRepoInfo, validateConfigPath } from '$lib/server/nvim-sync/services/sync-repo-info';
 import { syncManagerFactory } from '$lib/server/nvim-sync/services/SyncManager';
-import { getNewestNeovimConfigs } from '$lib/server/prisma/neovimconfigs/service';
+import { getConfigsByUsername, getNewestNeovimConfigs } from '$lib/server/prisma/neovimconfigs/service';
 
 export const router = t.router({
+	getConfigsByUsername: t.procedure
+		.input((input: unknown) => {
+			return z.string().parse(input);
+		})
+  .query(async ({ input: username }) => {
+    return getConfigsByUsername(username)
+	}),
+	getUserByUsername: t.procedure
+		.input((input: unknown) => {
+			return z.string().parse(input);
+		})
+  .query(async ({ input: username }) => {
+    return getUserByUsername(username)
+	}),
 	getUser: t.procedure.query(async ({ ctx }) => {
 		return ctx.user;
 	}),

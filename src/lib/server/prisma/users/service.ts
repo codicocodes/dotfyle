@@ -29,3 +29,12 @@ export async function getGithubToken(userId: number) {
 	const token = await prismaClient.githubToken.findUniqueOrThrow({ where: { userId } });
   return token.accessToken
 }
+
+export async function getUserByUsername(username: string): Promise<User> {
+  const user = await prismaClient.user.findUniqueOrThrow({
+    where: {
+      username,
+    }
+  })
+  return user
+}

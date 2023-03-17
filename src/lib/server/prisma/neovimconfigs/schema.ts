@@ -21,6 +21,21 @@ export type NestedNeovimConfigWithPlugins = NeovimConfig & {
     })[];
 }
 
+export type NestedNeovimConfigWithMetaData = NeovimConfig & {
+  user: {
+    avatarUrl: string;
+  };
+  neovimConfigPlugins: {
+    pluginId: number;
+  }[];
+}
+
 export interface NeovimConfigWithPlugins extends NeovimConfig {
   plugins: NeovimPlugin[];
+}
+
+
+export interface NeovimConfigWithMetaData extends NeovimConfig {
+  ownerAvatar: string;
+  pluginCount: number;
 }

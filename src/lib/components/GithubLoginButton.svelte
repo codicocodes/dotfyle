@@ -6,7 +6,7 @@
 
 <form method="POST" action="?/githubLogin">
 	<button
-		class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center"
+		class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center shadow-md hover:shadow-green-300/25 hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500"
     type='submit'
 	>
 		<Fa icon={faGithub} /> Login | Sign up <Fa class="ml-1" size="xs" icon={faArrowUpRightFromSquare} />

@@ -69,7 +69,7 @@
 			>
       {#if completed}
 				<div in:slide class="flex justify-end gap-4">
-					<a class="flex items-center gap-1 text-green-500 hover:cursor-not-allowed hover:underline underline-offset-4 decoration-2">
+					<a href={`/${$unsyncedConfig.owner}`} class="flex items-center gap-1 text-green-500 hover:cursor-pointer hover:underline underline-offset-4 decoration-2">
 						<CoolText text="see profile" />
 						<Fa icon={faChevronRight} size="xs" />
 					</a>
@@ -91,11 +91,11 @@
 					badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-green-300/25"
 					active="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md border border-green-300/25 bg-white/5 transition-colors truncate text-ellipsis transition-colors"
 					on:complete={syncSelectedRepository}
-					buttonBack="bg-white/50 px-4 py-2 rounded font-bold"
+					buttonBack="bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-green-300/25"
 					buttonBackLabel="Back"
-					buttonNext={`flex items-center bg-white/50 px-4 py-2 rounded font-bold`}
+					buttonNext={`flex items-center bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-green-300/25`}
 					buttonNextLabel="Next"
-					buttonComplete="bg-emerald-500/90 px-4 py-2 rounded font-bold"
+					buttonComplete="bg-emerald-500/90 px-4 py-2 rounded font-bold shadow-xl shadow-green-300/25 hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500"
 					buttonCompleteLabel="Run sync"
 				>
 					<Step locked={!$unsyncedConfig.repo}>

@@ -5,17 +5,17 @@
 </script>
 
 <div class="mt-2">
-	<OuterLayout>
-		<div class="flex items-center justify-between w-full px-8 gap-4">
-			<h2 class="text-xl tracking-tight font-black">
-				<CoolText text="dotfyle" />
-			</h2>
-			<div class="text-sm font-semibold">
-				<span> profile </span>
-			</div>
+	<div class="flex items-center justify-between w-full px-8 gap-4">
+		<a href="/" class="text-2xl tracking-tight font-black">
+			<CoolText text="dotfyle" />
+		</a>
+		<div class="text-sm font-semibold">
+			<span> profile </span>
 		</div>
+	</div>
+	<OuterLayout>
+		<slot />
 	</OuterLayout>
-  <slot />
 </div>
 
 <style global>

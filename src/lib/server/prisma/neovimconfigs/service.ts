@@ -2,9 +2,45 @@ import type { NeovimConfig, NeovimPluginManager } from '@prisma/client';
 import { prismaClient } from '../client';
 import type {
 	CreateNeovimConfigDTO,
+	NeovimConfigWithMetaData,
 	NeovimConfigWithPlugins,
+	NestedNeovimConfigWithMetaData,
 	NestedNeovimConfigWithPlugins
 } from './schema';
+
+export async function getConfigsByUsername(username: string): Promise<NeovimConfigWithMetaData[]> {
+	const configs = await prismaClient.neovimConfig.findMany({
+		include: {
+			user: {
+				select: {
+					avatarUrl: true
+				}
+			},
+			neovimConfigPlugins: {
+				select: {
+					pluginId: true
+				}
+			}
+		},
+		where: {
+			user: {
+				username
+			}
+		},
+		orderBy: [
+			{
+				stars: 'desc'
+			},
+			{
+				repo: 'asc'
+			},
+			{
+				root: 'asc'
+			}
+		]
+	});
+	return configs.map(attachMetaData);
+}
 
 export async function upsertNeovimConfig(
 	userId: number,
@@ -93,7 +129,7 @@ export async function addPlugins(
 		.then(attachPlugins);
 }
 
-export async function getNewestNeovimConfigs() {
+export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData[]> {
 	const configs = await prismaClient.neovimConfig.findMany({
 		include: {
 			user: {
@@ -108,18 +144,24 @@ export async function getNewestNeovimConfigs() {
 			}
 		},
 		orderBy: {
-			createdAt: 'asc'
+			createdAt: 'desc'
 		},
 		take: 9
 	});
 
-  return configs.map(c => {
-    return {
-      ...c,
-      ownerAvatar: c.user.avatarUrl,
-      pluginCount: c.neovimConfigPlugins.length
-    }
-  })
+	return configs.map(attachMetaData);
+}
+
+function attachMetaData({
+	neovimConfigPlugins,
+	user,
+	...config
+}: NestedNeovimConfigWithMetaData): NeovimConfigWithMetaData {
+	return {
+		...config,
+		ownerAvatar: user.avatarUrl,
+		pluginCount: neovimConfigPlugins.length
+	};
 }
 
 function attachPlugins({
