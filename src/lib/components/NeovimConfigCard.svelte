@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
 	import { faBox, faCircle, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
+	import CoolLink from './CoolLink.svelte';
+	import CoolText from './CoolText.svelte';
+	import CoolTextOnHover from './CoolTextOnHover.svelte';
   export let owner: string
   export let repo: string
   export let initFile: string
@@ -17,7 +20,9 @@
 	<div class="flex items-center space-x-4 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20">
 		<img src={avatar} alt="" class="h-10 w-10 rounded-full" />
 		<div>
-			<p class="text-lg font-medium md:text-xl">{owner}</p>
+			<p class="text-lg font-medium md:text-xl">
+        {owner}
+      </p>
       <p class="text-md font-medium md:text-lg truncate text-ellipsis">{repo}{root ? `/${root}` : ""}</p>
 		</div>
 	</div>

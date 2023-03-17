@@ -24,9 +24,9 @@
 								{plugin.name}
 							</span>
 							<div class="flex gap-4">
-								<span class="flex hidden sm:inline items-center gap-1">
-									{plugin.category}
-								</span>
+								<!-- <span class="flex hidden sm:inline items-center gap-1"> -->
+								<!-- 	{plugin.category} -->
+								<!-- </span> -->
 								<button
 									class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
 								>

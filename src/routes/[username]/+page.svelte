@@ -15,8 +15,8 @@
 </script>
 
 <OuterLayout>
-	<div class="h-full grid grid-cols-5 gap-4 my-14 mx-8">
-		<div class="col-span-5 sm:col-span-2">
+	<div class="h-full grid grid-cols-10 gap-4 my-14 mx-8">
+		<div class="col-span-10 sm:col-span-3">
 			<!-- profile area -->
 			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
 				<div class="flex sm:flex-col gap-2 items-center">
@@ -43,7 +43,7 @@
       </div>
 		</div>
 		<!-- user configs -->
-		<div class="col-span-5 sm:col-span-3 w-full sm:mt-24">
+		<div class="col-span-10 sm:col-span-7 w-full">
 			<h3 in:fade class="flex items-center gap-1 text-xl font-semibold mb-2">Neovim configs</h3>
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				{#each configs as conf, _}
