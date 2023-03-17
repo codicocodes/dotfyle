@@ -2,6 +2,24 @@ import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
 import type { NeovimPluginIdentifier, PluginDTO } from './schema';
 
+export async function getPluginsBySlug(username: string, slug: string): Promise<NeovimPlugin[]> {
+  prismaClient.$queryRaw
+  return prismaClient.neovimPlugin.findMany({
+    where: {
+      neovimConfigPlugins: {
+        some: {
+          config:{
+            user: {
+              username,
+            },
+            slug,
+          }
+        }
+      }
+    }
+  })
+}
+
 export async function upsertManyNeovimPlugins(
 	plugins: PluginDTO[]
 ): Promise<NeovimPlugin[]> {

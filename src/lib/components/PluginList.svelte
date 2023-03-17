@@ -15,13 +15,6 @@
 </script>
 
 <div>
-	{#if plugins.length > 0}
-		<div class="flex items-center justify-between">
-			<h3 class="flex items-center gap-1 text-sm tracking-wide font-semibold pl-1 mb-2">
-				<Fa icon={faPuzzlePiece} />
-				plugins
-			</h3>
-		</div>
 		<GlossyCard>
 			<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2">
 				{#each sorted as plugin, _}
@@ -45,7 +38,6 @@
 				{/each}
 			</div>
 		</GlossyCard>
-	{/if}
 </div>
 
 <style>

@@ -8,8 +8,11 @@ import type {
 	NestedNeovimConfigWithPlugins
 } from './schema';
 
-export async function getConfigsByUsername(username: string): Promise<NeovimConfigWithMetaData[]> {
-	const configs = await prismaClient.neovimConfig.findMany({
+export async function getConfigBySlug(
+	owner: string,
+	slug: string
+): Promise<NeovimConfigWithMetaData> {
+	const config = await prismaClient.neovimConfig.findFirstOrThrow({
 		include: {
 			user: {
 				select: {
@@ -23,8 +26,9 @@ export async function getConfigsByUsername(username: string): Promise<NeovimConf
 			}
 		},
 		where: {
+			slug,
 			user: {
-				username
+				username: owner
 			}
 		},
 		orderBy: [
@@ -39,18 +43,26 @@ export async function getConfigsByUsername(username: string): Promise<NeovimConf
 			}
 		]
 	});
-	return configs.map(attachMetaData);
+	return attachMetaData(config);
 }
 
+export async function getConfigsByUsername(username: string): Promise<NeovimConfigWithMetaData[]> {
+	const configs = await prismaClient.neovimConfig.findMany({
+		include: {
+			user: { select: { avatarUrl: true } },
+			neovimConfigPlugins: { select: { pluginId: true } }
+		},
+		where: { user: { username } },
+		orderBy: [{ stars: 'desc' }, { repo: 'asc' }, { root: 'asc' }]
+	});
+	return configs.map(attachMetaData);
+}
 export async function upsertNeovimConfig(
 	userId: number,
 	config: CreateNeovimConfigDTO
 ): Promise<NeovimConfig> {
 	const { owner, repo, root } = config;
-	const data = {
-		userId,
-		...config
-	};
+	const data = { userId, ...config };
 	const user = await prismaClient.neovimConfig.upsert({
 		where: { owner_repo_root: { owner, repo, root } },
 		create: data,

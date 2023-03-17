@@ -74,8 +74,8 @@ console.log(data)
 					initFile={conf.initFile}
 					root={conf.root}
 					stars={conf.stars.toString()}
-					pluginManager={conf.pluginManager}
-					pluginCount={conf.pluginCount}
+					pluginManager={conf.pluginManager ?? "unknown"}
+					pluginCount={conf.pluginCount.toString()}
 				/>
 			{/each}
 		</div>
