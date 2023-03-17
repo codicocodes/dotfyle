@@ -30,6 +30,7 @@ model GithubToken {
 model NeovimConfig {
   id            Int                  @id @default(autoincrement())
   owner         String
+  slug          String
   repo          String
   root          String
   initFile      String
@@ -45,6 +46,7 @@ model NeovimConfig {
   neovimConfigPlugins NeovimConfigPlugins[]
 
   @@unique([owner, repo, root])
+  @@unique([owner, slug])
 }
 
 enum NeovimPluginManager {

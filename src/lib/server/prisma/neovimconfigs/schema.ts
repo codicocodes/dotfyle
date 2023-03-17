@@ -6,6 +6,7 @@ export const CreateNeovimConfigDTO = z.object({
 	githubId: z.number(),
 	stars: z.number(),
 	owner: z.string(),
+  slug: z.string(),
 	repo: z.string(),
 	root: z.string(),
 	branch: z.string(),

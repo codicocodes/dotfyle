@@ -1,5 +1,5 @@
 import { fetchGithubRepositoryByName } from '$lib/server/github/api';
-import type { GithubTree } from '$lib/server/github/schema';
+import type { GithubRepository, GithubTree } from '$lib/server/github/schema';
 import type { CreateNeovimConfigDTO } from '$lib/server/prisma/neovimconfigs/schema';
 import { upsertNeovimConfig } from '$lib/server/prisma/neovimconfigs/service';
 import { getGithubToken } from '$lib/server/prisma/users/service';
@@ -10,16 +10,7 @@ import type { InitFileNames } from './init-file-finder';
 export async function syncRepoInfo(user: User, owner: string, repoName: string, root: string, init: InitFileNames): Promise<NeovimConfig> {
 	const token = await getGithubToken(user.id);
 	const repo = await fetchGithubRepositoryByName(token, owner, repoName);
-	const upsertDTO: CreateNeovimConfigDTO = {
-		githubId: repo.id,
-		stars: repo.stargazers_count,
-		owner,
-		repo: repo.name,
-		root: root,
-		initFile: init,
-    fork: repo.fork,
-    branch: repo.default_branch,
-	};
+  const upsertDTO = upsertNeovimConfigDTOFactory(owner, root, init, repo)
   const config = await upsertNeovimConfig(user.id, upsertDTO)
   return config
 }
@@ -31,4 +22,20 @@ export function validateConfigPath(root: GithubTree, path: string): undefined {
 		}
 	}
 	throw new TRPCError({ message: 'cannot find init file in repo', code: 'BAD_REQUEST' });
+}
+
+export function upsertNeovimConfigDTOFactory(owner: string, root: string, init: InitFileNames, repo: GithubRepository) {
+  const slug = `${repo.name}-${root}`.replaceAll("/", "-").replaceAll(/[^A-Za-z-]/g, '')
+	const upsertDTO: CreateNeovimConfigDTO = {
+		githubId: repo.id,
+		stars: repo.stargazers_count,
+    slug,
+		owner,
+		repo: repo.name,
+		root: root,
+		initFile: init,
+    fork: repo.fork,
+    branch: repo.default_branch,
+	};
+  return upsertDTO
 }

@@ -46,7 +46,7 @@
 			</h3>
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				{#each configs as conf, _}
-					<a href={`/dots/${conf.id}`} in:fade={{ duration: 2000 }}>
+					<a href={`/${conf.owner}/${conf.slug}`} in:fade={{ duration: 2000 }}>
 						<NeovimConfigCard
 							repo={conf.repo}
 							owner={conf.owner}
