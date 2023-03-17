@@ -1,21 +1,29 @@
 <script lang="ts">
-	import { faBox, faCodeFork, faDeleteLeft, faFileCode, faFolderTree, faLayerGroup, faPuzzlePiece } from "@fortawesome/free-solid-svg-icons";
+	import {
+		faBox,
+		faCodeFork,
+		faDeleteLeft,
+		faFileCode,
+		faFolderTree,
+		faLayerGroup,
+		faPuzzlePiece
+	} from '@fortawesome/free-solid-svg-icons';
 
+	import Fa from 'svelte-fa';
+	import { DoubleBounce } from 'svelte-loading-spinners';
+	import GlossyCard from './GlossyCard.svelte';
 
-	import Fa from "svelte-fa";
-	import { DoubleBounce } from "svelte-loading-spinners";
-	import GlossyCard from "./GlossyCard.svelte";
-
-  export let syncing: boolean;
-  export let pluginManager: string;
-  export let pluginCount: string;
-  export let root: string;
-  export let initFile: string;
-  export let isMonorepo: string;
-  export let isFork: string;
+	export let syncing: boolean;
+	export let pluginManager: string;
+	export let pluginCount: string;
+	export let root: string;
+	export let initFile: string;
+	export let isMonorepo: string;
+	export let isFork: string;
 </script>
+
 <GlossyCard>
-	<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2">
+	<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2 font-semibold text-regular tracking-wide">
 		<div class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
 				<div class="w-[20px]">

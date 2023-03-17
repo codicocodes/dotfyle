@@ -39,7 +39,7 @@
 		}
 		syncing = true;
 		const syncedConfig = await trpc($page)
-			.syncRepository.query({
+			.createNeovimConfig.query({
 				repo: $unsyncedConfig.repo,
 				initFile: $unsyncedConfig.initFile as InitFileNames,
 				root: $unsyncedConfig.root,
@@ -148,7 +148,7 @@
 						<Fa icon={faRotate} size="sm" /> Sync your config with GitHub
 					</h2>
 					<div in:fade class="flex w-full items-center justify-center">
-						<div class="flex flex-col w-full max-w-md gap-2 mx-0 md:mx-12 my-2">
+						<div class="flex flex-col w-full max-w-xl gap-2 mx-0 md:mx-12 my-2">
 							<UnsyncedNeovimConfigCard avatar={data.user?.avatarUrl ?? ''} />
 							<UnsyncedNeovimConfigMetaData {syncing} />
 						</div>

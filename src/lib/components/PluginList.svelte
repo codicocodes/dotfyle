@@ -20,7 +20,7 @@
 				{#each sorted as plugin, _}
 					<CoolTextOnHover>
 						<a in:slide class="flex w-full items-center justify-between">
-							<span class="flex items-center gap-1">
+							<span class="flex items-center gap-1 font-semibold text-regular tracking-wide">
 								{plugin.name}
 							</span>
 							<div class="flex gap-4">
@@ -41,7 +41,4 @@
 </div>
 
 <style>
-.force-white-text {
-  color: white !important;
-}
 </style>

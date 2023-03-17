@@ -1,6 +1,8 @@
 <script lang="ts">
+	import Button from '$lib/components/Button.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
+	import { humanizeAbsolute } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import { Avatar } from '@skeletonlabs/skeleton';
@@ -17,7 +19,7 @@
 		<div class="col-span-5 sm:col-span-2">
 			<!-- profile area -->
 			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
-				<div class="flex sm:flex-col gap-4">
+				<div class="flex sm:flex-col gap-2 items-center">
 					<Avatar src={profile.avatarUrl} width="w-16 sm:72 md:48 xl:w-56" />
 					<span class="flex text-xl font-medium items-center justify-center gap-2">
 						{profile.username}
@@ -27,26 +29,25 @@
 					</span>
 				</div>
 			</div>
+      <div class="flex flex-col gap-2 mt-2">
+			<span class="flex justify-center text-sm tracking-wide font-light">
+				Joined {humanizeAbsolute(new Date(profile.createdAt))}
+			</span>
 			{#if me && me.id === profile.id}
-      <div class="flex items-center justify-center">
-				<a
-					href="/add-config"
-					class="px-6 bg-white/30 hover:bg-white/50 text-xs sm:text-regular font-semibold tracking-wide py-2 rounded-full flex gap-2 items-center justify-around my-4 max-w-xs"
-				>
-					Add config
-					<Fa icon={faPlus} />
-				</a>
-        </div>
+				<div class="flex items-center justify-center">
+					<a href="/add-config">
+						<Button text="add config" icon={faPlus} />
+					</a>
+				</div>
 			{/if}
+      </div>
 		</div>
 		<!-- user configs -->
 		<div class="col-span-5 sm:col-span-3 w-full sm:mt-24">
-			<h3 in:fade={{ duration: 2000 }} class="flex items-center gap-1 text-xl font-semibold mb-2">
-				Neovim configs
-			</h3>
+			<h3 in:fade class="flex items-center gap-1 text-xl font-semibold mb-2">Neovim configs</h3>
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				{#each configs as conf, _}
-					<a href={`/${conf.owner}/${conf.slug}`} in:fade={{ duration: 2000 }}>
+					<a href={`/${conf.owner}/${conf.slug}`} in:fade>
 						<NeovimConfigCard
 							repo={conf.repo}
 							owner={conf.owner}

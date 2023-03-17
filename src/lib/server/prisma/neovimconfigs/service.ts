@@ -61,8 +61,9 @@ export async function upsertNeovimConfig(
 	userId: number,
 	config: CreateNeovimConfigDTO
 ): Promise<NeovimConfig> {
+  const lastSyncedAt = new Date()
 	const { owner, repo, root } = config;
-	const data = { userId, ...config };
+	const data = { userId, lastSyncedAt,  ...config };
 	const user = await prismaClient.neovimConfig.upsert({
 		where: { owner_repo_root: { owner, repo, root } },
 		create: data,

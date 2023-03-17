@@ -17,6 +17,7 @@ model User {
   githubId      Int            @unique
   githubToken   GithubToken?
   neovimConfigs NeovimConfig[]
+  createdAt     DateTime     @default(now())
 }
 
 model GithubToken {
@@ -42,6 +43,7 @@ model NeovimConfig {
   userId        Int
   pluginManager NeovimPluginManager?
   createdAt     DateTime             @default(now())
+  lastSyncedAt  DateTime     @default(now())
 
   neovimConfigPlugins NeovimConfigPlugins[]
 

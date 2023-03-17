@@ -1,6 +1,6 @@
 import { isAuthenticated } from './middlewares/auth';
 import { t } from './t';
-import { unknown, z } from 'zod';
+import { z } from 'zod';
 import { getGithubRepositories, getRepoFileTree } from '$lib/server/github/services';
 import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/services/init-file-finder';
 import { getGithubToken, getUserByUsername } from '$lib/server/prisma/users/service';
@@ -62,7 +62,7 @@ export const router = t.router({
 		const configs = await getNewestNeovimConfigs();
 		return configs;
 	}),
-	syncRepository: t.procedure
+	createNeovimConfig: t.procedure
 		.use(isAuthenticated)
 		.input((input: unknown) => {
 			return z

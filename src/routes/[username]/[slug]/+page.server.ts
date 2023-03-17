@@ -1,6 +1,6 @@
 import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
 import { trpc } from '$lib/trpc/client';
-import type { NeovimConfigPlugins, NeovimPlugin } from '@prisma/client';
+import type { NeovimPlugin } from '@prisma/client';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad, PageServerLoadEvent } from './$types';
 

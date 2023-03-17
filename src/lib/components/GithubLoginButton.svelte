@@ -4,11 +4,11 @@
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 </script>
 
-<form method="POST" action="?/githubLogin">
-	<button
-		class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center shadow-md hover:shadow-green-300/25 hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500"
-    type='submit'
+<form>
+	<a
+  href="/api/auth/github"
+		class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center shadow-xl hover:shadow-green-300/25 hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500"
 	>
 		<Fa icon={faGithub} /> Login | Sign up <Fa class="ml-1" size="xs" icon={faArrowUpRightFromSquare} />
-	</button>
+	</a>
 </form>

@@ -1,7 +1,12 @@
-<script>
+<script lang="ts">
 	import CoolText from '$lib/components/CoolText.svelte';
+	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
+	import { Avatar } from '@skeletonlabs/skeleton';
 	import '../app.css';
+	import type { LayoutData } from './$types';
+	export let data: LayoutData;
+	const { user } = data;
 </script>
 
 <div class="mt-2">
@@ -10,7 +15,16 @@
 			<CoolText text="dotfyle" />
 		</a>
 		<div class="text-sm font-semibold">
-			<span> profile </span>
+			{#if user}
+				<div class="flex items-center gap-2 text-lg">
+					<span class="hidden sm:inline">
+						{user.username}
+					</span>
+					<Avatar src={user.avatarUrl} width="w-10" />
+				</div>
+			{:else}
+				<GithubLoginButton />
+			{/if}
 		</div>
 	</div>
 	<OuterLayout>

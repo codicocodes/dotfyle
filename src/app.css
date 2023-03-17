@@ -8,3 +8,7 @@
   font-weight: 400;
   src: local('fonts/Inter'), format('woff2');
 }
+
+.force-white-text {
+  color: white !important;
+}
