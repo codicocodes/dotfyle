@@ -71,10 +71,10 @@ model NeovimPlugin {
 }
 
 model NeovimConfigPlugins {
-  config    NeovimConfig @relation(fields: [configId], references: [id])
-  configId  Int
-  plugin    NeovimPlugin @relation(fields: [pluginId], references: [id])
-  pluginId  Int
-  createdAt DateTime     @default(now())
+  config              NeovimConfig @relation(fields: [configId], references: [id], onDelete: Cascade)
+  configId            Int
+  plugin              NeovimPlugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  pluginId            Int
+  createdAt           DateTime     @default(now())
   @@id([configId, pluginId])
 }
