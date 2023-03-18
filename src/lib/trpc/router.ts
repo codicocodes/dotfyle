@@ -8,42 +8,51 @@ import { fetchRepoFileTree } from '$lib/server/github/api';
 import { syncRepoInfo, validateConfigPath } from '$lib/server/nvim-sync/services/sync-repo-info';
 import { syncManagerFactory } from '$lib/server/nvim-sync/services/SyncManager';
 import {
-    getConfigBySlug,
+	getConfigBySlug,
 	getConfigsByUsername,
 	getConfigsForPlugin,
 	getNewestNeovimConfigs
 } from '$lib/server/prisma/neovimconfigs/service';
-import { getPlugin, getPluginsBySlug } from '$lib/server/prisma/neovimplugins/service';
+import { getPlugin, getPluginsBySlug, getPopularPlugins } from '$lib/server/prisma/neovimplugins/service';
 
 export const router = t.router({
-  getConfigsForPlugin: t.procedure.input((input: unknown) => {
+	getPopularPlugins: t.procedure.query(async () => {
+		return getPopularPlugins();
+	}),
+	getConfigsForPlugin: t.procedure
+		.input((input: unknown) => {
 			return z
 				.object({
 					owner: z.string(),
 					name: z.string()
 				})
 				.parse(input);
-		}).query(async ({ input: { owner, name} }) => {
+		})
+		.query(async ({ input: { owner, name } }) => {
 			return getConfigsForPlugin(owner, name);
 		}),
-  getPlugin: t.procedure.input((input: unknown) => {
+	getPlugin: t.procedure
+		.input((input: unknown) => {
 			return z
 				.object({
 					owner: z.string(),
 					name: z.string()
 				})
 				.parse(input);
-		}).query(async ({ input: { owner, name} }) => {
+		})
+		.query(async ({ input: { owner, name } }) => {
 			return getPlugin(owner, name);
 		}),
-  getPluginsBySlug: t.procedure.input((input: unknown) => {
+	getPluginsBySlug: t.procedure
+		.input((input: unknown) => {
 			return z
 				.object({
 					username: z.string(),
 					slug: z.string()
 				})
 				.parse(input);
-		}).query(async ({ input: { username, slug } }) => {
+		})
+		.query(async ({ input: { username, slug } }) => {
 			return getPluginsBySlug(username, slug);
 		}),
 	getConfigBySlug: t.procedure
