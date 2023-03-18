@@ -19,7 +19,7 @@
 			<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2">
 				{#each sorted as plugin, _}
 					<CoolTextOnHover>
-						<a in:slide class="flex w-full items-center justify-between">
+						<a href={`/plugins/${plugin.owner}/${plugin.name}`} class="flex w-full items-center justify-between">
 							<span class="flex items-center gap-1 font-semibold text-regular tracking-wide">
 								{plugin.name}
 							</span>

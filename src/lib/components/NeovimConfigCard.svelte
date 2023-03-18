@@ -32,7 +32,7 @@
 			<Fa icon={faCircle} />
 			{initFile}
 		</span>
-		<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
+		<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold lowercase">
 			<Fa icon={faBox} />
 			{pluginManager || "unknown"}
 		</span>

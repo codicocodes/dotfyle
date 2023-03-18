@@ -83,7 +83,7 @@
 											<Fa icon={faSearch} size="xs" />
 										</span>
 										<span class="flex items-center gap-1 lowercase">
-											more configs using {config.pluginManager}
+											configs using {config.pluginManager}
 										</span>
 									</div>
 									<div class="flex gap-4">
@@ -103,10 +103,9 @@
 							last synced {humanizeAbsolute(new Date(config.lastSyncedAt))}
 						</span>
 						{#if me}
-							<div class="flex items-center gap-1">
-								<Button text="sync" icon={faRotate} />
-
-								<Button text="follow" icon={faPlus} />
+							<div class="flex items-center gap-1 text-sm font-semibold tracking-widest">
+								<Button text="sync" icon={faRotate} loading={false} />
+								<Button text="follow" icon={faPlus} loading={false}/>
 							</div>
 						{/if}
 					</div>

@@ -15,7 +15,7 @@
 </script>
 
 <OuterLayout>
-	<div class="h-full grid grid-cols-10 gap-4 my-14 mx-8">
+	<div class="h-full grid grid-cols-10 gap-4 my-14 mx-8 max-w-5xl">
 		<div class="col-span-10 sm:col-span-3">
 			<!-- profile area -->
 			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
@@ -35,8 +35,8 @@
 			</span>
 			{#if me && me.id === profile.id}
 				<div class="flex items-center justify-center">
-					<a href="/add">
-						<Button text="add config" icon={faPlus} />
+					<a class="text-sm font-semibold tracking-wide" href="/add">
+						<Button text="add config" icon={faPlus} loading={false} />
 					</a>
 				</div>
 			{/if}

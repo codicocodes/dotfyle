@@ -20,7 +20,7 @@
 
 	export let data: PageData;
 
-console.log(data)
+	console.log(data);
 	const logout = async () => {
 		await fetch('/api/auth', { method: 'DELETE' });
 	};
@@ -54,20 +54,17 @@ console.log(data)
 	</div>
 </div>
 
-<div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-<div class="mb-2 flex justify-between pl-1 tracking-wide">
-	<h3 class="flex items-center gap-1 text-lg font-semibold">
+<div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 flex flex-col">
+	<div class="mb-2 flex justify-between pl-1 tracking-wide">
+		<h3 class="flex items-center gap-1 text-lg font-semibold">newest configs</h3>
+		<CoolLink href="/search" text="more configs" />
+	</div>
 
-  newest configs</h3>
-  <CoolLink href="/search" text="see more configs" />
-</div>
-
-	<div>
-		<div
-			class="space-x-2 space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8"
-		>
-			{#each data.configs as conf, _}
-      <a href={`/${conf.owner}/${conf.slug}`}>
+	<div
+		class="space-x-2 space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8"
+	>
+		{#each data.configs as conf, _}
+			<a href={`/${conf.owner}/${conf.slug}`}>
 				<NeovimConfigCard
 					repo={conf.repo}
 					owner={conf.owner}
@@ -75,11 +72,36 @@ console.log(data)
 					initFile={conf.initFile}
 					root={conf.root}
 					stars={conf.stars.toString()}
-					pluginManager={conf.pluginManager ?? "unknown"}
+					pluginManager={conf.pluginManager ?? 'unknown'}
 					pluginCount={conf.pluginCount.toString()}
 				/>
-      </a>
-			{/each}
-		</div>
+			</a>
+		{/each}
+	</div>
+</div>
+
+<div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 flex flex-col">
+	<div class="mb-2 flex justify-between pl-1 tracking-wide">
+		<h3 class="flex items-center gap-1 text-lg font-semibold">popular plugins</h3>
+		<CoolLink href="/search" text="more plugins" />
+	</div>
+
+	<div
+		class="space-x-2 space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8"
+	>
+		{#each data.configs as conf, _}
+			<a href={`/${conf.owner}/${conf.slug}`}>
+				<NeovimConfigCard
+					repo={conf.repo}
+					owner={conf.owner}
+					avatar={conf.ownerAvatar}
+					initFile={conf.initFile}
+					root={conf.root}
+					stars={conf.stars.toString()}
+					pluginManager={conf.pluginManager ?? 'unknown'}
+					pluginCount={conf.pluginCount.toString()}
+				/>
+			</a>
+		{/each}
 	</div>
 </div>

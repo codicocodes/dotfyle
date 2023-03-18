@@ -10,11 +10,32 @@ import { syncManagerFactory } from '$lib/server/nvim-sync/services/SyncManager';
 import {
     getConfigBySlug,
 	getConfigsByUsername,
+	getConfigsForPlugin,
 	getNewestNeovimConfigs
 } from '$lib/server/prisma/neovimconfigs/service';
-import { getPluginsBySlug } from '$lib/server/prisma/neovimplugins/service';
+import { getPlugin, getPluginsBySlug } from '$lib/server/prisma/neovimplugins/service';
 
 export const router = t.router({
+  getConfigsForPlugin: t.procedure.input((input: unknown) => {
+			return z
+				.object({
+					owner: z.string(),
+					name: z.string()
+				})
+				.parse(input);
+		}).query(async ({ input: { owner, name} }) => {
+			return getConfigsForPlugin(owner, name);
+		}),
+  getPlugin: t.procedure.input((input: unknown) => {
+			return z
+				.object({
+					owner: z.string(),
+					name: z.string()
+				})
+				.parse(input);
+		}).query(async ({ input: { owner, name} }) => {
+			return getPlugin(owner, name);
+		}),
   getPluginsBySlug: t.procedure.input((input: unknown) => {
 			return z
 				.object({

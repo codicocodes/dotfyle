@@ -2,8 +2,18 @@ import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
 import type { NeovimPluginIdentifier, PluginDTO } from './schema';
 
+export async function getPlugin(owner: string, name: string) {
+  return prismaClient.neovimPlugin.findUniqueOrThrow({
+    where: {
+      owner_name: {
+        owner,
+        name,
+      }
+    }
+  })
+}
+
 export async function getPluginsBySlug(username: string, slug: string): Promise<NeovimPlugin[]> {
-  prismaClient.$queryRaw
   return prismaClient.neovimPlugin.findMany({
     where: {
       neovimConfigPlugins: {

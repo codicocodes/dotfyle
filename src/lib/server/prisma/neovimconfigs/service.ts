@@ -8,6 +8,45 @@ import type {
 	NestedNeovimConfigWithPlugins
 } from './schema';
 
+export async function getConfigsForPlugin(owner: string, name: string): Promise<NeovimConfigWithMetaData[]> {
+	const configs = await prismaClient.neovimConfig.findMany({
+		include: {
+			user: {
+				select: {
+					avatarUrl: true
+				}
+			},
+			neovimConfigPlugins: {
+				select: {
+					pluginId: true
+				}
+			}
+		},
+		where: {
+      neovimConfigPlugins: {
+        some: {
+          plugin: {
+            owner,
+            name
+          }
+        }
+      }
+		},
+		orderBy: [
+			{
+				stars: 'desc'
+			},
+			{
+				repo: 'asc'
+			},
+			{
+				root: 'asc'
+			}
+		]
+	});
+	return configs.map(attachMetaData);
+}
+
 export async function getConfigBySlug(
 	owner: string,
 	slug: string

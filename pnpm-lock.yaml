@@ -6,6 +6,7 @@ specifiers:
   '@octokit/rest': ^19.0.7
   '@playwright/test': ^1.28.1
   '@prisma/client': ^4.11.0
+  '@rgossiaux/svelte-headlessui': ^1.0.2
   '@skeletonlabs/skeleton': ^1.0.0
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.5.0
@@ -53,6 +54,7 @@ dependencies:
 
 devDependencies:
   '@playwright/test': 1.31.2
+  '@rgossiaux/svelte-headlessui': 1.0.2_svelte@3.56.0
   '@skeletonlabs/skeleton': 1.0.0
   '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.11.0
   '@sveltejs/kit': 1.11.0_svelte@3.56.0+vite@4.1.4
@@ -546,6 +548,14 @@ packages:
   /@prisma/engines/4.11.0:
     resolution: {integrity: sha512-0AEBi2HXGV02cf6ASsBPhfsVIbVSDC9nbQed4iiY5eHttW9ZtMxHThuKZE1pnESbr8HRdgmFSa/Kn4OSNYuibg==}
     requiresBuild: true
+
+  /@rgossiaux/svelte-headlessui/1.0.2_svelte@3.56.0:
+    resolution: {integrity: sha512-sauopYTSivhzXe1kAvgawkhyYJcQlK8Li3p0d2OtcCIVprOzdbard5lbqWB4xHDv83zAobt2mR08oizO2poHLQ==}
+    peerDependencies:
+      svelte: ^3.44.0
+    dependencies:
+      svelte: 3.56.0
+    dev: true
 
   /@skeletonlabs/skeleton/1.0.0:
     resolution: {integrity: sha512-xgH9NInf0md1FHr7BBSb8u8SsOOhC7fkSXhCcm1FVqaVBcVkd2/eLZhB1WFtmLB1lha1cteR+/jFN+/ZpviSBw==}
