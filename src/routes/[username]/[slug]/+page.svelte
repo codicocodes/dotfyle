@@ -26,7 +26,7 @@
 <OuterLayout>
 	<div in:fade class="h-full grid grid-cols-10 gap-4 my-14 mx-8 sm:px-24">
 		<!-- plugins configs -->
-		<div class="col-span-10 lg:col-span-4 w-full gap-2 flex flex-col">
+		<div class="col-span-10 lg:col-span-3 w-full gap-2 flex flex-col">
 			<h3 class="text-sm font-medium tracking-wide lowercase mt-2">
 				<span>{plugins.length} plugins installed</span>
 			</h3>
@@ -44,7 +44,7 @@
 			{/if}
 		</div>
 
-		<div class="col-span-10 lg:col-span-6 flex flex-col gap-2 order-first lg:order-2">
+		<div class="col-span-10 lg:col-span-7 flex flex-col gap-2 order-first lg:order-2">
 			<!-- profile area -->
 			<div class="flex items-center justify-between">
 				<h3 class="text-lg font-semibold tracking-wide">
@@ -105,7 +105,7 @@
 						{#if me}
 							<div class="flex items-center gap-1 text-sm font-semibold tracking-widest">
 								<Button text="sync" icon={faRotate} loading={false} />
-								<Button text="follow" icon={faPlus} loading={false}/>
+								<Button text="follow" icon={faPlus} loading={false} />
 							</div>
 						{/if}
 					</div>

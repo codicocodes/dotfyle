@@ -13,9 +13,14 @@ import {
 	getConfigsForPlugin,
 	getNewestNeovimConfigs
 } from '$lib/server/prisma/neovimconfigs/service';
-import { getPlugin, getPluginsBySlug, getPopularPlugins } from '$lib/server/prisma/neovimplugins/service';
+import { getPlugin, getPluginsByCategory, getPluginsBySlug, getPopularPlugins } from '$lib/server/prisma/neovimplugins/service';
 
 export const router = t.router({
+	getPluginsByCategory: t.procedure.input((input: unknown) => {
+    return z.string().parse(input)
+  }).query(async ({ input: category }) => {
+		return getPluginsByCategory(category);
+	}),
 	getPopularPlugins: t.procedure.query(async () => {
 		return getPopularPlugins();
 	}),

@@ -2,9 +2,7 @@ import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
 import type { NeovimPluginIdentifier, PluginDTO } from './schema';
 
-export async function getPopularPlugins() {
-	const plugins = await prismaClient.neovimPlugin.findMany({
-		select: {
+const selectConfigCount = {
 			id: true,
 			owner: true,
 			name: true,
@@ -20,7 +18,14 @@ export async function getPopularPlugins() {
 					neovimConfigPlugins: true
 				}
 			}
-		},
+}
+
+export async function getPluginsByCategory(category: string) {
+	const plugins = await prismaClient.neovimPlugin.findMany({
+		select: selectConfigCount,
+    where: {
+      category,
+    },
 		orderBy: [
 			{
 				neovimConfigPlugins: {
@@ -31,13 +36,32 @@ export async function getPopularPlugins() {
         name: 'asc',
 			}
 		],
-    take: 9,
+    take: 4,
+	});
+	return plugins;
+}
+
+export async function getPopularPlugins() {
+	const plugins = await prismaClient.neovimPlugin.findMany({
+		select: selectConfigCount,
+		orderBy: [
+			{
+				neovimConfigPlugins: {
+					_count: 'desc'
+				}
+			},
+			{
+        name: 'asc',
+			}
+		],
+    take: 3,
 	});
 	return plugins;
 }
 
 export async function getPlugin(owner: string, name: string) {
 	return prismaClient.neovimPlugin.findUniqueOrThrow({
+    select: selectConfigCount,
 		where: {
 			owner_name: {
 				owner,

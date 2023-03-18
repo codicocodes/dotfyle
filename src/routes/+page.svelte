@@ -3,10 +3,22 @@
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import type { PageData } from './$types';
-	import { faArrowDown, faCircle, faHashtag, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faArrowDown,
+		faChartLine,
+		faChartSimple,
+		faCircle,
+		faHashtag,
+		faLineChart,
+		faSeedling,
+		faStar,
+		faUserGroup
+	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import CoolLink from '$lib/components/CoolLink.svelte';
+	import { faStackpath } from '@fortawesome/free-brands-svg-icons';
+	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 
 	// navbar
 	// profile page
@@ -55,7 +67,10 @@
 
 <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 flex flex-col">
 	<div class="mb-2 flex justify-between pl-1 tracking-wide">
-		<h3 class="flex items-center gap-1 text-lg font-semibold">newest configs</h3>
+		<h3 class="flex items-center gap-1 text-lg font-semibold">
+			<Fa icon={faSeedling} size="sm" />
+			new configs
+		</h3>
 		<CoolLink href="/search" text="more configs" />
 	</div>
 
@@ -80,8 +95,12 @@
 </div>
 
 <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 flex flex-col">
-	<div class="mb-2 flex justify-between pl-1 tracking-wide">
-		<h3 class="flex items-center gap-1 text-lg font-semibold">popular plugins</h3>
+	<div class="mb-2 flex justify-between pl-1 tracking-wide gap-2">
+		<h3 class="flex items-center gap-1 text-lg font-semibold">
+			<Fa icon={faChartSimple} size="sm" />
+
+			popular plugins
+		</h3>
 		<CoolLink href="/search" text="more plugins" />
 	</div>
 
@@ -90,36 +109,14 @@
 	>
 		{#each data.plugins as plugin, _}
 			<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
-				<div
-					class="h-full relative flex flex-col justify-between overflow-hidden rounded-md border border-green-300/25 bg-white/5 transition-colors w-full shadow-lg hover:shadow-green-300/25"
-				>
-					<div
-						class="h-full flex space-x-4 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20 items-start"
-					>
-						<div class="flex flex-col gap-1">
-							<p class="text-sm font-semibold tracking-wide md:text-sm">
-								{plugin.owner}/{plugin.name}
-							</p>
-							<p class="text-xs font-medium tracking-wide md:text-sm">
-								{plugin.shortDescription}
-							</p>
-						</div>
-					</div>
-					<div class="m-1 flex font-medium">
-						<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
-							<Fa icon={faStar} />
-							{0}
-						</span>
-						<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
-							<Fa icon={faUserGroup} />
-							{plugin._count.neovimConfigPlugins}
-						</span>
-						<span class="px-2 py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
-							<Fa icon={faHashtag} />
-							{plugin.category}
-						</span>
-					</div>
-				</div>
+				<NeovimPluginCard
+					owner={plugin.owner}
+					name={plugin.name}
+					stars={'unknown'}
+					configCount={plugin._count.neovimConfigPlugins}
+					category={plugin.category}
+					shortDescription={plugin.shortDescription}
+				/>
 			</a>
 		{/each}
 	</div>
