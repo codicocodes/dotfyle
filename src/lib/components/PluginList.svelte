@@ -2,7 +2,6 @@
 	import { faChevronRight, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 	import type { NeovimPlugin } from '@prisma/client';
 	import Fa from 'svelte-fa';
-	import { slide } from 'svelte/transition';
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 
 	import GlossyCard from './GlossyCard.svelte';
@@ -20,13 +19,10 @@
 				{#each sorted as plugin, _}
 					<CoolTextOnHover>
 						<a href={`/plugins/${plugin.owner}/${plugin.name}`} class="flex w-full items-center justify-between">
-							<span class="flex items-center gap-1 font-semibold text-regular tracking-wide">
+							<span class="flex items-center gap-1 font-medium text-regular tracking-wide">
 								{plugin.name}
 							</span>
 							<div class="flex gap-4">
-								<!-- <span class="flex hidden sm:inline items-center gap-1"> -->
-								<!-- 	{plugin.category} -->
-								<!-- </span> -->
 								<button
 									class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
 								>

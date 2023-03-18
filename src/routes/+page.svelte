@@ -5,30 +5,24 @@
 	import type { PageData } from './$types';
 	import {
 		faArrowDown,
-		faChartLine,
 		faChartSimple,
-		faCircle,
-		faHashtag,
-		faLineChart,
-		faSeedling,
-		faStar,
-		faUserGroup
+		faPaintbrush,
+		faSeedling
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import CoolLink from '$lib/components/CoolLink.svelte';
-	import { faStackpath } from '@fortawesome/free-brands-svg-icons';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
+	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 
-	// navbar
-	// profile page
-	// dotfile page
-	// add dotfile page (almost same as welcome)
-	// add plugin page (kind of different?)
-	// plugin page
-	// plugin list
-	// dotfile list
-	// list of plugins by category on home page
+	// ⌛ navbar
+	// ✅ profile page
+	// ✅ dotfile page
+	// ✅ add dotfile page (almost same as welcome)
+	// ❌ add plugin page (kind of different?)
+	// ✅ plugin page
+	// search page
+	// ⌛list of plugins by category on home page
 
 	export let data: PageData;
 
@@ -37,6 +31,7 @@
 	};
 </script>
 
+<div class="flex flex-col gap-4">
 <div class="flex flex-col justify-center items-center">
 	<div class="py-12 sm:py-8 md:py-12 lg:py-14 xl:py-12 2xl:py-28">
 		<HeroTitle>
@@ -65,7 +60,7 @@
 	</div>
 </div>
 
-<div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 flex flex-col">
+<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 	<div class="mb-2 flex justify-between pl-1 tracking-wide">
 		<h3 class="flex items-center gap-1 text-lg font-semibold">
 			<Fa icon={faSeedling} size="sm" />
@@ -74,9 +69,7 @@
 		<CoolLink href="/search" text="more configs" />
 	</div>
 
-	<div
-		class="space-x-2 space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8"
-	>
+	<BigGridContainer>
 		{#each data.configs as conf, _}
 			<a href={`/${conf.owner}/${conf.slug}`}>
 				<NeovimConfigCard
@@ -91,10 +84,10 @@
 				/>
 			</a>
 		{/each}
-	</div>
+	</BigGridContainer>
 </div>
 
-<div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 flex flex-col">
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 	<div class="mb-2 flex justify-between pl-1 tracking-wide gap-2">
 		<h3 class="flex items-center gap-1 text-lg font-semibold">
 			<Fa icon={faChartSimple} size="sm" />
@@ -104,9 +97,7 @@
 		<CoolLink href="/search" text="more plugins" />
 	</div>
 
-	<div
-		class="space-x-2 sm:space-x-0 space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8"
-	>
+	<BigGridContainer>
 		{#each data.plugins as plugin, _}
 			<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
 				<NeovimPluginCard
@@ -119,5 +110,31 @@
 				/>
 			</a>
 		{/each}
+	</BigGridContainer>
+</div>
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col pb-8">
+	<div class="mb-2 flex justify-between pl-1 tracking-wide gap-2">
+		<h3 class="flex items-center gap-1 text-lg font-semibold">
+			<Fa icon={faPaintbrush} size="sm" />
+			colorschemes
+		</h3>
+		<CoolLink href="/search" text="more colorschemes" />
 	</div>
+
+	<BigGridContainer>
+		{#each data.colorschemes.slice(0, 3) as plugin, _}
+			<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
+				<NeovimPluginCard
+					owner={plugin.owner}
+					name={plugin.name}
+					stars={'unknown'}
+					configCount={plugin._count.neovimConfigPlugins}
+					category={plugin.category}
+					shortDescription={plugin.shortDescription}
+				/>
+			</a>
+		{/each}
+	</BigGridContainer>
+</div>
 </div>

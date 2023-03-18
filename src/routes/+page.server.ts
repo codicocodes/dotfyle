@@ -5,6 +5,7 @@ import type { NeovimConfigWithMetaData } from "$lib/server/prisma/neovimconfigs/
 export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
   return {
     configs: await trpc(event).getNewestConfigs.query() as unknown as NeovimConfigWithMetaData[],
-    plugins: await trpc(event).getPopularPlugins.query()
+    plugins: await trpc(event).getPopularPlugins.query(),
+    colorschemes: await trpc(event).getPluginsByCategory.query('colorscheme'),
   }
 }

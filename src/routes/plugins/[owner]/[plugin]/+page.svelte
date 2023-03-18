@@ -24,7 +24,7 @@
 			<h1 class="flex items-center text-xl sm:text-2xl font-semibold tracking-wide gap-2">
 				{data.plugin.owner}/{data.plugin.name}
 				<a href={`https://github.com/${data.plugin.owner}/${data.plugin.name}`} target="_blank">
-					<Fa icon={faGithub} size="md" />
+					<Fa icon={faGithub} size="sm" />
 				</a>
 			</h1>
 			<h2 class="flex items-center text-base sm:text-lg font-medium tracking-wide gap-2">
@@ -67,7 +67,7 @@
 					>
 					<Tab
 						disabled={true}
-						class={({ selected }) => (selected ? selectedStyle : unSelectedStyles)}>Images</Tab
+						class={({ selected }) => (selected ? selectedStyle : unSelectedStyles)}>Media</Tab
 					>
 				</div>
 			</TabList>

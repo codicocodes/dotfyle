@@ -16,7 +16,7 @@
 		class="h-full flex space-x-4 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20 items-start"
 	>
 		<div class="flex flex-col gap-1">
-			<p class="text-sm font-semibold tracking-wide md:text-sm">
+			<p class="text-sm font-semibold tracking-wide md:text-base">
 				{owner}/{name}
 			</p>
 			<p class="text-xs font-medium tracking-wide md:text-sm">
