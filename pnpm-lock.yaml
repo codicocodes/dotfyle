@@ -24,6 +24,7 @@ specifiers:
   jsonwebtoken: ^9.0.0
   marked: ^4.2.12
   postcss: ^8.4.21
+  postcss-load-config: ^4.0.1
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.8.1
   prisma: ^4.11.0
@@ -69,11 +70,12 @@ devDependencies:
   eslint-plugin-svelte3: 4.0.0_wzem237sbvnwe7n34ytc5phasy
   marked: 4.2.12
   postcss: 8.4.21
+  postcss-load-config: 4.0.1_postcss@8.4.21
   prettier: 2.8.4
   prettier-plugin-svelte: 2.9.0_k23gl6auqwrxgr3e6o2bajswou
   prisma: 4.11.0
   svelte: 3.57.0
-  svelte-check: 3.1.4_sd5d5bwhwct4qrvp7ra4wv5wou
+  svelte-check: 3.1.4_luph556zpodi3vqhnlezpo6clm
   svelte-loading-spinners: 0.3.4
   svelte-markdown: 0.2.3_svelte@3.57.0
   tailwindcss: 3.2.7_postcss@8.4.21
@@ -1898,6 +1900,23 @@ packages:
       yaml: 1.10.2
     dev: true
 
+  /postcss-load-config/4.0.1_postcss@8.4.21:
+    resolution: {integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==}
+    engines: {node: '>= 14'}
+    peerDependencies:
+      postcss: '>=8.0.9'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      postcss:
+        optional: true
+      ts-node:
+        optional: true
+    dependencies:
+      lilconfig: 2.1.0
+      postcss: 8.4.21
+      yaml: 2.2.1
+    dev: true
+
   /postcss-nested/6.0.0_postcss@8.4.21:
     resolution: {integrity: sha512-0DkamqrPcmkBDsLn+vQDIrtkSbNkv5AD/M322ySo9kqFkCIYklym2xEmWkwo+Y3/qZo34tzEPNUw4y7yMCdv5w==}
     engines: {node: '>=12.0'}
@@ -2151,7 +2170,7 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check/3.1.4_sd5d5bwhwct4qrvp7ra4wv5wou:
+  /svelte-check/3.1.4_luph556zpodi3vqhnlezpo6clm:
     resolution: {integrity: sha512-25Lb46ZS4IK/XpBMe4IBMrtYf23V8alqBX+szXoccb7uM0D2Wqq5rMRzYBONZnFVuU1bQG3R50lyIT5eRewv2g==}
     hasBin: true
     peerDependencies:
@@ -2164,7 +2183,7 @@ packages:
       picocolors: 1.0.0
       sade: 1.8.1
       svelte: 3.57.0
-      svelte-preprocess: 5.0.3_ybrbwhhu54cxvzb5hyvixtn33q
+      svelte-preprocess: 5.0.3_c6mofh3fyngshztmustucto3tq
       typescript: 4.9.5
     transitivePeerDependencies:
       - '@babel/core'
@@ -2205,7 +2224,7 @@ packages:
       svelte: 3.57.0
     dev: true
 
-  /svelte-preprocess/5.0.3_ybrbwhhu54cxvzb5hyvixtn33q:
+  /svelte-preprocess/5.0.3_c6mofh3fyngshztmustucto3tq:
     resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
     engines: {node: '>= 14.10.0'}
     requiresBuild: true
@@ -2247,6 +2266,7 @@ packages:
       detect-indent: 6.1.0
       magic-string: 0.27.0
       postcss: 8.4.21
+      postcss-load-config: 4.0.1_postcss@8.4.21
       sorcery: 0.11.0
       strip-indent: 3.0.0
       svelte: 3.57.0
@@ -2580,6 +2600,11 @@ packages:
   /yaml/1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
+    dev: true
+
+  /yaml/2.2.1:
+    resolution: {integrity: sha512-e0WHiYql7+9wr4cWMx3TVQrNwejKaEe7/rHNmQmqRjazfOP5W8PB6Jpebb5o6fIapbz9o9+2ipcaTM2ZwDI6lw==}
+    engines: {node: '>= 14'}
     dev: true
 
   /yocto-queue/0.1.0:

@@ -15,6 +15,9 @@ export const UpsertUserSchema = UserDTO.extend({
 
 export type UpsertUserSchema = z.infer<typeof UpsertUserSchema>;
 
-export const UserSchema: z.ZodType<User> = UserDTO.extend({
-  id: z.number()
+export const UserSchema = UserDTO.extend({
+  id: z.number(),
+  createdAt: z.string(),
 })
+
+export type UserSchema = z.infer<typeof UserSchema>;

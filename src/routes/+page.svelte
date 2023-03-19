@@ -103,7 +103,7 @@
 				<NeovimPluginCard
 					owner={plugin.owner}
 					name={plugin.name}
-					stars={'unknown'}
+          stars={plugin.stars.toString()}
 					configCount={plugin.configCount}
 					category={plugin.category}
 					shortDescription={plugin.shortDescription}
@@ -128,7 +128,7 @@
 				<NeovimPluginCard
 					owner={plugin.owner}
 					name={plugin.name}
-					stars={'unknown'}
+          stars={plugin.stars.toString()}
 					configCount={plugin.configCount}
 					category={plugin.category}
 					shortDescription={plugin.shortDescription}

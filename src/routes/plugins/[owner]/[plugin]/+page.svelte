@@ -9,7 +9,7 @@
 	import { faRotate, faStar, faUserGroup, faX } from '@fortawesome/free-solid-svg-icons';
 	import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@rgossiaux/svelte-headlessui';
 	import Fa from 'svelte-fa';
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import Readme from '$lib/components/readme/Readme.svelte';
@@ -134,7 +134,7 @@
 									<NeovimPluginCard
 										owner={plugin.owner}
 										name={plugin.name}
-										stars={'unknown'}
+										stars={plugin.stars.toString()}
 										configCount={plugin.configCount}
 										category={plugin.category}
 										shortDescription={plugin.shortDescription}

@@ -42,6 +42,9 @@ export async function getPluginsByCategory(category: string): Promise<NeovimPlug
 				}
 			},
 			{
+				stars: 'desc'
+			},
+			{
 				name: 'asc'
 			}
 		],

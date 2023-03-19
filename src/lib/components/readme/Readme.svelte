@@ -8,30 +8,33 @@
 <div 
   in:fade
   id="readme-md-container"
-	class="rounded-md border border-green-300/25 bg-white/5 truncate text-ellipsis transition-colors shadow-md hover:shadow-green-300/25 p-8"
+	class="rounded-md border border-green-300/25 bg-white/5 transition-colors shadow-md hover:shadow-green-300/25 p-8"
 >
   <SvelteMarkdown 
     source={readme}
   />
   </div>
 
-<style>
+<style lang="postcss">
   :global(#readme-md-container h1) {
-    @apply text-4xl font-semibold tracking-wider mb-4;
+    @apply text-lg sm:text-4xl font-semibold tracking-wider mb-4 break-words;
   }
   :global(#readme-md-container h2) {
-    @apply text-3xl font-semibold tracking-wider;
+    @apply sm:text-3xl font-semibold tracking-wider;
   }
   :global(#readme-md-container h3) {
-    @apply text-2xl font-semibold tracking-wider;
+    @apply sm:text-2xl font-semibold tracking-wider;
   }
   :global(#readme-md-container p) {
-    @apply text-lg my-2 flex gap-2;
+    @apply text-sm sm:text-lg my-2 gap-2 break-words break-words;
   }
   :global(#readme-md-container li) {
-    @apply text-lg list-disc ml-8 py-1;
+    @apply text-sm sm:text-lg list-disc ml-8 py-1 break-words;
   }
   :global(#readme-md-container pre) {
-    @apply bg-stone-900 p-8 rounded-lg my-4;
+    @apply bg-stone-900 p-4 sm:p-8 rounded-lg my-4 overflow-x-scroll text-sm sm:text-lg;
+  }
+  :global(#readme-md-container a) {
+    @apply text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500 font-semibold tracking-tight;
   }
 </style>
