@@ -9,23 +9,23 @@
 	const { user } = data;
 </script>
 
-<div class="mt-2">
-	<div class="flex items-center justify-between w-full px-8 gap-4">
-		<a href="/" class="text-2xl tracking-tight font-black">
-			<CoolText text="dotfyle" />
-		</a>
-		<div class="text-sm font-semibold">
-			{#if user}
-				<div class="flex items-center gap-2 text-lg">
-					<span class="hidden sm:inline">
-						{user.username}
-					</span>
-					<Avatar src={user.avatarUrl} width="w-10" />
-				</div>
-			{:else}
-				<GithubLoginButton />
-			{/if}
-		</div>
+<div class="">
+		<div class="flex items-center justify-between w-full px-8 gap-4">
+			<a href="/" class="text-2xl tracking-tight font-black">
+				<CoolText text="dotfyle" />
+			</a>
+			<div class="text-sm font-semibold">
+				{#if user}
+					<div class="flex items-center gap-2 text-lg">
+						<span class="hidden sm:inline">
+							{user.username}
+						</span>
+						<Avatar src={user.avatarUrl} width="w-10" />
+					</div>
+				{:else}
+					<GithubLoginButton />
+				{/if}
+			</div>
 	</div>
 	<OuterLayout>
 		<slot />

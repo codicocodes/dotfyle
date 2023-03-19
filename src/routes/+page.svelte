@@ -94,7 +94,7 @@
 
 			popular plugins
 		</h3>
-		<CoolLink href="/search" text="more plugins" />
+		<CoolLink href="/plugins" text="more plugins" />
 	</div>
 
 	<BigGridContainer>
@@ -119,7 +119,7 @@
 			<Fa icon={faPaintbrush} size="sm" />
 			colorschemes
 		</h3>
-		<CoolLink href="/search" text="more colorschemes" />
+		<CoolLink href="/plugins" text="more colorschemes" />
 	</div>
 
 	<BigGridContainer>

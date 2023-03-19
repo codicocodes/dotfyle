@@ -17,7 +17,8 @@ import {
 	getPlugin,
 	getPluginsByCategory,
 	getPluginsBySlug,
-	getPopularPlugins
+	getPopularPlugins,
+	searchPlugins
 } from '$lib/server/prisma/neovimplugins/service';
 import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
 
@@ -32,7 +33,7 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { owner, name }, ctx }) => {
-      const user = ctx.getAuthenticatedUser()
+			const user = ctx.getAuthenticatedUser();
 			const syncer = await getPluginSyncer(user.id, owner, name);
 			return syncer.sync();
 		}),
@@ -46,6 +47,20 @@ export const router = t.router({
 	getPopularPlugins: t.procedure.query(async () => {
 		return getPopularPlugins();
 	}),
+	searchPlugins: t.procedure
+		.input((input: unknown) => {
+			return z
+				.object({
+					query: z.string().optional(),
+					category: z.string().optional(),
+					sorting: z.enum(['new', 'popular'])
+				})
+				.parse(input);
+		})
+		.query(async ({ input }) => {
+			const plugins = await searchPlugins(input.query, input.category, input.sorting);
+			return plugins;
+		}),
 	getConfigsForPlugin: t.procedure
 		.input((input: unknown) => {
 			return z

@@ -1,13 +1,52 @@
 import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
-import type { NeovimPluginIdentifier, NeovimPluginWithCount, NestedNeovimPluginWithCount, PluginDTO } from './schema';
+import type {
+	NeovimPluginIdentifier,
+	NeovimPluginWithCount,
+	NestedNeovimPluginWithCount,
+	PluginDTO
+} from './schema';
 
-function flattenConfigCount({_count, ...plugin }: NestedNeovimPluginWithCount): NeovimPluginWithCount {
-  return {
+function flattenConfigCount({
+	_count,
+	...plugin
+}: NestedNeovimPluginWithCount): NeovimPluginWithCount {
+	return {
 		...plugin,
 		configCount: _count.neovimConfigPlugins
-	}
+	};
 }
+
+const orderByPopularity: [
+	{
+		neovimConfigPlugins: {
+			_count: 'desc';
+		};
+	},
+	{
+		stars: 'desc';
+	},
+	{
+		name: 'asc';
+	}
+] = [
+	{
+		neovimConfigPlugins: {
+			_count: 'desc'
+		}
+	},
+	{
+		stars: 'desc'
+	},
+	{
+		name: 'asc'
+	}
+];
+
+const orderByConfig = {
+  popular: orderByPopularity,
+  new: orderByPopularity,
+} as const
 
 const selectConfigCount = {
 	id: true,
@@ -20,8 +59,8 @@ const selectConfigCount = {
 	shortDescription: true,
 	createdAt: true,
 	lastSyncedAt: true,
-  stars: true,
-  readme: true,
+	stars: true,
+	readme: true,
 	_count: {
 		select: {
 			neovimConfigPlugins: true
@@ -29,25 +68,30 @@ const selectConfigCount = {
 	}
 };
 
+export async function searchPlugins(
+	query: string | undefined,
+	category: string | undefined,
+	sorting: 'new' | 'popular'
+): Promise<NeovimPluginWithCount[]>{
+	const where = {
+		...(category ? { category } : {})
+	};
+  const orderBy = orderByConfig[sorting]
+  const plugins = await prismaClient.neovimPlugin.findMany({
+    select: selectConfigCount,
+    where,
+    orderBy,
+  })
+	return plugins.map(flattenConfigCount);
+}
+
 export async function getPluginsByCategory(category: string): Promise<NeovimPluginWithCount[]> {
 	const plugins = await prismaClient.neovimPlugin.findMany({
 		select: selectConfigCount,
 		where: {
 			category
 		},
-		orderBy: [
-			{
-				neovimConfigPlugins: {
-					_count: 'desc'
-				}
-			},
-			{
-				stars: 'desc'
-			},
-			{
-				name: 'asc'
-			}
-		],
+		orderBy: orderByPopularity,
 		take: 4
 	});
 	return plugins.map(flattenConfigCount);
@@ -68,7 +112,7 @@ export async function getPopularPlugins(): Promise<NeovimPluginWithCount[]> {
 		],
 		take: 3
 	});
-  return plugins.map(flattenConfigCount);
+	return plugins.map(flattenConfigCount);
 }
 
 export async function getPlugin(owner: string, name: string): Promise<NeovimPluginWithCount> {
@@ -140,12 +184,10 @@ export async function getAllNeovimPluginNames(): Promise<NeovimPluginIdentifier[
 }
 
 export async function updatePlugin(plugin: NeovimPlugin): Promise<NeovimPlugin> {
-  return prismaClient.neovimPlugin.update(
-    {
-      where: {
-        id: plugin.id,
-      },
-      data: plugin
-    }
-  )
+	return prismaClient.neovimPlugin.update({
+		where: {
+			id: plugin.id
+		},
+		data: plugin
+	});
 }
