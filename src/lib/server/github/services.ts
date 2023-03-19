@@ -1,6 +1,12 @@
 import type { User } from '@prisma/client';
 import { getGithubToken } from '../prisma/users/service';
-import { fetchGithubRepositories, fetchRepoFileTree } from './api';
+import { fetchGithubRepositories, fetchGithubRepositoryByName, fetchRepoFileTree } from './api';
+
+export async function getGithubRepository(userId: number, owner: string, name: string) {
+  const token = await getGithubToken(userId)
+  const repositories = await fetchGithubRepositoryByName(token, owner, name)
+  return repositories
+}
 
 export async function getGithubRepositories(user: User) {
   const token = await getGithubToken(user.id)

@@ -1,3 +1,4 @@
+import type { NeovimPlugin } from '@prisma/client';
 import { z } from "zod";
 
 export const PluginDTO = z.object({
@@ -16,4 +17,16 @@ export interface NeovimPluginIdentifier {
   id: number;
   owner: string;
   name: string
+
+}
+
+
+export type NestedNeovimPluginWithCount = NeovimPlugin & {
+    _count: {
+        neovimConfigPlugins: number;
+    };
+}
+
+export type NeovimPluginWithCount = NeovimPlugin & {
+  configCount: number
 }

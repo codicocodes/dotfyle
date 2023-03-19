@@ -53,3 +53,13 @@ export const fetchFile = async (token: string, owner: string, repo: string, file
   const blobResponse = await gh.git.getBlob({ owner, repo, file_sha})
   return GithubBlob.parse(blobResponse.data)
 }
+
+export const fetchReadme = async (token: string, owner: string, repo: string): Promise<string> => {
+	const gh = new Octokit({
+		auth: `token ${token}`
+	});
+  const readmeResponse = await gh.repos.getReadme({ owner, repo })
+  const readme = GithubBlob.parse(readmeResponse.data)
+  const content = Buffer.from(readme.content, 'base64').toString();
+  return content
+}

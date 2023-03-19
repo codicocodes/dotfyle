@@ -1,31 +1,40 @@
 import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
-import type { NeovimPluginIdentifier, PluginDTO } from './schema';
+import type { NeovimPluginIdentifier, NeovimPluginWithCount, NestedNeovimPluginWithCount, PluginDTO } from './schema';
+
+function flattenConfigCount({_count, ...plugin }: NestedNeovimPluginWithCount): NeovimPluginWithCount {
+  return {
+		...plugin,
+		configCount: _count.neovimConfigPlugins
+	}
+}
 
 const selectConfigCount = {
-			id: true,
-			owner: true,
-			name: true,
-			type: true,
-			source: true,
-			category: true,
-			link: true,
-			shortDescription: true,
-			createdAt: true,
-			lastSyncedAt: true,
-			_count: {
-				select: {
-					neovimConfigPlugins: true
-				}
-			}
-}
+	id: true,
+	owner: true,
+	name: true,
+	type: true,
+	source: true,
+	category: true,
+	link: true,
+	shortDescription: true,
+	createdAt: true,
+	lastSyncedAt: true,
+  stars: true,
+  readme: true,
+	_count: {
+		select: {
+			neovimConfigPlugins: true
+		}
+	}
+};
 
-export async function getPluginsByCategory(category: string) {
+export async function getPluginsByCategory(category: string): Promise<NeovimPluginWithCount[]> {
 	const plugins = await prismaClient.neovimPlugin.findMany({
 		select: selectConfigCount,
-    where: {
-      category,
-    },
+		where: {
+			category
+		},
 		orderBy: [
 			{
 				neovimConfigPlugins: {
@@ -33,16 +42,16 @@ export async function getPluginsByCategory(category: string) {
 				}
 			},
 			{
-        name: 'asc',
+				name: 'asc'
 			}
 		],
-    take: 4,
+		take: 4
 	});
-	return plugins;
+	return plugins.map(flattenConfigCount);
 }
 
-export async function getPopularPlugins() {
-	const plugins = await prismaClient.neovimPlugin.findMany({
+export async function getPopularPlugins(): Promise<NeovimPluginWithCount[]> {
+	const plugins: NestedNeovimPluginWithCount[] = await prismaClient.neovimPlugin.findMany({
 		select: selectConfigCount,
 		orderBy: [
 			{
@@ -51,17 +60,17 @@ export async function getPopularPlugins() {
 				}
 			},
 			{
-        name: 'asc',
+				name: 'asc'
 			}
 		],
-    take: 3,
+		take: 3
 	});
-	return plugins;
+  return plugins.map(flattenConfigCount);
 }
 
-export async function getPlugin(owner: string, name: string) {
-	return prismaClient.neovimPlugin.findUniqueOrThrow({
-    select: selectConfigCount,
+export async function getPlugin(owner: string, name: string): Promise<NeovimPluginWithCount> {
+	const { _count, ...plugin } = await prismaClient.neovimPlugin.findUniqueOrThrow({
+		select: selectConfigCount,
 		where: {
 			owner_name: {
 				owner,
@@ -69,6 +78,10 @@ export async function getPlugin(owner: string, name: string) {
 			}
 		}
 	});
+	return {
+		...plugin,
+		configCount: _count.neovimConfigPlugins
+	};
 }
 
 export async function getPluginsBySlug(username: string, slug: string): Promise<NeovimPlugin[]> {
@@ -121,4 +134,15 @@ export async function getAllNeovimPluginNames(): Promise<NeovimPluginIdentifier[
 			name: true
 		}
 	});
+}
+
+export async function updatePlugin(plugin: NeovimPlugin): Promise<NeovimPlugin> {
+  return prismaClient.neovimPlugin.update(
+    {
+      where: {
+        id: plugin.id,
+      },
+      data: plugin
+    }
+  )
 }

@@ -66,6 +66,8 @@ model NeovimPlugin {
   link                String
   shortDescription    String
   createdAt           DateTime     @default(now())
+  readme              String       @default("")
+  stars               Int          @default(0)
 
   neovimConfigPlugins NeovimConfigPlugins[]
 

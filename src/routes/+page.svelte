@@ -104,7 +104,7 @@
 					owner={plugin.owner}
 					name={plugin.name}
 					stars={'unknown'}
-					configCount={plugin._count.neovimConfigPlugins}
+					configCount={plugin.configCount}
 					category={plugin.category}
 					shortDescription={plugin.shortDescription}
 				/>
@@ -129,7 +129,7 @@
 					owner={plugin.owner}
 					name={plugin.name}
 					stars={'unknown'}
-					configCount={plugin._count.neovimConfigPlugins}
+					configCount={plugin.configCount}
 					category={plugin.category}
 					shortDescription={plugin.shortDescription}
 				/>

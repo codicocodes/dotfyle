@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { PluginDTO } from '../prisma/neovimplugins/schema';
 
 export async function scrapeRockerBooAwesomeNeovim() {
-	const tree = await fetchReadme();
+	const tree = await fetchAwesomeNeovimReadme();
 	const rawPlugins = parsePluginDataFromTree(tree);
 	return z
 		.array(PluginDTO)
@@ -51,7 +51,7 @@ export function parsePlugin({ category, item }: RawPlugin): PluginDTO {
 	};
 }
 
-export async function fetchReadme(): Promise<marked.TokensList> { const RAW_README_URL =
+export async function fetchAwesomeNeovimReadme(): Promise<marked.TokensList> { const RAW_README_URL =
 		'https://raw.githubusercontent.com/rockerBOO/awesome-neovim/main/README.md';
 	const text = await fetch(RAW_README_URL).then((r) => r.text());
 	const tree = marked.lexer(text);

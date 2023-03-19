@@ -35,6 +35,7 @@
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",
 		"svelte-loading-spinners": "^0.3.4",
+		"svelte-markdown": "^0.2.3",
 		"tailwindcss": "^3.2.7",
 		"tslib": "^2.4.1",
 		"typescript": "^4.9.3",
