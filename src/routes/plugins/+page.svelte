@@ -6,17 +6,24 @@
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 	import { trpc } from '$lib/trpc/client';
-	import { faChartSimple, faChevronDown, faSeedling, faX } from '@fortawesome/free-solid-svg-icons';
 	import {
-		Listbox,
-		ListboxButton,
-		ListboxOption,
-		ListboxOptions
-	} from '@rgossiaux/svelte-headlessui';
+		faChartSimple,
+		faChevronDown,
+		faChevronUp,
+		faSeedling,
+		faX
+	} from '@fortawesome/free-solid-svg-icons';
 	import { onMount } from 'svelte';
 	import Fa from 'svelte-fa';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import { goto } from '$app/navigation';
+	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
+	import { fly } from 'svelte/transition';
+
+	function navigate(param: string, value: string) {
+		$page.url.searchParams.set(param, value);
+		goto($page.url.toString(), { keepFocus: true });
+	}
 
 	$: category = $page.url.searchParams.get('category');
 
@@ -30,9 +37,14 @@
 
 	let start: number;
 	let end: number;
-	let search = '';
+	let search = $page.url.searchParams.get('q') ?? '';
+	let expantedTags = false;
 
-	// $: console.log({ start, end });
+	$: {
+		if (search !== $page.url.searchParams.get('q')) {
+			navigate('q', search);
+		}
+	}
 
 	onMount(async () => {
 		const fetchedPlugins = await trpc($page).searchPlugins.query({
@@ -46,7 +58,6 @@
 		plugins
 			.map((p) => p.category)
 			.reduce((countByCategory: Record<string, number>, cat) => {
-				console.log({ countByCategory, cat });
 				const countInThisCategory = countByCategory[cat];
 				return { ...countByCategory, [cat]: countInThisCategory ? countInThisCategory + 1 : 1 };
 			}, {})
@@ -99,118 +110,128 @@
 		<div class="grid grid-cols-10 sm:gap-4 my-8 sm:my-14 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
 				<GlossyCard>
-					<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-						<Listbox
-							value={'popular'}
-							on:change={(e) => {
-								sort = e.detail;
-								$page.url.searchParams.set('sort', sort);
-								goto($page.url.toString());
-
-								// let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
-								// TODO: mutate query string
-							}}
-						>
-							<ListboxButton class="w-full flex items-center"
-								><div
-									class="flex w-full items-center justify-between gap-2 font-semibold text-sm hover:cursor-pointer"
-								>
-									<div class="flex gap-2 items-center">
-										{#if sort === 'new'}
-											<Fa icon={faSeedling} />
-										{:else}
-											<Fa icon={faChartSimple} />
-										{/if}
-										{sort}
-									</div>
-									<Fa icon={faChevronDown} />
-								</div>
-							</ListboxButton>
-							<ListboxOptions
-								><div class="flex gap-2 mt-2 text-sm">
-									<ListboxOption value={'new'}>
-										<CoolTextOnHover>
-											<div
-												class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-											>
-												<div class="flex items-center force-white-text">
-													<Fa icon={faSeedling} />
-												</div>
-												new
-											</div>
-										</CoolTextOnHover>
-									</ListboxOption>
-									<ListboxOption value={'popular'}>
-										<CoolTextOnHover>
-											<div
-												class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-											>
-												<div class="flex items-center force-white-text">
-													<Fa icon={faChartSimple} />
-												</div>
-												<span>popular</span>
-											</div>
-										</CoolTextOnHover>
-									</ListboxOption>
-								</div></ListboxOptions
+					<div class="flex flex-col p-4 w-full gap-2">
+						<div class="flex gap-2 text-sm font-semibold">
+							<button
+								on:click={() => {
+									sort = 'new';
+									navigate('sort', sort);
+								}}
 							>
-						</Listbox>
+								{#if sort === 'new'}
+									<CoolTextWithChildren>
+										<div
+											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+										>
+											<div class="flex items-center force-white-text">
+												<Fa icon={faSeedling} />
+											</div>
+											new
+										</div>
+									</CoolTextWithChildren>
+								{:else}
+									<CoolTextOnHover>
+										<div
+											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+										>
+											<div class="flex items-center force-white-text">
+												<Fa icon={faSeedling} />
+											</div>
+											new
+										</div>
+									</CoolTextOnHover>
+								{/if}
+							</button>
+							<button
+								on:click={() => {
+									sort = 'popular';
+									navigate('sort', sort);
+								}}
+							>
+								{#if sort === 'popular'}
+									<CoolTextWithChildren>
+										<div
+											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+										>
+											<div class="flex items-center force-white-text">
+												<Fa icon={faChartSimple} />
+											</div>
+											<span>popular</span>
+										</div>
+									</CoolTextWithChildren>
+								{:else}
+									<CoolTextOnHover>
+										<div
+											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+										>
+											<div class="flex items-center force-white-text">
+												<Fa icon={faChartSimple} />
+											</div>
+											<span>popular</span>
+										</div>
+									</CoolTextOnHover>
+								{/if}
+							</button>
+						</div>
 					</div>
 				</GlossyCard>
 				<div class="hidden sm:inline">
 					<GlossyCard>
 						<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-							<Listbox
-								value={''}
-								on:change={(e) => {
-									category = e.detail;
-									$page.url.searchParams.set('category', category ?? '');
-									goto($page.url.toString());
-								}}
-							>
-								<div class="flex text-sm font-medium">
-									{#if category}
+							<div class="flex text-sm font-medium">
+								{#if category}
+									<button
+										class="flex gap-1 items-center bg-white/30 py-0.5 px-1 rounded"
+										on:click={() => {
+											category = '';
+											navigate('category', category);
+										}}
+									>
+										<Fa icon={faX} size="xs" />
+										{category}
+									</button>
+								{:else}
+									<div class="font-semibold py-0.5 px-1">plugin categories</div>
+								{/if}
+							</div>
+							<div
+                class="flex flex-wrap gap-1 text-xs mt-2">
+								{#each availableCategories.slice(0, expantedTags ? -1 : 20) as currCategory}
+									<CoolTextOnHover>
 										<button
-											class="flex gap-1 items-center bg-white/30 py-0.5 px-1 rounded"
+                      in:fly 
+											class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
 											on:click={() => {
-												category = '';
+												category = currCategory;
+												navigate('category', category);
 											}}
 										>
-											<Fa icon={faX} size="xs" />
-											{category}
+											{currCategory}
 										</button>
-									{:else}
-                  <div class="font-semibold">
-										plugin categories
-                  </div>
-									{/if}
-									<ListboxButton
-										class="w-full flex flex-wrap items-center justify-end gap-2 font-semibold text-sm"
-									>
-										<!--         <button> -->
-										<!-- <Fa icon={faChevronDown} /> -->
-										<!--         </button> -->
-									</ListboxButton>
-								</div>
-								<ListboxOptions static>
-									<div class="flex flex-wrap gap-1 text-xs mt-2">
-										{#each availableCategories.slice(0, 50) as currCategory}
-											<ListboxOption
-												value={currCategory}
-												class={({ active }) => {
-													return active ? 'shadow-lg shadow-green-500' : '';
-												}}
-											>
-												<button
-													class={`py-1 px-1 cursor-pointer rounded bg-white/50 focus:shadow-green-500`}
-												>
-													{currCategory}
-												</button>
-											</ListboxOption>
-										{/each}
-									</div>
-								</ListboxOptions>
-							</Listbox>
+									</CoolTextOnHover>
+								{/each}
+							</div>
+							{#if !expantedTags}
+								<button
+									on:click={() => {
+										expantedTags = true;
+									}}
+									class="text-sm w-full font-semibold flex justify-center items-center gap-2"
+								>
+									see more
+									<Fa icon={faChevronDown} />
+								</button>
+							{:else}
+								<button
+									on:click={() => {
+										expantedTags = false;
+									}}
+									class="text-sm w-full font-semibold flex justify-center items-center gap-2"
+								>
+									see less
+									<Fa icon={faChevronUp} />
+								</button>
+							{/if}
 						</div>
 					</GlossyCard>
 				</div>
@@ -226,16 +247,18 @@
               if improving this ensure that there is not double scrollbars on either mobile or desktop
             -->
 						<VirtualList items={filteredPlugins} let:item bind:start bind:end>
-							<div class="my-2">
-								<NeovimPluginCard
-									owner={item.owner}
-									name={item.name}
-									stars={item.stars.toString()}
-									configCount={item.configCount}
-									category={item.category}
-									shortDescription={item.shortDescription}
-								/>
-							</div>
+							<a href={`/plugins/${item.owner}/${item.name}`}>
+								<div class="my-2">
+									<NeovimPluginCard
+										owner={item.owner}
+										name={item.name}
+										stars={item.stars.toString()}
+										configCount={item.configCount}
+										category={item.category}
+										shortDescription={item.shortDescription}
+									/>
+								</div>
+							</a>
 						</VirtualList>
 					</div>
 				{/if}
