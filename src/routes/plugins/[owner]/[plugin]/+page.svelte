@@ -122,7 +122,7 @@
 							<h3 class="flex items-center gap-1 text-lg font-semibold">
 								other {data.plugin.category} plugins
 							</h3>
-							<CoolLink href={`/plugins?category=${data.plugin.category}`} text="more plugins" />
+							<CoolLink href={`/plugins?categories=${data.plugin.category}`} text="more plugins" />
 						</div>
 
 						<div

@@ -38,14 +38,13 @@
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
 
 	let sort: 'popular' | 'new' = rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
-
 	let start: number;
 	let end: number;
 	let search = $page.url.searchParams.get('q') ?? '';
 	let expantedTags = false;
 
 	$: {
-		if (browser && search !== $page.url.searchParams.get('q')) {
+		if (browser && search && search !== $page.url.searchParams.get('q')) {
 			navigate('q', search);
 		}
 	}
@@ -112,7 +111,7 @@
 		<div class="flex items-center justify-center">
 			<input
 				bind:value={search}
-				class="w-full sm:w-1/2 p-4 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500"
+				class="w-full sm:w-1/2 p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
 		</div>
 		<div class="grid grid-cols-10 sm:gap-4 my-8 sm:my-14 max-w-5xl text-xl">
@@ -186,7 +185,7 @@
 				<div class="hidden sm:inline">
 					<GlossyCard>
 						<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-							<div class="flex text-sm font-medium gap-2 flex-wrap">
+							<div class="flex text-xs font-semibold gap-2 flex-wrap">
 								{#if selectedCategories.length > 0}
 									{#each selectedCategories as category}
 										<CoolTextWithChildren>
@@ -263,7 +262,7 @@
             -->
 						<VirtualList items={filteredPlugins} let:item bind:start bind:end>
 							<a href={`/plugins/${item.owner}/${item.name}`}>
-								<div in:fly class="my-2">
+								<div class="my-2">
 									<NeovimPluginCard
 										owner={item.owner}
 										name={item.name}
