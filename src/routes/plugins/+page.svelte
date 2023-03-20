@@ -1,6 +1,7 @@
 <script lang="ts">
 	import VirtualList from '@sveltejs/svelte-virtual-list';
 	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
@@ -25,7 +26,10 @@
 		goto($page.url.toString(), { keepFocus: true });
 	}
 
-	$: category = $page.url.searchParams.get('category');
+	$: selectedCategories =
+		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
+
+	$: selectedCategoriesSet = new Set(selectedCategories);
 
 	let plugins: NeovimPluginWithCount[] = [];
 
@@ -41,7 +45,7 @@
 	let expantedTags = false;
 
 	$: {
-		if (search !== $page.url.searchParams.get('q')) {
+		if (browser && search !== $page.url.searchParams.get('q')) {
 			navigate('q', search);
 		}
 	}
@@ -88,9 +92,13 @@
 			p.category +
 			`${p.owner}/${p.name}` +
 			p.category.split('-').join(' ');
-		return (
-			searchable.toLowerCase().includes(search.toLowerCase()) && p.category.includes(category ?? '')
-		);
+
+		if (selectedCategoriesSet.size > 0) {
+			if (!selectedCategoriesSet.has(p.category)) {
+				return false;
+			}
+		}
+		return searchable.toLowerCase().includes(search.toLowerCase());
 	});
 </script>
 
@@ -178,32 +186,39 @@
 				<div class="hidden sm:inline">
 					<GlossyCard>
 						<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-							<div class="flex text-sm font-medium">
-								{#if category}
-									<button
-										class="flex gap-1 items-center bg-white/30 py-0.5 px-1 rounded"
-										on:click={() => {
-											category = '';
-											navigate('category', category);
-										}}
-									>
-										<Fa icon={faX} size="xs" />
-										{category}
-									</button>
+							<div class="flex text-sm font-medium gap-2 flex-wrap">
+								{#if selectedCategories.length > 0}
+									{#each selectedCategories as category}
+										<CoolTextWithChildren>
+											<button
+												class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
+												on:click={() => {
+                          selectedCategoriesSet.delete(category)
+                          selectedCategories = [...selectedCategoriesSet]
+													navigate('categories', selectedCategories.join(","));
+												}}
+											>
+												<div class="force-white-text">
+													<Fa icon={faX} size="xs" />
+												</div>
+												{category}
+											</button>
+										</CoolTextWithChildren>
+									{/each}
 								{:else}
 									<div class="font-semibold py-0.5 px-1">plugin categories</div>
 								{/if}
 							</div>
-							<div
-                class="flex flex-wrap gap-1 text-xs mt-2">
-								{#each availableCategories.slice(0, expantedTags ? -1 : 20) as currCategory}
+							<div class="flex flex-wrap gap-1 text-xs mt-2">
+								{#each availableCategories.filter(c => selectedCategoriesSet.size > 0 ? !selectedCategoriesSet.has(c) : true).slice(0, expantedTags ? -1 : 20) as currCategory}
 									<CoolTextOnHover>
 										<button
-                      in:fly 
+											in:fly
 											class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
 											on:click={() => {
-												category = currCategory;
-												navigate('category', category);
+												selectedCategories.push(currCategory);
+                        selectedCategories = selectedCategories
+												navigate('categories', selectedCategories.join(','));
 											}}
 										>
 											{currCategory}
@@ -248,7 +263,7 @@
             -->
 						<VirtualList items={filteredPlugins} let:item bind:start bind:end>
 							<a href={`/plugins/${item.owner}/${item.name}`}>
-								<div class="my-2">
+								<div in:fly class="my-2">
 									<NeovimPluginCard
 										owner={item.owner}
 										name={item.name}
