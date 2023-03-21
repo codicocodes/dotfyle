@@ -23,6 +23,12 @@
 	let syncingPlugin = false;
 </script>
 
+<svelte:head>
+	<title>
+		{data.plugin.owner}/{data.plugin.name}
+	</title>
+</svelte:head>
+
 <div class="w-full flex flex-col items-center h-full my-14 px-8">
 	<div class="flex flex-col max-w-5xl w-full gap-2">
 		<div class="flex flex-col gap-2">

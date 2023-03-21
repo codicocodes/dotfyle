@@ -26,6 +26,12 @@
 	});
 </script>
 
+<svelte:head>
+	<title>
+		Add neovim config
+	</title>
+</svelte:head>
+
 <div class="flex flex-col justify-center items-center">
 	<h1 out:fade class="my-12 md:my-20 text-2xl font-semibold tracking-tight">
 		Add a new Neovim config

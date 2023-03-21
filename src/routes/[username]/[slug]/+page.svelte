@@ -45,6 +45,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{config.owner}/{config.repo}{config.root ? `/${config.root}` : ""}: neovim config</title>
+</svelte:head>
+
 <OuterLayout>
 	<div in:fade class="h-full grid grid-cols-10 gap-4 my-14 mx-8 sm:px-24">
 		<!-- plugins configs -->

@@ -27,6 +27,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Welcome to Dotfyle</title>
+</svelte:head>
+
 <div class="flex flex-col justify-center items-center">
 	<HeroTitle>
 		Welcome to <CoolText text="Dotfyle" />

@@ -94,6 +94,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Search and find neovim plugins</title>
+</svelte:head>
+
 <div class="w-full flex flex-col items-center px-8">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
 		<h1

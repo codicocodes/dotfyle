@@ -14,6 +14,10 @@
 	const { profile, configs, me } = data;
 </script>
 
+<svelte:head>
+	<title>{profile.username} neovim configs</title>
+</svelte:head>
+
 <OuterLayout>
 	<div class="h-full grid grid-cols-10 gap-4 my-14 mx-8 max-w-5xl">
 		<div class="col-span-10 sm:col-span-3">
@@ -29,18 +33,18 @@
 					</span>
 				</div>
 			</div>
-      <div class="flex flex-col gap-2 mt-2">
-			<span class="flex justify-center text-sm tracking-wide font-light">
-				Joined {humanizeAbsolute(new Date(profile.createdAt))}
-			</span>
-			{#if me && me.id === profile.id}
-				<div class="flex items-center justify-center">
-					<a class="text-sm font-semibold tracking-wide" href="/add">
-						<Button text="add config" icon={faPlus} loading={false} />
-					</a>
-				</div>
-			{/if}
-      </div>
+			<div class="flex flex-col gap-2 mt-2">
+				<span class="flex justify-center text-sm tracking-wide font-light">
+					Joined {humanizeAbsolute(new Date(profile.createdAt))}
+				</span>
+				{#if me && me.id === profile.id}
+					<div class="flex items-center justify-center">
+						<a class="text-sm font-semibold tracking-wide" href="/add">
+							<Button text="add config" icon={faPlus} loading={false} />
+						</a>
+					</div>
+				{/if}
+			</div>
 		</div>
 		<!-- user configs -->
 		<div class="col-span-10 sm:col-span-7 w-full">

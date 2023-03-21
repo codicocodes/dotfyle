@@ -8,7 +8,6 @@
 		faChartSimple,
 		faCog,
 		faPaintbrush,
-		faPen,
 		faPencil,
 		faSeedling
 	} from '@fortawesome/free-solid-svg-icons';
@@ -30,6 +29,10 @@
 	export let data: PageData;
 
 </script>
+
+<svelte:head>
+    <title>Discover and share neovim configs</title> 
+</svelte:head>
 
 <div class="flex flex-col gap-8 my-4">
 	<div class="flex flex-col justify-center items-center">
