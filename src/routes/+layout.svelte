@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-	import CoolLink from '$lib/components/CoolLink.svelte';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
@@ -54,7 +53,7 @@
 		</a>
     </div>
   </div>
-		<div class="text-sm font-semibold flex items-center">
+		<div class="text-sm font-semibold">
 			{#if user}
 				<button on:click={toggle}>
 					<div class="flex items-center gap-2 text-lg">
