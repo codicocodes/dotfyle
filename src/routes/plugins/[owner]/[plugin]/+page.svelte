@@ -48,43 +48,41 @@
 				</span>
 			</div>
 
+			<div class="flex flex-col w-full gap-2">
+				<div class="flex w-full justify-between">
+					{#if data.plugin.lastSyncedAt}
+						<span class="text-sm tracking-wide font-light">
+							last synced {humanizeAbsolute(new Date(data.plugin.lastSyncedAt))}
+						</span>
+					{:else}
+						<span class="flex items-center gap-2 text-lg tracking-wide font-light">
+							<div class="text-red-500">
+								<Fa icon={faX} size="sm" />
+							</div>
 
-
-					<div class="flex flex-col w-full gap-2">
-						<div class="flex w-full justify-between">
-							{#if data.plugin.lastSyncedAt}
-								<span class="text-sm tracking-wide font-light">
-									last synced {humanizeAbsolute(new Date(data.plugin.lastSyncedAt))}
-								</span>
-							{:else}
-								<span class="flex items-center gap-2 text-lg tracking-wide font-light">
-									<div class="text-red-500">
-										<Fa icon={faX} size="sm" />
-									</div>
-
-									never synced
-								</span>
-							{/if}
-							{#if data.user}
-								<div class="flex items-center gap-1">
-									<Button
-										on:click={async () => {
-											syncingPlugin = true;
-											const updatedPlugin = await trpc($page).syncPlugin.query({
-												owner: data.plugin.owner,
-												name: data.plugin.name
-											});
-											data.plugin = updatedPlugin;
-											syncingPlugin = false;
-										}}
-										text="sync"
-										icon={faRotate}
-										loading={syncingPlugin}
-									/>
-								</div>
-							{/if}
+							never synced
+						</span>
+					{/if}
+					{#if data.user}
+						<div class="flex items-center gap-1">
+							<Button
+								on:click={async () => {
+									syncingPlugin = true;
+									const updatedPlugin = await trpc($page).syncPlugin.query({
+										owner: data.plugin.owner,
+										name: data.plugin.name
+									});
+									data.plugin = updatedPlugin;
+									syncingPlugin = false;
+								}}
+								text="sync"
+								icon={faRotate}
+								loading={syncingPlugin}
+							/>
 						</div>
-					</div>
+					{/if}
+				</div>
+			</div>
 
 			<div class="flex text-base sm:text-base font-semibold tracking-wide gap-2">
 				<span class="flex items-center gap-2">
@@ -146,11 +144,11 @@
 								<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
 									configs using {data.plugin.name}
 								</h3>
-								<CoolLink href="/search" text="more configs" />
+								<CoolLink href="/configs" text="more configs" />
 							</div>
 
 							<div
-							in:fade
+								in:fade
 								class="space-x-2 space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
 							>
 								{#each data.configs as conf, _}
@@ -173,7 +171,7 @@
 				</TabPanel>
 				<TabPanel>
 					{#if data.plugin.readme}
-            <Readme readme={data.plugin.readme} />
+						<Readme readme={data.plugin.readme} />
 					{:else}
 						<span>Nothing to see here</span>
 					{/if}

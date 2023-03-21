@@ -66,7 +66,7 @@
 				<Fa icon={faSeedling} size="sm" />
 				new configs
 			</h3>
-			<CoolLink href="/search" text="more configs" />
+			<CoolLink href="/configs" text="more configs" />
 		</div>
 
 		<BigGridContainer>
