@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
@@ -7,20 +9,40 @@
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import PluginList from '$lib/components/PluginList.svelte';
+	import { trpc } from '$lib/trpc/client';
 	import { humanizeAbsolute } from '$lib/utils';
-	import {
-		faChevronRight,
-		faPlus,
-		faRotate,
-		faSearch,
-		faX
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faChevronRight, faRotate, faSearch, faX } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { fade, slide } from 'svelte/transition';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	const { config, plugins, me } = data;
+	$: ({ config, plugins, me } = data);
+
+  let syncing = false
+
+	async function syncConfig() {
+    syncing = true
+		const { plugins: syncedPlugins, ...syncedConfig } = await trpc(
+			$page
+		).syncExistingNeovimConfig.query({
+			owner: config.owner,
+			slug: config.slug
+		});
+
+    const pluginCount = syncedPlugins.length
+    const syncedConfigWithMeta = {
+        ...syncedConfig,
+        ownerAvatar: config.ownerAvatar,
+        createdAt: new Date(syncedConfig.createdAt),
+        lastSyncedAt: new Date(syncedConfig.lastSyncedAt),
+        pluginCount,
+      }
+		config = syncedConfigWithMeta;
+    plugins = plugins
+    syncing = false
+    invalidate(() => true)
+	}
 </script>
 
 <OuterLayout>
@@ -65,7 +87,7 @@
 					/>
 
 					<NeovimConfigMetaData
-						syncing={false}
+						syncing={syncing}
 						pluginManager={config.pluginManager ?? 'unknown'}
 						pluginCount={plugins.length.toString()}
 						root={config.root}
@@ -123,7 +145,7 @@
 						</span>
 						{#if me}
 							<div class="flex items-center gap-1 text-sm font-semibold tracking-widest">
-								<Button text="sync" icon={faRotate} loading={false} />
+								<Button on:click={syncConfig} text="sync" icon={faRotate} loading={syncing} />
 							</div>
 						{/if}
 					</div>

@@ -5,9 +5,8 @@ import { upsertNeovimConfig } from '$lib/server/prisma/neovimconfigs/service';
 import { getGithubToken } from '$lib/server/prisma/users/service';
 import type { NeovimConfig, User } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
-import type { InitFileNames } from './init-file-finder';
 
-export async function syncRepoInfo(user: User, owner: string, repoName: string, root: string, init: InitFileNames): Promise<NeovimConfig> {
+export async function syncRepoInfo(user: User, owner: string, repoName: string, root: string, init: string): Promise<NeovimConfig> {
 	const token = await getGithubToken(user.id);
 	const repo = await fetchGithubRepositoryByName(token, owner, repoName);
   const upsertDTO = upsertNeovimConfigDTOFactory(owner, root, init, repo)
@@ -24,7 +23,7 @@ export function validateConfigPath(root: GithubTree, path: string): undefined {
 	throw new TRPCError({ message: 'cannot find init file in repo', code: 'BAD_REQUEST' });
 }
 
-export function upsertNeovimConfigDTOFactory(owner: string, root: string, init: InitFileNames, repo: GithubRepository) {
+export function upsertNeovimConfigDTOFactory(owner: string, root: string, init: string, repo: GithubRepository) {
   const slug = `${repo.name}-${root}`.replaceAll("/", "-").replaceAll(/[^A-Za-z-]/g, '')
 	const upsertDTO: CreateNeovimConfigDTO = {
 		githubId: repo.id,

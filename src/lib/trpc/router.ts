@@ -134,6 +134,29 @@ export const router = t.router({
 		const configs = await getNewestNeovimConfigs();
 		return configs;
 	}),
+	syncExistingNeovimConfig: t.procedure
+		.use(isAuthenticated)
+		.input((input: unknown) => {
+			return z
+				.object({
+					owner: z.string(),
+					slug: z.string(),
+				})
+				.parse(input);
+		})
+		.query(async ({ ctx, input }) => {
+			const user = ctx.getAuthenticatedUser();
+      const configBeforeSync = await getConfigBySlug(input.owner, input.slug)
+			const config = await syncRepoInfo(
+				user,
+				user.username,
+				configBeforeSync.repo,
+				configBeforeSync.root,
+				configBeforeSync.initFile
+			);
+			const syncer = await syncManagerFactory(user, config);
+			return await syncer.treeSync();
+		}),
 	createNeovimConfig: t.procedure
 		.use(isAuthenticated)
 		.input((input: unknown) => {

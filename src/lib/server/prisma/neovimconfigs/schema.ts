@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { InitFileNames } from '../../nvim-sync/services/init-file-finder';
 import type { NeovimConfig, NeovimConfigPlugins, NeovimPlugin } from '@prisma/client';
 
 export const CreateNeovimConfigDTO = z.object({
@@ -11,7 +10,7 @@ export const CreateNeovimConfigDTO = z.object({
 	root: z.string(),
 	branch: z.string(),
 	fork: z.boolean(),
-	initFile: z.nativeEnum(InitFileNames)
+	initFile: z.string()
 });
 
 export type CreateNeovimConfigDTO = z.infer<typeof CreateNeovimConfigDTO>;
