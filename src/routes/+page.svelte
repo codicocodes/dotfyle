@@ -26,9 +26,6 @@
 
 	export let data: PageData;
 
-	const logout = async () => {
-		await fetch('/api/auth', { method: 'DELETE' });
-	};
 </script>
 
 <div class="flex flex-col gap-4">
