@@ -198,7 +198,7 @@ export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData
 		orderBy: {
 			createdAt: 'desc'
 		},
-		take: 9
+		take: 6
 	});
 
 	return configs.map(attachMetaData);

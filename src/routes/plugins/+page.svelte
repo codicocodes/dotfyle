@@ -107,7 +107,7 @@
 				class="w-full sm:w-1/2 p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
 		</div>
-		<div class="grid grid-cols-10 sm:gap-4 my-8 sm:my-14 max-w-5xl text-xl">
+		<div class="grid grid-cols-10 sm:gap-4 my-8 sm:my-8 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
 				<GlossyCard>
 					<div class="flex flex-col p-4 w-full gap-2">

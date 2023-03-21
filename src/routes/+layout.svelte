@@ -7,7 +7,7 @@
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import { isAdmin } from '$lib/utils';
 	import { faDiscord, faGithub, faTwitch } from '@fortawesome/free-brands-svg-icons';
-	import { faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
+	import { faKeyboard, faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
@@ -121,9 +121,10 @@
 	<OuterLayout>
 		<slot />
 	</OuterLayout>
-	<div class="w-full mb-4">
+
+	<footer class="mx-auto max-w-full xl:max-w-7xl w-full mt-4 mb-2 py-4 sm:px-6 lg:px-8">
 		<div class="flex items-center justify-center">
-			<div class="flex gap-4 text-gray-400">
+			<div class="flex gap-4 text-gray-400 items-center">
 				<a
 					href="https://github.com/codicocodes/dotfyle"
 					class="flex items-center hover:text-white"
@@ -132,6 +133,7 @@
 					<Fa icon={faGithub} />
 					<span class="ml-1">star</span>
 				</a>
+
 				<a
 					href="https://discord.gg/AMbnnN5eep"
 					class="flex items-center hover:text-blue-300"
@@ -148,9 +150,18 @@
 					<Fa icon={faTwitch} />
 					<span class="ml-1">live</span>
 				</a>
+
+<a
+					href="https://speedtyper.dev"
+					class="flex items-center hover:text-green-400"
+					target="blank"
+				>
+					<Fa icon={faKeyboard} />
+					<span class="ml-1">type</span>
+				</a>
 			</div>
 		</div>
-	</div>
+	</footer>
 </div>
 
 <style global>
