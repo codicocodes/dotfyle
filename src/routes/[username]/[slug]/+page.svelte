@@ -73,30 +73,49 @@
 						isMonorepo={config.root ? 'yes' : 'no'}
 						isFork={config.fork ? 'yes' : 'no'}
 					/>
+					<CoolTextOnHover>
+						<GlossyCard>
+							<a href="/plugins" class="p-2 flex w-full items-center justify-between text-md">
+								<div class="flex gap-2 items-center">
+									<span class="force-white-text">
+										<Fa icon={faSearch} size="xs" />
+									</span>
+									<span class="flex items-center gap-1 lowercase"> find neovim plugins </span>
+								</div>
+								<div class="flex gap-4">
+									<button
+										class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
+									>
+										<Fa icon={faChevronRight} size="xs" />
+									</button>
+								</div>
+							</a>
+						</GlossyCard>
+					</CoolTextOnHover>
 
-					{#if config.pluginManager}
-						<CoolTextOnHover>
-							<GlossyCard>
-								<a in:slide class="p-2 flex w-full items-center justify-between text-md">
-									<div class="flex gap-2 items-center">
-										<span class="force-white-text">
-											<Fa icon={faSearch} size="xs" />
-										</span>
-										<span class="flex items-center gap-1 lowercase">
-											configs using {config.pluginManager}
-										</span>
-									</div>
-									<div class="flex gap-4">
-										<button
-											class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
-										>
-											<Fa icon={faChevronRight} size="xs" />
-										</button>
-									</div>
-								</a>
-							</GlossyCard>
-						</CoolTextOnHover>
-					{/if}
+					<CoolTextOnHover>
+						<GlossyCard>
+							<a
+								href="/configs"
+								in:slide
+								class="p-2 flex w-full items-center justify-between text-md"
+							>
+								<div class="flex gap-2 items-center">
+									<span class="force-white-text">
+										<Fa icon={faSearch} size="xs" />
+									</span>
+									<span class="flex items-center gap-1 lowercase"> find neovim configs </span>
+								</div>
+								<div class="flex gap-4">
+									<button
+										class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
+									>
+										<Fa icon={faChevronRight} size="xs" />
+									</button>
+								</div>
+							</a>
+						</GlossyCard>
+					</CoolTextOnHover>
 
 					<div class="flex items-center justify-between">
 						<span class="text-sm tracking-wide font-light">
@@ -105,7 +124,6 @@
 						{#if me}
 							<div class="flex items-center gap-1 text-sm font-semibold tracking-widest">
 								<Button text="sync" icon={faRotate} loading={false} />
-								<Button text="follow" icon={faPlus} loading={false} />
 							</div>
 						{/if}
 					</div>
