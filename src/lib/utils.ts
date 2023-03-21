@@ -33,3 +33,11 @@ export function humanizeRelative(pastMilliseconds: number) {
 export function githubLogin() {
   throw redirect(303, '/api/auth/github');
 }
+
+export function hasBeenOneDay(dateString: string) {
+    const date = new Date(dateString)
+    const hourMS = 1000 * 60 * 60;
+    const dayMS = hourMS * 24;
+    const dayAgo = Date.now() - dayMS;
+    return date.getTime() < dayAgo;
+}

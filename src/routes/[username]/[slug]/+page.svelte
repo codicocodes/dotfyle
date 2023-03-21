@@ -10,7 +10,7 @@
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import PluginList from '$lib/components/PluginList.svelte';
 	import { trpc } from '$lib/trpc/client';
-	import { humanizeAbsolute } from '$lib/utils';
+	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faChevronRight, faRotate, faSearch, faX } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { fade, slide } from 'svelte/transition';
@@ -143,7 +143,7 @@
 						<span class="text-sm tracking-wide font-light">
 							last synced {humanizeAbsolute(new Date(config.lastSyncedAt))}
 						</span>
-						{#if me}
+						{#if me && hasBeenOneDay(config.lastSyncedAt.toString())}
 							<div class="flex items-center gap-1 text-sm font-semibold tracking-widest">
 								<Button on:click={syncConfig} text="sync" icon={faRotate} loading={syncing} />
 							</div>

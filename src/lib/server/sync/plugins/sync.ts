@@ -4,7 +4,9 @@ import type { NeovimPluginWithCount } from "$lib/server/prisma/neovimplugins/sch
 import { getPlugin, updatePlugin } from "$lib/server/prisma/neovimplugins/service";
 import { getGithubToken } from "$lib/server/prisma/users/service";
 import { fetchAwesomeNeovimReadme } from "$lib/server/seeder/plugins";
+import { hasBeenOneDay } from "$lib/utils";
 import type { NeovimPlugin } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 
 export class PluginSyncer {
   plugin: NeovimPlugin
@@ -43,5 +45,8 @@ export class PluginSyncer {
 export async function getPluginSyncer(userId: number, owner: string, name: string): Promise<PluginSyncer> {
   const token = await getGithubToken(userId)
   const plugin = await getPlugin(owner, name)
+  if (plugin.lastSyncedAt && !hasBeenOneDay(plugin.lastSyncedAt.toString())) {
+    throw new TRPCError({ code: 'FORBIDDEN' });
+  }
   return new PluginSyncer(token, plugin);
 }

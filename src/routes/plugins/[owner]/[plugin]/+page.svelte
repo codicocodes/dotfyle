@@ -4,7 +4,7 @@
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import { trpc } from '$lib/trpc/client';
-	import { humanizeAbsolute } from '$lib/utils';
+	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { faRotate, faStar, faUserGroup, faX } from '@fortawesome/free-solid-svg-icons';
 	import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@rgossiaux/svelte-headlessui';
@@ -63,7 +63,7 @@
 							never synced
 						</span>
 					{/if}
-					{#if data.user}
+					{#if data.user && data.plugin.lastSyncedAt ? hasBeenOneDay(data.plugin.lastSyncedAt) : true}
 						<div class="flex items-center gap-1">
 							<Button
 								on:click={async () => {

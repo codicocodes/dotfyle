@@ -21,6 +21,8 @@ import {
 	searchPlugins
 } from '$lib/server/prisma/neovimplugins/service';
 import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
+import { hasBeenOneDay } from '$lib/utils';
+import { TRPCError } from '@trpc/server';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -140,13 +142,16 @@ export const router = t.router({
 			return z
 				.object({
 					owner: z.string(),
-					slug: z.string(),
+					slug: z.string()
 				})
 				.parse(input);
 		})
 		.query(async ({ ctx, input }) => {
 			const user = ctx.getAuthenticatedUser();
-      const configBeforeSync = await getConfigBySlug(input.owner, input.slug)
+			const configBeforeSync = await getConfigBySlug(input.owner, input.slug);
+			if (!hasBeenOneDay(configBeforeSync.lastSyncedAt.toString())) {
+				throw new TRPCError({ code: 'FORBIDDEN' });
+			}
 			const config = await syncRepoInfo(
 				user,
 				user.username,
