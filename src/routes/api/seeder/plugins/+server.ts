@@ -2,9 +2,8 @@ import { NODE_ENV } from "$env/static/private";
 import { verifyToken } from "$lib/server/auth/services";
 import { upsertManyNeovimPlugins } from "$lib/server/prisma/neovimplugins/service";
 import { scrapeRockerBooAwesomeNeovim } from "$lib/server/seeder/plugins";
+import { isAdmin } from "$lib/utils";
 import { error, type RequestEvent, type RequestHandler } from "@sveltejs/kit";
-
-const CODICO_GITHUB_ID = 76068197
 
 function validateAdmin(event: RequestEvent) {
   const user = verifyToken(event.cookies)
@@ -12,7 +11,7 @@ function validateAdmin(event: RequestEvent) {
     throw error(401, 'unauthorized')
   }
   if (NODE_ENV === 'production') {
-    if (user.githubId !== CODICO_GITHUB_ID) {
+    if (!isAdmin(user)) {
       throw error(403, 'forbidden')
     }
   }

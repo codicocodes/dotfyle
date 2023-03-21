@@ -1,3 +1,4 @@
+import type { User } from "@prisma/client";
 import { redirect } from "@sveltejs/kit";
 
 // source https://gist.github.com/jweyrich/f39c496b83f73d2c5b0587f4d841651b
@@ -40,4 +41,11 @@ export function hasBeenOneDay(dateString: string) {
     const dayMS = hourMS * 24;
     const dayAgo = Date.now() - dayMS;
     return date.getTime() < dayAgo;
+}
+
+
+const CODICO_GITHUB_ID = 76068197
+
+export function isAdmin(user: User): boolean {
+  return user.githubId === CODICO_GITHUB_ID;
 }

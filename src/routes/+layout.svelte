@@ -5,9 +5,11 @@
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
-	import { faSignOut, faUser } from '@fortawesome/free-solid-svg-icons';
+	import { isAdmin } from '$lib/utils';
+	import { faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
+	import { DoubleBounce } from 'svelte-loading-spinners';
 	import '../app.css';
 	import type { LayoutData } from './$types';
 	export let data: LayoutData;
@@ -16,7 +18,7 @@
 	const logout = async () => {
 		close();
 		await fetch('/api/auth', { method: 'DELETE' });
-    await invalidate(() => true)
+		await invalidate(() => true);
 	};
 
 	let isOpen = false;
@@ -28,6 +30,14 @@
 	function toggle() {
 		isOpen = !isOpen;
 	}
+
+	let syncing = false;
+	async function syncPlugins() {
+		syncing = true;
+		await fetch('/api/seeder/plugins');
+		syncing = false;
+    isOpen = false;
+	}
 </script>
 
 {#if isOpen}
@@ -35,24 +45,20 @@
 {/if}
 <div>
 	<div class="flex items-center justify-between w-full px-8 gap-4 mt-2">
-  <div class="flex items-center gap-4 sm:gap-12">
-		<a href="/" class="text-2xl tracking-tight font-black">
-			<CoolText text="dotfyle" />
-		</a>
-    <div class="flex items-center gap-2 sm:gap-4">
-		<a href="/plugins" class="text-lg tracking-tight font-black">
-			<CoolTextOnHover>
-        plugins
-			</CoolTextOnHover>
-		</a>
+		<div class="flex items-center gap-4 sm:gap-12">
+			<a href="/" class="text-2xl tracking-tight font-black">
+				<CoolText text="dotfyle" />
+			</a>
+			<div class="flex items-center gap-2 sm:gap-4">
+				<a href="/plugins" class="text-lg tracking-tight font-black">
+					<CoolTextOnHover>plugins</CoolTextOnHover>
+				</a>
 
-		<a href="/configs" class="text-lg tracking-tight font-black">
-			<CoolTextOnHover>
-        configs
-			</CoolTextOnHover>
-		</a>
-    </div>
-  </div>
+				<a href="/configs" class="text-lg tracking-tight font-black">
+					<CoolTextOnHover>configs</CoolTextOnHover>
+				</a>
+			</div>
+		</div>
 		<div class="text-sm font-semibold">
 			{#if user}
 				<button on:click={toggle}>
@@ -66,7 +72,21 @@
 				{#if isOpen}
 					<div class="absolute right-0 w-40 mt-2 mr-6 z-50">
 						<GlossyCard>
-							<div class="flex flex-col">
+							<div class="flex flex-col w-full h-full bg-gray-900 sm:bg-transparent">
+								{#if isAdmin(user)}
+									<CoolTextOnHover>
+										<button class="px-4 py-2 flex gap-2 items-center" on:click={syncPlugins}>
+											<div class="force-white-text">
+												{#if syncing}
+													<DoubleBounce color="#15be97" size="8" />
+												{:else}
+													<Fa icon={faSync} />
+												{/if}
+											</div>
+											Sync plugins
+										</button>
+									</CoolTextOnHover>
+								{/if}
 								<CoolTextOnHover>
 									<a
 										on:click={close}
