@@ -44,9 +44,9 @@ const orderByPopularity: [
 ];
 
 const orderByConfig = {
-  popular: orderByPopularity,
-  new: orderByPopularity,
-} as const
+	popular: orderByPopularity,
+	new: orderByPopularity
+} as const;
 
 const selectConfigCount = {
 	id: true,
@@ -72,16 +72,16 @@ export async function searchPlugins(
 	query: string | undefined,
 	category: string | undefined,
 	sorting: 'new' | 'popular'
-): Promise<NeovimPluginWithCount[]>{
+): Promise<NeovimPluginWithCount[]> {
 	const where = {
 		...(category ? { category } : {})
 	};
-  const orderBy = orderByConfig[sorting]
-  const plugins = await prismaClient.neovimPlugin.findMany({
-    select: selectConfigCount,
-    where,
-    orderBy,
-  })
+	const orderBy = orderByConfig[sorting];
+	const plugins = await prismaClient.neovimPlugin.findMany({
+		select: selectConfigCount,
+		where,
+		orderBy
+	});
 	return plugins.map(flattenConfigCount);
 }
 
@@ -100,16 +100,7 @@ export async function getPluginsByCategory(category: string): Promise<NeovimPlug
 export async function getPopularPlugins(): Promise<NeovimPluginWithCount[]> {
 	const plugins: NestedNeovimPluginWithCount[] = await prismaClient.neovimPlugin.findMany({
 		select: selectConfigCount,
-		orderBy: [
-			{
-				neovimConfigPlugins: {
-					_count: 'desc'
-				}
-			},
-			{
-				name: 'asc'
-			}
-		],
+		orderBy: orderByPopularity,
 		take: 3
 	});
 	return plugins.map(flattenConfigCount);
@@ -150,6 +141,7 @@ export async function getPluginsBySlug(username: string, slug: string): Promise<
 
 export async function upsertManyNeovimPlugins(plugins: PluginDTO[]): Promise<NeovimPlugin[]> {
 	const savedPluginsPromise = plugins.map(async (p) => {
+		const { shortDescription, ...update } = p;
 		const savedPlugin = await prismaClient.neovimPlugin.upsert({
 			where: {
 				owner_name: {
@@ -158,7 +150,7 @@ export async function upsertManyNeovimPlugins(plugins: PluginDTO[]): Promise<Neo
 				}
 			},
 			create: p,
-			update: p
+			update,
 		});
 		return savedPlugin;
 	});

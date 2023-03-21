@@ -97,7 +97,7 @@
 				</span>
 			</div>
 		</div>
-		<TabGroup defaultIndex={1}>
+		<TabGroup>
 			<TabList>
 				<div
 					class="w-full py-2 my-2 flex sm:items-start gap-2 sm:gap-8 text-sm sm:text-lg font-semibold text-wide"
@@ -107,10 +107,6 @@
 					<Tab
 						disabled={false}
 						class={({ selected }) => (selected ? selectedStyle : unSelectedStyles)}>Readme</Tab
-					>
-					<Tab
-						disabled={false}
-						class={({ selected }) => (selected ? selectedStyle : unSelectedStyles)}>Media</Tab
 					>
 				</div>
 			</TabList>
@@ -182,7 +178,6 @@
 						<span>Nothing to see here</span>
 					{/if}
 				</TabPanel>
-				<TabPanel>Content 3</TabPanel>
 			</TabPanels>
 		</TabGroup>
 	</div>

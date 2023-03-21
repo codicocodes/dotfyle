@@ -6,6 +6,7 @@ export const GithubRepository = z.object({
     login: z.string(),
   }),
 	name: z.string(),
+	description: z.string().nullable(),
 	html_url: z.string(),
 	fork: z.boolean(),
 	stargazers_count: z.number(),

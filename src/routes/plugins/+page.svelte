@@ -1,7 +1,6 @@
 <script lang="ts">
 	import VirtualList from '@sveltejs/svelte-virtual-list';
 	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
@@ -42,12 +41,6 @@
 	let end: number;
 	let search = $page.url.searchParams.get('q') ?? '';
 	let expantedTags = false;
-
-	$: {
-		if (browser && search && search !== $page.url.searchParams.get('q')) {
-			navigate('q', search);
-		}
-	}
 
 	onMount(async () => {
 		const fetchedPlugins = await trpc($page).searchPlugins.query({

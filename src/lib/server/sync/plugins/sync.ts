@@ -22,6 +22,7 @@ export class PluginSyncer {
   async syncStars() {
     const repo = await fetchGithubRepositoryByName(this.token, this.plugin.owner, this.plugin.name)
     this.plugin.stars = repo.stargazers_count
+    this.plugin.shortDescription = repo.description ?? this.plugin.shortDescription
   }
 
   async syncReadme() {

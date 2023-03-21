@@ -32,7 +32,7 @@
 		if (
 			!$unsyncedConfig.repo ||
 			!$unsyncedConfig.initFile ||
-			!$unsyncedConfig.root ||
+			($unsyncedConfig.root === undefined) ||
 			!$unsyncedConfig.branch
 		) {
 			return;
