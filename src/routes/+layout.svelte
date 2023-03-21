@@ -6,6 +6,7 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import { isAdmin } from '$lib/utils';
+	import { faDiscord, faGithub, faTwitch } from '@fortawesome/free-brands-svg-icons';
 	import { faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
@@ -36,7 +37,7 @@
 		syncing = true;
 		await fetch('/api/seeder/plugins');
 		syncing = false;
-    isOpen = false;
+		isOpen = false;
 	}
 </script>
 
@@ -120,6 +121,36 @@
 	<OuterLayout>
 		<slot />
 	</OuterLayout>
+	<div class="w-full mb-4">
+		<div class="flex items-center justify-center">
+			<div class="flex gap-4 text-gray-400">
+				<a
+					href="https://github.com/codicocodes/dotfyle"
+					class="flex items-center hover:text-white"
+					target="blank"
+				>
+					<Fa icon={faGithub} />
+					<span class="ml-1">star</span>
+				</a>
+				<a
+					href="https://discord.gg/AMbnnN5eep"
+					class="flex items-center hover:text-blue-300"
+					target="blank"
+				>
+					<Fa icon={faDiscord} />
+					<span class="ml-1">join</span>
+				</a>
+				<a
+					href="https://twitch.tv/codico"
+					class="flex items-center hover:text-purple-400"
+					target="blank"
+				>
+					<Fa icon={faTwitch} />
+					<span class="ml-1">live</span>
+				</a>
+			</div>
+		</div>
+	</div>
 </div>
 
 <style global>

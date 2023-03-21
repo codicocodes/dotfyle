@@ -55,12 +55,13 @@ export const router = t.router({
 				.object({
 					query: z.string().optional(),
 					category: z.string().optional(),
-					sorting: z.enum(['new', 'popular'])
+					sorting: z.enum(['new', 'popular']),
+					take: z.number().optional()
 				})
 				.parse(input);
 		})
 		.query(async ({ input }) => {
-			const plugins = await searchPlugins(input.query, input.category, input.sorting);
+			const plugins = await searchPlugins(input.query, input.category, input.sorting, input.take);
 			return plugins;
 		}),
 	getConfigsForPlugin: t.procedure

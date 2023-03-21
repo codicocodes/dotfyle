@@ -43,9 +43,41 @@ const orderByPopularity: [
 	}
 ];
 
+const orderByNew: [
+  {
+    createdAt: 'desc',
+  },
+	{
+		neovimConfigPlugins: {
+			_count: 'desc';
+		};
+	},
+	{
+		stars: 'desc';
+	},
+	{
+		name: 'asc';
+	}
+] = [
+  {
+    createdAt: 'desc',
+  },
+	{
+		neovimConfigPlugins: {
+			_count: 'desc'
+		}
+	},
+	{
+		stars: 'desc'
+	},
+	{
+		name: 'asc'
+	}
+];
+
 const orderByConfig = {
 	popular: orderByPopularity,
-	new: orderByPopularity
+	new: orderByNew,
 } as const;
 
 const selectConfigCount = {
@@ -71,7 +103,8 @@ const selectConfigCount = {
 export async function searchPlugins(
 	query: string | undefined,
 	category: string | undefined,
-	sorting: 'new' | 'popular'
+	sorting: 'new' | 'popular',
+	take: number | undefined,
 ): Promise<NeovimPluginWithCount[]> {
 	const where = {
 		...(category ? { category } : {})
@@ -80,7 +113,8 @@ export async function searchPlugins(
 	const plugins = await prismaClient.neovimPlugin.findMany({
 		select: selectConfigCount,
 		where,
-		orderBy
+		orderBy,
+    take,
 	});
 	return plugins.map(flattenConfigCount);
 }

@@ -6,7 +6,10 @@
 	import {
 		faArrowDown,
 		faChartSimple,
+		faCog,
 		faPaintbrush,
+		faPen,
+		faPencil,
 		faSeedling
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
@@ -28,7 +31,7 @@
 
 </script>
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-8 my-4">
 	<div class="flex flex-col justify-center items-center">
 		<div class="py-12 sm:py-8 md:py-12 lg:py-14 xl:py-12 2xl:py-28">
 			<HeroTitle>
@@ -84,6 +87,31 @@
 		</BigGridContainer>
 	</div>
 
+<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+		<div class="mb-2 flex justify-between pl-1 tracking-wide">
+			<h3 class="flex items-center gap-1 text-lg font-semibold">
+				<Fa icon={faSeedling} size="sm" />
+				new plugins
+			</h3>
+			<CoolLink href="/plugins" text="more plugins" />
+		</div>
+
+		<BigGridContainer>
+			{#each data.newPlugins as plugin, _}
+				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
+					<NeovimPluginCard
+						owner={plugin.owner}
+						name={plugin.name}
+						stars={plugin.stars.toString()}
+						configCount={plugin.configCount}
+						category={plugin.category}
+						shortDescription={plugin.shortDescription}
+					/>
+				</a>
+			{/each}
+		</BigGridContainer>
+	</div>
+
 	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
@@ -95,7 +123,7 @@
 		</div>
 
 		<BigGridContainer>
-			{#each data.plugins as plugin, _}
+			{#each data.popularPlugins as plugin, _}
 				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
 					<NeovimPluginCard
 						owner={plugin.owner}
@@ -121,6 +149,55 @@
 
 		<BigGridContainer>
 			{#each data.colorschemes.slice(0, 3) as plugin, _}
+				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
+					<NeovimPluginCard
+						owner={plugin.owner}
+						name={plugin.name}
+						stars={plugin.stars.toString()}
+						configCount={plugin.configCount}
+						category={plugin.category}
+						shortDescription={plugin.shortDescription}
+					/>
+				</a>
+			{/each}
+		</BigGridContainer>
+	</div>
+
+<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+		<div class="mb-2 flex justify-between pl-1 tracking-wide gap-2">
+			<h3 class="flex items-center gap-1 text-lg font-semibold">
+				<Fa icon={faPencil} size="sm" />
+				editing plugins
+			</h3> <CoolLink href="/plugins?categories=editing-support" text="more editing plugins" />
+		</div>
+
+		<BigGridContainer>
+			{#each data.editingSupport.slice(0, 3) as plugin, _}
+				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
+					<NeovimPluginCard
+						owner={plugin.owner}
+						name={plugin.name}
+						stars={plugin.stars.toString()}
+						configCount={plugin.configCount}
+						category={plugin.category}
+						shortDescription={plugin.shortDescription}
+					/>
+				</a>
+			{/each}
+		</BigGridContainer>
+	</div>
+
+<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+		<div class="mb-2 flex justify-between pl-1 tracking-wide gap-2">
+			<h3 class="flex items-center gap-1 text-lg font-semibold">
+				<Fa icon={faCog} size="sm" />
+				preconfigured
+			</h3>
+			<CoolLink href="/plugins?categories=preconfigured" text="more starter configs" />
+		</div>
+
+		<BigGridContainer>
+			{#each data.preConfigured.slice(0, 3) as plugin, _}
 				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
 					<NeovimPluginCard
 						owner={plugin.owner}

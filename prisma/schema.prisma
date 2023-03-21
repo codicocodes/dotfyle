@@ -42,7 +42,7 @@ model NeovimConfig {
   user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        Int
   pluginManager NeovimPluginManager?
-  createdAt     DateTime             @default(now())
+  createdAt     DateTime     @default(now())
   lastSyncedAt  DateTime     @default(now())
 
   neovimConfigPlugins NeovimConfigPlugins[]

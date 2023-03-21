@@ -42,7 +42,7 @@ export function parsePlugin({ category, item }: RawPlugin): PluginDTO {
 	const [owner, repo] = fullName.split('/');
 	return {
 		type: 'github',
-		source: 'rockerboo-awesome-neovim',
+		source: 'awesome-neovim',
 		category,
 		link,
 		owner,
@@ -98,6 +98,9 @@ export function parseCategory(plugin: RawPlugin) {
 	}
 	if (category === 'tree-sitter-supported-colorscheme') {
 		category = 'colorscheme';
+	}
+	if (category === 'preconfigured-configuration') {
+		category = 'preconfigured';
 	}
 	return { ...plugin, category };
 }
