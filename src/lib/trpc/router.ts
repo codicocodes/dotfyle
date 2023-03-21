@@ -11,7 +11,8 @@ import {
 	getConfigBySlug,
 	getConfigsByUsername,
 	getConfigsForPlugin,
-	getNewestNeovimConfigs
+	getNewestNeovimConfigs,
+    searchNeovimConfigs
 } from '$lib/server/prisma/neovimconfigs/service';
 import {
 	getPlugin,
@@ -135,6 +136,10 @@ export const router = t.router({
 	}),
 	getNewestConfigs: t.procedure.query(async () => {
 		const configs = await getNewestNeovimConfigs();
+		return configs;
+	}),
+	getConfigs: t.procedure.query(async () => {
+		const configs = await searchNeovimConfigs();
 		return configs;
 	}),
 	syncExistingNeovimConfig: t.procedure

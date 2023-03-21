@@ -69,7 +69,7 @@
 							never synced
 						</span>
 					{/if}
-					{#if data.user && data.plugin.lastSyncedAt ? hasBeenOneDay(data.plugin.lastSyncedAt) : true}
+					{#if data.user && (data.plugin.lastSyncedAt ? hasBeenOneDay(data.plugin.lastSyncedAt) : true)}
 						<div class="flex items-center gap-1">
 							<Button
 								on:click={async () => {

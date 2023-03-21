@@ -181,6 +181,28 @@ export async function addPlugins(
 		.then(attachPlugins);
 }
 
+export async function searchNeovimConfigs() {
+	const configs = await prismaClient.neovimConfig.findMany({
+		include: {
+			user: {
+				select: {
+					avatarUrl: true
+				}
+			},
+			neovimConfigPlugins: {
+				select: {
+					pluginId: true
+				}
+			}
+		},
+		orderBy: {
+			createdAt: 'desc'
+		},
+	});
+
+	return configs.map(attachMetaData);
+}
+
 export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData[]> {
 	const configs = await prismaClient.neovimConfig.findMany({
 		include: {

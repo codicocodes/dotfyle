@@ -32,6 +32,7 @@
 
 <svelte:head>
     <title>Discover and share neovim configs</title> 
+    <meta name="description" content="Search and discover neovim plugins and share your neovim config" />
 </svelte:head>
 
 <div class="flex flex-col gap-8 my-4">

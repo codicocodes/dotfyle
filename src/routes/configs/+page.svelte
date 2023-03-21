@@ -1,49 +1,21 @@
 <script lang="ts">
-	import VirtualList from '@sveltejs/svelte-virtual-list';
 	import { page } from '$app/stores';
-	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
-	import GlossyCard from '$lib/components/GlossyCard.svelte';
-	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
-	import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 	import { trpc } from '$lib/trpc/client';
-	import {
-		faChartSimple,
-		faChevronDown,
-		faChevronUp,
-		faSeedling,
-		faX
-	} from '@fortawesome/free-solid-svg-icons';
 	import { onMount } from 'svelte';
-	import Fa from 'svelte-fa';
 	import CoolText from '$lib/components/CoolText.svelte';
-	import { goto } from '$app/navigation';
-	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
-
-	function navigate(param: string, value: string) {
-		$page.url.searchParams.set(param, value);
-		goto($page.url.toString(), { keepFocus: true });
-	}
-
-	$: selectedCategories =
-		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
-
-	$: selectedCategoriesSet = new Set(selectedCategories);
 
 	let configs: NeovimConfigWithMetaData[] = [];
 
 	let loading = true;
 
-	let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
-
-	let sort: 'popular' | 'new' = rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
 	let search = $page.url.searchParams.get('q') ?? '';
 
 	onMount(async () => {
-		const fetchedConfigs = await trpc($page).getNewestConfigs.query();
+		const fetchedConfigs = await trpc($page).getConfigs.query();
 		loading = false;
 		configs = fetchedConfigs as unknown as NeovimConfigWithMetaData[];
 	});
