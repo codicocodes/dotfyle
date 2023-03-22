@@ -19,6 +19,7 @@
 	import { goto } from '$app/navigation';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import { fly } from 'svelte/transition';
+	import { DoubleBounce } from 'svelte-loading-spinners';
 
 	function navigate(param: string, value: string) {
 		$page.url.searchParams.set(param, value);
@@ -189,9 +190,9 @@
 											<button
 												class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
 												on:click={() => {
-                          selectedCategoriesSet.delete(category)
-                          selectedCategories = [...selectedCategoriesSet]
-													navigate('categories', selectedCategories.join(","));
+													selectedCategoriesSet.delete(category);
+													selectedCategories = [...selectedCategoriesSet];
+													navigate('categories', selectedCategories.join(','));
 												}}
 											>
 												<div class="force-white-text">
@@ -206,14 +207,21 @@
 								{/if}
 							</div>
 							<div class="flex flex-wrap gap-1 text-xs mt-2">
-								{#each availableCategories.filter(c => selectedCategoriesSet.size > 0 ? !selectedCategoriesSet.has(c) : true).slice(0, expantedTags ? -1 : 20) as currCategory}
+								{#if loading}
+									<div class="flex w-full items-center justify-center">
+										<DoubleBounce color="#15be97" size="18" />
+									</div>
+								{/if}
+								{#each availableCategories
+									.filter( (c) => (selectedCategoriesSet.size > 0 ? !selectedCategoriesSet.has(c) : true) )
+									.slice(0, expantedTags ? -1 : 20) as currCategory}
 									<CoolTextOnHover>
 										<button
 											in:fly
 											class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
 											on:click={() => {
 												selectedCategories.push(currCategory);
-                        selectedCategories = selectedCategories
+												selectedCategories = selectedCategories;
 												navigate('categories', selectedCategories.join(','));
 											}}
 										>
@@ -248,6 +256,21 @@
 				</div>
 			</div>
 			<div class="col-span-10 sm:col-span-7 flex flex-col gap-2 overscroll-none">
+				{#if loading}
+					<div
+						class="flex flex-col h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
+					>
+        {#each Array(4).fill(null) as _}
+					<div in:fly class="mt-2">
+						<GlossyCard>
+							<div class="py-10 flex w-full items-center justify-center">
+								<DoubleBounce color="#15be97" size="18" />
+							</div>
+						</GlossyCard>
+					</div>
+          {/each}
+					</div>
+				{/if}
 				{#if !loading}
 					<div
 						class="flex flex-col h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
