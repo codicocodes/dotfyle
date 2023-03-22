@@ -41,8 +41,22 @@
 	}
 </script>
 
+<svelte:head>
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Dotfyle" />
+	<meta property="og:description" content="Discover and share neovim configs and plugins" />
+	<meta property="og:url" content="https://dotfyle.com" />
+	<meta property="og:image" content="/dotfyle.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@codicocodes" />
+  <meta name="twitter:creator" content="@codicocodes" />
+  <meta name="twitter:title" content="Dotfyle" />
+  <meta name="twitter:description" content="Discover and share neovim configs and plugins" />
+  <meta name="twitter:image" content="/dotfyle.png" />
+</svelte:head>
+
 {#if isOpen}
-  <div on:keypress={close} on:click={close} class="absolute h-full w-full bg-white-25 z-10" />
+	<div on:keypress={close} on:click={close} class="absolute h-full w-full bg-white-25 z-10" />
 {/if}
 <div>
 	<div class="flex items-center justify-between w-full px-8 gap-4 mt-2">
@@ -151,7 +165,7 @@
 					<span class="ml-1">live</span>
 				</a>
 
-<a
+				<a
 					href="https://speedtyper.dev"
 					class="flex items-center hover:text-green-400"
 					target="blank"
