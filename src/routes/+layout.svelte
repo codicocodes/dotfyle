@@ -42,7 +42,7 @@
 </script>
 
 {#if isOpen}
-	<div on:keypress={close} on:click={close} class="absolute h-screen w-screen bg-white-25 z-10" />
+  <div on:keypress={close} on:click={close} class="absolute h-full w-full bg-white-25 z-10" />
 {/if}
 <div>
 	<div class="flex items-center justify-between w-full px-8 gap-4 mt-2">
