@@ -1,7 +1,6 @@
-import { GITHUB_ID, GITHUB_SECRET } from '$env/static/private';
+import { GITHUB_ID, GITHUB_SECRET, NODE_ENV } from '$env/static/private';
 
-// @TODO: fix location of this and handling
-export const BASE_URL = 'http://localhost:5173';
+export const BASE_URL = NODE_ENV === 'production' ? 'https://dotfyle.com' : 'http://localhost:5173';
 
 export const GITHUB_CALLBACK_URL = `${BASE_URL}/api/auth/github/callback`;
 
