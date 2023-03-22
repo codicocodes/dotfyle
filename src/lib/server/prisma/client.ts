@@ -1,5 +1,5 @@
-import Prisma, * as PrismaScope from "@prisma/client";
+import Prisma from '@prisma/client';
 
-const PrismaClient = Prisma?.PrismaClient || PrismaScope?.PrismaClient;
+const { PrismaClient } = Prisma;
 
 export const prismaClient = new PrismaClient();
