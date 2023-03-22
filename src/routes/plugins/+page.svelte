@@ -261,9 +261,9 @@
 						class="flex flex-col h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
 					>
         {#each Array(4).fill(null) as _}
-					<div in:fly class="mt-2">
+					<div in:fly class="my-2">
 						<GlossyCard>
-							<div class="py-10 flex w-full items-center justify-center">
+							<div class="my-2 py-10 flex w-full items-center justify-center">
 								<DoubleBounce color="#15be97" size="18" />
 							</div>
 						</GlossyCard>
