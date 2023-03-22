@@ -1,9 +1,7 @@
 import { fetchGithubRepositoryByName, fetchReadme } from "$lib/server/github/api";
-import { getGithubRepositories } from "$lib/server/github/services";
 import type { NeovimPluginWithCount } from "$lib/server/prisma/neovimplugins/schema";
 import { getPlugin, updatePlugin } from "$lib/server/prisma/neovimplugins/service";
 import { getGithubToken } from "$lib/server/prisma/users/service";
-import { fetchAwesomeNeovimReadme } from "$lib/server/seeder/plugins";
 import { hasBeenOneDay } from "$lib/utils";
 import type { NeovimPlugin } from "@prisma/client";
 import { TRPCError } from "@trpc/server";

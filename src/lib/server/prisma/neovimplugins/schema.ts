@@ -17,7 +17,6 @@ export interface NeovimPluginIdentifier {
   id: number;
   owner: string;
   name: string
-
 }
 
 
