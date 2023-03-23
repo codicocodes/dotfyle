@@ -33,7 +33,7 @@ model NeovimConfig {
   owner         String
   slug          String
   repo          String
-  root          String
+  root          String               @default("")
   initFile      String
   branch        String
   fork          Boolean
