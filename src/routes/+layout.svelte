@@ -128,7 +128,15 @@
 					</div>
 				{/if}
 			{:else}
+      <div class="hidden sm:block">
 				<GithubLoginButton />
+      </div>
+      <div class="text-black sm:hidden flex items-center bg-gradient-to-br from-cyan-500 to-green-500 px-2 py-1 rounded-full">
+				<a href={'/api/auth/github'} class="flex items-center gap-1">
+        <Fa icon={faGithub} />
+        auth
+        </a>
+      </div>
 			{/if}
 		</div>
 	</div>
