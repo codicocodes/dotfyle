@@ -166,7 +166,7 @@ export const router = t.router({
 			}
 			const config = await syncRepoInfo(
 				user,
-				user.username,
+				configBeforeSync.owner,
 				configBeforeSync.repo,
 				configBeforeSync.root,
 				configBeforeSync.initFile
