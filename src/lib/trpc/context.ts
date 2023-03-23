@@ -14,10 +14,7 @@ export async function createContext(event: RequestEvent) {
     event,
     getAuthenticatedUser(): User {
       const parsedUser = UserSchema.parse(this.user)
-      return {
-        ...parsedUser,
-        createdAt: new Date(parsedUser.createdAt)
-      }
+      return parsedUser 
     }
 	};
 }

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type { User } from '@prisma/client';
 
 export const UserDTO = z.object({
 	githubId: z.number(),
@@ -17,7 +16,9 @@ export type UpsertUserSchema = z.infer<typeof UpsertUserSchema>;
 
 export const UserSchema = UserDTO.extend({
   id: z.number(),
-  createdAt: z.string(),
+  createdAt: z.coerce.date(),
+  lastLoginAt: z.coerce.date(),
+  loginCount: z.number(),
 })
 
 export type UserSchema = z.infer<typeof UserSchema>;

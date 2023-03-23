@@ -2,6 +2,21 @@ import type { User } from '@prisma/client';
 import { prismaClient } from './../client';
 import type { UpsertUserSchema } from './schema';
 
+export async function trackLogin(userId: number): Promise<void> {
+	const where = {
+		id: userId
+	};
+	await prismaClient.user.update({
+		where,
+		data: {
+			loginCount: {
+				increment: 1
+			},
+			lastLoginAt: new Date()
+		}
+	});
+}
+
 export async function upsertUser({ accessToken, ...userData }: UpsertUserSchema): Promise<User> {
 	const { githubId } = userData;
 	const create = {
@@ -10,31 +25,31 @@ export async function upsertUser({ accessToken, ...userData }: UpsertUserSchema)
 	};
 	const update = {
 		...userData,
-    githubToken: { 
-      upsert: {
-        update: { accessToken }, 
-        create: { accessToken } 
-      } 
-    }
+		githubToken: {
+			upsert: {
+				update: { accessToken },
+				create: { accessToken }
+			}
+		}
 	};
 	const user = await prismaClient.user.upsert({
 		where: { githubId },
 		create,
-		update,
+		update
 	});
 	return user;
 }
 
 export async function getGithubToken(userId: number) {
 	const token = await prismaClient.githubToken.findUniqueOrThrow({ where: { userId } });
-  return token.accessToken
+	return token.accessToken;
 }
 
 export async function getUserByUsername(username: string): Promise<User> {
-  const user = await prismaClient.user.findUniqueOrThrow({
-    where: {
-      username,
-    }
-  })
-  return user
+	const user = await prismaClient.user.findUniqueOrThrow({
+		where: {
+			username
+		}
+	});
+	return user;
 }

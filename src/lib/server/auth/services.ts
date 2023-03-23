@@ -5,6 +5,7 @@ import { JwtSecretError } from './errors';
 import { redirect, type Cookies } from '@sveltejs/kit';
 import { UserSchema } from '$lib/server/prisma/users/schema';
 import { getConfigsByUsername } from '../prisma/neovimconfigs/service';
+import { trackLogin } from '../prisma/users/service';
 
 export function getJwtAccessSecret(): string {
 	if (JWT_ACCESS_SECRET.length < 32) {
@@ -50,6 +51,7 @@ export function verifyToken(cookies: Cookies): User | null {
 export async function login(c: Cookies, u: User): Promise<never> {
 	const token = createSignedJwtToken(u);
 	createCookie(c, token);
+  await trackLogin(u.id)
   const configs = await getConfigsByUsername(u.username)
   if (configs.length > 0) {
     throw redirect(302, `/${u.username}`);
