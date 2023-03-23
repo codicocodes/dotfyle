@@ -12,7 +12,7 @@ import {
 	getConfigsByUsername,
 	getConfigsForPlugin,
 	getNewestNeovimConfigs,
-    searchNeovimConfigs
+	searchNeovimConfigs
 } from '$lib/server/prisma/neovimconfigs/service';
 import {
 	getPlugin,
@@ -132,10 +132,13 @@ export const router = t.router({
 	}),
 	getRepositories: t.procedure.use(isAuthenticated).query(async ({ ctx }) => {
 		const user = ctx.getAuthenticatedUser();
-    const plugins = await searchPlugins()
-    const pluginNamesArr = plugins.filter(p => p.category !== 'preconfigured').map(p => p.name)
-    const pluginNames = new Set(pluginNamesArr)
-		return (await getGithubRepositories(user)).filter(r => !pluginNames.has(r.name) );
+		const plugins = await searchPlugins();
+		const pluginNamesArr = plugins
+			.filter((p) => p.category !== 'preconfigured')
+			.map((p) => p.name)
+			.filter((n) => n !== 'nvim');
+		const pluginNames = new Set(pluginNamesArr);
+		return (await getGithubRepositories(user)).filter((r) => !pluginNames.has(r.name));
 	}),
 	getNewestConfigs: t.procedure.query(async () => {
 		const configs = await getNewestNeovimConfigs();
