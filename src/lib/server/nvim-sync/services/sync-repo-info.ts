@@ -2,7 +2,7 @@ import { fetchGithubRepositoryByName } from '$lib/server/github/api';
 import type { GithubRepository, GithubTree } from '$lib/server/github/schema';
 import type { CreateNeovimConfigDTO } from '$lib/server/prisma/neovimconfigs/schema';
 import { upsertNeovimConfig } from '$lib/server/prisma/neovimconfigs/service';
-import { getGithubToken } from '$lib/server/prisma/users/service';
+import { getGithubToken, getUserByUsername } from '$lib/server/prisma/users/service';
 import type { NeovimConfig, User } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 
@@ -10,7 +10,8 @@ export async function syncRepoInfo(user: User, owner: string, repoName: string, 
 	const token = await getGithubToken(user.id);
 	const repo = await fetchGithubRepositoryByName(token, owner, repoName);
   const upsertDTO = upsertNeovimConfigDTOFactory(owner, root, init, repo)
-  const config = await upsertNeovimConfig(user.id, upsertDTO)
+  const configUser = user.username === owner ? user : await getUserByUsername(owner)
+  const config = await upsertNeovimConfig(configUser.id, upsertDTO)
   return config
 }
 
