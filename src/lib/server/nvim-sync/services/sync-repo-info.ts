@@ -25,7 +25,7 @@ export function validateConfigPath(root: GithubTree, path: string): undefined {
 }
 
 export function upsertNeovimConfigDTOFactory(owner: string, root: string, init: string, repo: GithubRepository) {
-  const slug = `${repo.name}${root ? `-${root}` : ""}`.replaceAll("/", "-").replaceAll(/[^A-Za-z-]/g, '')
+  const slug = `${repo.name}${root ? `-${root}` : ""}`.replaceAll("/", "-").replaceAll(/[^A-Za-z-]/g, '').toLowerCase()
 	const upsertDTO: CreateNeovimConfigDTO = {
 		githubId: repo.id,
 		stars: repo.stargazers_count,
