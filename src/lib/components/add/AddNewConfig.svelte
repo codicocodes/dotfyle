@@ -32,7 +32,7 @@
 		if (
 			!$unsyncedConfig.repo ||
 			!$unsyncedConfig.initFile ||
-			($unsyncedConfig.root === undefined) ||
+			$unsyncedConfig.root === undefined ||
 			!$unsyncedConfig.branch
 		) {
 			return;
@@ -54,6 +54,7 @@
 		unsyncedConfig.update((c) => ({
 			...c,
 			pluginManager: syncedConfig.pluginManager,
+			slug: syncedConfig.slug,
 			plugins: syncedConfig.plugins as unknown as NeovimPlugin[]
 		}));
 	}
@@ -62,7 +63,7 @@
 {#if syncing || completed}
 	<div
 		transition:fly={{ y: 100, duration: 1000 }}
-		class="flex flex-col w-full max-w-xl gap-2 mx-12 my-2 px-8"
+		class="flex flex-col w-full max-w-5xl gap-2 mx-12 my-2 px-8"
 	>
 		{#if completed}
 			<div in:slide class="flex justify-end gap-4">
@@ -86,13 +87,13 @@
 					plugins
 				</h3>
 			</div>
-			<PluginList plugins={$unsyncedConfig.plugins} />
+			<PluginList plugins={$unsyncedConfig.plugins.map((p) => ({ ...p, configCount: -1 }))} />
 		{/if}
 	</div>
 {/if}
 
 {#if !syncing && !completed}
-	<div class="mx-auto xl:max-w-7xl sm:px-8 w-80 sm:w-full">
+	<div class="mx-auto max-w-5xl sm:px-8 w-80 sm:w-full">
 		<Stepper
 			start={0}
 			stepTerm=""
@@ -141,7 +142,7 @@
 					<Fa icon={faRotate} size="sm" /> Sync your config with GitHub
 				</h2>
 				<div in:fade class="flex w-full items-center justify-center">
-					<div class="flex flex-col w-full max-w-xl gap-2 mx-0 md:mx-12 my-2">
+					<div class="flex flex-col w-full max-w-5xl gap-2 mx-0 md:mx-12 my-2">
 						<UnsyncedNeovimConfigCard avatar={user.avatarUrl} />
 						<UnsyncedNeovimConfigMetaData {syncing} />
 					</div>

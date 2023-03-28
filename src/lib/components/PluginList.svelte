@@ -31,16 +31,18 @@
 							</span>
 						</span>
 						<div class="flex gap-4">
-							<p
-                title="Users on dotfyle"
-								class="hidden sm:flex px-4 py-1 rounded items-center justify-end force-white-text gap-1 font-semibold"
-							>
-								<Fa icon={faUserGroup} size="xs" />
-								{plugin.configCount}
-							</p>
-							<div class="flex hidden lg:flex lg:min-w-[150px]" title="Plugin catategory">
+							{#if plugin.configCount >= 0}
+								<p
+									title="Users on dotfyle"
+									class="hidden sm:flex px-4 py-1 rounded items-center justify-end force-white-text gap-1 font-semibold"
+								>
+									<Fa icon={faUserGroup} size="xs" />
+									{plugin.configCount}
+								</p>
+							{/if}
+							<div class="hidden lg:flex lg:min-w-[150px]" title="Plugin catategory">
 								<div
-									class="hidden sm:block px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
+									class="hidden sm:flex px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white items-center justify-end force-white-text"
 								>
 									{plugin.category}
 								</div>
