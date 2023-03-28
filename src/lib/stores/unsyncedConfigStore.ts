@@ -6,6 +6,7 @@ export interface UnsyncedConfig {
 	repo?: string;
 	root?: string;
 	initFile?: string;
+	slug?: string;
 	branch?: string;
 	fork?: boolean;
 	stars?: number;

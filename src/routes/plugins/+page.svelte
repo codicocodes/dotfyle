@@ -40,79 +40,79 @@
 	let sort: 'popular' | 'new' = rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
 	let start: number;
 	let end: number;
-	let search = $page.url.searchParams.get('q') ?? '';
-	let expantedTags = false;
+let search = $page.url.searchParams.get('q') ?? '';
+let expantedTags = false;
 
-	onMount(async () => {
-		const fetchedPlugins = await trpc($page).searchPlugins.query({
-			sorting: sort
-		});
-		loading = false;
-		plugins = fetchedPlugins as unknown as NeovimPluginWithCount[];
-	});
+onMount(async () => {
+  const fetchedPlugins = await trpc($page).searchPlugins.query({
+    sorting: sort
+  });
+  loading = false;
+  plugins = fetchedPlugins as unknown as NeovimPluginWithCount[];
+});
 
-	$: availableCategories = Object.entries(
-		plugins
-			.map((p) => p.category)
-			.reduce((countByCategory: Record<string, number>, cat) => {
-				const countInThisCategory = countByCategory[cat];
-				return { ...countByCategory, [cat]: countInThisCategory ? countInThisCategory + 1 : 1 };
-			}, {})
-	)
-		.sort((a, b) => b[1] - a[1])
-		.map((c) => c[0]);
+$: availableCategories = Object.entries(
+  plugins
+    .map((p) => p.category)
+    .reduce((countByCategory: Record<string, number>, cat) => {
+      const countInThisCategory = countByCategory[cat];
+      return { ...countByCategory, [cat]: countInThisCategory ? countInThisCategory + 1 : 1 };
+    }, {})
+)
+  .sort((a, b) => b[1] - a[1])
+  .map((c) => c[0]);
 
-	$: {
-		if (sort === 'new') {
-			plugins = plugins.sort((a, b) => {
-				if (a.createdAt === b.createdAt) return 0;
-				return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
-			});
-		}
-		if (sort === 'popular') {
-			plugins = plugins.sort((a, b) => {
-				if (a.configCount === b.configCount) return a.stars > b.stars ? -1 : 1;
-				return a.configCount > b.configCount ? -1 : 1;
-			});
-		}
-	}
+$: {
+  if (sort === 'new') {
+    plugins = plugins.sort((a, b) => {
+      if (a.createdAt === b.createdAt) return 0;
+      return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
+    });
+  }
+  if (sort === 'popular') {
+    plugins = plugins.sort((a, b) => {
+      if (a.configCount === b.configCount) return a.stars > b.stars ? -1 : 1;
+      return a.configCount > b.configCount ? -1 : 1;
+    });
+  }
+}
 
-	$: filteredPlugins = plugins.filter((p) => {
-		const searchable =
-			p.owner +
-			p.name +
-			p.shortDescription +
-			p.category +
-			`${p.owner}/${p.name}` +
-			p.category.split('-').join(' ');
+$: filteredPlugins = plugins.filter((p) => {
+  const searchable =
+    p.owner +
+    p.name +
+    p.shortDescription +
+    p.category +
+    `${p.owner}/${p.name}` +
+    p.category.split('-').join(' ');
 
-		if (selectedCategoriesSet.size > 0) {
-			if (!selectedCategoriesSet.has(p.category)) {
-				return false;
-			}
-		}
-		return searchable.toLowerCase().includes(search.toLowerCase());
-	});
+  if (selectedCategoriesSet.size > 0) {
+    if (!selectedCategoriesSet.has(p.category)) {
+      return false;
+    }
+  }
+  return searchable.toLowerCase().includes(search.toLowerCase());
+});
 </script>
 
 <svelte:head>
-	<title>Search and find neovim plugins</title>
+<title>Search and find neovim plugins</title>
 </svelte:head>
 
 <div class="w-full flex flex-col items-center px-8">
-	<div class="flex flex-col max-w-5xl w-full gap-4">
-		<h1
-			class="flex items-center justify-center text-2xl h-full font-semibold tracking-wide my-4 sm:my-12"
-		>
-			<CoolText text="Find neovim plugins" />
-		</h1>
-		<div class="flex items-center justify-center">
-			<input
+<div class="flex flex-col max-w-5xl w-full gap-4">
+  <h1
+    class="flex items-center justify-center text-2xl h-full font-semibold tracking-wide my-4 sm:my-12"
+  >
+    <CoolText text="Find neovim plugins" />
+  </h1>
+  <div class="flex items-center justify-center">
+    <input
 				bind:value={search}
-				class="w-full sm:w-1/2 p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
+				class="w-full sm:w-1/2 p-1 sm:p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
 		</div>
-		<div class="grid grid-cols-10 sm:gap-4 my-8 sm:my-8 max-w-5xl text-xl">
+		<div class="grid grid-cols-10 sm:gap-4 my-2 sm:my-8 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
 				<GlossyCard>
 					<div class="flex flex-col p-4 w-full gap-2">
@@ -258,7 +258,7 @@
 			<div class="col-span-10 sm:col-span-7 flex flex-col gap-2 overscroll-none">
 				{#if loading}
 					<div
-						class="flex flex-col h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
+						class="flex flex-col h-[calc(100vh-380px)] sm:h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
 					>
 						{#each Array(4).fill(null) as _}
 							<div in:fly class="my-2">
@@ -273,7 +273,7 @@
 				{/if}
 				{#if !loading}
 					<div
-						class="flex flex-col h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
+						class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
 					>
 						<!-- 
               we need to use a virtual list otherwise rerendering is too heavy

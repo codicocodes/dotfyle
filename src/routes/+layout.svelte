@@ -144,7 +144,7 @@
 		<slot />
 	</OuterLayout>
 
-	<footer class="mx-auto max-w-full xl:max-w-7xl w-full mt-4 mb-2 py-4 sm:px-6 lg:px-8">
+	<footer class="mx-auto max-w-full xl:max-w-7xl w-full sm:mt-4 sm:px-6 lg:px-8">
 		<div class="flex items-center justify-center">
 			<div class="flex gap-4 text-gray-400 items-center">
 				<a

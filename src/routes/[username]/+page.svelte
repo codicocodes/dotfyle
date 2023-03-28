@@ -51,8 +51,9 @@
 			<h3 in:fade class="flex items-center gap-1 text-xl font-semibold mb-2">Neovim configs</h3>
 			<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
 				{#each configs as conf, _}
-					<a href={`/${conf.owner}/${conf.slug}`} in:fade>
+					<div in:fade>
 						<NeovimConfigCard
+              slug={conf.slug}
 							repo={conf.repo}
 							owner={conf.owner}
 							avatar={conf.ownerAvatar}
@@ -62,7 +63,7 @@
 							pluginManager={conf.pluginManager ?? 'unknown'}
 							pluginCount={conf.pluginCount.toString()}
 						/>
-					</a>
+					</div>
 				{/each}
 			</div>
 		</div>

@@ -95,8 +95,8 @@
 
 		<BigGridContainer>
 			{#each data.configs as conf, _}
-				<a href={`/${conf.owner}/${conf.slug}`}>
 					<NeovimConfigCard
+            slug={conf.slug}
 						repo={conf.repo}
 						owner={conf.owner}
 						avatar={conf.ownerAvatar}
@@ -106,7 +106,6 @@
 						pluginManager={conf.pluginManager ?? 'unknown'}
 						pluginCount={conf.pluginCount.toString()}
 					/>
-				</a>
 			{/each}
 		</BigGridContainer>
 	</div>
@@ -146,7 +145,6 @@
 
 		<BigGridContainer>
 			{#each data.popularPlugins as plugin, _}
-				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
 					<NeovimPluginCard
 						owner={plugin.owner}
 						name={plugin.name}
@@ -155,7 +153,6 @@
 						category={plugin.category}
 						shortDescription={plugin.shortDescription}
 					/>
-				</a>
 			{/each}
 		</BigGridContainer>
 	</div>
@@ -171,7 +168,6 @@
 
 		<BigGridContainer>
 			{#each data.colorschemes.slice(0, 3) as plugin, _}
-				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
 					<NeovimPluginCard
 						owner={plugin.owner}
 						name={plugin.name}
@@ -180,7 +176,6 @@
 						category={plugin.category}
 						shortDescription={plugin.shortDescription}
 					/>
-				</a>
 			{/each}
 		</BigGridContainer>
 	</div>
@@ -196,7 +191,6 @@
 
 		<BigGridContainer>
 			{#each data.editingSupport.slice(0, 3) as plugin, _}
-				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
 					<NeovimPluginCard
 						owner={plugin.owner}
 						name={plugin.name}
@@ -205,7 +199,6 @@
 						category={plugin.category}
 						shortDescription={plugin.shortDescription}
 					/>
-				</a>
 			{/each}
 		</BigGridContainer>
 	</div>
@@ -221,7 +214,6 @@
 
 		<BigGridContainer>
 			{#each data.preConfigured.slice(0, 3) as plugin, _}
-				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
 					<NeovimPluginCard
 						owner={plugin.owner}
 						name={plugin.name}
@@ -230,7 +222,6 @@
 						category={plugin.category}
 						shortDescription={plugin.shortDescription}
 					/>
-				</a>
 			{/each}
 		</BigGridContainer>
 	</div>

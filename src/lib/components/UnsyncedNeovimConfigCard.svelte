@@ -5,6 +5,7 @@
 </script>
 
 <NeovimConfigCard
+  slug={$unsyncedConfig.slug ?? ""}
 	repo={$unsyncedConfig.repo ?? "unknown"}
 	owner={$unsyncedConfig.owner ?? "unknown"}
 	avatar={avatar}

@@ -24,13 +24,11 @@
 		const searchable =
 			p.owner +
 			p.repo +
-      p.root +
-      p.initFile +
-			p.pluginManager
-      + `${p.repo}/${p.root}/${p.initFile}`
-      + `${p.repo} ${p.root} ${p.initFile}`
-
-
+			p.root +
+			p.initFile +
+			p.pluginManager +
+			`${p.repo}/${p.root}/${p.initFile}` +
+			`${p.repo} ${p.root} ${p.initFile}`;
 
 		return searchable.toLowerCase().includes(search.toLowerCase());
 	});
@@ -44,16 +42,16 @@
 			<CoolText text="Find neovim configs" />
 		</h1>
 		<div class="flex items-center justify-center mb-8">
-			<input
+    <input
 				bind:value={search}
-				class="w-full sm:w-1/2 p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
+				class="w-full sm:w-1/2 p-1 sm:p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
 		</div>
 		<BigGridContainer>
 			{#each filteredConfig as conf}
-					<a href={`/${conf.owner}/${conf.slug}`} in:fade>
-					<div class="my-2 w-full">
+				<div in:fade>
 					<NeovimConfigCard
+						slug={conf.slug}
 						repo={conf.repo}
 						owner={conf.owner}
 						avatar={conf.ownerAvatar}
@@ -63,8 +61,7 @@
 						pluginManager={conf.pluginManager ?? 'unknown'}
 						pluginCount={conf.pluginCount.toString()}
 					/>
-					</div>
-				</a>
+				</div>
 			{/each}
 		</BigGridContainer>
 	</div>

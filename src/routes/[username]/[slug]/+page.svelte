@@ -61,6 +61,7 @@
 			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
 				<div class="flex flex-col gap-2 w-full">
 					<NeovimConfigCard
+            slug={config.slug}
 						repo={config.repo}
 						owner={config.owner}
 						avatar={config.ownerAvatar}

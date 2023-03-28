@@ -158,8 +158,9 @@
 								class="space-x-2 space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
 							>
 								{#each data.configs as conf, _}
-									<a in:fade href={`/${conf.owner}/${conf.slug}`}>
+									<div in:fade>
 										<NeovimConfigCard
+                      slug={conf.slug}
 											repo={conf.repo}
 											owner={conf.owner}
 											avatar={conf.ownerAvatar}
@@ -169,7 +170,7 @@
 											pluginManager={conf.pluginManager ?? 'unknown'}
 											pluginCount={conf.pluginCount.toString()}
 										/>
-									</a>
+									</div>
 								{/each}
 							</div>
 						</div>
