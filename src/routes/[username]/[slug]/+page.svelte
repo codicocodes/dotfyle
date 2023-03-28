@@ -141,10 +141,11 @@
 			</div>
 		</div>
 		<div class="w-full gap-2 flex flex-col">
-			<h3 class="text-sm font-medium tracking-wide lowercase mt-2">
+			<h3 class="text-lg font-semibold tracking-wide lowercase mt-2">
 				<span>{plugins.length} plugins installed</span>
 			</h3>
 			{#if plugins.length > 0}
+      <div class="grid grid-cols-3 gap-2">
         {#each plugins as plugin}
 					<NeovimPluginCard
 						owner={plugin.owner}
@@ -152,10 +153,11 @@
 						stars={plugin.stars.toString()}
 						configCount={plugin.configCount}
 						category={plugin.category}
-						shortDescription={""}
+						shortDescription={plugin.shortDescription}
 					/>
 
         {/each}
+      </div>
 			{:else}
 				<GlossyCard>
 					<div class="flex items-center gap-2 p-2 font-semibold text-sm">
