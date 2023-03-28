@@ -6,9 +6,13 @@
 	import {
 		faArrowDown,
 		faChartSimple,
+		faCode,
 		faCog,
+		faFileCode,
 		faPaintbrush,
 		faPencil,
+		faPuzzlePiece,
+		faSearch,
 		faSeedling
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
@@ -17,22 +21,15 @@
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 
-	// ⌛ navbar
-	// ✅ profile page
-	// ✅ dotfile page
-	// ✅ add dotfile page (almost same as welcome)
-	// ❌ add plugin page (kind of different?)
-	// ✅ plugin page
-	// search page
-	// ⌛list of plugins by category on home page
-
 	export let data: PageData;
-
 </script>
 
 <svelte:head>
-    <title>Discover and share neovim configs</title> 
-    <meta name="description" content="Search and discover neovim plugins and share your neovim config" />
+	<title>Discover and share neovim configs</title>
+	<meta
+		name="description"
+		content="Search and discover neovim plugins and share your neovim config"
+	/>
 </svelte:head>
 
 <div class="flex flex-col gap-8 my-4">
@@ -49,7 +46,11 @@
 					<h2
 						class="text-center font-semibold tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight"
 					>
-						Signup with GitHub to add your config
+						{#if !data.user}
+							Signup with GitHub to add your config
+						{:else}
+							Search for plugins and configs
+						{/if}
 					</h2>
 				</div>
 			</div>
@@ -58,8 +59,28 @@
 				<Fa icon={faArrowDown} />
 			</div>
 			<div class="w-full flex justify-center items-center">
-				<GithubLoginButton />
-				<!-- <button on:click={logout}> logout </button> -->
+				{#if !data.user}
+					<GithubLoginButton />
+				{:else}
+					<div class="flex flex-col sm:flex-row gap-2">
+						<a
+							href={'/plugins'}
+							class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25`}
+						>
+							<Fa icon={faPuzzlePiece} />
+							Search plugins
+							<Fa icon={faSearch} />
+						</a>
+						<a
+							href={'/configs'}
+							class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25`}
+						>
+							<Fa icon={faFileCode} />
+							Search configs
+							<Fa icon={faSearch} />
+						</a>
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -91,7 +112,7 @@
 		</BigGridContainer>
 	</div>
 
-<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faSeedling} size="sm" />
@@ -167,12 +188,13 @@
 		</BigGridContainer>
 	</div>
 
-<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide gap-2">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faPencil} size="sm" />
 				editing plugins
-			</h3> <CoolLink href="/plugins?categories=editing-support" text="more editing plugins" />
+			</h3>
+			<CoolLink href="/plugins?categories=editing-support" text="more editing plugins" />
 		</div>
 
 		<BigGridContainer>
@@ -191,7 +213,7 @@
 		</BigGridContainer>
 	</div>
 
-<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide gap-2">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faCog} size="sm" />
