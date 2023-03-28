@@ -47,11 +47,12 @@ export function parsePlugin({ category, item }: RawPlugin): PluginDTO {
 		link,
 		owner,
 		name: repo,
-		shortDescription,
+		shortDescription
 	};
 }
 
-export async function fetchAwesomeNeovimReadme(): Promise<marked.TokensList> { const RAW_README_URL =
+export async function fetchAwesomeNeovimReadme(): Promise<marked.TokensList> {
+	const RAW_README_URL =
 		'https://raw.githubusercontent.com/rockerBOO/awesome-neovim/main/README.md';
 	const text = await fetch(RAW_README_URL).then((r) => r.text());
 	const tree = marked.lexer(text);
@@ -84,8 +85,8 @@ export function parsePluginDataFromTree(tree: marked.TokensList): RawPlugin[] {
 }
 
 export function parseDescription(rawDesc: string) {
-  // return "";
-  return rawDesc.replaceAll("\n", " ")
+	// return "";
+	return rawDesc.replaceAll('\n', ' ');
 }
 
 export function parseCategory(plugin: RawPlugin) {
