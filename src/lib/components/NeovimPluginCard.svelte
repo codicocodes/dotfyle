@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
-	import { faBox, faCircle, faHashtag, faPuzzlePiece, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+	import { faBox, faCircle, faHashtag, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+	import CoolTextWithChildren from './CoolTextWithChildren.svelte';
+	import CoolTextOnHover from './CoolTextOnHover.svelte';
 	export let owner: string;
 	export let name: string;
 	export let stars: string;
@@ -16,12 +18,16 @@
 		class="h-full flex space-x-4 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20 items-start"
 	>
 		<div class="flex flex-col gap-1">
-			<p class="text-sm font-semibold tracking-wide md:text-base">
+    <CoolTextOnHover>
+			<a href={`/plugins/${owner}/${name}`} class="text-sm font-semibold tracking-wide md:text-base">
 				{owner}/{name}
-			</p>
+			</a>
+    </CoolTextOnHover>
+    {#if shortDescription}
 			<p class="text-xs font-medium tracking-wide md:text-sm">
 				{shortDescription}
 			</p>
+    {/if}
 		</div>
 	</div>
 	<div class="m-1 flex font-medium">

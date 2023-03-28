@@ -130,7 +130,7 @@
 							class="space-x-2 space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
 						>
 							{#each categoryPlugins as plugin, _}
-								<a in:fade href={`/plugins/${plugin.owner}/${plugin.name}`}>
+								<div in:fade>
 									<NeovimPluginCard
 										owner={plugin.owner}
 										name={plugin.name}
@@ -139,7 +139,7 @@
 										category={plugin.category}
 										shortDescription={plugin.shortDescription}
 									/>
-								</a>
+								</div>
 							{/each}
 						</div>
 					</div>

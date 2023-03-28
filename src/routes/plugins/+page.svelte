@@ -260,15 +260,15 @@
 					<div
 						class="flex flex-col h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
 					>
-        {#each Array(4).fill(null) as _}
-					<div in:fly class="my-2">
-						<GlossyCard>
-							<div class="my-2 py-10 flex w-full items-center justify-center">
-								<DoubleBounce color="#15be97" size="18" />
+						{#each Array(4).fill(null) as _}
+							<div in:fly class="my-2">
+								<GlossyCard>
+									<div class="my-2 py-10 flex w-full items-center justify-center">
+										<DoubleBounce color="#15be97" size="18" />
+									</div>
+								</GlossyCard>
 							</div>
-						</GlossyCard>
-					</div>
-          {/each}
+						{/each}
 					</div>
 				{/if}
 				{#if !loading}
@@ -281,18 +281,16 @@
               if improving this ensure that there is not double scrollbars on either mobile or desktop
             -->
 						<VirtualList items={filteredPlugins} let:item bind:start bind:end>
-							<a href={`/plugins/${item.owner}/${item.name}`}>
-								<div class="my-2">
-									<NeovimPluginCard
-										owner={item.owner}
-										name={item.name}
-										stars={item.stars.toString()}
-										configCount={item.configCount}
-										category={item.category}
-										shortDescription={item.shortDescription}
-									/>
-								</div>
-							</a>
+							<div class="my-2">
+								<NeovimPluginCard
+									owner={item.owner}
+									name={item.name}
+									stars={item.stars.toString()}
+									configCount={item.configCount}
+									category={item.category}
+									shortDescription={item.shortDescription}
+								/>
+							</div>
 						</VirtualList>
 					</div>
 				{/if}

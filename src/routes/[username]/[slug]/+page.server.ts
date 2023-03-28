@@ -1,4 +1,5 @@
 import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
+import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { trpc } from '$lib/trpc/client';
 import type { NeovimPlugin } from '@prisma/client';
 import { error } from '@sveltejs/kit';

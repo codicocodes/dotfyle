@@ -6,7 +6,6 @@
 	import {
 		faArrowDown,
 		faChartSimple,
-		faCode,
 		faCog,
 		faFileCode,
 		faPaintbrush,
@@ -123,16 +122,14 @@
 
 		<BigGridContainer>
 			{#each data.newPlugins as plugin, _}
-				<a href={`/plugins/${plugin.owner}/${plugin.name}`}>
-					<NeovimPluginCard
-						owner={plugin.owner}
-						name={plugin.name}
-						stars={plugin.stars.toString()}
-						configCount={plugin.configCount}
-						category={plugin.category}
-						shortDescription={plugin.shortDescription}
-					/>
-				</a>
+				<NeovimPluginCard
+					owner={plugin.owner}
+					name={plugin.name}
+					stars={plugin.stars.toString()}
+					configCount={plugin.configCount}
+					category={plugin.category}
+					shortDescription={plugin.shortDescription}
+				/>
 			{/each}
 		</BigGridContainer>
 	</div>
