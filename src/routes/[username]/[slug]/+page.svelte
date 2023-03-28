@@ -7,8 +7,8 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
+	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
-	import PluginList from '$lib/components/PluginList.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faChevronRight, faRotate, faSearch, faX } from '@fortawesome/free-solid-svg-icons';
@@ -19,10 +19,10 @@
 	export let data: PageData;
 	$: ({ config, plugins, me } = data);
 
-  let syncing = false
+	let syncing = false;
 
 	async function syncConfig() {
-    syncing = true
+		syncing = true;
 		const { plugins: syncedPlugins, ...syncedConfig } = await trpc(
 			$page
 		).syncExistingNeovimConfig.query({
@@ -30,47 +30,28 @@
 			slug: config.slug
 		});
 
-    const pluginCount = syncedPlugins.length
-    const syncedConfigWithMeta = {
-        ...syncedConfig,
-        ownerAvatar: config.ownerAvatar,
-        createdAt: new Date(syncedConfig.createdAt),
-        lastSyncedAt: new Date(syncedConfig.lastSyncedAt),
-        pluginCount,
-      }
+		const pluginCount = syncedPlugins.length;
+		const syncedConfigWithMeta = {
+			...syncedConfig,
+			ownerAvatar: config.ownerAvatar,
+			createdAt: new Date(syncedConfig.createdAt),
+			lastSyncedAt: new Date(syncedConfig.lastSyncedAt),
+			pluginCount
+		};
 		config = syncedConfigWithMeta;
-    plugins = plugins
-    syncing = false
-    invalidate(() => true)
+		plugins = plugins;
+		syncing = false;
+		invalidate(() => true);
 	}
 </script>
 
 <svelte:head>
-	<title>{config.owner}/{config.repo}{config.root ? `/${config.root}` : ""}: neovim config</title>
+	<title>{config.owner}/{config.repo}{config.root ? `/${config.root}` : ''}: neovim config</title>
 </svelte:head>
 
 <OuterLayout>
-	<div in:fade class="h-full grid grid-cols-10 gap-4 my-14 mx-8 sm:px-24">
-		<!-- plugins configs -->
-		<div class="col-span-10 lg:col-span-3 w-full gap-2 flex flex-col">
-			<h3 class="text-sm font-medium tracking-wide lowercase mt-2">
-				<span>{plugins.length} plugins installed</span>
-			</h3>
-			{#if plugins.length > 0}
-				<PluginList {plugins} />
-			{:else}
-				<GlossyCard>
-					<div class="flex items-center gap-2 p-2 font-semibold text-sm">
-						<div class="text-red-500">
-							<Fa icon={faX} />
-						</div>
-						no plugins detected
-					</div>
-				</GlossyCard>
-			{/if}
-		</div>
-
-		<div class="col-span-10 lg:col-span-7 flex flex-col gap-2 order-first lg:order-2">
+	<div in:fade class="h-full flex flex-col gap-4 my-14 mx-8 lg:px-24">
+		<div class="flex flex-col gap-2">
 			<!-- profile area -->
 			<div class="flex items-center justify-between">
 				<h3 class="text-lg font-semibold tracking-wide">
@@ -91,7 +72,7 @@
 					/>
 
 					<NeovimConfigMetaData
-						syncing={syncing}
+						{syncing}
 						pluginManager={config.pluginManager ?? 'unknown'}
 						pluginCount={plugins.length.toString()}
 						root={config.root}
@@ -99,49 +80,51 @@
 						isMonorepo={config.root ? 'yes' : 'no'}
 						isFork={config.fork ? 'yes' : 'no'}
 					/>
-					<CoolTextOnHover>
-						<GlossyCard>
-							<a href="/plugins" class="p-2 flex w-full items-center justify-between text-md">
-								<div class="flex gap-2 items-center">
-									<span class="force-white-text">
-										<Fa icon={faSearch} size="xs" />
-									</span>
-									<span class="flex items-center gap-1 lowercase"> find neovim plugins </span>
-								</div>
-								<div class="flex gap-4">
-									<button
-										class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
-									>
-										<Fa icon={faChevronRight} size="xs" />
-									</button>
-								</div>
-							</a>
-						</GlossyCard>
-					</CoolTextOnHover>
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+						<CoolTextOnHover>
+							<GlossyCard>
+								<a href="/plugins" class="p-2 flex w-full items-center justify-between text-md">
+									<div class="flex gap-2 items-center">
+										<span class="force-white-text">
+											<Fa icon={faSearch} size="xs" />
+										</span>
+										<span class="flex items-center gap-1 lowercase"> find neovim plugins </span>
+									</div>
+									<div class="flex gap-4">
+										<button
+											class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
+										>
+											<Fa icon={faChevronRight} size="xs" />
+										</button>
+									</div>
+								</a>
+							</GlossyCard>
+						</CoolTextOnHover>
 
-					<CoolTextOnHover>
-						<GlossyCard>
-							<a
-								href="/configs"
-								in:slide
-								class="p-2 flex w-full items-center justify-between text-md"
-							>
-								<div class="flex gap-2 items-center">
-									<span class="force-white-text">
-										<Fa icon={faSearch} size="xs" />
-									</span>
-									<span class="flex items-center gap-1 lowercase"> find neovim configs </span>
-								</div>
-								<div class="flex gap-4">
-									<button
-										class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
-									>
-										<Fa icon={faChevronRight} size="xs" />
-									</button>
-								</div>
-							</a>
-						</GlossyCard>
-					</CoolTextOnHover>
+						<CoolTextOnHover>
+							<GlossyCard>
+								<a
+									href="/configs"
+									in:slide
+									class="p-2 flex w-full items-center justify-between text-md"
+								>
+									<div class="flex gap-2 items-center">
+										<span class="force-white-text">
+											<Fa icon={faSearch} size="xs" />
+										</span>
+										<span class="flex items-center gap-1 lowercase"> find neovim configs </span>
+									</div>
+									<div class="flex gap-4">
+										<button
+											class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
+										>
+											<Fa icon={faChevronRight} size="xs" />
+										</button>
+									</div>
+								</a>
+							</GlossyCard>
+						</CoolTextOnHover>
+					</div>
 
 					<div class="flex items-center justify-between">
 						<span class="text-sm tracking-wide font-light">
@@ -155,6 +138,33 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="w-full gap-2 flex flex-col">
+			<h3 class="text-sm font-medium tracking-wide lowercase mt-2">
+				<span>{plugins.length} plugins installed</span>
+			</h3>
+			{#if plugins.length > 0}
+        {#each plugins as plugin}
+					<NeovimPluginCard
+						owner={plugin.owner}
+						name={plugin.name}
+						stars={plugin.stars.toString()}
+						configCount={plugin.configCount}
+						category={plugin.category}
+						shortDescription={""}
+					/>
+
+        {/each}
+			{:else}
+				<GlossyCard>
+					<div class="flex items-center gap-2 p-2 font-semibold text-sm">
+						<div class="text-red-500">
+							<Fa icon={faX} />
+						</div>
+						no plugins detected
+					</div>
+				</GlossyCard>
+			{/if}
 		</div>
 	</div>
 </OuterLayout>

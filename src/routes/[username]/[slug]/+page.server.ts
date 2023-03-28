@@ -16,7 +16,7 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 		trpc(event).getPluginsBySlug.query({
       username,
       slug
-    }) as unknown as NeovimPlugin[],
+    }) as unknown as NeovimPluginWithCount[],
 	]). catch(() => {
     throw error(404, "config not found")
   });

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { faChevronRight, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
-	import type { NeovimPlugin } from '@prisma/client';
+	import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
+	import { faChevronRight, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 
 	import GlossyCard from './GlossyCard.svelte';
-	export let plugins: NeovimPlugin[];
+	export let plugins: NeovimPluginWithCount[];
 
 	$: sorted = plugins.sort((a, b) => {
 		if (a.category === b.category) return 0;
@@ -14,26 +14,48 @@
 </script>
 
 <div>
-		<GlossyCard>
-			<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2">
-				{#each sorted as plugin, _}
-					<CoolTextOnHover>
-						<a href={`/plugins/${plugin.owner}/${plugin.name}`} class="flex w-full items-center justify-between">
-							<span class="flex items-center gap-1 font-medium text-regular tracking-wide">
+	<GlossyCard>
+		<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2">
+			{#each sorted as plugin, _}
+				<CoolTextOnHover>
+					<a
+						href={`/plugins/${plugin.owner}/${plugin.name}`}
+						class="flex w-full items-center justify-between"
+					>
+						<span class="flex items-center gap-1 font-semibold text-regular tracking-wide">
+							<span class="hidden sm:block">
+								{plugin.owner}/{plugin.name}
+							</span>
+							<span class="block sm:hidden">
 								{plugin.name}
 							</span>
-							<div class="flex gap-4">
-								<button
-									class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
+						</span>
+						<div class="flex gap-4">
+							<p
+                title="Users on dotfyle"
+								class="hidden sm:flex px-4 py-1 rounded items-center justify-end force-white-text gap-1 font-semibold"
+							>
+								<Fa icon={faUserGroup} size="xs" />
+								{plugin.configCount}
+							</p>
+							<div class="flex hidden lg:flex lg:min-w-[150px]" title="Plugin catategory">
+								<div
+									class="hidden sm:block px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
 								>
-									<Fa icon={faChevronRight} size="xs" />
-								</button>
+									{plugin.category}
+								</div>
 							</div>
-						</a>
-					</CoolTextOnHover>
-				{/each}
-			</div>
-		</GlossyCard>
+							<button
+								class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
+							>
+								<Fa icon={faChevronRight} size="xs" />
+							</button>
+						</div>
+					</a>
+				</CoolTextOnHover>
+			{/each}
+		</div>
+	</GlossyCard>
 </div>
 
 <style>

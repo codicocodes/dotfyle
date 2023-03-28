@@ -161,8 +161,9 @@ export async function getPlugin(owner: string, name: string): Promise<NeovimPlug
 	};
 }
 
-export async function getPluginsBySlug(username: string, slug: string): Promise<NeovimPlugin[]> {
-	return prismaClient.neovimPlugin.findMany({
+export async function getPluginsBySlug(username: string, slug: string): Promise<NeovimPluginWithCount[]> {
+	const plugins = await prismaClient.neovimPlugin.findMany({
+    select: selectConfigCount,
 		where: {
 			neovimConfigPlugins: {
 				some: {
@@ -176,6 +177,7 @@ export async function getPluginsBySlug(username: string, slug: string): Promise<
 			}
 		}
 	});
+  return plugins.map(flattenConfigCount)
 }
 
 export async function upsertManyNeovimPlugins(plugins: PluginDTO[]): Promise<NeovimPlugin[]> {
