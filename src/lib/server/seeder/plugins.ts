@@ -8,7 +8,7 @@ export async function scrapeRockerBooAwesomeNeovim() {
 	return z
 		.array(PluginDTO)
 		.parse(
-			rawPlugins.map(parseCategory).filter(isTrackedCategory).map(parsePlugin).filter(hasGithubLink)
+			rawPlugins.map(parseCategory).filter(isTrackedCategory).map(parsePlugin).filter(hasGithubLink).filter(p => p.name)
 		)
 		.filter(isValidRepo);
 }
