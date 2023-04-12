@@ -14,4 +14,5 @@
 	stars={$unsyncedConfig.stars?.toString() ?? "unknown"}
 	pluginManager={$unsyncedConfig.pluginManager ?? "unknown"}
 	pluginCount={$unsyncedConfig.plugins?.length.toString() ?? "unknown"}
+  showGithubLink={false}
 />

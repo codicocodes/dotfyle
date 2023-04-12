@@ -70,6 +70,7 @@
 						stars={config.stars.toString()}
 						pluginManager={config.pluginManager ?? 'unknown'}
 						pluginCount={config.pluginCount.toString()}
+            showGithubLink={true}
 					/>
 
 					<NeovimConfigMetaData

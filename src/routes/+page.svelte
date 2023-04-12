@@ -105,6 +105,7 @@
 						stars={conf.stars.toString()}
 						pluginManager={conf.pluginManager ?? 'unknown'}
 						pluginCount={conf.pluginCount.toString()}
+            showGithubLink={false}
 					/>
 			{/each}
 		</BigGridContainer>
