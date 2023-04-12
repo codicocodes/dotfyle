@@ -15,7 +15,7 @@ export class FileContentTraverser {
 			.filter((n) => Boolean(n.sha))
 			.filter((n) => n.type === "blob")
 			.filter((n) => n.path?.startsWith(configRoot ? configRoot.concat("/") : ""))
-			.filter((n) => n.path?.endsWith(".lua") || n.path?.endsWith(".vim") || n.path?.endsWith(".vimrc"))
+			.filter((n) => n.path?.endsWith(".lua") || n.path?.endsWith(".fnl") || n.path?.endsWith(".vim") || n.path?.endsWith(".vimrc"))
 			.map((n) => n.sha) as string[];
 	}
 
