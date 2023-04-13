@@ -9,6 +9,7 @@
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
+	import PluginList from '$lib/components/PluginList.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faChevronRight, faRotate, faSearch, faX } from '@fortawesome/free-solid-svg-icons';
@@ -61,7 +62,7 @@
 			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
 				<div class="flex flex-col gap-2 w-full">
 					<NeovimConfigCard
-            slug={config.slug}
+						slug={config.slug}
 						repo={config.repo}
 						owner={config.owner}
 						avatar={config.ownerAvatar}
@@ -70,7 +71,7 @@
 						stars={config.stars.toString()}
 						pluginManager={config.pluginManager ?? 'unknown'}
 						pluginCount={config.pluginCount.toString()}
-            showGithubLink={true}
+						showGithubLink={true}
 					/>
 
 					<NeovimConfigMetaData
@@ -146,19 +147,21 @@
 				<span>{plugins.length} plugins installed</span>
 			</h3>
 			{#if plugins.length > 0}
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-2">
-        {#each plugins as plugin}
-					<NeovimPluginCard
-						owner={plugin.owner}
-						name={plugin.name}
-						stars={plugin.stars.toString()}
-						configCount={plugin.configCount}
-						category={plugin.category}
-						shortDescription={plugin.shortDescription}
-					/>
-
-        {/each}
+      <div class="sm:hidden">
+      <PluginList {plugins} />
       </div>
+				<div class="hidden sm:grid grid-cols-1 lg:grid-cols-3 gap-2">
+					{#each plugins as plugin}
+						<NeovimPluginCard
+							owner={plugin.owner}
+							name={plugin.name}
+							stars={plugin.stars.toString()}
+							configCount={plugin.configCount}
+							category={plugin.category}
+							shortDescription={plugin.shortDescription}
+						/>
+					{/each}
+				</div>
 			{:else}
 				<GlossyCard>
 					<div class="flex items-center gap-2 p-2 font-semibold text-sm">
