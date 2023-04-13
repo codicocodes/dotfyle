@@ -136,8 +136,9 @@ export const router = t.router({
 		const pluginNamesArr = plugins
 			.filter((p) => p.category !== 'preconfigured')
 			.map((p) => p.name)
-			.filter((n) => n !== 'nvim');
 		const pluginNames = new Set(pluginNamesArr);
+    pluginNames.delete('nvim')
+    pluginNames.delete('neovim')
 		return (await getGithubRepositories(user)).filter((r) => !pluginNames.has(r.name));
 	}),
 	getNewestConfigs: t.procedure.query(async () => {
