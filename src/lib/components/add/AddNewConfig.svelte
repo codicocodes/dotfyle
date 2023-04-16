@@ -126,7 +126,7 @@
 					slot="header"
 					class="mt-4 text-center font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
 				>
-					<Fa icon={faFileCode} size="sm" /> confirm the configs init file
+					<Fa icon={faFileCode} size="sm" /> confirm the configs root init file
 				</h2>
 				{#if $unsyncedConfig.repo}
 					<div in:fade>
