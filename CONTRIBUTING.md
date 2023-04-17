@@ -103,3 +103,13 @@ pnpm run dev
 
 [prisma-postgres-install]: https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database
 [new-oauth]: https://github.com/settings/applications/new
+
+### Seed plugin data
+
+Once the server is running you can seed the plugin data
+
+1. Authenticate using GitHub OAuth
+2. Navigate to [http://localhost:5173/api/seeder/plugins](http://localhost:5173/api/seeder/plugins) in the browser, if you see a json blob of plugin data you have successfully seeded the plugin data
+
+[prisma-postgres-install]: https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database
+[new-oauth]: https://github.com/settings/applications/new
