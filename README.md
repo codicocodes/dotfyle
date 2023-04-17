@@ -1,4 +1,3 @@
-
 <div align="center">
   <a href="https://dotfyle.com" target="_blank">
     <img src="https://user-images.githubusercontent.com/76068197/232580010-284ea95a-df75-4705-8067-9dca893e8cc2.png" alt="Dotfyle" height="180" width="auto"/>
@@ -55,3 +54,5 @@ Contributions are welcome and much appreciated!
 As dotfyle has been submitted to [SvelteHack](https://hack.sveltesociety.dev/) the production app will not be updated until May 6th when winners have been decided. This is so that Dotfyle can be fairly evaluated based on the timeframe of the hackathon.
 
 Please base any contributions on the temporary `dev` branch until then.
+
+Read [CONTRIBUTING.md](./CONTRIBUTING.md) on how to setup for a dev environment.
