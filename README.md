@@ -47,3 +47,11 @@ The sync parses the contents of the files in the GitHub repository of your Neovi
 This is a demo of the config sync
 
 https://user-images.githubusercontent.com/76068197/232579039-31ef9eb2-95a5-498c-9f41-507a9825fd1d.mp4
+
+# Contributing
+
+Contributions are welcome and much appreciated! 
+
+As dotfyle has been submitted to [SvelteHack](https://hack.sveltesociety.dev/) the production app will not be updated until May 6th when winners have been decided. This is so that Dotfyle can be fairly evaluated based on the timeframe of the hackathon.
+
+Please base any contributions on the temporary `dev` branch until then.
