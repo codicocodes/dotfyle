@@ -20,6 +20,7 @@
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import { fly } from 'svelte/transition';
 	import { DoubleBounce } from 'svelte-loading-spinners';
+	import SmallTitle from '$lib/components/SmallTitle.svelte';
 
 	function navigate(param: string, value: string) {
 		$page.url.searchParams.set(param, value);
@@ -101,11 +102,7 @@ $: filteredPlugins = plugins.filter((p) => {
 
 <div class="w-full flex flex-col items-center px-8">
 <div class="flex flex-col max-w-5xl w-full gap-4">
-  <h1
-    class="flex items-center justify-center text-2xl h-full font-semibold tracking-wide my-4 sm:my-12"
-  >
-    <CoolText text="Find neovim plugins" />
-  </h1>
+  <SmallTitle title="Find Neovim plugins" />
   <div class="flex items-center justify-center">
     <input
 				bind:value={search}
