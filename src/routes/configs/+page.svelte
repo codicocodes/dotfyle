@@ -7,6 +7,7 @@
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
+	import SmallTitle from '$lib/components/SmallTitle.svelte';
 
 	let configs: NeovimConfigWithMetaData[] = [];
 
@@ -36,11 +37,7 @@
 
 <div class="w-full flex flex-col items-center px-8">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
-		<h1
-			class="flex items-center justify-center text-2xl h-full font-semibold tracking-wide my-4 sm:my-12"
-		>
-			<CoolText text="Find neovim configs" />
-		</h1>
+    <SmallTitle title="Find Neovim configs" />
 		<div class="flex items-center justify-center mb-8">
     <input
 				bind:value={search}
