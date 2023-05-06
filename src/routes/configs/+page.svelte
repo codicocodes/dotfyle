@@ -1,25 +1,15 @@
 <script lang="ts">
 	import VirtualList from '@sveltejs/svelte-virtual-list';
 	import { page } from '$app/stores';
-	import { trpc } from '$lib/trpc/client';
-	import { onMount } from 'svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
-	import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
+	import type { PageData } from './$types';
 
-	let configs: NeovimConfigWithMetaData[] = [];
+	export let data: PageData;
 
-	let loading = true;
+  let search = $page.url.searchParams.get('q') ?? '';
 
-	let search = $page.url.searchParams.get('q') ?? '';
-
-	onMount(async () => {
-		let fetchedConfigs = await trpc($page).getConfigs.query();
-		loading = false;
-		configs = fetchedConfigs as unknown as NeovimConfigWithMetaData[];
-	});
-
-	$: filteredConfig = configs.filter((p) => {
+	$: filteredConfig = data.configs.filter((p) => {
 		const searchable =
 			p.owner +
 			p.repo +
