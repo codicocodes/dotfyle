@@ -39,10 +39,26 @@
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
 
 	let sort: 'popular' | 'new' = rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
-	let start: number;
-	let end: number;
-let search = $page.url.searchParams.get('q') ?? '';
-let expantedTags = false;
+	let search = $page.url.searchParams.get('q') ?? '';
+	let expantedTags = false;
+	let availableCategories: string[] = [];
+
+	onMount(async () => {
+		const fetchedPlugins = await trpc($page).searchPlugins.query({
+			sorting: sort
+		});
+		loading = false;
+		plugins = fetchedPlugins as unknown as NeovimPluginWithCount[];
+		availableCategories = Object.entries(
+			plugins.reduce((countByCategory: Record<string, number>, p) => {
+				const cat = p.category;
+				const countInThisCategory = countByCategory[cat];
+				return { ...countByCategory, [cat]: countInThisCategory ? countInThisCategory + 1 : 1 };
+			}, {})
+		)
+			.sort((a, b) => b[1] - a[1])
+			.map((c) => c[0]);
+	});
 
 	$: {
 		if (sort === 'new') {
