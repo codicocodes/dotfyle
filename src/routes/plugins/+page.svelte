@@ -75,33 +75,33 @@
 		}
 	}
 
-$: filteredPlugins = plugins.filter((p) => {
-  const searchable =
-    p.owner +
-    p.name +
-    p.shortDescription +
-    p.category +
-    `${p.owner}/${p.name}` +
-    p.category.split('-').join(' ');
+	$: filteredPlugins = plugins.filter((p) => {
+		const searchable =
+			p.owner +
+			p.name +
+			p.shortDescription +
+			p.category +
+			`${p.owner}/${p.name}` +
+			p.category.split('-').join(' ');
 
-  if (selectedCategoriesSet.size > 0) {
-    if (!selectedCategoriesSet.has(p.category)) {
-      return false;
-    }
-  }
-  return searchable.toLowerCase().includes(search.toLowerCase());
-});
+		if (selectedCategoriesSet.size > 0) {
+			if (!selectedCategoriesSet.has(p.category)) {
+				return false;
+			}
+		}
+		return searchable.toLowerCase().includes(search.toLowerCase());
+	});
 </script>
 
 <svelte:head>
-<title>Search and find neovim plugins</title>
+	<title>Search and find neovim plugins</title>
 </svelte:head>
 
 <div class="w-full flex flex-col items-center px-8">
-<div class="flex flex-col max-w-5xl w-full gap-4">
-  <SmallTitle title="Find Neovim plugins" />
-  <div class="flex items-center justify-center">
-    <input
+	<div class="flex flex-col max-w-5xl w-full gap-4">
+		<SmallTitle title="Find Neovim plugins" />
+		<div class="flex items-center justify-center">
+			<input
 				bind:value={search}
 				class="w-full sm:w-1/2 p-1 sm:p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
