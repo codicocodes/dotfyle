@@ -44,39 +44,20 @@
 let search = $page.url.searchParams.get('q') ?? '';
 let expantedTags = false;
 
-onMount(async () => {
-  const fetchedPlugins = await trpc($page).searchPlugins.query({
-    sorting: sort
-  });
-  loading = false;
-  plugins = fetchedPlugins as unknown as NeovimPluginWithCount[];
-});
-
-$: availableCategories = Object.entries(
-  plugins
-    .map((p) => p.category)
-    .reduce((countByCategory: Record<string, number>, cat) => {
-      const countInThisCategory = countByCategory[cat];
-      return { ...countByCategory, [cat]: countInThisCategory ? countInThisCategory + 1 : 1 };
-    }, {})
-)
-  .sort((a, b) => b[1] - a[1])
-  .map((c) => c[0]);
-
-$: {
-  if (sort === 'new') {
-    plugins = plugins.sort((a, b) => {
-      if (a.createdAt === b.createdAt) return 0;
-      return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
-    });
-  }
-  if (sort === 'popular') {
-    plugins = plugins.sort((a, b) => {
-      if (a.configCount === b.configCount) return a.stars > b.stars ? -1 : 1;
-      return a.configCount > b.configCount ? -1 : 1;
-    });
-  }
-}
+	$: {
+		if (sort === 'new') {
+			plugins = plugins.sort((a, b) => {
+				if (a.createdAt === b.createdAt) return 0;
+				return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
+			});
+		}
+		if (sort === 'popular') {
+			plugins = plugins.sort((a, b) => {
+				if (a.configCount === b.configCount) return a.stars > b.stars ? -1 : 1;
+				return a.configCount > b.configCount ? -1 : 1;
+			});
+		}
+	}
 
 $: filteredPlugins = plugins.filter((p) => {
   const searchable =
