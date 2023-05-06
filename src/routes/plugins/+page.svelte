@@ -15,7 +15,6 @@
 	} from '@fortawesome/free-solid-svg-icons';
 	import { onMount } from 'svelte';
 	import Fa from 'svelte-fa';
-	import CoolText from '$lib/components/CoolText.svelte';
 	import { goto } from '$app/navigation';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import { fly } from 'svelte/transition';
@@ -106,7 +105,7 @@
 				class="w-full sm:w-1/2 p-1 sm:p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
 		</div>
-		<div class="grid grid-cols-10 sm:gap-4 my-2 sm:my-8 max-w-5xl text-xl">
+		<div class="grid grid-cols-10 sm:gap-4 my-2 sm:my-4 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
 				<GlossyCard>
 					<div class="flex flex-col p-4 w-full gap-2">
@@ -267,14 +266,14 @@
 				{/if}
 				{#if !loading}
 					<div
-						class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
+						class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-320px)]"
 					>
 						<!-- 
               we need to use a virtual list otherwise rerendering is too heavy
               only way i got it to work was with 100vh - 420px to ensure we don't have double scroll y bars
               if improving this ensure that there is not double scrollbars on either mobile or desktop
             -->
-						<VirtualList items={filteredPlugins} let:item bind:start bind:end>
+						<VirtualList items={filteredPlugins} let:item>
 							<div class="my-2">
 								<NeovimPluginCard
 									owner={item.owner}
