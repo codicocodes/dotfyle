@@ -45,7 +45,7 @@
 			on:click={(e) => {
 				e.stopPropagation();
 			}}
-			class="z-50 fixed bg-gray-700 p-8 flex flex-col gap-8 rounded w-1/3"
+			class="z-50 fixed bg-gray-700 p-8 flex flex-col gap-8 rounded w-full mx-2 sm:w-1/3"
 		>
 			<h2 class="flex w-full font-semibold">Share</h2>
 			<div class="flex">
