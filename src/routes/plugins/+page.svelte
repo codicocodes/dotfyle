@@ -5,7 +5,6 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
-	import { trpc } from '$lib/trpc/client';
 	import {
 		faChartSimple,
 		faChevronDown,
@@ -18,8 +17,8 @@
 	import { goto } from '$app/navigation';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import { fly } from 'svelte/transition';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
+	import type { PageData } from './$types';
 
 	function navigate(param: string, value: string) {
 		$page.url.searchParams.set(param, value);
@@ -33,8 +32,6 @@
 
 	let plugins: NeovimPluginWithCount[] = [];
 
-	let loading = true;
-
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
 
 	let sort: 'popular' | 'new' = rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
@@ -42,12 +39,10 @@
 	let expantedTags = false;
 	let availableCategories: string[] = [];
 
+	export let data: PageData;
+
 	onMount(async () => {
-		const fetchedPlugins = await trpc($page).searchPlugins.query({
-			sorting: sort
-		});
-		loading = false;
-		plugins = fetchedPlugins as unknown as NeovimPluginWithCount[];
+		plugins = data.plugins;
 		availableCategories = Object.entries(
 			plugins.reduce((countByCategory: Record<string, number>, p) => {
 				const cat = p.category;
@@ -200,11 +195,6 @@
 								{/if}
 							</div>
 							<div class="flex flex-wrap gap-1 text-xs mt-2">
-								{#if loading}
-									<div class="flex w-full items-center justify-center">
-										<DoubleBounce color="#15be97" size="18" />
-									</div>
-								{/if}
 								{#each availableCategories
 									.filter( (c) => (selectedCategoriesSet.size > 0 ? !selectedCategoriesSet.has(c) : true) )
 									.slice(0, expantedTags ? -1 : 20) as currCategory}
@@ -249,44 +239,25 @@
 				</div>
 			</div>
 			<div class="col-span-10 sm:col-span-7 flex flex-col gap-2 overscroll-none">
-				{#if loading}
-					<div
-						class="flex flex-col h-[calc(100vh-380px)] sm:h-[calc(100vh-420px)] overscroll-none verflow-auto scrollbar-hide"
-					>
-						{#each Array(4).fill(null) as _}
-							<div in:fly class="my-2">
-								<GlossyCard>
-									<div class="my-2 py-10 flex w-full items-center justify-center">
-										<DoubleBounce color="#15be97" size="18" />
-									</div>
-								</GlossyCard>
-							</div>
-						{/each}
-					</div>
-				{/if}
-				{#if !loading}
-					<div
-						class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-320px)]"
-					>
-						<!-- 
+				<div class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-320px)]">
+					<!-- 
               we need to use a virtual list otherwise rerendering is too heavy
               only way i got it to work was with 100vh - 420px to ensure we don't have double scroll y bars
               if improving this ensure that there is not double scrollbars on either mobile or desktop
             -->
-						<VirtualList items={filteredPlugins} let:item>
-							<div class="my-2">
-								<NeovimPluginCard
-									owner={item.owner}
-									name={item.name}
-									stars={item.stars.toString()}
-									configCount={item.configCount}
-									category={item.category}
-									shortDescription={item.shortDescription}
-								/>
-							</div>
-						</VirtualList>
-					</div>
-				{/if}
+					<VirtualList items={filteredPlugins} let:item>
+						<div class="my-2">
+							<NeovimPluginCard
+								owner={item.owner}
+								name={item.name}
+								stars={item.stars.toString()}
+								configCount={item.configCount}
+								category={item.category}
+								shortDescription={item.shortDescription}
+							/>
+						</div>
+					</VirtualList>
+				</div>
 			</div>
 		</div>
 	</div>
