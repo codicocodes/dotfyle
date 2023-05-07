@@ -14,16 +14,11 @@
 	} from '@fortawesome/free-solid-svg-icons';
 	import { onMount } from 'svelte';
 	import Fa from 'svelte-fa';
-	import { goto } from '$app/navigation';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import { fly } from 'svelte/transition';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import type { PageData } from './$types';
-
-	function navigate(param: string, value: string) {
-		$page.url.searchParams.set(param, value);
-		goto($page.url.toString(), { keepFocus: true });
-	}
+	import { navigate } from '$lib/navigate';
 
 	$: selectedCategories =
 		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
@@ -108,7 +103,7 @@
 							<button
 								on:click={() => {
 									sort = 'new';
-									navigate('sort', sort);
+									navigate($page, 'sort', sort);
 								}}
 							>
 								{#if sort === 'new'}
@@ -138,7 +133,7 @@
 							<button
 								on:click={() => {
 									sort = 'popular';
-									navigate('sort', sort);
+									navigate($page, 'sort', sort);
 								}}
 							>
 								{#if sort === 'popular'}
@@ -180,7 +175,7 @@
 												on:click={() => {
 													selectedCategoriesSet.delete(category);
 													selectedCategories = [...selectedCategoriesSet];
-													navigate('categories', selectedCategories.join(','));
+													navigate($page, 'categories', selectedCategories.join(','));
 												}}
 											>
 												<div class="force-white-text">
@@ -205,7 +200,7 @@
 											on:click={() => {
 												selectedCategories.push(currCategory);
 												selectedCategories = selectedCategories;
-												navigate('categories', selectedCategories.join(','));
+												navigate($page, 'categories', selectedCategories.join(','));
 											}}
 										>
 											{currCategory}
