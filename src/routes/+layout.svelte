@@ -1,5 +1,7 @@
 <script lang="ts">
+	import 'nprogress/nprogress.css';
 	import { invalidate } from '$app/navigation';
+	import { navigating } from '$app/stores';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
@@ -13,6 +15,7 @@
 	import { DoubleBounce } from 'svelte-loading-spinners';
 	import '../app.css';
 	import type { LayoutData } from './$types';
+	import nProgress from 'nprogress';
 	export let data: LayoutData;
 	$: ({ user } = data);
 
@@ -39,6 +42,16 @@
 		syncing = false;
 		isOpen = false;
 	}
+
+	nProgress.configure({
+		minimum: 0.16,
+	});
+
+	$: {
+		if ($navigating) {
+			nProgress.start();
+		} else nProgress.done();
+	}
 </script>
 
 <svelte:head>
@@ -48,11 +61,11 @@
 	<meta property="og:url" content="https://dotfyle.com" />
 	<meta property="og:image" content="/dotfyle.png" />
 	<meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@codicocodes" />
-  <meta name="twitter:creator" content="@codicocodes" />
-  <meta name="twitter:title" content="Dotfyle" />
-  <meta name="twitter:description" content="Discover and share neovim configs and plugins" />
-  <meta name="twitter:image" content="/dotfyle.png" />
+	<meta name="twitter:site" content="@codicocodes" />
+	<meta name="twitter:creator" content="@codicocodes" />
+	<meta name="twitter:title" content="Dotfyle" />
+	<meta name="twitter:description" content="Discover and share neovim configs and plugins" />
+	<meta name="twitter:image" content="/dotfyle.png" />
 </svelte:head>
 
 {#if isOpen}
@@ -128,15 +141,17 @@
 					</div>
 				{/if}
 			{:else}
-      <div class="hidden sm:block">
-				<GithubLoginButton />
-      </div>
-      <div class="text-black sm:hidden flex items-center bg-gradient-to-br from-cyan-500 to-green-500 px-2 py-1 rounded-full">
-				<a href={'/api/auth/github'} class="flex items-center gap-1">
-        <Fa icon={faGithub} />
-        auth
-        </a>
-      </div>
+				<div class="hidden sm:block">
+					<GithubLoginButton />
+				</div>
+				<div
+					class="text-black sm:hidden flex items-center bg-gradient-to-br from-cyan-500 to-green-500 px-2 py-1 rounded-full"
+				>
+					<a href={'/api/auth/github'} class="flex items-center gap-1">
+						<Fa icon={faGithub} />
+						auth
+					</a>
+				</div>
 			{/if}
 		</div>
 	</div>
@@ -188,4 +203,7 @@
 
 <style global>
 	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+	:global(#nprogress .bar) {
+    @apply bg-emerald-600;
+	}
 </style>
