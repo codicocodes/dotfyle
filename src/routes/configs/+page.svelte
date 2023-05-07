@@ -32,7 +32,7 @@
 				class="w-full sm:w-1/2 p-1 sm:p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
 		</div>
-		<div class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-320px)]">
+		<div class="flex flex-col h-[calc(100vh-220px)] sm:h-[calc(100vh-320px)]">
 			<!-- 
           we need to use a virtual list otherwise rerendering is too heavy
           only way i got it to work was with 100vh - 420px to ensure we don't have double scroll y bars
