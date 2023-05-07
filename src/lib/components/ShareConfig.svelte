@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import Fa from 'svelte-fa';
 	import { faShare } from '@fortawesome/free-solid-svg-icons';
 	import CoolTextWithChildren from './CoolTextWithChildren.svelte';
 	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	let open = false;
 	export let owner: string;
 	export let slug: string;
@@ -15,10 +16,12 @@
 		if (event.code === 'Escape') open = false;
 	}
 
-	document.addEventListener('keydown', handleEscape);
+	onMount(() => {
+		if (browser) document.addEventListener('keydown', handleEscape);
+	});
 
 	onDestroy(() => {
-		document.removeEventListener('keydown', handleEscape, true);
+		if (browser) document.removeEventListener('keydown', handleEscape, true);
 	});
 </script>
 
@@ -36,13 +39,13 @@
 {#if open}
 	<div
 		on:click={() => (open = false)}
-		class="fixed top-0 right-0 h-screen w-screen flex items-center justify-center"
+		class="z-10 fixed top-0 right-0 h-screen w-screen flex items-center justify-center"
 	>
 		<div
 			on:click={(e) => {
 				e.stopPropagation();
 			}}
-			class="z-50 fixed bg-gray-700 p-8 flex flex-col gap-2 rounded"
+			class="z-50 fixed bg-gray-700 p-8 flex flex-col gap-8 rounded w-1/3"
 		>
 			<h2 class="flex w-full font-semibold">Share</h2>
 			<div class="flex">
