@@ -2,17 +2,18 @@
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
-	import CoolLink from '$lib/components/CoolLink.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
+	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import PluginList from '$lib/components/PluginList.svelte';
+	import ShareConfig from '$lib/components/ShareConfig.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
-	import { faChevronRight, faRotate, faSearch, faX } from '@fortawesome/free-solid-svg-icons';
+	import { faChevronRight, faRotate, faSearch, faUser, faX } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { fade, slide } from 'svelte/transition';
 	import type { PageData } from './$types';
@@ -54,10 +55,20 @@
 	<div in:fade class="h-full flex flex-col gap-4 my-14 mx-4 sm:mx-8 lg:px-24">
 		<div class="flex flex-col gap-2">
 			<!-- profile area -->
-			<div class="flex items-center justify-between">
-				<h3 class="text-lg font-semibold tracking-wide">
-					<CoolLink href={`/${config.owner}`} text="profile" />
-				</h3>
+			<div class="flex items-center justify-end gap-2">
+
+				<ShareConfig owner={config.owner} slug={config.slug} />
+				<a href={`/${config.owner}`} class=" bg-gray-700 p-2 rounded">
+					<CoolTextWithChildren>
+						<div class="flex flex-row gap-2">
+							<div class="flex items-center force-white-text">
+								<Fa icon={faUser} />
+							</div>
+							<span class="font-semibold">profile</span>
+						</div>
+					</CoolTextWithChildren>
+				</a>
+			
 			</div>
 			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
 				<div class="flex flex-col gap-2 w-full">
