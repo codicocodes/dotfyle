@@ -11,7 +11,7 @@
 		ListboxOptions
 	} from '@rgossiaux/svelte-headlessui';
 	import Fa from 'svelte-fa';
-	import { faSeedling, faStar, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
+	import { faPuzzlePiece, faSeedling, faStar, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import { navigate } from '$lib/navigate';
@@ -20,15 +20,16 @@
 
 	let search = $page.url.searchParams.get('q') ?? '';
 
-	const sortingOptions = ['new', 'stars'] as const;
+	const sortingOptions = ['new', 'stars', 'plugins'];
 
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'new';
 
-	let sorting = rawSort === 'stars' || rawSort === 'new' ? rawSort : 'new';
+	let sorting = sortingOptions.includes(rawSort) ? rawSort : 'new';
 
 	const sortingIcons: Record<string, IconDefinition> = {
 		new: faSeedling,
-		stars: faStar
+		stars: faStar,
+		plugins: faPuzzlePiece,
 	} as const;
 
 	$: filteredConfig = data.configs.filter((p) => {
@@ -56,6 +57,11 @@
 				return a.stars > b.stars ? -1 : 1;
 			});
 		}
+		if (sorting === 'plugins') {
+			data.configs = data.configs.sort((a, b) => {
+				return a.pluginCount > b.pluginCount ? -1 : 1;
+			});
+		}
 	}
 </script>
 
@@ -72,9 +78,9 @@
         navigate($page, 'sort', sorting);
         }}>
 				<span class="hidden sm:block text-xs font-semibold"> sorting </span>
-				<ListboxButton class="flex gap-1 w-20">
+				<ListboxButton class="flex gap-1 w-24">
 					<div
-						class="cursor-pointer bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 sm:py-2 rounded sm:font-semibold"
+						class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 sm:py-2 rounded sm:font-semibold"
 					>
 						<div class="flex items-center force-white-text">
 							<Fa size="xs" icon={sortingIcons[sorting]} />
@@ -82,9 +88,9 @@
 						{sorting}
 					</div>
 				</ListboxButton>
-				<ListboxOptions class="sm:w-20 absolute flex flex-col gap-2 mt-2 z-10">
+				<ListboxOptions class="sm:w-24 absolute flex flex-col gap-2 mt-2 z-10">
 					{#each sortingOptions as option}
-						<ListboxOption value={option}>
+						<ListboxOption value={option} class="bg-gray-700 rounded">
 							{#if option === sorting}
 								<CoolTextWithChildren>
 									<div
