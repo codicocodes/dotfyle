@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
-	import { faBox, faCircle, faHashtag, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
-	import CoolTextWithChildren from './CoolTextWithChildren.svelte';
+	import { faHashtag, faStar, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 	export let owner: string;
 	export let name: string;
