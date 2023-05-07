@@ -21,6 +21,7 @@
 	import UnsyncedNeovimConfigCard from '$lib/components/UnsyncedNeovimConfigCard.svelte';
 	import UnsyncedNeovimConfigMetaData from '$lib/components/UnsyncedNeovimConfigMetaData.svelte';
 	import type { GithubRepository } from '$lib/server/github/schema';
+	import ShareConfig from '../ShareConfig.svelte';
 
 	export let repositories: GithubRepository[];
 	export let user: User;
@@ -67,6 +68,7 @@
 	>
 		{#if completed}
 			<div in:slide class="flex justify-end gap-4">
+        <ShareConfig owner={$unsyncedConfig.owner ?? ""} slug={$unsyncedConfig.slug ?? ""} />
 				<a
 					href={`/${$unsyncedConfig.owner}`}
 					class="flex items-center gap-1 text-green-500 hover:cursor-pointer hover:underline underline-offset-4 decoration-2"
