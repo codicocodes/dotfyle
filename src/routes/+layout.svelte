@@ -45,6 +45,7 @@
 
 	nProgress.configure({
 		minimum: 0.16,
+    showSpinner: false,
 	});
 
 	$: {
