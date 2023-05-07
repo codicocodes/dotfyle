@@ -2,10 +2,10 @@
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
 	import {
-		faChevronRight,
 		faFileCode,
 		faPuzzlePiece,
-		faRotate
+		faRotate,
+		faUser,
 	} from '@fortawesome/free-solid-svg-icons';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import RepoPicker from '$lib/components/RepoPicker.svelte';
@@ -17,11 +17,11 @@
 	import type { InitFileNames } from '$lib/server/nvim-sync/services/init-file-finder';
 	import type { NeovimPlugin, User } from '@prisma/client';
 	import PluginList from '$lib/components/PluginList.svelte';
-	import CoolText from '$lib/components/CoolText.svelte';
 	import UnsyncedNeovimConfigCard from '$lib/components/UnsyncedNeovimConfigCard.svelte';
 	import UnsyncedNeovimConfigMetaData from '$lib/components/UnsyncedNeovimConfigMetaData.svelte';
 	import type { GithubRepository } from '$lib/server/github/schema';
 	import ShareConfig from '../ShareConfig.svelte';
+	import CoolTextWithChildren from '../CoolTextWithChildren.svelte';
 
 	export let repositories: GithubRepository[];
 	export let user: User;
@@ -68,13 +68,16 @@
 	>
 		{#if completed}
 			<div in:slide class="flex justify-end gap-4">
-        <ShareConfig owner={$unsyncedConfig.owner ?? ""} slug={$unsyncedConfig.slug ?? ""} />
-				<a
-					href={`/${$unsyncedConfig.owner}`}
-					class="flex items-center gap-1 text-green-500 hover:cursor-pointer hover:underline underline-offset-4 decoration-2"
-				>
-					<CoolText text="see profile" />
-					<Fa icon={faChevronRight} size="xs" />
+				<ShareConfig owner={$unsyncedConfig.owner ?? ''} slug={$unsyncedConfig.slug ?? ''} />
+				<a href={`/${$unsyncedConfig.owner}`} class=" bg-gray-700 p-2 rounded">
+					<CoolTextWithChildren>
+						<div class="flex flex-row gap-2">
+							<div class="flex items-center force-white-text">
+								<Fa icon={faUser} />
+							</div>
+							<span class="font-semibold">profile</span>
+						</div>
+					</CoolTextWithChildren>
 				</a>
 			</div>
 		{/if}
