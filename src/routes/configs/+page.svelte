@@ -14,14 +14,17 @@
 	import { faSeedling, faStar, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
+	import { navigate } from '$lib/navigate';
 
 	export let data: PageData;
 
 	let search = $page.url.searchParams.get('q') ?? '';
 
-	let sorting = 'new';
-
 	const sortingOptions = ['new', 'stars'] as const;
+
+	let rawSort: string = $page.url.searchParams.get('sort') ?? 'new';
+
+	let sorting = rawSort === 'stars' || rawSort === 'new' ? rawSort : 'new';
 
 	const sortingIcons: Record<string, IconDefinition> = {
 		new: faSeedling,
@@ -40,6 +43,20 @@
 
 		return searchable.toLowerCase().includes(search.toLowerCase());
 	});
+
+	$: {
+		if (sorting === 'new') {
+			data.configs = data.configs.sort((a, b) => {
+				if (a.createdAt === b.createdAt) return 0;
+				return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
+			});
+		}
+		if (sorting === 'stars') {
+			data.configs = data.configs.sort((a, b) => {
+				return a.stars > b.stars ? -1 : 1;
+			});
+		}
+	}
 </script>
 
 <div class="w-full flex flex-col items-center px-8">
@@ -50,7 +67,10 @@
 				bind:value={search}
 				class="w-full sm:w-1/2 p-1 sm:p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
-			<Listbox class="relative" value={sorting} on:change={(e) => (sorting = e.detail)}>
+			<Listbox class="relative" value={sorting} on:change={(e) => {
+        sorting = e.detail
+        navigate($page, 'sort', sorting);
+        }}>
 				<span class="hidden sm:block text-xs font-semibold"> sorting </span>
 				<ListboxButton class="flex gap-1 w-20">
 					<div
