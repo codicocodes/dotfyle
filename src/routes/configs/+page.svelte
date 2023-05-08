@@ -11,7 +11,12 @@
 		ListboxOptions
 	} from '@rgossiaux/svelte-headlessui';
 	import Fa from 'svelte-fa';
-	import { faPuzzlePiece, faSeedling, faStar, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faPuzzlePiece,
+		faSeedling,
+		faStar,
+		type IconDefinition
+	} from '@fortawesome/free-solid-svg-icons';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import { navigate } from '$lib/navigate';
@@ -29,7 +34,7 @@
 	const sortingIcons: Record<string, IconDefinition> = {
 		new: faSeedling,
 		stars: faStar,
-		plugins: faPuzzlePiece,
+		plugins: faPuzzlePiece
 	} as const;
 
 	$: filteredConfig = data.configs.filter((p) => {
@@ -71,16 +76,19 @@
 		<div class="flex items-center justify-center mb-4 gap-2">
 			<input
 				bind:value={search}
-				class="w-full sm:w-1/2 p-1 sm:p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
+				class="w-full sm:w-1/2 p-1 sm:p-2 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
-			<Listbox class="relative" value={sorting} on:change={(e) => {
-        sorting = e.detail
-        navigate($page, 'sort', sorting);
-        }}>
-				<span class="hidden sm:block text-xs font-semibold"> sorting </span>
+			<Listbox
+				class="relative h-full"
+				value={sorting}
+				on:change={(e) => {
+					sorting = e.detail;
+					navigate($page, 'sort', sorting);
+				}}
+			>
 				<ListboxButton class="flex gap-1 w-24">
 					<div
-						class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 sm:py-2 rounded sm:font-semibold"
+						class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 p-2 sm:py-2 rounded sm:font-semibold"
 					>
 						<div class="flex items-center force-white-text">
 							<Fa size="xs" icon={sortingIcons[sorting]} />

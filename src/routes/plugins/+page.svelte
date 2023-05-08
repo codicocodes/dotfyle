@@ -92,7 +92,7 @@
 		<div class="flex items-center justify-center">
 			<input
 				bind:value={search}
-				class="w-full sm:w-1/2 p-1 sm:p-4 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
+				class="w-full sm:w-1/2 p-1 sm:p-2 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
 		</div>
 		<div class="grid grid-cols-10 sm:gap-4 my-2 sm:my-4 max-w-5xl text-xl">
