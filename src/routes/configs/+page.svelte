@@ -101,25 +101,25 @@
 						<ListboxOption value={option} class="bg-gray-700 rounded">
 							{#if option === sorting}
 								<CoolTextWithChildren>
-									<div
+									<button
 										class="cursor-pointer bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded font-semibold"
 									>
 										<div class="flex items-center force-white-text">
 											<Fa size="xs" icon={sortingIcons[option]} />
 										</div>
 										{option}
-									</div>
+									</button>
 								</CoolTextWithChildren>
 							{:else}
 								<CoolTextOnHover>
-									<div
+									<button
 										class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
 									>
 										<div class="flex items-center force-white-text">
 											<Fa size="xs" icon={sortingIcons[option]} />
 										</div>
 										<span>{option}</span>
-									</div>
+									</button>
 								</CoolTextOnHover>
 							{/if}
 						</ListboxOption>
