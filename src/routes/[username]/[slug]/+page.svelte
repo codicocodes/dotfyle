@@ -7,6 +7,7 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
+	import NeovimConfigInstall from '$lib/components/NeovimConfigInstall.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import PluginList from '$lib/components/PluginList.svelte';
@@ -94,6 +95,9 @@
 						isMonorepo={config.root ? 'yes' : 'no'}
 						isFork={config.fork ? 'yes' : 'no'}
 					/>
+
+          <NeovimConfigInstall owner={config.owner} repo={config.repo} />
+
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
 						<CoolTextOnHover>
 							<GlossyCard>
