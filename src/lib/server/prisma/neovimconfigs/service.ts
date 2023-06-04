@@ -16,11 +16,11 @@ export async function getConfigsForPlugin(owner: string, name: string): Promise<
 					avatarUrl: true
 				}
 			},
-			neovimConfigPlugins: {
-				select: {
-					pluginId: true
-				}
-			}
+      _count: {
+        select: {
+          neovimConfigPlugins: true,
+        },
+      },
 		},
 		where: {
       neovimConfigPlugins: {
@@ -58,11 +58,11 @@ export async function getConfigBySlug(
 					avatarUrl: true
 				}
 			},
-			neovimConfigPlugins: {
-				select: {
-					pluginId: true
-				}
-			}
+      _count: {
+        select: {
+          neovimConfigPlugins: true,
+        },
+      },
 		},
 		where: {
 			slug,
@@ -89,7 +89,11 @@ export async function getConfigsByUsername(username: string): Promise<NeovimConf
 	const configs = await prismaClient.neovimConfig.findMany({
 		include: {
 			user: { select: { avatarUrl: true } },
-			neovimConfigPlugins: { select: { pluginId: true } }
+      _count: {
+        select: {
+          neovimConfigPlugins: true,
+        },
+      },
 		},
 		where: { user: { username } },
 		orderBy: [{ stars: 'desc' }, { repo: 'asc' }, { root: 'asc' }]
@@ -189,11 +193,11 @@ export async function searchNeovimConfigs() {
 					avatarUrl: true
 				}
 			},
-			neovimConfigPlugins: {
-				select: {
-					pluginId: true
-				}
-			}
+      _count: {
+        select: {
+          neovimConfigPlugins: true,
+        },
+      },
 		},
 		orderBy: {
 			createdAt: 'desc'
@@ -211,11 +215,11 @@ export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData
 					avatarUrl: true
 				}
 			},
-			neovimConfigPlugins: {
-				select: {
-					pluginId: true
-				}
-			}
+      _count: {
+        select: {
+          neovimConfigPlugins: true,
+        },
+      },
 		},
 		orderBy: {
 			createdAt: 'desc'
@@ -227,14 +231,14 @@ export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData
 }
 
 function attachMetaData({
-	neovimConfigPlugins,
+	_count,
 	user,
 	...config
 }: NestedNeovimConfigWithMetaData): NeovimConfigWithMetaData {
 	return {
 		...config,
 		ownerAvatar: user.avatarUrl,
-		pluginCount: neovimConfigPlugins.length
+		pluginCount: _count.neovimConfigPlugins,
 	};
 }
 
