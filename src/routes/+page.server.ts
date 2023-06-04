@@ -7,7 +7,7 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 		trpc(event).getNewestConfigs.query() as unknown as NeovimConfigWithMetaData[],
     trpc(event).searchPlugins.query({ sorting: 'new', take: 3 }),
     trpc(event).searchPlugins.query({ sorting: 'popular', take: 3 }),
-		trpc(event).getPluginsByCategory.query('colorscheme'),
+		trpc(event).searchPlugins.query({ category: 'colorscheme', sorting: "popular", take: 3 }),
     trpc(event).searchPlugins.query({ category: 'editing-support', sorting: 'popular', take: 3 }),
     trpc(event).searchPlugins.query({ category: 'preconfigured', sorting: 'popular', take: 3 }),
 	]);
