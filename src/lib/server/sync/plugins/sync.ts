@@ -14,8 +14,10 @@ export class PluginSyncer {
     this.configCount = configCount;
   }
   async sync() {
-    await this.syncStars()
-    await this.syncReadme()
+    await Promise.all([
+      this.syncStars(),
+      this.syncReadme(),
+    ])
     return this.updatePlugin()
   }
 
