@@ -20,6 +20,7 @@ export class AdminRequestValidator {
 	}
 
 	isInternalAPI(): boolean {
+    console.log('isInternalAPI', this.event.request.headers.get('Authorization'), INTERNAL_API_TOKEN)
 		if (!INTERNAL_API_TOKEN) {
 			return false;
 		}
