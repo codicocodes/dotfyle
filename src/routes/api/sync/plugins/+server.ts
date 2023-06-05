@@ -22,15 +22,33 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 
 	let synced = 0;
 
+	let rateLimit = false;
+
 	for (const plugin of plugins) {
 		limit.push(
 			runner(async () => {
-				const syncer = new PluginSyncer(token, plugin);
-				await syncer
-					.sync()
-					.catch((e) => [console.log(`Failed syncing ${plugin.owner}/${plugin.name}`, e.message)]);
-				synced++;
-				console.log(`Synced ${synced}/${plugins.length} plugins`);
+				if (rateLimit) {
+					return;
+				}
+				try {
+					const syncer = new PluginSyncer(token, plugin);
+					await syncer
+						.sync()
+						.catch((e) => [
+							console.log(`Failed syncing ${plugin.owner}/${plugin.name}`, e.message)
+						]);
+					synced++;
+					console.log(`Synced ${synced}/${plugins.length} plugins`);
+				} catch (e: any) {
+					if (e instanceof Error) {
+						console.log(`Failed syncing ${plugin.owner}/${plugin.name}`, e.message);
+					}
+					if (e.status === 403) {
+						rateLimit = true;
+						const reset = e.response.headers['x-ratelimit-reset'];
+						console.log('Rate limit rill reset at UTC: ', new Date(reset * 1000));
+					}
+				}
 			})
 		);
 	}
