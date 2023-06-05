@@ -1,10 +1,10 @@
 name: "sync-configs"
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 2 * * *'
 
 jobs:
-  syncPlugins:
+  syncConfigs:
     runs-on: ubuntu-latest
     steps:
       - name: Sync configs 📦

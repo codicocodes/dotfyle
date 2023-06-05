@@ -4,7 +4,7 @@ on:
     - cron: '*/5 * * * *'
 
 jobs:
-  syncPlugins:
+  seedPlugins:
     runs-on: ubuntu-latest
     steps:
       - name: Seed plugins 📦
