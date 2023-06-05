@@ -58,6 +58,7 @@
 		"@trpc/server": "^10.25.0",
 		"delay": "^5.0.0",
 		"jsonwebtoken": "^9.0.0",
+		"p-limit": "github:sindresorhus/p-limit",
 		"svelte-fa": "^3.0.3",
 		"trpc-sveltekit": "^3.5.7",
 		"zod": "^3.21.4"

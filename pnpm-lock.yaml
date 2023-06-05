@@ -25,6 +25,9 @@ dependencies:
   jsonwebtoken:
     specifier: ^9.0.0
     version: 9.0.0
+  p-limit:
+    specifier: github:sindresorhus/p-limit
+    version: github.com/sindresorhus/p-limit/38a6773e552d24f4c9eb2d79d57b6cff017c587d
   svelte-fa:
     specifier: ^3.0.3
     version: 3.0.3
@@ -2744,6 +2747,20 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /yocto-queue@1.0.0:
+    resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
+    engines: {node: '>=12.20'}
+    dev: false
+
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
+
+  github.com/sindresorhus/p-limit/38a6773e552d24f4c9eb2d79d57b6cff017c587d:
+    resolution: {tarball: https://codeload.github.com/sindresorhus/p-limit/tar.gz/38a6773e552d24f4c9eb2d79d57b6cff017c587d}
+    name: p-limit
+    version: 4.0.0
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      yocto-queue: 1.0.0
     dev: false
