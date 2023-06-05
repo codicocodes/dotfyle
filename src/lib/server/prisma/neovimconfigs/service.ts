@@ -4,9 +4,32 @@ import type {
 	CreateNeovimConfigDTO,
 	NeovimConfigWithMetaData,
 	NeovimConfigWithPlugins,
+	NeovimConfigWithToken,
 	NestedNeovimConfigWithMetaData,
-	NestedNeovimConfigWithPlugins
+	NestedNeovimConfigWithPlugins,
 } from './schema';
+
+export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
+	const configs = await prismaClient.neovimConfig.findMany({
+		include: {
+			user: {
+				select: {
+          githubToken: {
+            select: {
+              accessToken: true,
+            }
+          }
+				}
+			},
+		},
+	});
+	return configs.map(({user, ...config }) => {
+    return {
+      ...config,
+      _token: user.githubToken?.accessToken,
+    }
+  }).filter(c => !!c._token) as NeovimConfigWithToken[];
+}
 
 export async function getConfigsForPlugin(owner: string, name: string): Promise<NeovimConfigWithMetaData[]> {
 	const configs = await prismaClient.neovimConfig.findMany({

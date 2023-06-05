@@ -29,6 +29,17 @@ export type NestedNeovimConfigWithMetaData = NeovimConfig & {
     neovimConfigPlugins: number;
   };
 }
+export type NestedNeovimConfigWithToken = NeovimConfig & {
+    user: {
+        githubToken: {
+            accessToken: string;
+        } | undefined;
+    };
+}
+
+export interface NeovimConfigWithToken extends NeovimConfig {
+  _token: string;
+}
 
 export interface NeovimConfigWithPlugins extends NeovimConfig {
   plugins: NeovimPlugin[];

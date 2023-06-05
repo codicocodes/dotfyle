@@ -169,3 +169,11 @@ export async function syncManagerFactory(user: User, config: NeovimConfig): Prom
   const trackedPlugins = await getAllNeovimPluginNames()
 	return new SyncManager(token, tree, config, trackedPlugins);
 }
+
+export class SyncManagerFactory {
+  constructor(private trackedPlugins: NeovimPluginIdentifier[]) {}
+  async create(token: string, config: NeovimConfig) {
+    const tree = await fetchRepoFileTree(token, config.owner, config.repo, config.branch);
+    return new SyncManager(token, tree, config, this.trackedPlugins);
+  }
+}
