@@ -16,11 +16,14 @@ export class AdminRequestValidator {
 			return;
 		}
 		const user = verifyToken(this.event.cookies);
-    this.validateAdmin(user)
+		this.validateAdmin(user);
 	}
 
 	isInternalAPI(): boolean {
-    console.log('isInternalAPI', this.event.request.headers.get('Authorization'), INTERNAL_API_TOKEN)
+		console.log('isInternalAPI', {
+			header: this.event.request.headers.get('Authorization'),
+			INTERNAL_API_TOKEN
+		});
 		if (!INTERNAL_API_TOKEN) {
 			return false;
 		}
@@ -38,4 +41,3 @@ export class AdminRequestValidator {
 		}
 	}
 }
-
