@@ -28,7 +28,7 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 					const syncer = new PluginSyncer(token, plugin);
 					await syncer
 						.sync()
-						.catch((e) => [console.log(`Failed syncing ${plugin.owner}/${plugin.name}`, e)]);
+						.catch((e) => [console.log(`Failed syncing ${plugin.owner}/${plugin.name}`, e.message)]);
 					synced++;
 					console.log(`Synced ${synced}/${plugins.length} plugins`);
 				})
