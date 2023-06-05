@@ -7,7 +7,7 @@ jobs:
   syncPlugins:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync plugins 📦
+      - name: Sync configs 📦
         uses: JamesIves/fetch-api-data-action@v2
         with:
           endpoint: https://dotfyle.com/api/sync/configs

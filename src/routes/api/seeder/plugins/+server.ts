@@ -6,6 +6,6 @@ import { AdminRequestValidator } from '../../common/AdminRequestValidator';
 export const GET: RequestHandler = async function (event: RequestEvent) {
 	new AdminRequestValidator(event).validate()
 	const plugins = await scrapeRockerBooAwesomeNeovim();
-	const saved = await upsertManyNeovimPlugins(plugins);
-	return new Response(JSON.stringify(saved, undefined, 4));
+	await upsertManyNeovimPlugins(plugins);
+	return new Response();
 };
