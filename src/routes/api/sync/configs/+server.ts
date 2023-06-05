@@ -14,33 +14,31 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 	if (running) {
 		throw error(429, 'limit');
 	}
-	try {
-		running = true;
-		const trackedPlugins = await getAllNeovimPluginNames();
-		const syncFactory = new SyncManagerFactory(trackedPlugins);
+	const limit = [];
+	running = true;
+	const trackedPlugins = await getAllNeovimPluginNames();
+	const syncFactory = new SyncManagerFactory(trackedPlugins);
 
-		let synced = 0;
+	let synced = 0;
 
-		const configs = await getConfigsWithToken();
-		const limit = [];
+	const configs = await getConfigsWithToken();
 
-		for (const { _token, ...config } of configs) {
-			limit.push(
-				runner(async () => {
-          try {
-            const syncer = await syncFactory.create(_token, config);
-            await syncer.treeSync()
-            synced++;
-            console.log(`Synced ${synced}/${configs.length} configs`);
-          } catch (e: any) {
-            console.log(`Failed syncing ${config.slug}`, e.message);
-          }
-				})
-			);
-		}
-    await Promise.all(limit)
-		return new Response();
-	} finally {
-		running = false;
+	for (const { _token, ...config } of configs) {
+		limit.push(
+			runner(async () => {
+				try {
+					const syncer = await syncFactory.create(_token, config);
+					await syncer.treeSync();
+					synced++;
+					console.log(`Synced ${synced}/${configs.length} configs`);
+				} catch (e: any) {
+					console.log(`Failed syncing ${config.slug}`, e.message);
+				}
+			})
+		);
 	}
+	limit.push(() => {
+		running = false;
+	});
+	return new Response();
 };
