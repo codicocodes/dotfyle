@@ -1,3 +1,4 @@
+import { ADMIN_GITHUB_ID } from '$lib/utils';
 import type { User } from '@prisma/client';
 import { prismaClient } from './../client';
 import type { UpsertUserSchema } from './schema';
@@ -38,6 +39,17 @@ export async function upsertUser({ accessToken, ...userData }: UpsertUserSchema)
 		update
 	});
 	return user;
+}
+
+export async function getAdminGithubToken() {
+	const token = await prismaClient.githubToken.findFirstOrThrow({
+		where: {
+			user: {
+				githubId: ADMIN_GITHUB_ID
+			}
+		}
+	});
+  return token.accessToken
 }
 
 export async function getGithubToken(userId: number) {

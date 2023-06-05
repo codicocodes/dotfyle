@@ -44,7 +44,7 @@ export function hasBeenOneDay(dateString: string) {
 }
 
 
-const ADMIN_GITHUB_ID = 76068197
+export const ADMIN_GITHUB_ID = 76068197
 
 export function isAdmin(user: User): boolean {
   return user.githubId === ADMIN_GITHUB_ID;
