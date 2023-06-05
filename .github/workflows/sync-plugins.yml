@@ -1,7 +1,7 @@
 name: "sync-plugins"
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 3 * * *'
 
 jobs:
   syncPlugins:
