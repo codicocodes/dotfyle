@@ -7,6 +7,5 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 	new AdminRequestValidator(event).validate()
 	const plugins = await scrapeRockerBooAwesomeNeovim();
 	const saved = await upsertManyNeovimPlugins(plugins);
-	const res = new Response(JSON.stringify(saved, undefined, 4));
-	return res;
+	return new Response(JSON.stringify(saved, undefined, 4));
 };
