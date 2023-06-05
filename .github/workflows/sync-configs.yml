@@ -1,7 +1,7 @@
-name: "sync-plugins"
+name: "sync-configs"
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 2 * * *'
 
 jobs:
   syncPlugins:
@@ -10,5 +10,5 @@ jobs:
       - name: Sync plugins 📦
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: https://dotfyle.com/api/sync/plugins
+          endpoint: https://dotfyle.com/api/sync/configs
           configuration: '{ "method": "GET", "headers": {"Authorization": "${{ secrets.INTERNAL_API_TOKEN }}"} }'

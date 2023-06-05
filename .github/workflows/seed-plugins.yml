@@ -1,14 +1,14 @@
 name: "sync-plugins"
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 1 * * *'
 
 jobs:
   syncPlugins:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync plugins 📦
+      - name: Seed plugins 📦
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: https://dotfyle.com/api/sync/plugins
+          endpoint: https://dotfyle.com/api/seeder/plugins
           configuration: '{ "method": "GET", "headers": {"Authorization": "${{ secrets.INTERNAL_API_TOKEN }}"} }'
