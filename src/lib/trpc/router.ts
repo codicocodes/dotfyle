@@ -24,6 +24,7 @@ import {
 import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
 import { hasBeenOneDay } from '$lib/utils';
 import { TRPCError } from '@trpc/server';
+import { error } from '@sveltejs/kit';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -125,7 +126,9 @@ export const router = t.router({
 			return z.string().parse(input);
 		})
 		.query(async ({ input: username }) => {
-			return getUserByUsername(username);
+			return getUserByUsername(username).catch(() => {
+        throw error(404, "user not found")
+      })
 		}),
 	getUser: t.procedure.query(async ({ ctx }) => {
 		return ctx.user;
