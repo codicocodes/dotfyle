@@ -32,11 +32,7 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 				}
 				try {
 					const syncer = new PluginSyncer(token, plugin);
-					await syncer
-						.sync()
-						.catch((e) => [
-							console.log(`Failed syncing ${plugin.owner}/${plugin.name}`, e.message)
-						]);
+					await syncer.sync()
 					synced++;
 					console.log(`Synced ${synced}/${plugins.length} plugins`);
 				} catch (e: any) {
