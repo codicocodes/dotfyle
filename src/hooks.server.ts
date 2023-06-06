@@ -1,16 +1,23 @@
 import { createContext } from '$lib/trpc/context';
-import { router } from '$lib/trpc/router';
+import { router, type Router } from '$lib/trpc/router';
 import type { Handle } from '@sveltejs/kit';
-import { TRPCError } from '@trpc/server';
+import type { TRPCError, inferRouterContext, ProcedureType } from '@trpc/server';
 import { createTRPCHandle } from 'trpc-sveltekit';
 
-export const onError = (opts: any) => {
-	const { error, type, path, input, ctx, req } = opts;
+export const onError = (opts: {
+	ctx?: inferRouterContext<Router>;
+	error: TRPCError;
+	path: string;
+	input: unknown;
+	req: RequestInit;
+	type: ProcedureType | 'unknown';
+}) => {
+	const { error } = opts;
 	if (error.code === 'INTERNAL_SERVER_ERROR') {
-    console.log(error)
-    error.message = 'Something went wrong'
+		console.log(error);
+		error.message = 'Something went wrong';
 	}
-  delete error.stack
+	delete error.stack;
 };
 
 export const handle = createTRPCHandle({
