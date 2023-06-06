@@ -2,58 +2,73 @@ import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { error, type RequestEvent } from '@sveltejs/kit';
 import pLimit from 'p-limit';
 
-export const createBulkApi = (getTasks: () => Promise<(() => Promise<void>)[]>) => {
-	const runner = pLimit(10);
-	let running = false;
+export class AsyncApiManager {
+	runner = pLimit(10);
+	running = false;
+	isRateLimited = false;
+	tasksDone = 0;
 
-	function start(event: RequestEvent) {
+  validate(event: RequestEvent) {
 		new AdminRequestValidator(event).validate();
-		if (running) {
+  }
+
+	lock() {
+		if (this.running) {
 			throw error(429, 'limit');
 		}
-		running = true;
+		this.running = true;
 	}
 
+	handleTaskError(e: any) {
+		if (e instanceof Error) {
+			console.log(`Failed task`, e.message);
+		}
+		if (e.status === 403) {
+			this.isRateLimited = true;
+			const reset = e.response.headers['x-ratelimit-reset'];
+			console.log('Rate limit rill reset at UTC: ', new Date(reset * 1000));
+		}
+	}
+
+	handleFinally(totalTasks: number) {
+		return () => {
+			this.tasksDone++;
+			console.log(`${this.tasksDone}/${totalTasks} tasks done.`);
+		};
+	}
+
+	deferCleanup() {
+		this.runner(async () => {
+			this.running = false;
+			this.isRateLimited = false;
+			this.tasksDone = 0;
+		});
+	}
+}
+
+type asyncTaskGetter = () => Promise<(() => Promise<void>)[]>;
+
+export function createAsyncTaskApi(getAsyncTasks: asyncTaskGetter) {
+  const manager = new AsyncApiManager()
 	return async (event: RequestEvent) => {
-		let rateLimitedTasks = false;
-		let tasksDone = 0;
+		manager.validate(event);
+		manager.lock();
 
-		function handleError(e: any) {
-			if (e instanceof Error) {
-				console.log(`Failed task`, e.message);
-			}
-			if (e.status === 403) {
-				rateLimitedTasks = true;
-				const reset = e.response.headers['x-ratelimit-reset'];
-				console.log('Rate limit rill reset at UTC: ', new Date(reset * 1000));
-			}
-		}
-
-		function handleFinally(totalTasks: number) {
-			return () => {
-				tasksDone++;
-				console.log(`${tasksDone}/${totalTasks} tasks done.`);
-			};
-		}
-
-		start(event);
-
-		const tasks = await getTasks();
+		const tasks = await getAsyncTasks();
 
 		for (const task of tasks) {
-			runner(() => {
-				if (rateLimitedTasks) {
+			manager.runner(() => {
+				if (manager.isRateLimited) {
 					return;
 				}
-				task().catch(handleError).finally(handleFinally(tasks.length));
+				task()
+					.catch((e) => manager.handleTaskError(e))
+					.finally(manager.handleFinally(tasks.length));
 			});
 		}
 
-		runner(async () => {
-			running = false;
-			rateLimitedTasks = false;
-		});
+		manager.deferCleanup();
 
 		return new Response();
 	};
-};
+}

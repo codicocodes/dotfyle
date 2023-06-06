@@ -1,4 +1,4 @@
-import { createBulkApi } from '$lib/server/api/bulkApi';
+import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
 import { searchPlugins } from '$lib/server/prisma/neovimplugins/service';
 import { getAdminGithubToken } from '$lib/server/prisma/users/service';
 import { PluginSyncer } from '$lib/server/sync/plugins/sync';
@@ -12,4 +12,4 @@ const getSyncTasks = async () => {
 	});
 };
 
-export const GET: RequestHandler = createBulkApi(getSyncTasks)
+export const GET: RequestHandler = createAsyncTaskApi(getSyncTasks)

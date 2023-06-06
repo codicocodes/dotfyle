@@ -1,4 +1,4 @@
-import { createBulkApi } from '$lib/server/api/bulkApi';
+import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
 import { fetchGithubRepositoryByName } from '$lib/server/github/api';
 import { upsertNeovimConfigDTOFactory } from '$lib/server/nvim-sync/services/sync-repo-info';
 import { SyncManagerFactory } from '$lib/server/nvim-sync/services/SyncManager';
@@ -8,7 +8,7 @@ import type { NeovimConfig } from '@prisma/client';
 import type { RequestHandler } from '@sveltejs/kit';
 
 
-const getSyncTasks = async () => {
+const getConfigSyncTasks = async () => {
 	const trackedPlugins = await getAllNeovimPluginNames();
 	const configs = await getConfigsWithToken();
 	const syncFactory = new SyncManagerFactory(trackedPlugins);
@@ -27,4 +27,4 @@ async function syncRepoInfo(token: string, config: NeovimConfig) {
 	return upsertNeovimConfig(config.userId, upsertDTO);
 }
 
-export const GET: RequestHandler = createBulkApi(getSyncTasks);
+export const GET: RequestHandler = createAsyncTaskApi(getConfigSyncTasks);
