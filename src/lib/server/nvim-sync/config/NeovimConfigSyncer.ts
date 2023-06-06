@@ -6,12 +6,12 @@ import type { NeovimPluginIdentifier } from "$lib/server/prisma/neovimplugins/sc
 import { getAllNeovimPluginNames } from "$lib/server/prisma/neovimplugins/service";
 import { getGithubToken } from "$lib/server/prisma/users/service";
 import { NeovimPluginManager, type NeovimConfig, type User } from "@prisma/client";
-import { FileContentTraverser } from "./FileContentTraverser";
+import { GithubFileContentTraverser } from "./FileContentTraverser";
 import { findPluginManager } from "./NeovimPluginFinder";
 
 export class NeovimConfigSyncer {
 	foundPlugins: Set<number> = new Set();
-	treeTraverser: FileContentTraverser;
+	treeTraverser: GithubFileContentTraverser;
 	syncedPluginManager = false;
 	constructor(
 		token: string,
@@ -19,7 +19,7 @@ export class NeovimConfigSyncer {
 		public config: NeovimConfig,
 		private trackedPlugins: NeovimPluginIdentifier[]
 	) {
-		this.treeTraverser = new FileContentTraverser(
+		this.treeTraverser = new GithubFileContentTraverser(
 			token,
 			config.owner,
 			config.repo,
