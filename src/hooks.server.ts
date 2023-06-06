@@ -6,10 +6,10 @@ import { createTRPCHandle } from 'trpc-sveltekit';
 
 export const onError = (opts: any) => {
 	const { error, type, path, input, ctx, req } = opts;
-	// if (error.code === 'INTERNAL_SERVER_ERROR') {
-	// }
-  console.log(error)
-  error.message = 'Something went wrong'
+	if (error.code === 'INTERNAL_SERVER_ERROR') {
+    console.log(error)
+    error.message = 'Something went wrong'
+	}
   delete error.stack
 };
 
