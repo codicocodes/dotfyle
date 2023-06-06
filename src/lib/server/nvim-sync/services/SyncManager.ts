@@ -163,7 +163,7 @@ export interface PluginFinder {
 	findPlugins(tree: GithubTree): Promise<string[]>;
 }
 
-export async function syncManagerFactory(user: User, config: NeovimConfig): Promise<SyncManager> {
+export async function getSyncManager(user: User, config: NeovimConfig): Promise<SyncManager> {
 	const token = await getGithubToken(user.id);
 	const tree = await fetchRepoFileTree(token, config.owner, config.repo, config.branch);
 	const trackedPlugins = await getAllNeovimPluginNames();
