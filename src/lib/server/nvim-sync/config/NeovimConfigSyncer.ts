@@ -1,15 +1,13 @@
-import { fetchFile, fetchRepoFileTree } from '$lib/server/github/api';
-import type { GithubTree } from '$lib/server/github/schema';
-import type { NeovimConfigWithPlugins } from '$lib/server/prisma/neovimconfigs/schema';
-import { addPlugins, updatePluginManager } from '$lib/server/prisma/neovimconfigs/service';
-import type { NeovimPluginIdentifier } from '$lib/server/prisma/neovimplugins/schema';
-import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
-import { getGithubToken } from '$lib/server/prisma/users/service';
-import { NeovimPluginManager, type NeovimConfig, type User } from '@prisma/client';
-import { TRPCError } from '@trpc/server';
-import { LazyLockSchema } from '../schema';
-import { FileContentTraverser } from './FileContentTraverser';
-import { findLazyLockNode, findPluginManager } from './plugins/syncer';
+import { fetchRepoFileTree } from "$lib/server/github/api";
+import type { GithubTree } from "$lib/server/github/schema";
+import type { NeovimConfigWithPlugins } from "$lib/server/prisma/neovimconfigs/schema";
+import { addPlugins, updatePluginManager } from "$lib/server/prisma/neovimconfigs/service";
+import type { NeovimPluginIdentifier } from "$lib/server/prisma/neovimplugins/schema";
+import { getAllNeovimPluginNames } from "$lib/server/prisma/neovimplugins/service";
+import { getGithubToken } from "$lib/server/prisma/users/service";
+import { NeovimPluginManager, type NeovimConfig, type User } from "@prisma/client";
+import { FileContentTraverser } from "./FileContentTraverser";
+import { findPluginManager } from "./NeovimPluginFinder";
 
 export class NeovimConfigSyncer {
 	foundPlugins: Set<number> = new Set();
@@ -113,54 +111,6 @@ export class NeovimConfigSyncer {
 			}
 		}
 	}
-}
-
-export function simplePluginFinderFactory(
-	pluginManager: NeovimPluginManager,
-	token: string,
-	config: NeovimConfig
-): PluginFinder {
-	switch (pluginManager) {
-		case NeovimPluginManager.Lazy:
-			return new LazyLockPluginFinder(token, config);
-		case NeovimPluginManager.Packer:
-			throw new Error('Not Implemented');
-		default:
-			throw new Error('Not Implemented');
-	}
-}
-
-export class LazyLockPluginFinder implements PluginFinder {
-	constructor(private token: string, private config: NeovimConfig) {}
-
-	async findPlugins(tree: GithubTree) {
-		const sha = this.getLazyLockSha(tree);
-		const lazyLock = await this.getLazyLock(sha);
-		const pluginNames = Object.keys(lazyLock);
-		return pluginNames;
-	}
-
-	getLazyLockSha(tree: GithubTree): string {
-		const { sha } = findLazyLockNode(this.config.root, tree);
-		if (!sha)
-			throw new TRPCError({
-				message: 'unable to find lazy lock file',
-				code: 'INTERNAL_SERVER_ERROR'
-			});
-		return sha;
-	}
-
-	async getLazyLock(sha: string): Promise<LazyLockSchema> {
-		const { owner, repo } = this.config;
-		const file = await fetchFile(this.token, owner, repo, sha);
-		const content = Buffer.from(file.content, 'base64').toString();
-		const lazyLock = JSON.parse(content) as unknown;
-		return LazyLockSchema.parse(lazyLock);
-	}
-}
-
-export interface PluginFinder {
-	findPlugins(tree: GithubTree): Promise<string[]>;
 }
 
 export async function getNeovimConfigSyncer(user: User, config: NeovimConfig): Promise<NeovimConfigSyncer> {

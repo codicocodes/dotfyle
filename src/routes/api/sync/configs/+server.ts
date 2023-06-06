@@ -1,10 +1,8 @@
 import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
-import { fetchGithubRepositoryByName } from '$lib/server/github/api';
-import { upsertNeovimConfigDTOFactory } from '$lib/server/nvim-sync/services/sync-repo-info';
-import { NeovimConfigSyncerFactory } from '$lib/server/nvim-sync/services/SyncManager';
-import { getConfigsWithToken, upsertNeovimConfig } from '$lib/server/prisma/neovimconfigs/service';
+import { NeovimConfigSyncerFactory } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
+import { syncExistingRepoInfo } from '$lib/server/nvim-sync/config/syncRepoInfo';
+import { getConfigsWithToken } from '$lib/server/prisma/neovimconfigs/service';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
-import type { NeovimConfig } from '@prisma/client';
 import type { RequestHandler } from '@sveltejs/kit';
 
 
@@ -15,16 +13,10 @@ const getConfigSyncTasks = async () => {
 	return configs.map(({ _token, ...config }) => {
 		return async () => {
 			await Promise.all([
-				syncRepoInfo(_token, config),
+				syncExistingRepoInfo(_token, config),
 				syncFactory.create(_token, config).then((syncer) => syncer.treeSync()) ]);
 		};
 	});
 };
-
-async function syncRepoInfo(token: string, config: NeovimConfig) {
-	const repo = await fetchGithubRepositoryByName(token, config.owner, config.repo);
-	const upsertDTO = upsertNeovimConfigDTOFactory(config.owner, config.root, config.initFile, repo);
-	return upsertNeovimConfig(config.userId, upsertDTO);
-}
 
 export const GET: RequestHandler = createAsyncTaskApi(getConfigSyncTasks);

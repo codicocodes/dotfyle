@@ -2,11 +2,8 @@ import { isAuthenticated } from './middlewares/auth';
 import { t } from './t';
 import { z } from 'zod';
 import { getGithubRepositories, getRepoFileTree } from '$lib/server/github/services';
-import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/services/init-file-finder';
 import { getGithubToken, getUserByUsername } from '$lib/server/prisma/users/service';
 import { fetchRepoFileTree } from '$lib/server/github/api';
-import { syncRepoInfo, validateConfigPath } from '$lib/server/nvim-sync/services/sync-repo-info';
-import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/services/SyncManager';
 import {
 	getConfigBySlug,
 	getConfigsByUsername,
@@ -24,6 +21,9 @@ import {
 import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
 import { hasBeenOneDay } from '$lib/utils';
 import { TRPCError } from '@trpc/server';
+import { syncExistingRepoInfo, syncInitialRepoInfo, validateConfigPath } from '$lib/server/nvim-sync/config/syncRepoInfo';
+import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
+import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -170,13 +170,8 @@ export const router = t.router({
 			if (!hasBeenOneDay(configBeforeSync.lastSyncedAt.toString())) {
 				throw new TRPCError({ code: 'FORBIDDEN' });
 			}
-			const config = await syncRepoInfo(
-				user,
-				configBeforeSync.owner,
-				configBeforeSync.repo,
-				configBeforeSync.root,
-				configBeforeSync.initFile
-			);
+      const token = await getGithubToken(user.id)
+      const config = await syncExistingRepoInfo(token, configBeforeSync)
 			const syncer = await getNeovimConfigSyncer(user, config);
 			return await syncer.treeSync();
 		}),
@@ -197,7 +192,7 @@ export const router = t.router({
 			const token = await getGithubToken(user.id);
 			const tree = await fetchRepoFileTree(token, user.username, input.repo, input.branch);
 			validateConfigPath(tree, input.root ? `${input.root}/${input.initFile}` : input.initFile);
-			const config = await syncRepoInfo(
+			const config = await syncInitialRepoInfo(
 				user,
 				user.username,
 				input.repo,

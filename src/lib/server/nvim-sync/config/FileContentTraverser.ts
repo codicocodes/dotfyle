@@ -1,7 +1,11 @@
 import { fetchFile } from "$lib/server/github/api";
 import type { GithubTree } from "$lib/server/github/schema";
 
-export class FileContentTraverser {
+export interface IFileContentTraverser {
+  traverse(): AsyncGenerator<string, void, unknown>
+}
+
+export class FileContentTraverser implements IFileContentTraverser {
 	private shaQueue: string[];
 	constructor(
 		private token: string,
