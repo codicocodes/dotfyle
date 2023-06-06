@@ -1,7 +1,7 @@
+import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { upsertManyNeovimPlugins } from '$lib/server/prisma/neovimplugins/service';
 import { scrapeRockerBooAwesomeNeovim } from '$lib/server/seeder/plugins';
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
-import { AdminRequestValidator } from '../../common/AdminRequestValidator';
 
 export const GET: RequestHandler = async function (event: RequestEvent) {
 	new AdminRequestValidator(event).validate()

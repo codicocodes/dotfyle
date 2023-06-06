@@ -1,9 +1,9 @@
+import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { searchPlugins } from '$lib/server/prisma/neovimplugins/service';
 import { getAdminGithubToken } from '$lib/server/prisma/users/service';
 import { PluginSyncer } from '$lib/server/sync/plugins/sync';
 import { error, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
 import pLimit from 'p-limit';
-import { AdminRequestValidator } from '../../common/AdminRequestValidator';
 
 let running = false;
 

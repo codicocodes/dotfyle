@@ -1,3 +1,4 @@
+import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { fetchGithubRepositoryByName } from '$lib/server/github/api';
 import { upsertNeovimConfigDTOFactory } from '$lib/server/nvim-sync/services/sync-repo-info';
 import { SyncManagerFactory } from '$lib/server/nvim-sync/services/SyncManager';
@@ -6,7 +7,6 @@ import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/servic
 import type { NeovimConfig } from '@prisma/client';
 import { error, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
 import pLimit from 'p-limit';
-import { AdminRequestValidator } from '../../common/AdminRequestValidator';
 
 let running = false;
 
