@@ -1,7 +1,7 @@
 import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
 import { fetchGithubRepositoryByName } from '$lib/server/github/api';
 import { upsertNeovimConfigDTOFactory } from '$lib/server/nvim-sync/services/sync-repo-info';
-import { SyncManagerFactory } from '$lib/server/nvim-sync/services/SyncManager';
+import { NeovimConfigSyncerFactory } from '$lib/server/nvim-sync/services/SyncManager';
 import { getConfigsWithToken, upsertNeovimConfig } from '$lib/server/prisma/neovimconfigs/service';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
 import type { NeovimConfig } from '@prisma/client';
@@ -11,7 +11,7 @@ import type { RequestHandler } from '@sveltejs/kit';
 const getConfigSyncTasks = async () => {
 	const trackedPlugins = await getAllNeovimPluginNames();
 	const configs = await getConfigsWithToken();
-	const syncFactory = new SyncManagerFactory(trackedPlugins);
+	const syncFactory = new NeovimConfigSyncerFactory(trackedPlugins);
 	return configs.map(({ _token, ...config }) => {
 		return async () => {
 			await Promise.all([

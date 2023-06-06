@@ -11,7 +11,7 @@ import { LazyLockSchema } from '../schema';
 import { FileContentTraverser } from './FileContentTraverser';
 import { findLazyLockNode, findPluginManager } from './plugins/syncer';
 
-export class SyncManager {
+export class NeovimConfigSyncer {
 	foundPlugins: Set<number> = new Set();
 	treeTraverser: FileContentTraverser;
 	syncedPluginManager = false;
@@ -163,17 +163,17 @@ export interface PluginFinder {
 	findPlugins(tree: GithubTree): Promise<string[]>;
 }
 
-export async function getSyncManager(user: User, config: NeovimConfig): Promise<SyncManager> {
+export async function getNeovimConfigSyncer(user: User, config: NeovimConfig): Promise<NeovimConfigSyncer> {
 	const token = await getGithubToken(user.id);
 	const tree = await fetchRepoFileTree(token, config.owner, config.repo, config.branch);
 	const trackedPlugins = await getAllNeovimPluginNames();
-	return new SyncManager(token, tree, config, trackedPlugins);
+	return new NeovimConfigSyncer(token, tree, config, trackedPlugins);
 }
 
-export class SyncManagerFactory {
+export class NeovimConfigSyncerFactory {
 	constructor(private trackedPlugins: NeovimPluginIdentifier[]) {}
 	async create(token: string, config: NeovimConfig) {
 		const tree = await fetchRepoFileTree(token, config.owner, config.repo, config.branch);
-		return new SyncManager(token, tree, config, this.trackedPlugins);
+		return new NeovimConfigSyncer(token, tree, config, this.trackedPlugins);
 	}
 }

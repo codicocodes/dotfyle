@@ -6,7 +6,7 @@ import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/services/in
 import { getGithubToken, getUserByUsername } from '$lib/server/prisma/users/service';
 import { fetchRepoFileTree } from '$lib/server/github/api';
 import { syncRepoInfo, validateConfigPath } from '$lib/server/nvim-sync/services/sync-repo-info';
-import { getSyncManager } from '$lib/server/nvim-sync/services/SyncManager';
+import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/services/SyncManager';
 import {
 	getConfigBySlug,
 	getConfigsByUsername,
@@ -177,7 +177,7 @@ export const router = t.router({
 				configBeforeSync.root,
 				configBeforeSync.initFile
 			);
-			const syncer = await getSyncManager(user, config);
+			const syncer = await getNeovimConfigSyncer(user, config);
 			return await syncer.treeSync();
 		}),
 	createNeovimConfig: t.procedure
@@ -204,7 +204,7 @@ export const router = t.router({
 				input.root,
 				input.initFile
 			);
-			const syncer = await getSyncManager(user, config);
+			const syncer = await getNeovimConfigSyncer(user, config);
 			return await syncer.treeSync();
 		}),
 	findRepoInitFiles: t.procedure
