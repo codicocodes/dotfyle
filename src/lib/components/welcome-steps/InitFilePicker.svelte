@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { InitFile } from '$lib/server/nvim-sync/services/init-file-finder';
+	import type { InitFile } from '$lib/server/nvim-sync/config/InitFileFinder';
 	import { unsyncedConfig, type UnsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	import { trpc } from '$lib/trpc/client';
 	import { onMount } from 'svelte';
@@ -20,7 +20,7 @@
 	}
 
 	function isSelectedFile(f: InitFile, u: UnsyncedConfig): boolean {
-		const selectedSlug = (u?.root ?? '') + (u?.initFile ?? '');
+    const selectedSlug = (u?.root ?? '') + (u?.initFile ?? '');
 		const currentFileSlug = f.root + f.type;
 		return selectedSlug === currentFileSlug;
 	}

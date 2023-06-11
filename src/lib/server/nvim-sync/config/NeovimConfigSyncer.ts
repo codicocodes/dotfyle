@@ -44,7 +44,7 @@ export class NeovimConfigSyncer {
 			this.findPlugins(content);
 			this.findLeaderKey(content);
 		}
-		return await addPlugins(this.config.id, [...this.foundPlugins]);
+		return await addPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
 	}
 
 	findPlugins(content: string) {
