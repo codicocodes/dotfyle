@@ -42,8 +42,6 @@ export class AsyncApiManager {
 			this.running = false;
 			this.isRateLimited = false;
 			this.tasksDone = 0;
-		});
-		this.runner(async () => {
       console.log("Async job completed.")
 		});
 	}
