@@ -23,11 +23,11 @@ model User {
 }
 
 model GithubToken {
-  id          Int                     @id @default(autoincrement())
-  accessToken String                  
-  user        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int                     @unique
-  createdAt   DateTime                @default(now())
+  id          Int      @id @default(autoincrement())
+  accessToken String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int      @unique
+  createdAt   DateTime @default(now())
 }
 
 model NeovimConfig {
@@ -45,11 +45,12 @@ model NeovimConfig {
   user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        Int
   pluginManager NeovimPluginManager?
-  createdAt     DateTime     @default(now())
-  lastSyncedAt  DateTime     @default(now())
+  createdAt     DateTime             @default(now())
+  lastSyncedAt  DateTime             @default(now())
 
   neovimConfigPlugins NeovimConfigPlugins[]
-  syncs NeovimConfigSync[]
+  languageServers     LanguageServer[]
+  syncs               NeovimConfigSync[]
 
   @@unique([owner, repo, root])
   @@unique([owner, slug])
@@ -61,41 +62,53 @@ enum NeovimPluginManager {
 }
 
 model NeovimPlugin {
-  id                  Int           @id @default(autoincrement())
-  owner               String
-  name                String
-  type                String
-  source              String
-  category            String
-  link                String
-  shortDescription    String
-  createdAt           DateTime     @default(now())
-  readme              String       @default("")
-  stars               Int          @default(0)
+  id               Int      @id @default(autoincrement())
+  owner            String
+  name             String
+  type             String
+  source           String
+  category         String
+  link             String
+  shortDescription String
+  createdAt        DateTime @default(now())
+  readme           String   @default("")
+  stars            Int      @default(0)
 
   neovimConfigPlugins NeovimConfigPlugins[]
 
-  lastSyncedAt        DateTime?
-  addedLastWeek       Int          @default(0)
+  lastSyncedAt  DateTime?
+  addedLastWeek Int       @default(0)
+
   @@unique([owner, name])
 }
 
+model LanguageServer {
+  name           String
+  NeovimConfig   NeovimConfig? @relation(fields: [neovimConfigId], references: [id])
+  neovimConfigId Int?
+
+  @@unique([name])
+}
+
 model NeovimConfigPlugins {
-  config              NeovimConfig @relation(fields: [configId], references: [id], onDelete: Cascade)
-  configId            Int
-  plugin              NeovimPlugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
-  pluginId            Int
-  createdAt           DateTime     @default(now())
-  sync                NeovimConfigSync? @relation(fields: [sha, configId], references: [sha, configId], onDelete: Cascade)
-  sha                 String?
+  config    NeovimConfig      @relation(fields: [configId], references: [id], onDelete: Cascade)
+  configId  Int
+  plugin    NeovimPlugin      @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  pluginId  Int
+  createdAt DateTime          @default(now())
+  sync      NeovimConfigSync? @relation(fields: [sha, configId], references: [sha, configId], onDelete: Cascade)
+  sha       String?
+
   @@id([configId, pluginId])
 }
 
 model NeovimConfigSync {
-  sha                 String
-  syncedAt            DateTime     @default(now())
-  syncedPlugins       NeovimConfigPlugins[]
-  config              NeovimConfig @relation(fields: [configId], references: [id], onDelete: Cascade)
-  configId            Int
+  sha           String
+  syncedAt      DateTime              @default(now())
+  syncedPlugins NeovimConfigPlugins[]
+  config        NeovimConfig          @relation(fields: [configId], references: [id], onDelete: Cascade)
+  configId      Int
+
   @@id([configId, sha])
+  @@unique([sha, configId])
 }
