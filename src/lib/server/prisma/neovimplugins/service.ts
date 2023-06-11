@@ -18,17 +18,49 @@ function flattenConfigCount({
 	};
 }
 
-const orderByPopularity: [
+const orderByWeeklyAdded: [
+	{
+		addedLastWeek: 'desc',
+	},
 	{
 		neovimConfigPlugins: {
-			_count: 'desc';
+			_count: 'desc',
 		};
 	},
 	{
-		stars: 'desc';
+		stars: 'desc',
 	},
 	{
-		name: 'asc';
+		name: 'asc',
+	}
+] = [
+	{
+		addedLastWeek: 'desc',
+	},
+	{
+		neovimConfigPlugins: {
+			_count: 'desc'
+		}
+	},
+	{
+		stars: 'desc'
+	},
+	{
+		name: 'asc'
+	}
+];
+
+const orderByPopularity: [
+	{
+		neovimConfigPlugins: {
+			_count: 'desc',
+		};
+	},
+	{
+		stars: 'desc',
+	},
+	{
+		name: 'asc',
 	}
 ] = [
 	{
@@ -46,18 +78,18 @@ const orderByPopularity: [
 
 const orderByNew: [
 	{
-		createdAt: 'desc';
+		createdAt: 'desc',
 	},
 	{
 		neovimConfigPlugins: {
-			_count: 'desc';
+			_count: 'desc',
 		};
 	},
 	{
-		stars: 'desc';
+		stars: 'desc',
 	},
 	{
-		name: 'asc';
+		name: 'asc',
 	}
 ] = [
 	{
@@ -78,7 +110,8 @@ const orderByNew: [
 
 const orderByConfig = {
 	popular: orderByPopularity,
-	new: orderByNew
+	new: orderByNew,
+	trending: orderByWeeklyAdded,
 } as const;
 
 const selectConfigCount = {
@@ -110,7 +143,7 @@ const selectWithReadme = {
 export async function searchPlugins(
 	query: string | undefined = undefined,
 	category: string | undefined = undefined,
-	sorting: 'new' | 'popular' = 'popular',
+	sorting: 'new' | 'popular' | 'trending' = 'popular',
 	take: number | undefined = undefined
 ): Promise<NeovimPluginWithCount[]> {
 	const where = {

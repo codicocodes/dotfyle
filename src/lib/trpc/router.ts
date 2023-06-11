@@ -56,7 +56,7 @@ export const router = t.router({
 				.object({
 					query: z.string().optional(),
 					category: z.string().optional(),
-					sorting: z.enum(['new', 'popular']),
+					sorting: z.enum(['new', 'popular', 'trending']),
 					take: z.number().optional()
 				})
 				.parse(input);

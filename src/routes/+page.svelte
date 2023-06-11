@@ -5,11 +5,8 @@
 	import type { PageData } from './$types';
 	import {
 		faArrowDown,
-		faChartSimple,
-		faCog,
 		faFileCode,
-		faPaintbrush,
-		faPencil,
+		faFire,
 		faPuzzlePiece,
 		faSearch,
 		faSeedling
@@ -137,15 +134,14 @@
 	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
-				<Fa icon={faChartSimple} size="sm" />
-
-				popular plugins
+				<Fa icon={faFire} size="sm" />
+				trending plugins
 			</h3>
 			<CoolLink href="/plugins" text="more plugins" />
 		</div>
 
 		<BigGridContainer>
-			{#each data.popularPlugins as plugin, _}
+			{#each data.trendingPlugins as plugin, _}
 					<NeovimPluginCard
 						owner={plugin.owner}
 						name={plugin.name}
