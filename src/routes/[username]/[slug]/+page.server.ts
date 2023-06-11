@@ -1,4 +1,6 @@
+import { prismaClient } from '$lib/server/prisma/client';
 import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
+import { getNeovimConfigSyncs } from '$lib/server/prisma/neovimconfigsync/service';
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { trpc } from '$lib/trpc/client';
 import type { LanguageServer, NeovimPlugin } from '@prisma/client';
@@ -8,7 +10,7 @@ import type { PageServerLoad, PageServerLoadEvent } from './$types';
 export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
 	const username = event.params.username;
 	const slug = event.params.slug;
-	const [me, config, plugins, languageServers] = await Promise.all([
+	const [me, config, plugins, languageServers, syncs] = await Promise.all([
 		trpc(event).getUser.query(),
 		trpc(event).getConfigBySlug.query({
 			username,
@@ -21,14 +23,18 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 		trpc(event).getLanguageServersBySlug.query({
 			username,
 			slug
-		}) as unknown as LanguageServer[]
+		}) as unknown as LanguageServer[],
+    getNeovimConfigSyncs(username, slug)
 	]).catch(() => {
 		throw error(404, 'config not found');
 	});
+
+  console.log(syncs)
+
 	return {
 		me,
 		config,
 		plugins,
-    languageServers,
+		languageServers
 	};
 };
