@@ -119,8 +119,24 @@ export class NeovimConfigSyncer {
 				const leaderSplit = line.trim().split('=');
 				if (leaderSplit.length !== 2) continue;
 				const leaderKey = leaderSplit[1];
-        const parsedLeaderKey = leaderKey.trim()
+        const parsedLeaderKey = leaderKey.split("--")[0].trim()
 				switch (parsedLeaderKey) {
+					case '"""':
+					case '\'"\'':
+						return '"';
+					case '"\'"':
+					case '\'\'\'':
+						return '\'';
+					case '"-"':
+					case '\'-\'':
+						return '-';
+					case '";"':
+					case '\';\'':
+						return ';';
+          case '"\\<Space>"':
+          case '\'\\<Space>\'':
+          case '"\\<space>"':
+          case '\'\\<space>\'':
 					case '" "':
 					case '\' \'':
 						return 'Space';
