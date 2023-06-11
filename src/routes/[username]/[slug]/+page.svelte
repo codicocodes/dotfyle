@@ -160,13 +160,13 @@
 		</div>
 		<div class="w-full gap-2 flex flex-col">
 			<h3 class="text-lg font-semibold tracking-wide lowercase mt-2">
-				<span>{languageServers.length} language servers installed</span>
+				{languageServers.length} language servers installed
 			</h3>
 			{#if plugins.length > 0}
-				<div class="hidden sm:grid grid-cols-1 lg:grid-cols-3 gap-2">
+				<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
 					{#each languageServers as ls}
 						<GlossyCard>
-							<div class="flex items-center gap-2 p-2 font-semibold text-sm">
+							<div class="flex items-center gap-2 p-2 font-medium text-sm">
 								{ls.name}
 							</div>
 						</GlossyCard>
@@ -185,7 +185,7 @@
 		</div>
 		<div class="w-full gap-2 flex flex-col">
 			<h3 class="text-lg font-semibold tracking-wide lowercase mt-2">
-				<span>{plugins.length} plugins installed</span>
+				{plugins.length} plugins installed
 			</h3>
 			{#if plugins.length > 0}
 				<div class="sm:hidden">
