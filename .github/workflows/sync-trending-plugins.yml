@@ -1,0 +1,14 @@
+name: "sync-trending-plugins"
+on:
+  schedule:
+    - cron: '0 5 * * *'
+
+jobs:
+  syncPlugins:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync trending plugins 📦
+        uses: JamesIves/fetch-api-data-action@v2
+        with:
+          endpoint: https://dotfyle.com/api/sync/plugins/trending
+          configuration: '{ "method": "GET", "headers": {"Authorization": "${{ secrets.INTERNAL_API_TOKEN }}"} }'
