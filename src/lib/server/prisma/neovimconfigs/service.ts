@@ -190,8 +190,34 @@ export async function syncLanguageServers(id: number, sha: string, languageServe
 							}
 						},
 						create: {
-              sha,
-							languageServerName
+              languageServer: {
+                connectOrCreate: {
+                  where: {
+                    name: languageServerName,
+                  },
+                  create: {
+                    name: languageServerName,
+                  }
+                }
+              },
+							sync: {
+								connectOrCreate: {
+									where: {
+										configId_sha: {
+											configId: id,
+											sha
+										}
+									},
+									create: {
+										sha,
+										config: {
+											connect: {
+												id,
+											}
+										}
+									}
+								}
+							}
 						}
 					};
 				})
@@ -252,7 +278,7 @@ export async function syncConfigPlugins(
 				neovimConfigPlugins: {
 					connectOrCreate,
 					deleteMany: {
-            configId,
+						configId,
 						pluginId: {
 							notIn: pluginIds
 						}

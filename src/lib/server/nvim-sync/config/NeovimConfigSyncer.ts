@@ -5,7 +5,8 @@ import {
 	syncConfigPlugins,
 	saveLeaderkey,
 	syncLanguageServers,
-	updatePluginManager
+	updatePluginManager,
+	getConfigWithPlugins
 } from '$lib/server/prisma/neovimconfigs/service';
 import type { NeovimPluginIdentifier } from '$lib/server/prisma/neovimplugins/schema';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
@@ -19,6 +20,8 @@ export class NeovimConfigSyncer {
 	foundPlugins: Set<number> = new Set();
 	treeTraverser: GithubFileContentTraverser;
 	syncedPluginManager = false;
+	leaderkey = 'unknown';
+	languageServers: string[] = [];
 	constructor(
 		token: string,
 		private tree: GithubTree,
@@ -45,27 +48,32 @@ export class NeovimConfigSyncer {
 	}
 
 	async fileSyncer() {
-		let leaderKey;
-		const languageServers = [];
 		for await (const content of this.treeTraverser.traverse()) {
 			await this.syncPluginManager(content);
 			this.findPlugins(content);
-			if (!leaderKey) {
-				leaderKey = this.findLeaderKey(content);
-			}
-			for (const ls of findKnownLanguageServers(content)) {
-				languageServers.push(ls);
-			}
-		}
-		console.log({ languageServers });
-		if (leaderKey) {
-			await saveLeaderkey(this.config.id, leaderKey);
+      this.syncLeaderKey(content)
+      this.findLanguageServers(content)
 		}
 
-		if (languageServers.length > 0) {
-			await syncLanguageServers(this.config.id, this.tree.sha, languageServers);
+		await Promise.all([
+			saveLeaderkey(this.config.id, this.leaderkey),
+			syncLanguageServers(this.config.id, this.tree.sha, this.languageServers),
+			syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins])
+		]);
+
+		return getConfigWithPlugins(this.config.id);
+	}
+
+	syncLeaderKey(content: string) {
+		if (this.leaderkey === 'unknown') {
+			this.leaderkey = this.findLeaderKey(content) ?? this.leaderkey;
 		}
-		return syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
+	}
+
+	findLanguageServers(content: string) {
+    for (const ls of findKnownLanguageServers(content)) {
+      this.languageServers.push(ls);
+    }
 	}
 
 	findPlugins(content: string) {
@@ -119,7 +127,6 @@ export class NeovimConfigSyncer {
 		return false;
 	}
 
-	// TODO: fix this and add parsing for more leaderkeys than space
 	findLeaderKey(content: string): string | undefined {
 		for (const line of content.split('\n')) {
 			if (line.includes('mapleader')) {
