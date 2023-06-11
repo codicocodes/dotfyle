@@ -84,10 +84,9 @@ model NeovimPlugin {
 
 model LanguageServer {
   name           String
-  NeovimConfig   NeovimConfig? @relation(fields: [neovimConfigId], references: [id])
-  neovimConfigId Int?
-
+  configs        NeovimConfig[]
   @@unique([name])
+  @@id([name])
 }
 
 model NeovimConfigPlugins {
