@@ -38,6 +38,7 @@ model NeovimConfig {
   root          String               @default("")
   initFile      String
   branch        String
+  leaderkey     String               @default("unknown")
   fork          Boolean
   githubId      Int
   stars         Int

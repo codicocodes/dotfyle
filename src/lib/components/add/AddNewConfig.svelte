@@ -14,7 +14,6 @@
 	import { fade, fly, slide } from 'svelte/transition';
 	import InitFilePicker from '$lib/components/welcome-steps/InitFilePicker.svelte';
 	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
-	import type { InitFileNames } from '$lib/server/nvim-sync/services/init-file-finder';
 	import type { NeovimPlugin, User } from '@prisma/client';
 	import PluginList from '$lib/components/PluginList.svelte';
 	import UnsyncedNeovimConfigCard from '$lib/components/UnsyncedNeovimConfigCard.svelte';
@@ -22,6 +21,7 @@
 	import type { GithubRepository } from '$lib/server/github/schema';
 	import ShareConfig from '../ShareConfig.svelte';
 	import CoolTextWithChildren from '../CoolTextWithChildren.svelte';
+	import type { InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
 
 	export let repositories: GithubRepository[];
 	export let user: User;
