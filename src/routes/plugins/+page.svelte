@@ -34,7 +34,7 @@
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
 
 	let sort: 'popular' | 'new' | 'trending' =
-		rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
+		rawSort === 'popular' || rawSort === 'new' || rawSort === 'trending' ? rawSort : 'popular';
 	let search = $page.url.searchParams.get('q') ?? '';
 	let expantedTags = false;
 	let availableCategories: string[] = [];
