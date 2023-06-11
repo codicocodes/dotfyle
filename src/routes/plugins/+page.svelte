@@ -9,6 +9,7 @@
 		faChartSimple,
 		faChevronDown,
 		faChevronUp,
+		faFilter,
 		faFire,
 		faSeedling,
 		faX
@@ -20,6 +21,8 @@
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import type { PageData } from './$types';
 	import { navigate } from '$lib/navigate';
+	import Modal from '$lib/components/Modal.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	$: selectedCategories =
 		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
@@ -30,10 +33,12 @@
 
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
 
-	let sort: 'popular' | 'new' | 'trending' = rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
+	let sort: 'popular' | 'new' | 'trending' =
+		rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
 	let search = $page.url.searchParams.get('q') ?? '';
 	let expantedTags = false;
 	let availableCategories: string[] = [];
+  $: showFilter = false;
 
 	export let data: PageData;
 
@@ -93,184 +98,187 @@
 	<title>Search and find neovim plugins</title>
 </svelte:head>
 
+<Modal showModal={showFilter} onClose={() => (showFilter=false)}>
+	<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
+		<GlossyCard>
+			<div class="flex flex-col p-4 w-full gap-2">
+				<div class="flex gap-2 text-sm font-semibold">
+					<button
+						on:click={() => {
+							sort = 'new';
+							navigate($page, 'sort', sort);
+						}}
+					>
+						{#if sort === 'new'}
+							<CoolTextWithChildren>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faSeedling} />
+									</div>
+									new
+								</div>
+							</CoolTextWithChildren>
+						{:else}
+							<CoolTextOnHover>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faSeedling} />
+									</div>
+									new
+								</div>
+							</CoolTextOnHover>
+						{/if}
+					</button>
+					<button
+						on:click={() => {
+							sort = 'popular';
+							navigate($page, 'sort', sort);
+						}}
+					>
+						{#if sort === 'popular'}
+							<CoolTextWithChildren>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faChartSimple} />
+									</div>
+									<span>popular</span>
+								</div>
+							</CoolTextWithChildren>
+						{:else}
+							<CoolTextOnHover>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faChartSimple} />
+									</div>
+									<span>popular</span>
+								</div>
+							</CoolTextOnHover>
+						{/if}
+					</button>
+					<button
+						on:click={() => {
+							sort = 'trending';
+							navigate($page, 'sort', sort);
+						}}
+					>
+						{#if sort === 'trending'}
+							<CoolTextWithChildren>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faFire} />
+									</div>
+									trending
+								</div>
+							</CoolTextWithChildren>
+						{:else}
+							<CoolTextOnHover>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faFire} />
+									</div>
+									trending
+								</div>
+							</CoolTextOnHover>
+						{/if}
+					</button>
+				</div>
+			</div>
+		</GlossyCard>
+		<div class="hidden sm:inline">
+			<GlossyCard>
+				<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
+					<div class="flex text-xs font-semibold gap-2 flex-wrap">
+						{#if selectedCategories.length > 0}
+							{#each selectedCategories as category}
+								<CoolTextWithChildren>
+									<button
+										class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
+										on:click={() => {
+											selectedCategoriesSet.delete(category);
+											selectedCategories = [...selectedCategoriesSet];
+											navigate($page, 'categories', selectedCategories.join(','));
+										}}
+									>
+										<div class="force-white-text">
+											<Fa icon={faX} size="xs" />
+										</div>
+										{category}
+									</button>
+								</CoolTextWithChildren>
+							{/each}
+						{:else}
+							<div class="font-semibold py-0.5 px-1">plugin categories</div>
+						{/if}
+					</div>
+					<div class="flex flex-wrap gap-1 text-xs mt-2">
+						{#each availableCategories
+							.filter( (c) => (selectedCategoriesSet.size > 0 ? !selectedCategoriesSet.has(c) : true) )
+							.slice(0, expantedTags ? -1 : 20) as currCategory}
+							<CoolTextOnHover>
+								<button
+									in:fly
+									class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
+									on:click={() => {
+										selectedCategories.push(currCategory);
+										selectedCategories = selectedCategories;
+										navigate($page, 'categories', selectedCategories.join(','));
+									}}
+								>
+									{currCategory}
+								</button>
+							</CoolTextOnHover>
+						{/each}
+					</div>
+					{#if !expantedTags}
+						<button
+							on:click={() => {
+								expantedTags = true;
+							}}
+							class="text-sm w-full font-semibold flex justify-center items-center gap-2"
+						>
+							see more
+							<Fa icon={faChevronDown} />
+						</button>
+					{:else}
+						<button
+							on:click={() => {
+								expantedTags = false;
+							}}
+							class="text-sm w-full font-semibold flex justify-center items-center gap-2"
+						>
+							see less
+							<Fa icon={faChevronUp} />
+						</button>
+					{/if}
+				</div>
+			</GlossyCard>
+		</div>
+	</div>
+</Modal>
 <div class="w-full flex flex-col items-center px-8">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
 		<SmallTitle title="Find Neovim plugins" />
-		<div class="flex items-center justify-center">
+		<div class="flex items-center justify-center gap-2">
 			<input
 				bind:value={search}
-				class="w-full sm:w-1/2 p-1 sm:p-2 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
+				class="w-full sm:w-1/2 p-1 sm:p-1 rounded-lg text-black text-lg font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
+			<Button on:click={() => (showFilter=true)} text="Filter" loading={false} icon={faFilter} />
 		</div>
 		<div class="grid grid-cols-10 sm:gap-4 my-2 sm:my-4 max-w-5xl text-xl">
-			<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
-				<GlossyCard>
-					<div class="flex flex-col p-4 w-full gap-2">
-						<div class="flex gap-2 text-sm font-semibold">
-							<button
-								on:click={() => {
-									sort = 'new';
-									navigate($page, 'sort', sort);
-								}}
-							>
-								{#if sort === 'new'}
-									<CoolTextWithChildren>
-										<div
-											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-										>
-											<div class="flex items-center force-white-text">
-												<Fa icon={faSeedling} />
-											</div>
-											new
-										</div>
-									</CoolTextWithChildren>
-								{:else}
-									<CoolTextOnHover>
-										<div
-											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-										>
-											<div class="flex items-center force-white-text">
-												<Fa icon={faSeedling} />
-											</div>
-											new
-										</div>
-									</CoolTextOnHover>
-								{/if}
-							</button>
-							<button
-								on:click={() => {
-									sort = 'popular';
-									navigate($page, 'sort', sort);
-								}}
-							>
-								{#if sort === 'popular'}
-									<CoolTextWithChildren>
-										<div
-											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-										>
-											<div class="flex items-center force-white-text">
-												<Fa icon={faChartSimple} />
-											</div>
-											<span>popular</span>
-										</div>
-									</CoolTextWithChildren>
-								{:else}
-									<CoolTextOnHover>
-										<div
-											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-										>
-											<div class="flex items-center force-white-text">
-												<Fa icon={faChartSimple} />
-											</div>
-											<span>popular</span>
-										</div>
-									</CoolTextOnHover>
-								{/if}
-							</button>
-              <button
-								on:click={() => {
-									sort = 'trending';
-									navigate($page, 'sort', sort);
-								}}
-							>
-								{#if sort === 'trending'}
-									<CoolTextWithChildren>
-										<div
-											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-										>
-											<div class="flex items-center force-white-text">
-												<Fa icon={faFire} />
-											</div>
-											trending
-										</div>
-									</CoolTextWithChildren>
-								{:else}
-									<CoolTextOnHover>
-										<div
-											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-										>
-											<div class="flex items-center force-white-text">
-												<Fa icon={faFire} />
-											</div>
-											trending
-										</div>
-									</CoolTextOnHover>
-								{/if}
-							</button>
-						</div>
-					</div>
-				</GlossyCard>
-				<div class="hidden sm:inline">
-					<GlossyCard>
-						<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-							<div class="flex text-xs font-semibold gap-2 flex-wrap">
-								{#if selectedCategories.length > 0}
-									{#each selectedCategories as category}
-										<CoolTextWithChildren>
-											<button
-												class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
-												on:click={() => {
-													selectedCategoriesSet.delete(category);
-													selectedCategories = [...selectedCategoriesSet];
-													navigate($page, 'categories', selectedCategories.join(','));
-												}}
-											>
-												<div class="force-white-text">
-													<Fa icon={faX} size="xs" />
-												</div>
-												{category}
-											</button>
-										</CoolTextWithChildren>
-									{/each}
-								{:else}
-									<div class="font-semibold py-0.5 px-1">plugin categories</div>
-								{/if}
-							</div>
-							<div class="flex flex-wrap gap-1 text-xs mt-2">
-								{#each availableCategories
-									.filter( (c) => (selectedCategoriesSet.size > 0 ? !selectedCategoriesSet.has(c) : true) )
-									.slice(0, expantedTags ? -1 : 20) as currCategory}
-									<CoolTextOnHover>
-										<button
-											in:fly
-											class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
-											on:click={() => {
-												selectedCategories.push(currCategory);
-												selectedCategories = selectedCategories;
-												navigate($page, 'categories', selectedCategories.join(','));
-											}}
-										>
-											{currCategory}
-										</button>
-									</CoolTextOnHover>
-								{/each}
-							</div>
-							{#if !expantedTags}
-								<button
-									on:click={() => {
-										expantedTags = true;
-									}}
-									class="text-sm w-full font-semibold flex justify-center items-center gap-2"
-								>
-									see more
-									<Fa icon={faChevronDown} />
-								</button>
-							{:else}
-								<button
-									on:click={() => {
-										expantedTags = false;
-									}}
-									class="text-sm w-full font-semibold flex justify-center items-center gap-2"
-								>
-									see less
-									<Fa icon={faChevronUp} />
-								</button>
-							{/if}
-						</div>
-					</GlossyCard>
-				</div>
-			</div>
-			<div class="col-span-10 sm:col-span-7 flex flex-col gap-2 overscroll-none">
+			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
 				<div class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-320px)]">
 					<!-- 
               we need to use a virtual list otherwise rerendering is too heavy
