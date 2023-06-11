@@ -150,7 +150,7 @@
 								<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
 									configs using {data.plugin.name}
 								</h3>
-								<CoolLink href="/configs" text="more configs" />
+								<CoolLink href={`/configs?plugins=${data.plugin.owner}/${data.plugin.name}`} text="more configs" />
 							</div>
 
 							<div

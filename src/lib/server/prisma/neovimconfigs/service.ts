@@ -227,7 +227,6 @@ export async function addPlugins(
 }
 
 export async function searchNeovimConfigs(pluginIdentifiers: string[] | undefined) {
-  console.log(pluginIdentifiers)
 	const configs = await prismaClient.neovimConfig.findMany({
 		where: {
 			...(pluginIdentifiers && pluginIdentifiers.length > 0
