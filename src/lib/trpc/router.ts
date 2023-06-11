@@ -25,6 +25,7 @@ import { TRPCError } from '@trpc/server';
 import { syncExistingRepoInfo, syncInitialRepoInfo, validateConfigPath } from '$lib/server/nvim-sync/config/syncRepoInfo';
 import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
 import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
+import { getLanguageServersBySlug } from '$lib/server/prisma/languageservers/service';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -89,6 +90,18 @@ export const router = t.router({
 		})
 		.query(async ({ input: { owner, name } }) => {
 			return getPlugin(owner, name);
+		}),
+	getLanguageServersBySlug: t.procedure
+		.input((input: unknown) => {
+			return z
+				.object({
+					username: z.string(),
+					slug: z.string()
+				})
+				.parse(input);
+		})
+		.query(async ({ input: { username, slug } }) => {
+			return getLanguageServersBySlug(username, slug);
 		}),
 	getPluginsBySlug: t.procedure
 		.input((input: unknown) => {

@@ -13,13 +13,19 @@
 	import ShareConfig from '$lib/components/ShareConfig.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
-	import { faChevronRight, faRotate, faSearch, faUser, faX } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faChevronRight,
+		faRotate,
+		faSearch,
+		faUser,
+		faX
+	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { fade, slide } from 'svelte/transition';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	$: ({ config, plugins, me } = data);
+	$: ({ config, plugins, me, languageServers } = data);
 
 	let syncing = false;
 
@@ -56,7 +62,6 @@
 		<div class="flex flex-col gap-2">
 			<!-- profile area -->
 			<div class="flex items-center justify-end gap-2">
-
 				<ShareConfig owner={config.owner} slug={config.slug} />
 				<a href={`/${config.owner}`} class=" bg-gray-700 p-2 rounded">
 					<CoolTextWithChildren>
@@ -68,7 +73,6 @@
 						</div>
 					</CoolTextWithChildren>
 				</a>
-			
 			</div>
 			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
 				<div class="flex flex-col gap-2 w-full">
@@ -93,7 +97,7 @@
 						initFile={config.initFile}
 						isMonorepo={config.root ? 'yes' : 'no'}
 						isFork={config.fork ? 'yes' : 'no'}
-            leaderkey={config.leaderkey}
+						leaderkey={config.leaderkey}
 					/>
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
 						<CoolTextOnHover>
@@ -153,6 +157,31 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="w-full gap-2 flex flex-col">
+			<h3 class="text-lg font-semibold tracking-wide lowercase mt-2">
+				<span>{languageServers.length} language servers installed</span>
+			</h3>
+			{#if plugins.length > 0}
+				<div class="hidden sm:grid grid-cols-1 lg:grid-cols-3 gap-2">
+					{#each languageServers as ls}
+						<GlossyCard>
+							<div class="flex items-center gap-2 p-2 font-semibold text-sm">
+								{ls.name}
+							</div>
+						</GlossyCard>
+					{/each}
+				</div>
+			{:else}
+				<GlossyCard>
+					<div class="flex items-center gap-2 p-2 font-semibold text-sm">
+						<div class="text-red-500">
+							<Fa icon={faX} />
+						</div>
+						no plugins detected
+					</div>
+				</GlossyCard>
+			{/if}
 		</div>
 		<div class="w-full gap-2 flex flex-col">
 			<h3 class="text-lg font-semibold tracking-wide lowercase mt-2">
