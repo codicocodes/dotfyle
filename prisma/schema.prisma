@@ -75,6 +75,7 @@ model NeovimPlugin {
   neovimConfigPlugins NeovimConfigPlugins[]
 
   lastSyncedAt        DateTime?
+  addedLastWeek       Int          @default(0)
   @@unique([owner, name])
 }
 

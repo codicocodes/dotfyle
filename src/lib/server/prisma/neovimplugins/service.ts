@@ -1,3 +1,4 @@
+import { oneWeekAgo } from '$lib/utils';
 import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
 import type {
@@ -44,9 +45,9 @@ const orderByPopularity: [
 ];
 
 const orderByNew: [
-  {
-    createdAt: 'desc',
-  },
+	{
+		createdAt: 'desc';
+	},
 	{
 		neovimConfigPlugins: {
 			_count: 'desc';
@@ -59,9 +60,9 @@ const orderByNew: [
 		name: 'asc';
 	}
 ] = [
-  {
-    createdAt: 'desc',
-  },
+	{
+		createdAt: 'desc'
+	},
 	{
 		neovimConfigPlugins: {
 			_count: 'desc'
@@ -77,7 +78,7 @@ const orderByNew: [
 
 const orderByConfig = {
 	popular: orderByPopularity,
-	new: orderByNew,
+	new: orderByNew
 } as const;
 
 const selectConfigCount = {
@@ -93,6 +94,7 @@ const selectConfigCount = {
 	lastSyncedAt: true,
 	stars: true,
 	readme: false,
+  addedLastWeek: true,
 	_count: {
 		select: {
 			neovimConfigPlugins: true
@@ -101,15 +103,15 @@ const selectConfigCount = {
 };
 
 const selectWithReadme = {
-  ...selectConfigCount,
-  readme: true,
+	...selectConfigCount,
+	readme: true
 };
 
 export async function searchPlugins(
 	query: string | undefined = undefined,
 	category: string | undefined = undefined,
 	sorting: 'new' | 'popular' = 'popular',
-	take: number | undefined = undefined,
+	take: number | undefined = undefined
 ): Promise<NeovimPluginWithCount[]> {
 	const where = {
 		...(category ? { category } : {})
@@ -119,7 +121,7 @@ export async function searchPlugins(
 		select: selectConfigCount,
 		where,
 		orderBy,
-    take,
+		take
 	});
 	return plugins.map(flattenConfigCount);
 }
@@ -161,9 +163,12 @@ export async function getPlugin(owner: string, name: string): Promise<NeovimPlug
 	};
 }
 
-export async function getPluginsBySlug(username: string, slug: string): Promise<NeovimPluginWithCount[]> {
+export async function getPluginsBySlug(
+	username: string,
+	slug: string
+): Promise<NeovimPluginWithCount[]> {
 	const plugins = await prismaClient.neovimPlugin.findMany({
-    select: selectConfigCount,
+		select: selectConfigCount,
 		where: {
 			neovimConfigPlugins: {
 				some: {
@@ -177,7 +182,7 @@ export async function getPluginsBySlug(username: string, slug: string): Promise<
 			}
 		}
 	});
-  return plugins.map(flattenConfigCount)
+	return plugins.map(flattenConfigCount);
 }
 
 export async function upsertManyNeovimPlugins(plugins: PluginDTO[]): Promise<NeovimPlugin[]> {
@@ -191,7 +196,7 @@ export async function upsertManyNeovimPlugins(plugins: PluginDTO[]): Promise<Neo
 				}
 			},
 			create: p,
-			update,
+			update
 		});
 		return savedPlugin;
 	});
@@ -214,6 +219,48 @@ export async function getAllNeovimPluginNames(): Promise<NeovimPluginIdentifier[
 			name: true
 		}
 	});
+}
+
+export async function getAddedCountSince(since: Date): Promise<Record<number, number>> {
+	const pluginMappings = await prismaClient.neovimConfigPlugins.findMany({
+		where: {
+			createdAt: {
+				gt: since
+			}
+		}
+	});
+	const countByPluginID = pluginMappings.reduce((counter: Record<number, number>, curr) => {
+		if (!counter[curr.pluginId]) {
+			counter[curr.pluginId] = 1;
+		} else {
+			counter[curr.pluginId]++;
+		}
+		return counter;
+	}, {});
+	return countByPluginID;
+}
+
+export async function syncWeeklyTrending() {
+	const since = oneWeekAgo();
+	const countByPluginID = await getAddedCountSince(since);
+	await prismaClient.neovimPlugin.updateMany({
+		data: {
+			addedLastWeek: 0
+		}
+	});
+	return await Promise.all(
+		Object.entries(countByPluginID).map(([pluginId, addedLastWeek]) => {
+			const id = parseInt(pluginId, 10);
+			return prismaClient.neovimPlugin.update({
+				where: {
+					id
+				},
+				data: {
+					addedLastWeek
+				}
+			});
+		})
+	);
 }
 
 export async function updatePlugin(plugin: NeovimPlugin): Promise<NeovimPlugin> {

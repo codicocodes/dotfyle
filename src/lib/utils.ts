@@ -43,6 +43,14 @@ export function hasBeenOneDay(dateString: string) {
     return date.getTime() < dayAgo;
 }
 
+export function oneWeekAgo() {
+    const hourMS = 1000 * 60 * 60;
+    const dayMS = hourMS * 24;
+    const weekMS = dayMS * 7
+    const weekAgo = Date.now() - weekMS;
+    return new Date(weekAgo)
+}
+
 
 export const ADMIN_GITHUB_ID = 76068197
 
