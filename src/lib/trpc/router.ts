@@ -12,6 +12,7 @@ import {
 	searchNeovimConfigs
 } from '$lib/server/prisma/neovimconfigs/service';
 import {
+    getAllNeovimPluginNames,
 	getPlugin,
 	getPluginsByCategory,
 	getPluginsBySlug,
@@ -150,10 +151,19 @@ export const router = t.router({
 		const configs = await getNewestNeovimConfigs();
 		return configs;
 	}),
-	getConfigs: t.procedure.query(async () => {
-		const configs = await searchNeovimConfigs();
+	getConfigs: t.procedure
+		.input((input: unknown) => {
+			return z.object({
+					plugins: z.array(z.string()).optional(),
+				}).parse(input)
+		})
+  .query(async ({input}) => {
+		const configs = await searchNeovimConfigs(input.plugins);
 		return configs;
 	}),
+  getPluginIdentifiers: t.procedure.query(async () => {
+    return getAllNeovimPluginNames()
+  }),
 	syncExistingNeovimConfig: t.procedure
 		.use(isAuthenticated)
 		.input((input: unknown) => {

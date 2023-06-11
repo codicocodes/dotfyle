@@ -36,7 +36,7 @@ export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
 export async function getConfigsForPlugin(
 	owner: string,
 	name: string,
-  take: number,
+	take: number
 ): Promise<NeovimConfigWithMetaData[]> {
 	const configs = await prismaClient.neovimConfig.findMany({
 		include: {
@@ -72,7 +72,7 @@ export async function getConfigsForPlugin(
 				root: 'asc'
 			}
 		],
-    take,
+		take
 	});
 	return configs.map(attachMetaData);
 }
@@ -190,11 +190,11 @@ export async function addPlugins(
 			sync: {
 				connectOrCreate: {
 					where: {
-            configId_sha: {
-              configId,
-              sha,
-            }
-          },
+						configId_sha: {
+							configId,
+							sha
+						}
+					},
 					create: {
 						sha,
 						config: {
@@ -226,8 +226,28 @@ export async function addPlugins(
 		.then(attachPlugins);
 }
 
-export async function searchNeovimConfigs() {
+export async function searchNeovimConfigs(pluginIdentifiers: string[] | undefined) {
+  console.log(pluginIdentifiers)
 	const configs = await prismaClient.neovimConfig.findMany({
+		where: {
+			...(pluginIdentifiers && pluginIdentifiers.length > 0
+				? {
+						AND: pluginIdentifiers.map((identifier) => {
+							const [owner, name] = identifier.split('/');
+							return {
+								neovimConfigPlugins: {
+									some: {
+										plugin: {
+											owner,
+											name
+										}
+									}
+								}
+							};
+						})
+				  }
+				: {})
+		},
 		include: {
 			user: {
 				select: {

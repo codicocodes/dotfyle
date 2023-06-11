@@ -250,7 +250,8 @@ export async function getAllNeovimPluginNames(): Promise<NeovimPluginIdentifier[
 			id: true,
 			owner: true,
 			name: true
-		}
+		},
+    orderBy: orderByPopularity,
 	});
 }
 
