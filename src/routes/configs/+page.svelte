@@ -12,6 +12,7 @@
 	} from '@rgossiaux/svelte-headlessui';
 	import Fa from 'svelte-fa';
 	import {
+	faFilter,
 		faPuzzlePiece,
 		faSeedling,
 		faStar,
@@ -20,10 +21,15 @@
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import { navigate } from '$lib/navigate';
+	import Modal from '$lib/components/Modal.svelte';
+	import GlossyCard from '$lib/components/GlossyCard.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	export let data: PageData;
 
 	let search = $page.url.searchParams.get('q') ?? '';
+
+  let showFilter = false;
 
 	const sortingOptions = ['new', 'stars', 'plugins'];
 
@@ -70,62 +76,115 @@
 	}
 </script>
 
+<Modal showModal={showFilter} onClose={() => (showFilter=false)}>
+	<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
+		<GlossyCard>
+			<div class="flex flex-col p-4 w-full gap-2">
+				<div class="flex gap-2 text-sm font-semibold">
+					<button
+						on:click={() => {
+							sorting = 'new';
+							navigate($page, 'sort', sorting);
+						}}
+					>
+						{#if sorting === 'new'}
+							<CoolTextWithChildren>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faSeedling} />
+									</div>
+									new
+								</div>
+							</CoolTextWithChildren>
+						{:else}
+							<CoolTextOnHover>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faSeedling} />
+									</div>
+									new
+								</div>
+							</CoolTextOnHover>
+						{/if}
+					</button>
+					<button
+						on:click={() => {
+							sorting = 'stars';
+							navigate($page, 'sort', sorting);
+						}}
+					>
+						{#if sorting === 'stars'}
+							<CoolTextWithChildren>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faStar} />
+									</div>
+									<span>stars</span>
+								</div>
+							</CoolTextWithChildren>
+						{:else}
+							<CoolTextOnHover>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faStar} />
+									</div>
+									<span>stars</span>
+								</div>
+							</CoolTextOnHover>
+						{/if}
+					</button>
+					<button
+						on:click={() => {
+							sorting = 'plugins';
+							navigate($page, 'sort', sorting);
+						}}
+					>
+						{#if sorting === 'plugins'}
+							<CoolTextWithChildren>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faPuzzlePiece} />
+									</div>
+									plugins
+								</div>
+							</CoolTextWithChildren>
+						{:else}
+							<CoolTextOnHover>
+								<div
+									class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								>
+									<div class="flex items-center force-white-text">
+										<Fa icon={faPuzzlePiece} />
+									</div>
+									plugins
+								</div>
+							</CoolTextOnHover>
+						{/if}
+					</button>
+				</div>
+			</div>
+		</GlossyCard>
+	</div>
+</Modal>
 <div class="w-full flex flex-col items-center px-8">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
 		<SmallTitle title="Find Neovim configs" />
 		<div class="flex items-center justify-center mb-4 gap-2">
 			<input
 				bind:value={search}
-				class="w-full sm:w-1/2 p-1 sm:p-2 rounded-lg text-black text-lg font-semibold focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
+				class="w-full sm:w-1/2 p-1 sm:p-1 rounded-lg text-black text-lg font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
-			<Listbox
-				class="relative h-full"
-				value={sorting}
-				on:change={(e) => {
-					sorting = e.detail;
-					navigate($page, 'sort', sorting);
-				}}
-			>
-				<ListboxButton class="flex gap-1 w-24">
-					<div
-						class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 p-2 sm:py-2 rounded sm:font-semibold"
-					>
-						<div class="flex items-center force-white-text">
-							<Fa size="xs" icon={sortingIcons[sorting]} />
-						</div>
-						{sorting}
-					</div>
-				</ListboxButton>
-				<ListboxOptions class="sm:w-24 absolute flex flex-col gap-2 mt-2 z-10">
-					{#each sortingOptions as option}
-						<ListboxOption value={option} class="bg-gray-700 rounded">
-							{#if option === sorting}
-								<CoolTextWithChildren>
-									<button
-										class="cursor-pointer bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded font-semibold"
-									>
-										<div class="flex items-center force-white-text">
-											<Fa size="xs" icon={sortingIcons[option]} />
-										</div>
-										{option}
-									</button>
-								</CoolTextWithChildren>
-							{:else}
-								<CoolTextOnHover>
-									<button
-										class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
-									>
-										<div class="flex items-center force-white-text">
-											<Fa size="xs" icon={sortingIcons[option]} />
-										</div>
-										<span>{option}</span>
-									</button>
-								</CoolTextOnHover>
-							{/if}
-						</ListboxOption>
-					{/each}
-				</ListboxOptions>
-			</Listbox>
+			<Button on:click={() => (showFilter=true)} text="Filter" loading={false} icon={faFilter} />
 		</div>
 		<div class="flex flex-col h-[calc(100vh-220px)] sm:h-[calc(100vh-320px)]">
 			<!-- 
