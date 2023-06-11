@@ -9,6 +9,7 @@
 		faChartSimple,
 		faChevronDown,
 		faChevronUp,
+		faFire,
 		faSeedling,
 		faX
 	} from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +30,7 @@
 
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
 
-	let sort: 'popular' | 'new' = rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
+	let sort: 'popular' | 'new' | 'trending' = rawSort === 'popular' || rawSort === 'new' ? rawSort : 'popular';
 	let search = $page.url.searchParams.get('q') ?? '';
 	let expantedTags = false;
 	let availableCategories: string[] = [];
@@ -50,6 +51,12 @@
 	});
 
 	$: {
+		if (sort === 'trending') {
+			plugins = plugins.sort((a, b) => {
+				if (a.addedLastWeek === b.addedLastWeek) return 0;
+				return a.addedLastWeek > b.addedLastWeek ? -1 : 1;
+			});
+		}
 		if (sort === 'new') {
 			plugins = plugins.sort((a, b) => {
 				if (a.createdAt === b.createdAt) return 0;
@@ -156,6 +163,36 @@
 												<Fa icon={faChartSimple} />
 											</div>
 											<span>popular</span>
+										</div>
+									</CoolTextOnHover>
+								{/if}
+							</button>
+              <button
+								on:click={() => {
+									sort = 'trending';
+									navigate($page, 'sort', sort);
+								}}
+							>
+								{#if sort === 'trending'}
+									<CoolTextWithChildren>
+										<div
+											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+										>
+											<div class="flex items-center force-white-text">
+												<Fa icon={faFire} />
+											</div>
+											trending
+										</div>
+									</CoolTextWithChildren>
+								{:else}
+									<CoolTextOnHover>
+										<div
+											class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+										>
+											<div class="flex items-center force-white-text">
+												<Fa icon={faFire} />
+											</div>
+											trending
 										</div>
 									</CoolTextOnHover>
 								{/if}
