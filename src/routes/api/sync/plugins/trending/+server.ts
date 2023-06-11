@@ -1,13 +1,10 @@
-import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
+import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { syncWeeklyTrending } from '$lib/server/prisma/neovimplugins/service';
 import type { RequestHandler } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 
-const getSyncTasks = async () => {
-	return [
-		async () => {
-			await syncWeeklyTrending();
-		}
-	];
-};
-
-export const GET: RequestHandler = createAsyncTaskApi(getSyncTasks);
+export const GET: RequestHandler = async (event: RequestEvent) => {
+  new AdminRequestValidator(event).validate();
+  await syncWeeklyTrending();
+  return new Response()
+}
