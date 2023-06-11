@@ -184,7 +184,7 @@
 										on:click={() => {
 											selectedPluginsSet.delete(plugin);
 											selectedPlugins = [...selectedPluginsSet];
-											navigate($page, 'plugins', selectedPlugins.join(','));
+											navigate($page, 'plugins', selectedPlugins.join(','), true);
 										}}
 									>
 										<div class="force-white-text">
@@ -209,7 +209,7 @@
 									on:click={() => {
 										selectedPlugins.push(currCategory);
 										selectedPlugins = selectedPlugins;
-										navigate($page, 'plugins', selectedPlugins.join(','));
+										navigate($page, 'plugins', selectedPlugins.join(','), true);
 									}}
 								>
 									{currCategory}
