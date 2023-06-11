@@ -114,7 +114,7 @@
 				{#if syncing}
 					<DoubleBounce color="#15be97" size="8" />
 				{/if}
-				{leaderkey}
+        <kbd class="px-2 py-1 border rounded-lg bg-gray-600 text-gray-100 border-gray-500">{leaderkey}</kbd>
 			</span>
 		</div>
 	</div>

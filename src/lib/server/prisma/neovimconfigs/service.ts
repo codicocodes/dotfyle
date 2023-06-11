@@ -169,6 +169,39 @@ export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWith
 	return attachPlugins(config);
 }
 
+export async function removePlugins(
+	configId: number,
+	pluginIds: number[]
+): Promise<void> {
+	await prismaClient.neovimConfigPlugins.deleteMany({
+		where: {
+      configId,
+			OR: pluginIds.map((pluginId) => {
+				return {
+					pluginId
+				};
+			})
+		}
+	});
+}
+
+export async function getMissingPluginIds(configId: number, freshPluginIds: number[]) {
+  return prismaClient.neovimConfigPlugins.findMany({
+    select: {
+      pluginId: true,
+    },
+    where: {
+      configId,
+      NOT: freshPluginIds.map(pluginId => {
+        return {
+          pluginId,
+        }
+      })
+    }
+  }).then(plugins => plugins.map(plugin => plugin.pluginId))
+}
+
+
 export async function addPlugins(
 	configId: number,
 	sha: string,
@@ -224,6 +257,17 @@ export async function addPlugins(
 			}
 		})
 		.then(attachPlugins);
+}
+
+export async function saveLeaderkey(id: number, leaderkey: string): Promise<NeovimConfig> {
+  return await prismaClient.neovimConfig.update({
+    where: {
+      id,
+    },
+    data: {
+      leaderkey,
+    }
+  })
 }
 
 export async function searchNeovimConfigs(pluginIdentifiers: string[] | undefined) {

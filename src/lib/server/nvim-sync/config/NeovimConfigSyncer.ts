@@ -1,13 +1,19 @@
-import { fetchRepoFileTree } from "$lib/server/github/api";
-import type { GithubTree } from "$lib/server/github/schema";
-import type { NeovimConfigWithPlugins } from "$lib/server/prisma/neovimconfigs/schema";
-import { addPlugins, updatePluginManager } from "$lib/server/prisma/neovimconfigs/service";
-import type { NeovimPluginIdentifier } from "$lib/server/prisma/neovimplugins/schema";
-import { getAllNeovimPluginNames } from "$lib/server/prisma/neovimplugins/service";
-import { getGithubToken } from "$lib/server/prisma/users/service";
-import { NeovimPluginManager, type NeovimConfig, type User } from "@prisma/client";
-import { GithubFileContentTraverser } from "./FileContentTraverser";
-import { findPluginManager } from "./NeovimPluginFinder";
+import { fetchRepoFileTree } from '$lib/server/github/api';
+import type { GithubTree } from '$lib/server/github/schema';
+import type { NeovimConfigWithPlugins } from '$lib/server/prisma/neovimconfigs/schema';
+import {
+	addPlugins,
+	getMissingPluginIds,
+	removePlugins,
+	saveLeaderkey,
+	updatePluginManager
+} from '$lib/server/prisma/neovimconfigs/service';
+import type { NeovimPluginIdentifier } from '$lib/server/prisma/neovimplugins/schema';
+import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
+import { getGithubToken } from '$lib/server/prisma/users/service';
+import { NeovimPluginManager, type NeovimConfig, type User } from '@prisma/client';
+import { GithubFileContentTraverser } from './FileContentTraverser';
+import { findPluginManager } from './NeovimPluginFinder';
 
 export class NeovimConfigSyncer {
 	foundPlugins: Set<number> = new Set();
@@ -39,12 +45,20 @@ export class NeovimConfigSyncer {
 	}
 
 	async fileSyncer() {
+    let leaderKey
 		for await (const content of this.treeTraverser.traverse()) {
 			await this.syncPluginManager(content);
 			this.findPlugins(content);
-			this.findLeaderKey(content);
+      if (!leaderKey) {
+        leaderKey = this.findLeaderKey(content);
+      }
 		}
-		return await addPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
+    if (leaderKey) {
+      await saveLeaderkey(this.config.id, leaderKey)
+    }
+		const missingPluginIds = await getMissingPluginIds(this.config.id, [...this.foundPlugins]);
+		await removePlugins(this.config.id, missingPluginIds);
+		return addPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
 	}
 
 	findPlugins(content: string) {
@@ -105,15 +119,30 @@ export class NeovimConfigSyncer {
 				const leaderSplit = line.trim().split('=');
 				if (leaderSplit.length !== 2) continue;
 				const leaderKey = leaderSplit[1];
-				// TODO: parse out to fix for trailing '<x>' and "<x>"
-				console.log({ leaderKey });
-				return leaderKey;
+        const parsedLeaderKey = leaderKey.trim()
+				switch (parsedLeaderKey) {
+					case '" "':
+					case '\' \'':
+						return 'Space';
+					case '","':
+					case '\',\'':
+						return ',';
+					case '"\\"':
+					case '\'\\\'':
+						return '\\';
+					default:
+            console.log('Could not match leaderKey', { parsedLeaderKey })
+            return
+				}
 			}
 		}
 	}
 }
 
-export async function getNeovimConfigSyncer(user: User, config: NeovimConfig): Promise<NeovimConfigSyncer> {
+export async function getNeovimConfigSyncer(
+	user: User,
+	config: NeovimConfig
+): Promise<NeovimConfigSyncer> {
 	const token = await getGithubToken(user.id);
 	const tree = await fetchRepoFileTree(token, config.owner, config.repo, config.branch);
 	const trackedPlugins = await getAllNeovimPluginNames();
