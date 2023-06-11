@@ -85,10 +85,6 @@ model NeovimPlugin {
 model LanguageServer {
   name                     String
   configMappings           NeovimConfigToLanguageServer[]
-  NeovimConfigSync         NeovimConfigSync?              @relation(fields: [neovimConfigSyncConfigId, neovimConfigSyncSha], references: [configId, sha])
-  neovimConfigSyncConfigId Int?
-  neovimConfigSyncSha      String?
-
   @@id([name])
   @@unique([name])
 }
@@ -97,9 +93,13 @@ model NeovimConfigToLanguageServer {
   languageServer     LanguageServer @relation(fields: [languageServerName], references: [name], onDelete: Cascade)
   languageServerName String
 
-  config         NeovimConfig @relation(fields: [neovimConfigId], references: [id])
+  config         NeovimConfig @relation(fields: [configId], references: [id])
   configId       Int
-  neovimConfigId Int
+
+  sync      NeovimConfigSync? @relation(fields: [configId, sha], references: [configId, sha])
+  sha       String
+
+
 
   @@id([languageServerName, configId])
 }
@@ -120,7 +120,7 @@ model NeovimConfigSync {
   sha                   String
   syncedAt              DateTime              @default(now())
   syncedPlugins         NeovimConfigPlugins[]
-  syncedLanguageServers LanguageServer[]
+  syncedLanguageServers NeovimConfigToLanguageServer[]
   config                NeovimConfig          @relation(fields: [configId], references: [id], onDelete: Cascade)
   configId              Int
 

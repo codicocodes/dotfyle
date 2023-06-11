@@ -63,7 +63,7 @@ export class NeovimConfigSyncer {
 		}
 
 		if (languageServers.length > 0) {
-			await syncLanguageServers(this.config.id, languageServers);
+			await syncLanguageServers(this.config.id, this.tree.sha, languageServers);
 		}
 		return syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
 	}

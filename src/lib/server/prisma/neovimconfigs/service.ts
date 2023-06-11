@@ -169,7 +169,7 @@ export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWith
 	return attachPlugins(config);
 }
 
-export async function syncLanguageServers(id: number, languageServers: string[]) {
+export async function syncLanguageServers(id: number, sha: string, languageServers: string[]) {
 	await prismaClient.neovimConfig.update({
 		where: {
 			id
@@ -190,7 +190,7 @@ export async function syncLanguageServers(id: number, languageServers: string[])
 							}
 						},
 						create: {
-							configId: id,
+              sha,
 							languageServerName
 						}
 					};
