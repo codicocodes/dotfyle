@@ -6,7 +6,7 @@ import type {
 	NeovimConfigWithPlugins,
 	NeovimConfigWithToken,
 	NestedNeovimConfigWithMetaData,
-	NestedNeovimConfigWithPlugins,
+	NestedNeovimConfigWithPlugins
 } from './schema';
 
 export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
@@ -14,24 +14,29 @@ export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
 		include: {
 			user: {
 				select: {
-          githubToken: {
-            select: {
-              accessToken: true,
-            }
-          }
+					githubToken: {
+						select: {
+							accessToken: true
+						}
+					}
 				}
-			},
-		},
+			}
+		}
 	});
-	return configs.map(({user, ...config }) => {
-    return {
-      ...config,
-      _token: user.githubToken?.accessToken,
-    }
-  }).filter(c => !!c._token) as NeovimConfigWithToken[];
+	return configs
+		.map(({ user, ...config }) => {
+			return {
+				...config,
+				_token: user.githubToken?.accessToken
+			};
+		})
+		.filter((c) => !!c._token) as NeovimConfigWithToken[];
 }
 
-export async function getConfigsForPlugin(owner: string, name: string): Promise<NeovimConfigWithMetaData[]> {
+export async function getConfigsForPlugin(
+	owner: string,
+	name: string
+): Promise<NeovimConfigWithMetaData[]> {
 	const configs = await prismaClient.neovimConfig.findMany({
 		include: {
 			user: {
@@ -39,21 +44,21 @@ export async function getConfigsForPlugin(owner: string, name: string): Promise<
 					avatarUrl: true
 				}
 			},
-      _count: {
-        select: {
-          neovimConfigPlugins: true,
-        },
-      },
+			_count: {
+				select: {
+					neovimConfigPlugins: true
+				}
+			}
 		},
 		where: {
-      neovimConfigPlugins: {
-        some: {
-          plugin: {
-            owner,
-            name
-          }
-        }
-      }
+			neovimConfigPlugins: {
+				some: {
+					plugin: {
+						owner,
+						name
+					}
+				}
+			}
 		},
 		orderBy: [
 			{
@@ -81,11 +86,11 @@ export async function getConfigBySlug(
 					avatarUrl: true
 				}
 			},
-      _count: {
-        select: {
-          neovimConfigPlugins: true,
-        },
-      },
+			_count: {
+				select: {
+					neovimConfigPlugins: true
+				}
+			}
 		},
 		where: {
 			slug,
@@ -112,11 +117,11 @@ export async function getConfigsByUsername(username: string): Promise<NeovimConf
 	const configs = await prismaClient.neovimConfig.findMany({
 		include: {
 			user: { select: { avatarUrl: true } },
-      _count: {
-        select: {
-          neovimConfigPlugins: true,
-        },
-      },
+			_count: {
+				select: {
+					neovimConfigPlugins: true
+				}
+			}
 		},
 		where: { user: { username } },
 		orderBy: [{ stars: 'desc' }, { repo: 'asc' }, { root: 'asc' }]
@@ -127,9 +132,9 @@ export async function upsertNeovimConfig(
 	userId: number,
 	config: CreateNeovimConfigDTO
 ): Promise<NeovimConfig> {
-  const lastSyncedAt = new Date()
+	const lastSyncedAt = new Date();
 	const { owner, repo, root } = config;
-	const data = { userId, lastSyncedAt,  ...config };
+	const data = { userId, lastSyncedAt, ...config };
 	const user = await prismaClient.neovimConfig.upsert({
 		where: { owner_repo_root: { owner, repo, root } },
 		create: data,
@@ -164,27 +169,38 @@ export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWith
 
 export async function addPlugins(
 	configId: number,
+	sha: string,
 	pluginIds: number[]
 ): Promise<NeovimConfigWithPlugins> {
-	// TODO: add sync id in create, or maybe config.sha?
-	const upsert = pluginIds.map((pluginId) => ({
+	const connectOrCreate = pluginIds.map((pluginId) => ({
 		where: {
 			configId_pluginId: {
 				configId,
 				pluginId
 			}
 		},
-		update: {
-			plugin: {
-				connect: {
-					id: pluginId
-				}
-			}
-		},
 		create: {
 			plugin: {
 				connect: {
 					id: pluginId
+				}
+			},
+			sync: {
+				connectOrCreate: {
+					where: {
+            configId_sha: {
+              configId,
+              sha,
+            }
+          },
+					create: {
+						sha,
+						config: {
+							connect: {
+								id: configId
+							}
+						}
+					}
 				}
 			}
 		}
@@ -201,7 +217,7 @@ export async function addPlugins(
 			where: { id: configId },
 			data: {
 				neovimConfigPlugins: {
-					upsert
+					connectOrCreate
 				}
 			}
 		})
@@ -216,15 +232,15 @@ export async function searchNeovimConfigs() {
 					avatarUrl: true
 				}
 			},
-      _count: {
-        select: {
-          neovimConfigPlugins: true,
-        },
-      },
+			_count: {
+				select: {
+					neovimConfigPlugins: true
+				}
+			}
 		},
 		orderBy: {
 			createdAt: 'desc'
-		},
+		}
 	});
 
 	return configs.map(attachMetaData);
@@ -238,11 +254,11 @@ export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData
 					avatarUrl: true
 				}
 			},
-      _count: {
-        select: {
-          neovimConfigPlugins: true,
-        },
-      },
+			_count: {
+				select: {
+					neovimConfigPlugins: true
+				}
+			}
 		},
 		orderBy: {
 			createdAt: 'desc'
@@ -261,7 +277,7 @@ function attachMetaData({
 	return {
 		...config,
 		ownerAvatar: user.avatarUrl,
-		pluginCount: _count.neovimConfigPlugins,
+		pluginCount: _count.neovimConfigPlugins
 	};
 }
 
