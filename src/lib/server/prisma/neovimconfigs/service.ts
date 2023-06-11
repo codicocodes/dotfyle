@@ -35,7 +35,8 @@ export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
 
 export async function getConfigsForPlugin(
 	owner: string,
-	name: string
+	name: string,
+  take: number,
 ): Promise<NeovimConfigWithMetaData[]> {
 	const configs = await prismaClient.neovimConfig.findMany({
 		include: {
@@ -70,7 +71,8 @@ export async function getConfigsForPlugin(
 			{
 				root: 'asc'
 			}
-		]
+		],
+    take,
 	});
 	return configs.map(attachMetaData);
 }
