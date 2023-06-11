@@ -84,16 +84,16 @@ model NeovimConfigPlugins {
   plugin              NeovimPlugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
   pluginId            Int
   createdAt           DateTime     @default(now())
-  sync                NeovimConfigSync? @relation(fields: [syncId], references: [id], onDelete: Cascade)
-  syncId              Int?
+  sync                NeovimConfigSync? @relation(fields: [sha, configId], references: [sha, configId], onDelete: Cascade)
+  sha                 String?
   @@id([configId, pluginId])
 }
 
 model NeovimConfigSync {
-  id                  Int          @id @default(autoincrement())
   sha                 String
   syncedAt            DateTime     @default(now())
-  plugins             NeovimConfigPlugins[]
+  syncedPlugins       NeovimConfigPlugins[]
   config              NeovimConfig @relation(fields: [configId], references: [id], onDelete: Cascade)
   configId            Int
+  @@id([configId, sha])
 }
