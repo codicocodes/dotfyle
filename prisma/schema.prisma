@@ -48,9 +48,9 @@ model NeovimConfig {
   createdAt     DateTime             @default(now())
   lastSyncedAt  DateTime             @default(now())
 
-  neovimConfigPlugins NeovimConfigPlugins[]
-  languageServers     LanguageServer[]
-  syncs               NeovimConfigSync[]
+  neovimConfigPlugins    NeovimConfigPlugins[]
+  languageServerMappings NeovimConfigToLanguageServer[]
+  syncs                  NeovimConfigSync[]
 
   @@unique([owner, repo, root])
   @@unique([owner, slug])
@@ -83,10 +83,25 @@ model NeovimPlugin {
 }
 
 model LanguageServer {
-  name           String
-  configs        NeovimConfig[]
-  @@unique([name])
+  name                     String
+  configMappings           NeovimConfigToLanguageServer[]
+  NeovimConfigSync         NeovimConfigSync?              @relation(fields: [neovimConfigSyncConfigId, neovimConfigSyncSha], references: [configId, sha])
+  neovimConfigSyncConfigId Int?
+  neovimConfigSyncSha      String?
+
   @@id([name])
+  @@unique([name])
+}
+
+model NeovimConfigToLanguageServer {
+  languageServer     LanguageServer @relation(fields: [languageServerName], references: [name], onDelete: Cascade)
+  languageServerName String
+
+  config         NeovimConfig @relation(fields: [neovimConfigId], references: [id])
+  configId       Int
+  neovimConfigId Int
+
+  @@id([languageServerName, configId])
 }
 
 model NeovimConfigPlugins {
@@ -102,11 +117,12 @@ model NeovimConfigPlugins {
 }
 
 model NeovimConfigSync {
-  sha           String
-  syncedAt      DateTime              @default(now())
-  syncedPlugins NeovimConfigPlugins[]
-  config        NeovimConfig          @relation(fields: [configId], references: [id], onDelete: Cascade)
-  configId      Int
+  sha                   String
+  syncedAt              DateTime              @default(now())
+  syncedPlugins         NeovimConfigPlugins[]
+  syncedLanguageServers LanguageServer[]
+  config                NeovimConfig          @relation(fields: [configId], references: [id], onDelete: Cascade)
+  configId              Int
 
   @@id([configId, sha])
   @@unique([sha, configId])

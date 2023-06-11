@@ -6,6 +6,7 @@ import {
 	getMissingPluginIds,
 	removePlugins,
 	saveLeaderkey,
+	syncLanguageServers,
 	updatePluginManager
 } from '$lib/server/prisma/neovimconfigs/service';
 import type { NeovimPluginIdentifier } from '$lib/server/prisma/neovimplugins/schema';
@@ -13,6 +14,7 @@ import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/servic
 import { getGithubToken } from '$lib/server/prisma/users/service';
 import { NeovimPluginManager, type NeovimConfig, type User } from '@prisma/client';
 import { GithubFileContentTraverser } from './FileContentTraverser';
+import { findKnownLanguageServers } from './LanguageServerFinder';
 import { findPluginManager } from './NeovimPluginFinder';
 
 export class NeovimConfigSyncer {
@@ -45,17 +47,26 @@ export class NeovimConfigSyncer {
 	}
 
 	async fileSyncer() {
-    let leaderKey
+		let leaderKey;
+		const languageServers = [];
 		for await (const content of this.treeTraverser.traverse()) {
 			await this.syncPluginManager(content);
 			this.findPlugins(content);
-      if (!leaderKey) {
-        leaderKey = this.findLeaderKey(content);
-      }
+			if (!leaderKey) {
+				leaderKey = this.findLeaderKey(content);
+			}
+			for (const ls of findKnownLanguageServers(content)) {
+				languageServers.push(ls);
+			}
 		}
-    if (leaderKey) {
-      await saveLeaderkey(this.config.id, leaderKey)
-    }
+		console.log({ languageServers });
+		if (leaderKey) {
+			await saveLeaderkey(this.config.id, leaderKey);
+		}
+
+		if (languageServers.length > 0) {
+			await syncLanguageServers(this.config.id, languageServers);
+		}
 		const missingPluginIds = await getMissingPluginIds(this.config.id, [...this.foundPlugins]);
 		await removePlugins(this.config.id, missingPluginIds);
 		return addPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
@@ -119,36 +130,36 @@ export class NeovimConfigSyncer {
 				const leaderSplit = line.trim().split('=');
 				if (leaderSplit.length !== 2) continue;
 				const leaderKey = leaderSplit[1];
-        const parsedLeaderKey = leaderKey.split("--")[0].trim()
+				const parsedLeaderKey = leaderKey.split('--')[0].trim();
 				switch (parsedLeaderKey) {
 					case '"""':
-					case '\'"\'':
+					case "'\"'":
 						return '"';
 					case '"\'"':
-					case '\'\'\'':
-						return '\'';
+					case "'''":
+						return "'";
 					case '"-"':
-					case '\'-\'':
+					case "'-'":
 						return '-';
 					case '";"':
-					case '\';\'':
+					case "';'":
 						return ';';
-          case '"\\<Space>"':
-          case '\'\\<Space>\'':
-          case '"\\<space>"':
-          case '\'\\<space>\'':
+					case '"\\<Space>"':
+					case "'\\<Space>'":
+					case '"\\<space>"':
+					case "'\\<space>'":
 					case '" "':
-					case '\' \'':
+					case "' '":
 						return 'Space';
 					case '","':
-					case '\',\'':
+					case "','":
 						return ',';
 					case '"\\"':
-					case '\'\\\'':
+					case "'\\'":
 						return '\\';
 					default:
-            console.log('Could not match leaderKey', { parsedLeaderKey })
-            return
+						console.log('Could not match leaderKey', { parsedLeaderKey });
+						return;
 				}
 			}
 		}
