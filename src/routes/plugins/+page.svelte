@@ -196,7 +196,7 @@
 				</div>
 			</div>
 		</GlossyCard>
-		<div class="hidden sm:inline">
+		<div>
 			<GlossyCard>
 				<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
 					<div class="flex text-xs font-semibold gap-2 flex-wrap">
