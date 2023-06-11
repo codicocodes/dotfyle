@@ -114,7 +114,7 @@
 				<Fa icon={faSeedling} size="sm" />
 				new plugins
 			</h3>
-			<CoolLink href="/plugins" text="more plugins" />
+			<CoolLink href="/plugins?sort=new" text="more plugins" />
 		</div>
 
 		<BigGridContainer>
@@ -137,7 +137,7 @@
 				<Fa icon={faFire} size="sm" />
 				trending plugins
 			</h3>
-			<CoolLink href="/plugins" text="more plugins" />
+			<CoolLink href="/plugins?sort=trending" text="more plugins" />
 		</div>
 
 		<BigGridContainer>
