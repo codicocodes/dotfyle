@@ -1,9 +1,8 @@
-import { prismaClient } from '$lib/server/prisma/client';
 import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
 import { getNeovimConfigSyncs } from '$lib/server/prisma/neovimconfigsync/service';
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { trpc } from '$lib/trpc/client';
-import type { LanguageServer, NeovimPlugin } from '@prisma/client';
+import type { LanguageServer } from '@prisma/client';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad, PageServerLoadEvent } from './$types';
 
