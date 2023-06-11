@@ -169,69 +169,38 @@ export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWith
 	return attachPlugins(config);
 }
 
-export async function removePlugins(configId: number, pluginIds: number[]): Promise<void> {
-	await prismaClient.neovimConfigPlugins.deleteMany({
-		where: {
-			configId,
-			OR: pluginIds.map((pluginId) => {
-				return {
-					pluginId
-				};
-			})
-		}
-	});
-}
-
 export async function syncLanguageServers(id: number, languageServers: string[]) {
 	await prismaClient.neovimConfig.update({
 		where: {
 			id
 		},
 		data: {
-      languageServerMappings: {
+			languageServerMappings: {
 				deleteMany: {
 					languageServerName: {
 						notIn: languageServers
-					},
+					}
 				},
-        connectOrCreate: languageServers.map((languageServerName) => {
-          return {
-            where: {
-              languageServerName_configId: {
-                configId: id,
-                languageServerName,
-              }
-            },
-            create: {
-              configId: id,
-              languageServerName,
-            }
-          };
-        })
-      },
+				connectOrCreate: languageServers.map((languageServerName) => {
+					return {
+						where: {
+							languageServerName_configId: {
+								configId: id,
+								languageServerName
+							}
+						},
+						create: {
+							configId: id,
+							languageServerName
+						}
+					};
+				})
+			}
 		}
 	});
 }
 
-export async function getMissingPluginIds(configId: number, freshPluginIds: number[]) {
-	return prismaClient.neovimConfigPlugins
-		.findMany({
-			select: {
-				pluginId: true
-			},
-			where: {
-				configId,
-				NOT: freshPluginIds.map((pluginId) => {
-					return {
-						pluginId
-					};
-				})
-			}
-		})
-		.then((plugins) => plugins.map((plugin) => plugin.pluginId));
-}
-
-export async function addPlugins(
+export async function syncConfigPlugins(
 	configId: number,
 	sha: string,
 	pluginIds: number[]
@@ -281,7 +250,13 @@ export async function addPlugins(
 			where: { id: configId },
 			data: {
 				neovimConfigPlugins: {
-					connectOrCreate
+					connectOrCreate,
+					deleteMany: {
+            configId,
+						pluginId: {
+							notIn: pluginIds
+						}
+					}
 				}
 			}
 		})

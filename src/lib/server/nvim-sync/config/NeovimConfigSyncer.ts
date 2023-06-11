@@ -2,9 +2,7 @@ import { fetchRepoFileTree } from '$lib/server/github/api';
 import type { GithubTree } from '$lib/server/github/schema';
 import type { NeovimConfigWithPlugins } from '$lib/server/prisma/neovimconfigs/schema';
 import {
-	addPlugins,
-	getMissingPluginIds,
-	removePlugins,
+	syncConfigPlugins,
 	saveLeaderkey,
 	syncLanguageServers,
 	updatePluginManager
@@ -67,9 +65,7 @@ export class NeovimConfigSyncer {
 		if (languageServers.length > 0) {
 			await syncLanguageServers(this.config.id, languageServers);
 		}
-		const missingPluginIds = await getMissingPluginIds(this.config.id, [...this.foundPlugins]);
-		await removePlugins(this.config.id, missingPluginIds);
-		return addPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
+		return syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
 	}
 
 	findPlugins(content: string) {
