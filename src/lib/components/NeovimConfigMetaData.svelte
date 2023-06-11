@@ -20,10 +20,11 @@
 	export let initFile: string;
 	export let isMonorepo: string;
 	export let isFork: string;
+	export let leaderkey: string;
 </script>
 
 <GlossyCard>
-	<div class="flex flex-col p-2 text-sm tracking-tight w-full gap-2 font-semibold text-regular tracking-wide">
+	<div class="flex flex-col p-2 text-sm w-full gap-2 font-semibold text-regular tracking-wide">
 		<div class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
 				<div class="w-[20px]">
@@ -113,7 +114,7 @@
 				{#if syncing}
 					<DoubleBounce color="#15be97" size="8" />
 				{/if}
-				unknown
+				{leaderkey}
 			</span>
 		</div>
 	</div>

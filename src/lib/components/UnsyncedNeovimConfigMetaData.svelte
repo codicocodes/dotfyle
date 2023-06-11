@@ -20,4 +20,5 @@
   initFile={$unsyncedConfig.initFile ?? "unknown"}
   isMonorepo={$unsyncedConfig.root !== undefined ? ($unsyncedConfig.root ? "yes" : "no") : "unknown"}
   isFork={$unsyncedConfig.fork !== undefined ? ($unsyncedConfig.fork ? "yes" : "no") : "unknown"}
+  leaderkey="unknown"
 />
