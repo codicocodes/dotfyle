@@ -51,14 +51,15 @@ export class NeovimConfigSyncer {
 		for await (const content of this.treeTraverser.traverse()) {
 			await this.syncPluginManager(content);
 			this.findPlugins(content);
-      this.syncLeaderKey(content)
-      this.findLanguageServers(content)
+			this.syncLeaderKey(content);
+			this.findLanguageServers(content);
 		}
 
 		await Promise.all([
 			saveLeaderkey(this.config.id, this.leaderkey),
-			syncLanguageServers(this.config.id, this.tree.sha, this.languageServers),
-			syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins])
+			syncLanguageServers(this.config.id, this.tree.sha, this.languageServers).then(() => {
+				return syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
+			})
 		]);
 
 		return getConfigWithPlugins(this.config.id);
@@ -71,9 +72,9 @@ export class NeovimConfigSyncer {
 	}
 
 	findLanguageServers(content: string) {
-    for (const ls of findKnownLanguageServers(content)) {
-      this.languageServers.push(ls);
-    }
+		for (const ls of findKnownLanguageServers(content)) {
+			this.languageServers.push(ls);
+		}
 	}
 
 	findPlugins(content: string) {
