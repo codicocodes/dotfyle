@@ -21,6 +21,23 @@ export class PluginSyncer {
     return this.updatePlugin()
   }
 
+  async syncBreakingChanges() {
+    if (!this.plugin.lastSyncedAt) {
+      return
+    }
+    if (!hasBeenOneDay(this.plugin.lastSyncedAt.toString())) {
+      return
+    }
+    const commits = await fetchGitCommits(this.token, this.plugin.lastSyncedAt, this.plugin.owner, this.plugin.name)
+    const regex_1  = /\w+!/
+    for (const commit of commits) {
+      if (regex_1.test(commit.commit.message)) {
+        console.log("BREAKING CHANGE (real): ", commit.commit.message)
+      }
+    }
+    return commits
+  }
+
   async syncStars() {
     const repo = await fetchGithubRepositoryByName(this.token, this.plugin.owner, this.plugin.name)
     this.plugin.stars = repo.stargazers_count
