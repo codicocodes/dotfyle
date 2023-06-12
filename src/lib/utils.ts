@@ -31,10 +31,6 @@ export function humanizeRelative(pastMilliseconds: number) {
   return humanizeAbsolute(new Date().getTime() - pastMilliseconds);
 }
 
-export function githubLogin() {
-  throw redirect(303, '/api/auth/github');
-}
-
 export function hasBeenOneDay(dateString: string) {
     const date = new Date(dateString)
     const hourMS = 1000 * 60 * 60;
