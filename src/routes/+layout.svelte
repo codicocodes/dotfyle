@@ -16,6 +16,7 @@
 	import '../app.css';
 	import type { LayoutData } from './$types';
 	import nProgress from 'nprogress';
+	import { onMount } from 'svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
 
@@ -45,7 +46,7 @@
 
 	nProgress.configure({
 		minimum: 0.16,
-    showSpinner: false,
+		showSpinner: false
 	});
 
 	$: {
@@ -53,6 +54,12 @@
 			nProgress.start();
 		} else nProgress.done();
 	}
+
+	onMount(() => {
+		fetch('/api/auth/refresh', { method: 'POST' }).then((r) => {
+			console.log(r.status);
+		});
+	});
 </script>
 
 <svelte:head>
@@ -205,6 +212,6 @@
 <style global>
 	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 	:global(#nprogress .bar) {
-    @apply bg-emerald-600;
+		@apply bg-emerald-600;
 	}
 </style>
