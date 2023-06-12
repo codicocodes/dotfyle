@@ -4,6 +4,7 @@ import pLimit from 'p-limit';
 
 export class AsyncApiManager {
 	runner = pLimit(10);
+  queue: Promise<void>[] = []
 	running = false;
 	isRateLimited = false;
 	tasksDone = 0;
@@ -37,14 +38,18 @@ export class AsyncApiManager {
 		};
 	}
 
-	deferCleanup() {
-		this.runner(async () => {
-			this.running = false;
-			this.isRateLimited = false;
-			this.tasksDone = 0;
-      console.log("Async job completed.")
-		});
+	async deferCleanup() {
+    await Promise.all(this.queue)
+    console.log("Async job completed.")
+    this.running = false;
+    this.isRateLimited = false;
+    this.tasksDone = 0;
+    this.queue = []
 	}
+
+  addToQueue(callback: () => Promise<void>) {
+    this.queue.push(this.runner(callback))
+  }
 }
 
 type asyncTaskGetter = () => Promise<(() => Promise<void>)[]>;
@@ -58,11 +63,11 @@ export function createAsyncTaskApi(getAsyncTasks: asyncTaskGetter) {
 		const tasks = await getAsyncTasks();
 
 		for (const task of tasks) {
-			manager.runner(() => {
+			manager.addToQueue(async () => {
 				if (manager.isRateLimited) {
 					return;
 				}
-				task()
+				return task()
 					.catch((e) => manager.handleTaskError(e))
 					.finally(manager.handleFinally(tasks.length));
 			});
