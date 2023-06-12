@@ -22,7 +22,7 @@ export function createSignedJwtToken(user: User) {
 	return token;
 }
 
-export const COOKIE_NAME = 'DotfilezzToken';
+export const COOKIE_NAME = 'dotfyle.token';
 
 export function createCookie(cookies: Cookies, token: string, maxAge: number = 60 * 60 * 24) {
 	cookies.delete(COOKIE_NAME);
