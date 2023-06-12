@@ -2,6 +2,18 @@ import { Octokit } from '@octokit/rest';
 import { z } from 'zod';
 import { GithubBlob, GithubRepository, GithubTree } from './schema';
 
+export const fetchGitCommits = async(token: string, since: Date, owner: string, repo: string) => {
+	const gh = new Octokit({
+		auth: `token ${token}`
+	});
+  const commitResponse = await gh.repos.listCommits({
+    since: since.toString(),
+    owner,
+    repo,
+  })
+  return commitResponse.data
+}
+
 export const fetchGithubRepositories = async (
 	username: string,
 	token: string
