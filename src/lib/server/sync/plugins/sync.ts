@@ -24,15 +24,12 @@ export class PluginSyncer {
 	}
 
 	async syncBreakingChanges() {
-		if (!this.plugin.lastSyncedAt) {
+		if (this.plugin.lastSyncedAt && !hasBeenOneDay(this.plugin.lastSyncedAt.toString())) {
 			return;
 		}
-		// if (!hasBeenOneDay(this.plugin.lastSyncedAt.toString())) {
-		// 	return;
-		// }
 		const commits = await fetchGitCommits(
 			this.token,
-			oneWeekAgo(), // this.plugin.lastSyncedAt,
+			this.plugin.lastSyncedAt ?? oneWeekAgo(),
 			this.plugin.owner,
 			this.plugin.name
 		);
