@@ -8,7 +8,7 @@ import { getConfigsByUsername } from '../prisma/neovimconfigs/service';
 import { trackLogin } from '../prisma/users/service';
 
 export function getJwtAccessSecret(): string {
-	if (JWT_ACCESS_SECRET.length < 32) {
+	if (!JWT_ACCESS_SECRET || JWT_ACCESS_SECRET.length < 32) {
 		throw new JwtSecretError();
 	}
 	return JWT_ACCESS_SECRET;
