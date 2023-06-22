@@ -1,4 +1,5 @@
 import { fetchGitCommits, fetchGithubRepositoryByName, fetchReadme } from '$lib/server/github/api';
+import { upsertBreakingChange } from '$lib/server/prisma/breakingChanges/service';
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { getPlugin, updatePlugin } from '$lib/server/prisma/neovimplugins/service';
 import { getGithubToken } from '$lib/server/prisma/users/service';
@@ -23,34 +24,26 @@ export class PluginSyncer {
 	}
 
 	async syncBreakingChanges() {
-		const breakingChanges: { url: string; message: string }[] = [];
 		if (!this.plugin.lastSyncedAt) {
 			return;
 		}
-		if (!hasBeenOneDay(this.plugin.lastSyncedAt.toString())) {
-			return;
-		}
+		// if (!hasBeenOneDay(this.plugin.lastSyncedAt.toString())) {
+		// 	return;
+		// }
 		const commits = await fetchGitCommits(
 			this.token,
-			this.plugin.lastSyncedAt,
+			oneWeekAgo(), // this.plugin.lastSyncedAt,
 			this.plugin.owner,
 			this.plugin.name
 		);
 		const regex_1 = /\w+!:/;
+		const breakingChangesTasks: Promise<void>[] = [];
 		for (const commit of commits) {
 			const firstCommitLine = commit.commit.message.split('\n')[0];
 			if (regex_1.test(firstCommitLine)) {
-				const breaking = {
-					url: commit.html_url,
-					message: commit.commit.message
-				};
-				breakingChanges.push(breaking);
+        breakingChangesTasks.push(upsertBreakingChange(this.plugin.id, commit.sha, commit.html_url, commit.commit.message))
 			}
 		}
-    for (const change of breakingChanges) {
-      console.log(change)
-    }
-		return breakingChanges;
 	}
 
 	async syncStars() {

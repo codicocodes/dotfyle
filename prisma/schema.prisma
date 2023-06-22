@@ -79,27 +79,26 @@ model NeovimPlugin {
   lastSyncedAt  DateTime?
   addedLastWeek Int       @default(0)
 
+  breakChanges BreakingChange[]
+
   @@unique([owner, name])
 }
 
 model LanguageServer {
-  name                     String
-  configMappings           NeovimConfigToLanguageServer[]
+  name           String
+  configMappings NeovimConfigToLanguageServer[]
+
   @@id([name])
   @@unique([name])
 }
 
 model NeovimConfigToLanguageServer {
-  languageServer     LanguageServer @relation(fields: [languageServerName], references: [name], onDelete: Cascade)
+  languageServer     LanguageServer    @relation(fields: [languageServerName], references: [name], onDelete: Cascade)
   languageServerName String
-
-  config         NeovimConfig @relation(fields: [configId], references: [id])
-  configId       Int
-
-  sync      NeovimConfigSync? @relation(fields: [configId, sha], references: [configId, sha])
-  sha       String
-
-
+  config             NeovimConfig      @relation(fields: [configId], references: [id])
+  configId           Int
+  sync               NeovimConfigSync? @relation(fields: [configId, sha], references: [configId, sha])
+  sha                String
 
   @@id([languageServerName, configId])
 }
@@ -118,12 +117,31 @@ model NeovimConfigPlugins {
 
 model NeovimConfigSync {
   sha                   String
-  syncedAt              DateTime              @default(now())
+  syncedAt              DateTime                       @default(now())
   syncedPlugins         NeovimConfigPlugins[]
   syncedLanguageServers NeovimConfigToLanguageServer[]
-  config                NeovimConfig          @relation(fields: [configId], references: [id], onDelete: Cascade)
+  config                NeovimConfig                   @relation(fields: [configId], references: [id], onDelete: Cascade)
   configId              Int
 
   @@id([configId, sha])
   @@unique([sha, configId])
+}
+
+model Post {
+  id             String          @id @default(uuid())
+  title          String
+  text           String
+  type           String
+  breakingChange BreakingChange?
+  createdAt      DateTime        @default(now())
+}
+
+model BreakingChange {
+  id          Int          @id @default(autoincrement())
+  post        Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId      String       @unique
+  plugin      NeovimPlugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  pluginId    Int
+  externalUrl String       @unique
+  sha         String
 }
