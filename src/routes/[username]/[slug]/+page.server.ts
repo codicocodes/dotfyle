@@ -28,8 +28,6 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 		throw error(404, 'config not found');
 	});
 
-  console.log(JSON.stringify(syncs, null, 2))
-
 	return {
 		me,
 		config,
