@@ -6,5 +6,5 @@ import type { RequestEvent } from '@sveltejs/kit';
 export const GET: RequestHandler = async (event: RequestEvent) => {
   new AdminRequestValidator(event).validate();
   await syncWeeklyTrending();
-  return new Response()
+  return new Response("Weekly trending plugins has been recalculated")
 }

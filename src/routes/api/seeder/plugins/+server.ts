@@ -8,5 +8,5 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 	await upsertManyNeovimPlugins(getTrackedPlugins());
 	const plugins = await scrapeRockerBooAwesomeNeovim();
 	await upsertManyNeovimPlugins(plugins);
-  return new Response();
+  return new Response("Plugin data has been seeded");
 };

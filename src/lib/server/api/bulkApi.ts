@@ -75,6 +75,6 @@ export function createAsyncTaskApi(getAsyncTasks: asyncTaskGetter) {
 
 		manager.deferCleanup();
 
-		return new Response();
+		return new Response("Sync started");
 	};
 }
