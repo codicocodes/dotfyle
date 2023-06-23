@@ -123,7 +123,7 @@ pnpm run dev
 
 Once the server is running you can seed and sync data
 
-2. Navigate to the local [OAuth endpoint](http://localhost:5173/api/auth/github) to authenticate.
+1. Navigate to [http://localhost:5173/api/auth/github](http://localhost:5173/api/auth/github) to authenticate with GitHub OAuth.
 
 #### Seed plugins
 
