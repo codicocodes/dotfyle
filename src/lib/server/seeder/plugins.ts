@@ -1,6 +1,32 @@
 import { marked } from 'marked';
 import { z } from 'zod';
 import { PluginDTO } from '../prisma/neovimplugins/schema';
+import { readFileSync } from 'fs';
+
+export function getTrackedPlugins() {
+	const tree = fetchTrackedPlugins();
+	const rawPlugins = parsePluginDataFromTree(tree);
+	return z.array(PluginDTO).parse(
+		rawPlugins
+			.map(parseCategory)
+			.filter(isTrackedCategory)
+			.map(({ category, item }) => {
+				const plugin = item;
+				const shortDescription = '';
+				const link = `https://github.com/${plugin}`;
+				const [owner, name] = plugin.split('/');
+				return {
+					type: 'github',
+					source: 'submitted-plugins',
+					category,
+					link,
+					owner,
+					name,
+					shortDescription
+				};
+			})
+	);
+}
 
 export async function scrapeRockerBooAwesomeNeovim() {
 	const tree = await fetchAwesomeNeovimReadme();
@@ -8,7 +34,12 @@ export async function scrapeRockerBooAwesomeNeovim() {
 	return z
 		.array(PluginDTO)
 		.parse(
-			rawPlugins.map(parseCategory).filter(isTrackedCategory).map(parsePlugin).filter(hasGithubLink).filter(p => p.name)
+			rawPlugins
+				.map(parseCategory)
+				.filter(isTrackedCategory)
+				.map(parsePlugin)
+				.filter(hasGithubLink)
+				.filter((p) => p.name)
 		)
 		.filter(isValidRepo);
 }
@@ -55,6 +86,12 @@ export async function fetchAwesomeNeovimReadme(): Promise<marked.TokensList> {
 	const RAW_README_URL =
 		'https://raw.githubusercontent.com/rockerBOO/awesome-neovim/main/README.md';
 	const text = await fetch(RAW_README_URL).then((r) => r.text());
+	const tree = marked.lexer(text);
+	return tree;
+}
+
+export function fetchTrackedPlugins() {
+	const text = readFileSync('./SUBMITTED-PLUGINS.md', 'utf8');
 	const tree = marked.lexer(text);
 	return tree;
 }

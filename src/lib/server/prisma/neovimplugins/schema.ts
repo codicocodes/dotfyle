@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const PluginDTO = z.object({
 	type: z.enum(['github']),
-	source: z.enum(['awesome-neovim']),
+	source: z.enum(['awesome-neovim', 'submitted-plugins']),
 	category: z.string(),
 	link: z.string(),
 	owner: z.string(),
