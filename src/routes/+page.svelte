@@ -5,6 +5,7 @@
 	import type { PageData } from './$types';
 	import {
 		faArrowDown,
+		faBomb,
 		faFileCode,
 		faFire,
 		faPuzzlePiece,
@@ -16,6 +17,7 @@
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
+	import PostCard from '$lib/components/PostCard.svelte';
 
 	export let data: PageData;
 </script>
@@ -84,6 +86,27 @@
 	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
+				<Fa icon={faBomb} size="sm" />
+				breaking changes
+			</h3>
+		</div>
+		<BigGridContainer>
+			{#each data.breaking as post, _}
+				{#if post.breakingChange}
+					<PostCard
+            date={new Date(post.createdAt)}
+						url="/plugins/{post.breakingChange.plugin.owner}/{post.breakingChange.plugin.name}"
+						title="Breaking change in {post.breakingChange?.plugin.name}"
+						text={post.title}
+					/>
+				{/if}
+			{/each}
+		</BigGridContainer>
+	</div>
+
+	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+		<div class="mb-2 flex justify-between pl-1 tracking-wide">
+			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faSeedling} size="sm" />
 				new configs
 			</h3>
@@ -92,18 +115,18 @@
 
 		<BigGridContainer>
 			{#each data.configs as conf, _}
-					<NeovimConfigCard
-            slug={conf.slug}
-						repo={conf.repo}
-						owner={conf.owner}
-						avatar={conf.ownerAvatar}
-						initFile={conf.initFile}
-						root={conf.root}
-						stars={conf.stars.toString()}
-						pluginManager={conf.pluginManager ?? 'unknown'}
-						pluginCount={conf.pluginCount.toString()}
-            showGithubLink={false}
-					/>
+				<NeovimConfigCard
+					slug={conf.slug}
+					repo={conf.repo}
+					owner={conf.owner}
+					avatar={conf.ownerAvatar}
+					initFile={conf.initFile}
+					root={conf.root}
+					stars={conf.stars.toString()}
+					pluginManager={conf.pluginManager ?? 'unknown'}
+					pluginCount={conf.pluginCount.toString()}
+					showGithubLink={false}
+				/>
 			{/each}
 		</BigGridContainer>
 	</div>
@@ -142,14 +165,14 @@
 
 		<BigGridContainer>
 			{#each data.trendingPlugins as plugin, _}
-					<NeovimPluginCard
-						owner={plugin.owner}
-						name={plugin.name}
-						stars={plugin.stars.toString()}
-						configCount={plugin.configCount}
-						category={plugin.category}
-						shortDescription={plugin.shortDescription}
-					/>
+				<NeovimPluginCard
+					owner={plugin.owner}
+					name={plugin.name}
+					stars={plugin.stars.toString()}
+					configCount={plugin.configCount}
+					category={plugin.category}
+					shortDescription={plugin.shortDescription}
+				/>
 			{/each}
 		</BigGridContainer>
 	</div>

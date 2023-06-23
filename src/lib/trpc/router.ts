@@ -12,7 +12,7 @@ import {
 	searchNeovimConfigs
 } from '$lib/server/prisma/neovimconfigs/service';
 import {
-    getAllNeovimPluginNames,
+	getAllNeovimPluginNames,
 	getPlugin,
 	getPluginsByCategory,
 	getPluginsBySlug,
@@ -22,10 +22,15 @@ import {
 import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
 import { hasBeenOneDay } from '$lib/utils';
 import { TRPCError } from '@trpc/server';
-import { syncExistingRepoInfo, syncInitialRepoInfo, validateConfigPath } from '$lib/server/nvim-sync/config/syncRepoInfo';
+import {
+	syncExistingRepoInfo,
+	syncInitialRepoInfo,
+	validateConfigPath
+} from '$lib/server/nvim-sync/config/syncRepoInfo';
 import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
 import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
 import { getLanguageServersBySlug } from '$lib/server/prisma/languageservers/service';
+import { getPosts } from '$lib/server/prisma/posts/services';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -127,7 +132,7 @@ export const router = t.router({
 		.query(async ({ input: { username, slug } }) => {
 			return getConfigBySlug(username, slug).catch(() => {
 				throw new TRPCError({ message: 'config not found', code: 'NOT_FOUND' });
-      })
+			});
 		}),
 	getConfigsByUsername: t.procedure
 		.input((input: unknown) => {
@@ -143,7 +148,7 @@ export const router = t.router({
 		.query(async ({ input: username }) => {
 			return getUserByUsername(username).catch(() => {
 				throw new TRPCError({ message: 'user not found', code: 'NOT_FOUND' });
-      })
+			});
 		}),
 	getUser: t.procedure.query(async ({ ctx }) => {
 		return ctx.user;
@@ -151,13 +156,11 @@ export const router = t.router({
 	getRepositories: t.procedure.use(isAuthenticated).query(async ({ ctx }) => {
 		const user = ctx.getAuthenticatedUser();
 		const plugins = await searchPlugins();
-		const pluginNamesArr = plugins
-			.filter((p) => p.category !== 'preconfigured')
-			.map((p) => p.name)
+		const pluginNamesArr = plugins.filter((p) => p.category !== 'preconfigured').map((p) => p.name);
 		const pluginNames = new Set(pluginNamesArr);
-    pluginNames.delete('vim')
-    pluginNames.delete('nvim')
-    pluginNames.delete('neovim')
+		pluginNames.delete('vim');
+		pluginNames.delete('nvim');
+		pluginNames.delete('neovim');
 		return (await getGithubRepositories(user)).filter((r) => !pluginNames.has(r.name));
 	}),
 	getNewestConfigs: t.procedure.query(async () => {
@@ -166,17 +169,19 @@ export const router = t.router({
 	}),
 	getConfigs: t.procedure
 		.input((input: unknown) => {
-			return z.object({
-					plugins: z.array(z.string()).optional(),
-				}).parse(input)
+			return z
+				.object({
+					plugins: z.array(z.string()).optional()
+				})
+				.parse(input);
 		})
-  .query(async ({input}) => {
-		const configs = await searchNeovimConfigs(input.plugins);
-		return configs;
+		.query(async ({ input }) => {
+			const configs = await searchNeovimConfigs(input.plugins);
+			return configs;
+		}),
+	getPluginIdentifiers: t.procedure.query(async () => {
+		return getAllNeovimPluginNames();
 	}),
-  getPluginIdentifiers: t.procedure.query(async () => {
-    return getAllNeovimPluginNames()
-  }),
 	syncExistingNeovimConfig: t.procedure
 		.use(isAuthenticated)
 		.input((input: unknown) => {
@@ -193,8 +198,8 @@ export const router = t.router({
 			if (!hasBeenOneDay(configBeforeSync.lastSyncedAt.toString())) {
 				throw new TRPCError({ code: 'FORBIDDEN' });
 			}
-      const token = await getGithubToken(user.id)
-      const config = await syncExistingRepoInfo(token, configBeforeSync)
+			const token = await getGithubToken(user.id);
+			const config = await syncExistingRepoInfo(token, configBeforeSync);
 			const syncer = await getNeovimConfigSyncer(user, config);
 			return await syncer.treeSync();
 		}),
@@ -235,6 +240,14 @@ export const router = t.router({
 			const root = await getRepoFileTree(user, input.repo, input.branch);
 			const initFiles = new InitFileFinder().findAllInitFile(root);
 			return initFiles;
+		}),
+
+	getPosts: t.procedure
+		.input((input: unknown) => {
+			return z.object({ type: z.enum(['breaking-change']) }).parse(input);
+		})
+		.query(async ({ input: { type } }) => {
+			return getPosts(type, 6);
 		})
 });
 
