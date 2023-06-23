@@ -1,5 +1,5 @@
 import type { User } from "@prisma/client";
-import { redirect } from "@sveltejs/kit";
+import { PUBLIC_ADMIN_USER_GITHUB_ID } from '$env/static/public';
 
 // source https://gist.github.com/jweyrich/f39c496b83f73d2c5b0587f4d841651b
 interface TimeUnit {
@@ -48,7 +48,7 @@ export function oneWeekAgo() {
 }
 
 
-export const ADMIN_GITHUB_ID = 76068197
+export const ADMIN_GITHUB_ID = PUBLIC_ADMIN_USER_GITHUB_ID ? Number(PUBLIC_ADMIN_USER_GITHUB_ID) : 76068197;
 
 export function isAdmin(user: User): boolean {
   return user.githubId === ADMIN_GITHUB_ID;
