@@ -288,6 +288,7 @@
 					<VirtualList items={filteredPlugins} let:item>
 						<div class="my-2">
 							<NeovimPluginCard
+                size="lg"
 								owner={item.owner}
 								name={item.name}
 								stars={item.stars.toString()}

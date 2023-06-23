@@ -37,7 +37,7 @@
 			{/if}
 		</div>
 	</div>
-	<div class={size === "sm" ? "px-2" : "sm:hidden"}> 
+	<div class={size === "sm" ? "px-2" : "px-2 sm:hidden"}> 
 		<NeovimPluginMetaData {stars} {configCount} {category} />
 	</div>
 </div>
