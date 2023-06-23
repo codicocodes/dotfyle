@@ -36,7 +36,7 @@ Finally, create the database:
 CREATE DATABASE dotfyle_dev;
 ```
 
-Once done, modify your `.env` file and adjust your `DATABASE_URL`:
+Once done, modify your `.env` file and update your `DATABASE_URL`:
 
 ```
 DATABASE_URL=postgresql://<username>:<password>@localhost:5432/dotfyle_dev
@@ -64,7 +64,7 @@ GITHUB_SECRET=<client_secret>
 
 ### 5. Create a JWT Access Secret
 
-Modify your `.env` file and adjust your `JWT_ACCESS_SECRET`:
+Modify your `.env` file and update your `JWT_ACCESS_SECRET`:
 
 ```
 JWT_ACCESS_SECRET=<secret_string>
@@ -77,7 +77,21 @@ can input into `JWT_ACCESS_SECRET`:
 npx randomstring 32
 ```
 
-### 6. Install dependencies
+### 6. Configure Admin access
+
+Modify your `.env` file and update the `PUBLIC_ADMIN_USER_GITHUB_ID` with the id of your github user
+
+```
+PUBLIC_ADMIN_USER_GITHUB_ID=<your-github-user-id>
+```
+
+You can find your github user id in the github api 
+
+```
+curl https://api.github.com/users/<username>
+```
+
+### 7. Install dependencies
 
 Use `pnpm` to install dependencies.
 
@@ -85,7 +99,7 @@ Use `pnpm` to install dependencies.
 pnpm install
 ```
 
-### 7. Run migrations
+### 8. Run migrations
 
 Run the prisma migrate command to sync db tables:
 
