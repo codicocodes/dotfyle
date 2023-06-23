@@ -118,12 +118,38 @@ pnpm run dev
 [prisma-postgres-install]: https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database
 [new-oauth]: https://github.com/settings/applications/new
 
-### Seed plugin data
 
-Once the server is running you can seed the plugin data
+### Sync data
 
-1. Authenticate using GitHub OAuth
-2. Navigate to [http://localhost:5173/api/seeder/plugins](http://localhost:5173/api/seeder/plugins) in the browser, if you see a json blob of plugin data you have successfully seeded the plugin data
+Once the server is running you can seed and sync data
 
-[prisma-postgres-install]: https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database
-[new-oauth]: https://github.com/settings/applications/new
+2. Navigate to the local [OAuth endpoint](http://localhost:5173/api/auth/github) to authenticate.
+
+#### Seed plugins
+
+2. Navigate to [http://localhost:5173/api/seeder/plugins](http://localhost:5173/api/seeder/plugins) in the browser.
+
+This scrapes popular plugins from `https://github.com/rockerBOO/awesome-neovim#readme`
+
+#### Sync all plugins
+
+2. Navigate to [http://localhost:5173/api/sync/plugins](http://localhost:5173/api/sync/plugins)
+
+This syncs data for all plugins using your github token:
+- Syncs repo data
+- Syncs README.md
+- Detects breaking changes in recent commits
+
+The sync consumes ~1500+ requests from the hourly rate limiting of your [github user access token] (https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/rate-limits-for-github-apps#user-access-tokens-on-githubcom) so run this sync with care.
+
+#### Sync all configs
+
+2. Navigate to [http://localhost:5173/api/sync/configs](http://localhost:5173/api/sync/configs)
+
+This syncs repo data and plugin usage for all configs using the user-access-token belonging belonging to each respective config
+
+#### Recalculate trending plugins
+
+2. Navigate to [http://localhost:5173/api/sync/plugins/trending](http://localhost:5173/api/sync/plugins/trending)
+
+This syncs repo data and plugin usage for all configs using the user-access-token belonging to each respective config
