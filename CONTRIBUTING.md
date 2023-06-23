@@ -140,7 +140,7 @@ This syncs data for all plugins using your github token:
 - Syncs README.md
 - Detects breaking changes in recent commits
 
-The sync consumes ~1500+ requests from the hourly rate limiting of your [github user access token] (https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/rate-limits-for-github-apps#user-access-tokens-on-githubcom) so run this sync with care.
+The sync consumes ~1500+ requests from the hourly rate limiting of your [github user access token](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/rate-limits-for-github-apps#user-access-tokens-on-githubcom) so run this sync with care.
 
 #### Sync all configs
 
