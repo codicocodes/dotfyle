@@ -34,7 +34,7 @@
 		<div class="flex flex-col gap-2">
 			<h1 class="flex items-center text-xl sm:text-2xl font-semibold tracking-wide gap-2">
 				{data.plugin.owner}/{data.plugin.name}
-				<a href={`https://github.com/${data.plugin.owner}/${data.plugin.name}`} target="_blank">
+				<a href={data.plugin.link} target="_blank">
 					<Fa icon={faGithub} size="sm" />
 				</a>
 			</h1>
