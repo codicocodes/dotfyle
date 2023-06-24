@@ -38,7 +38,7 @@
 	let search = $page.url.searchParams.get('q') ?? '';
 	let expantedTags = false;
 	let availableCategories: string[] = [];
-  $: showFilter = false;
+	$: showFilter = false;
 
 	export let data: PageData;
 
@@ -98,7 +98,7 @@
 	<title>Search and find neovim plugins</title>
 </svelte:head>
 
-<Modal showModal={showFilter} onClose={() => (showFilter=false)}>
+<Modal showModal={showFilter} onClose={() => (showFilter = false)}>
 	<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
 		<GlossyCard>
 			<div class="flex flex-col p-4 w-full gap-2">
@@ -199,30 +199,27 @@
 		<div>
 			<GlossyCard>
 				<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-					<div class="flex text-xs font-semibold gap-2 flex-wrap">
-						{#if selectedCategories.length > 0}
-							{#each selectedCategories as category}
-								<CoolTextWithChildren>
-									<button
-										class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
-										on:click={() => {
-											selectedCategoriesSet.delete(category);
-											selectedCategories = [...selectedCategoriesSet];
-											navigate($page, 'categories', selectedCategories.join(','));
-										}}
-									>
-										<div class="force-white-text">
-											<Fa icon={faX} size="xs" />
-										</div>
-										{category}
-									</button>
-								</CoolTextWithChildren>
-							{/each}
-						{:else}
-							<div class="font-semibold py-0.5 px-1">plugin categories</div>
-						{/if}
+					<div class="font-semibold py-0.5 px-1 flex text-xs font-semibold gap-2 flex-wrap">
+						plugin categories
 					</div>
 					<div class="flex flex-wrap gap-1 text-xs mt-2">
+						{#each selectedCategories as category}
+							<CoolTextWithChildren>
+								<button
+									class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
+									on:click={() => {
+										selectedCategoriesSet.delete(category);
+										selectedCategories = [...selectedCategoriesSet];
+										navigate($page, 'categories', selectedCategories.join(','));
+									}}
+								>
+									<div class="force-white-text">
+										<Fa icon={faX} size="xs" />
+									</div>
+									{category}
+								</button>
+							</CoolTextWithChildren>
+						{/each}
 						{#each availableCategories
 							.filter( (c) => (selectedCategoriesSet.size > 0 ? !selectedCategoriesSet.has(c) : true) )
 							.slice(0, expantedTags ? -1 : 20) as currCategory}
@@ -275,7 +272,7 @@
 				bind:value={search}
 				class="w-full sm:w-1/2 p-1 sm:p-1 rounded-lg text-black text-lg font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
 			/>
-			<Button on:click={() => (showFilter=true)} text="Filter" loading={false} icon={faFilter} />
+			<Button on:click={() => (showFilter = true)} text="Filter" loading={false} icon={faFilter} />
 		</div>
 		<div class="grid grid-cols-10 sm:gap-4 my-2 sm:my-4 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
@@ -288,7 +285,7 @@
 					<VirtualList items={filteredPlugins} let:item>
 						<div class="my-2">
 							<NeovimPluginCard
-                size="lg"
+								size="lg"
 								owner={item.owner}
 								name={item.name}
 								stars={item.stars.toString()}
