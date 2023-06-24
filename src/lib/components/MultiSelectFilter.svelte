@@ -5,7 +5,9 @@
 	import CoolTextWithChildren from './CoolTextWithChildren.svelte';
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 	import { fly } from 'svelte/transition';
+	import GlossyCard from './GlossyCard.svelte';
 
+	export let title: string;
 	export let items: string[];
 	export let selected: Set<string>;
 
@@ -27,59 +29,70 @@
 	}
 </script>
 
-<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-gray-600" />
-<div class="flex flex-wrap gap-1 text-xs mt-2">
-	{#each Array.from(selected) as item}
-		<CoolTextWithChildren>
-			<button
-				class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
-				on:click={() => unselectItem(item)}
-			>
-				<div class="force-white-text">
-					<Fa icon={faX} size="xs" />
-				</div>
-				{item}
-			</button>
-		</CoolTextWithChildren>
-	{/each}
-	{#each items
-		.filter((c) => (selected.size > 0 ? !selected.has(c) : true))
-    .filter(c => c.includes(filter))
-		.slice(0, expanded ? -1 : 20) as currItem}
-		<CoolTextOnHover>
-			<button
-				in:fly
-				class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
-				on:click={() => {
-					selected.add(currItem);
-					selected = selected;
-					sendSelectionUpdated();
-				}}
-			>
-				{currItem}
-			</button>
-		</CoolTextOnHover>
-	{/each}
+<GlossyCard>
+	<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
+		<div class="font-semibold px-1 flex text-xs font-semibold gap-2 flex-wrap">
+			{title}
+		</div>
+		<input
+			bind:value={filter}
+			placeholder="filter"
+			class="px-2 py-1 rounded text-sm text-gray-600"
+		/>
+		<div class="flex flex-wrap gap-1 text-xs mt-2">
+			{#each Array.from(selected) as item}
+				<CoolTextWithChildren>
+					<button
+						class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
+						on:click={() => unselectItem(item)}
+					>
+						<div class="force-white-text">
+							<Fa icon={faX} size="xs" />
+						</div>
+						{item}
+					</button>
+				</CoolTextWithChildren>
+			{/each}
+			{#each items
+				.filter((c) => (selected.size > 0 ? !selected.has(c) : true))
+				.filter((c) => c.includes(filter))
+				.slice(0, expanded ? -1 : 20) as currItem}
+				<CoolTextOnHover>
+					<button
+						in:fly
+						class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
+						on:click={() => {
+							selected.add(currItem);
+							selected = selected;
+							sendSelectionUpdated();
+						}}
+					>
+						{currItem}
+					</button>
+				</CoolTextOnHover>
+			{/each}
 
-	{#if !expanded}
-		<button
-			on:click={() => {
-				expanded = true;
-			}}
-			class="text-sm w-full font-semibold flex justify-center items-center gap-2"
-		>
-			see more
-			<Fa icon={faChevronDown} />
-		</button>
-	{:else}
-		<button
-			on:click={() => {
-				expanded = false;
-			}}
-			class="text-sm w-full font-semibold flex justify-center items-center gap-2"
-		>
-			see less
-			<Fa icon={faChevronUp} />
-		</button>
-	{/if}
-</div>
+			{#if !expanded}
+				<button
+					on:click={() => {
+						expanded = true;
+					}}
+					class="text-sm w-full font-semibold flex justify-center items-center gap-2"
+				>
+					see more
+					<Fa icon={faChevronDown} />
+				</button>
+			{:else}
+				<button
+					on:click={() => {
+						expanded = false;
+					}}
+					class="text-sm w-full font-semibold flex justify-center items-center gap-2"
+				>
+					see less
+					<Fa icon={faChevronUp} />
+				</button>
+			{/if}
+		</div>
+	</div>
+</GlossyCard>

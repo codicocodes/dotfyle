@@ -196,22 +196,15 @@
 			</div>
 		</GlossyCard>
 		<div>
-			<GlossyCard>
-				<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-					<div class="font-semibold py-0.5 px-1 flex text-xs font-semibold gap-2 flex-wrap">
-						plugin categories
-					</div>
-					<MultiSelectFilter
-						on:updated={({ detail }) => {
-							console.log(detail.selected);
-							navigate($page, 'categories', Array.from(detail.selected).join(','));
-              selectedCategoriesSet = new Set(detail.selected)
-						}}
-						items={availableCategories}
-						selected={selectedCategoriesSet}
-					/>
-				</div>
-			</GlossyCard>
+			<MultiSelectFilter
+				title="plugin categories"
+				on:updated={({ detail }) => {
+					navigate($page, 'categories', Array.from(detail.selected).join(','));
+					selectedCategoriesSet = new Set(detail.selected);
+				}}
+				items={availableCategories}
+				selected={selectedCategoriesSet}
+			/>
 		</div>
 	</div>
 </Modal>
