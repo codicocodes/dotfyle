@@ -11,8 +11,10 @@ import type {
 } from './schema';
 
 const sortings = {
-	neovimConfigPlugins: {
-    _count: 'desc',
+	plugins: {
+		neovimConfigPlugins: {
+			_count: 'desc'
+		}
 	},
 	new: {
 		createdAt: 'desc'
