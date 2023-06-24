@@ -5,7 +5,7 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const query = event.url.searchParams.get('q') ?? undefined;
 	const rawPage = event.url.searchParams.get('page') ?? '';
 	const page = parseInt(rawPage, 10);
-	const sorting = (event.url.searchParams.get('sort') ?? 'popular') as
+	const sorting = (event.url.searchParams.get('sort') ?? 'new') as
 		| 'new'
 		| 'stars'
 		| 'plugins';
