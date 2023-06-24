@@ -1,6 +1,7 @@
 import { oneWeekAgo } from '$lib/utils';
 import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
+import { paginator, type PaginatedResult } from '../pagination';
 import type {
 	NeovimPluginIdentifier,
 	NeovimPluginWithCount,
@@ -20,22 +21,22 @@ function flattenConfigCount({
 
 const orderByWeeklyAdded: [
 	{
-		addedLastWeek: 'desc',
+		addedLastWeek: 'desc';
 	},
 	{
 		neovimConfigPlugins: {
-			_count: 'desc',
+			_count: 'desc';
 		};
 	},
 	{
-		stars: 'desc',
+		stars: 'desc';
 	},
 	{
-		name: 'asc',
+		name: 'asc';
 	}
 ] = [
 	{
-		addedLastWeek: 'desc',
+		addedLastWeek: 'desc'
 	},
 	{
 		neovimConfigPlugins: {
@@ -53,14 +54,14 @@ const orderByWeeklyAdded: [
 const orderByPopularity: [
 	{
 		neovimConfigPlugins: {
-			_count: 'desc',
+			_count: 'desc';
 		};
 	},
 	{
-		stars: 'desc',
+		stars: 'desc';
 	},
 	{
-		name: 'asc',
+		name: 'asc';
 	}
 ] = [
 	{
@@ -78,18 +79,18 @@ const orderByPopularity: [
 
 const orderByNew: [
 	{
-		createdAt: 'desc',
+		createdAt: 'desc';
 	},
 	{
 		neovimConfigPlugins: {
-			_count: 'desc',
+			_count: 'desc';
 		};
 	},
 	{
-		stars: 'desc',
+		stars: 'desc';
 	},
 	{
-		name: 'asc',
+		name: 'asc';
 	}
 ] = [
 	{
@@ -111,7 +112,7 @@ const orderByNew: [
 const orderByConfig = {
 	popular: orderByPopularity,
 	new: orderByNew,
-	trending: orderByWeeklyAdded,
+	trending: orderByWeeklyAdded
 } as const;
 
 const selectConfigCount = {
@@ -127,7 +128,7 @@ const selectConfigCount = {
 	lastSyncedAt: true,
 	stars: true,
 	readme: false,
-  addedLastWeek: true,
+	addedLastWeek: true,
 	_count: {
 		select: {
 			neovimConfigPlugins: true
@@ -142,21 +143,52 @@ const selectWithReadme = {
 
 export async function searchPlugins(
 	query: string | undefined = undefined,
-	category: string | undefined = undefined,
+	categories: string[] = [],
 	sorting: 'new' | 'popular' | 'trending' = 'popular',
+	page: number | undefined = undefined,
 	take: number | undefined = undefined
-): Promise<NeovimPluginWithCount[]> {
+): Promise<PaginatedResult<NeovimPluginWithCount>> {
+	const queries = query?.split('/');
+	const mode = 'insensitive';
 	const where = {
-		...(category ? { category } : {})
+		...(categories.length > 0
+			? {
+					category: {
+						in: categories
+					}
+			  }
+			: {}),
+		...(query && queries
+			? queries.length > 1
+				? {
+						AND: [
+							{ owner: { contains: queries[0], mode } },
+							{ name: { contains: queries[1], mode } }
+						]
+				  }
+				: {
+						OR: [{ owner: { contains: query, mode } }, { name: { contains: query, mode } }]
+				  }
+			: {})
 	};
 	const orderBy = orderByConfig[sorting];
-	const plugins = await prismaClient.neovimPlugin.findMany({
+
+	const args = {
 		select: selectConfigCount,
 		where,
-		orderBy,
-		take
-	});
-	return plugins.map(flattenConfigCount);
+		orderBy
+	};
+
+	const { data: nestedPluginData, meta } = await paginator({
+		perPage: take
+	})<NestedNeovimPluginWithCount>(prismaClient.neovimPlugin, args, { page });
+
+	const data = nestedPluginData.map(flattenConfigCount);
+
+	return {
+		meta,
+		data
+	};
 }
 
 export async function getPluginsByCategory(category: string): Promise<NeovimPluginWithCount[]> {
@@ -251,8 +283,19 @@ export async function getAllNeovimPluginNames(): Promise<NeovimPluginIdentifier[
 			owner: true,
 			name: true
 		},
-    orderBy: orderByPopularity,
+		orderBy: orderByPopularity
 	});
+}
+
+export async function getAllPluginCategories(): Promise<string[]> {
+	return await prismaClient.neovimPlugin
+		.findMany({
+			select: {
+				category: true
+			},
+			distinct: 'category'
+		})
+		.then((res) => res.map(({ category }) => category));
 }
 
 export async function getAddedCountSince(since: Date): Promise<Record<number, number>> {

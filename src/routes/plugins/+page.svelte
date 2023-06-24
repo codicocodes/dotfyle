@@ -1,12 +1,15 @@
 <script lang="ts">
-	import VirtualList from '@sveltejs/svelte-virtual-list';
 	import { page } from '$app/stores';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
-	import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
-	import { faChartSimple, faFilter, faFire, faSeedling } from '@fortawesome/free-solid-svg-icons';
-	import { onMount } from 'svelte';
+	import {
+		faChartSimple,
+		faFilter,
+		faFire,
+		faSearch,
+		faSeedling
+	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
@@ -15,74 +18,21 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
+
+	export let data: PageData;
 
 	$: selectedCategories =
 		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
 
 	let selectedCategoriesSet = new Set(selectedCategories);
 
-	let plugins: NeovimPluginWithCount[] = [];
-
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'popular';
 
 	let sort: 'popular' | 'new' | 'trending' =
 		rawSort === 'popular' || rawSort === 'new' || rawSort === 'trending' ? rawSort : 'popular';
 	let search = $page.url.searchParams.get('q') ?? '';
-	let availableCategories: string[] = [];
 	$: showFilter = false;
-
-	export let data: PageData;
-
-	onMount(async () => {
-		plugins = data.plugins;
-		availableCategories = Object.entries(
-			plugins.reduce((countByCategory: Record<string, number>, p) => {
-				const cat = p.category;
-				const countInThisCategory = countByCategory[cat];
-				return { ...countByCategory, [cat]: countInThisCategory ? countInThisCategory + 1 : 1 };
-			}, {})
-		)
-			.sort((a, b) => b[1] - a[1])
-			.map((c) => c[0]);
-	});
-
-	$: {
-		if (sort === 'trending') {
-			plugins = plugins.sort((a, b) => {
-				if (a.addedLastWeek === b.addedLastWeek) return 0;
-				return a.addedLastWeek > b.addedLastWeek ? -1 : 1;
-			});
-		}
-		if (sort === 'new') {
-			plugins = plugins.sort((a, b) => {
-				if (a.createdAt === b.createdAt) return 0;
-				return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
-			});
-		}
-		if (sort === 'popular') {
-			plugins = plugins.sort((a, b) => {
-				if (a.configCount === b.configCount) return a.stars > b.stars ? -1 : 1;
-				return a.configCount > b.configCount ? -1 : 1;
-			});
-		}
-	}
-
-	$: filteredPlugins = plugins.filter((p) => {
-		const searchable =
-			p.owner +
-			p.name +
-			p.shortDescription +
-			p.category +
-			`${p.owner}/${p.name}` +
-			p.category.split('-').join(' ');
-
-		if (selectedCategoriesSet.size > 0) {
-			if (!selectedCategoriesSet.has(p.category)) {
-				return false;
-			}
-		}
-		return searchable.toLowerCase().includes(search.toLowerCase());
-	});
 </script>
 
 <svelte:head>
@@ -97,7 +47,8 @@
 					<button
 						on:click={() => {
 							sort = 'new';
-							navigate($page, 'sort', sort);
+							navigate($page, 'page', '1');
+							navigate($page, 'sort', sort, true);
 						}}
 					>
 						{#if sort === 'new'}
@@ -127,7 +78,8 @@
 					<button
 						on:click={() => {
 							sort = 'popular';
-							navigate($page, 'sort', sort);
+							navigate($page, 'page', '1');
+							navigate($page, 'sort', sort, true);
 						}}
 					>
 						{#if sort === 'popular'}
@@ -157,7 +109,8 @@
 					<button
 						on:click={() => {
 							sort = 'trending';
-							navigate($page, 'sort', sort);
+							navigate($page, 'page', '1');
+							navigate($page, 'sort', sort, true);
 						}}
 					>
 						{#if sort === 'trending'}
@@ -191,10 +144,11 @@
 			<MultiSelectFilter
 				title="plugin categories"
 				on:updated={({ detail }) => {
-					navigate($page, 'categories', Array.from(detail.selected).join(','));
+					navigate($page, 'page', '1');
+					navigate($page, 'categories', Array.from(detail.selected).join(','), true);
 					selectedCategoriesSet = new Set(detail.selected);
 				}}
-				items={availableCategories}
+				items={data.categories}
 				selected={selectedCategoriesSet}
 			/>
 		</div>
@@ -202,14 +156,25 @@
 </Modal>
 <div class="w-full flex flex-col items-center px-4">
 	<div class="flex flex-col max-w-5xl w-full">
-		<div class="flex items-center justify-between mt-2 sm:mt-4 mb-2">
+		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-2 sm:mt-4 mb-2 gap-2">
 			<SmallTitle title="Find Neovim plugins" />
 			<div class="flex justify-end gap-2 sm:w-1/2">
-				<input
-					bind:value={search}
-          placeholder="filter plugins"
-					class="hidden sm:flex p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
-				/>
+				<form
+					class="grow"
+					on:submit|preventDefault={() => {
+						navigate($page, 'page', '1');
+						navigate($page, 'q', search, true);
+					}}
+				>
+					<div class="flex grow gap-2">
+						<input
+							bind:value={search}
+							placeholder="search plugins"
+							class="p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
+						/>
+						<Button text="Search" loading={false} icon={faSearch} />
+					</div>
+				</form>
 				<Button
 					on:click={() => (showFilter = true)}
 					text="Filter"
@@ -219,33 +184,42 @@
 			</div>
 		</div>
 
-		<input
-			bind:value={search}
-      placeholder="filter plugins"
-			class="flex sm:hidden p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
-		/>
+		<form
+			class="hidden grow flex w-full sm:hidden"
+			on:submit|preventDefault={() => {
+				navigate($page, 'page', '1');
+				navigate($page, 'q', search, true);
+			}}
+		>
+			<div class="flex grow gap-2">
+				<input
+					bind:value={search}
+					placeholder="search plugins"
+					class="w-full p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
+				/>
+				<Button text="Search" loading={false} icon={faSearch} />
+			</div>
+		</form>
 		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
-				<div class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-320px)]">
-					<!-- 
-              we need to use a virtual list otherwise rerendering is too heavy
-              only way i got it to work was with 100vh - 420px to ensure we don't have double scroll y bars
-              if improving this ensure that there is not double scrollbars on either mobile or desktop
-            -->
-					<VirtualList items={filteredPlugins} let:item>
-						<div class="my-2">
-							<NeovimPluginCard
-								size="lg"
-								owner={item.owner}
-								name={item.name}
-								stars={item.stars.toString()}
-								configCount={item.configCount}
-								category={item.category}
-								shortDescription={item.shortDescription}
-							/>
-						</div>
-					</VirtualList>
+				<div class="flex flex-col gap-2">
+					{#each data.plugins as item}
+						<NeovimPluginCard
+							size="lg"
+							owner={item.owner}
+							name={item.name}
+							stars={item.stars.toString()}
+							configCount={item.configCount}
+							category={item.category}
+							shortDescription={item.shortDescription}
+						/>
+					{/each}
 				</div>
+				<Pagination
+					page={$page}
+					next={$page.data.pagination.next}
+					previous={$page.data.pagination.prev}
+				/>
 			</div>
 		</div>
 	</div>

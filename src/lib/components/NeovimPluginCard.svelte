@@ -11,10 +11,10 @@
 </script>
 
 <div
-	class="h-full relative flex flex-col justify-between overflow-hidden rounded-md border border-green-300/25 bg-white/10 hover:bg-white/20 transition-colors w-full shadow-lg hover:shadow-green-300/25"
+	class="h-full flex flex-col justify-between rounded-md border border-green-300/25 bg-white/10 hover:bg-white/20 transition-colors shadow-lg hover:shadow-green-300/25"
 >
 	<div class="h-full flex space-x-4 p-2 pl-5 transition-colors items-start">
-		<div class="w-full flex flex-col gap-1">
+		<div class="w-full h-full flex flex-col gap-1">
 			<div class="flex w-fulll justify-between">
 				<CoolTextOnHover>
 					<a
@@ -31,9 +31,9 @@
 				{/if}
 			</div>
 			{#if shortDescription}
-				<p class="text-xs font-medium tracking-wide md:text-sm">
+				<span class="text-xs font-medium tracking-wide md:text-sm">
 					{shortDescription}
-				</p>
+				</span>
 			{/if}
 		</div>
 	</div>

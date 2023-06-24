@@ -5,18 +5,25 @@
 	export let text: string;
 	export let icon: IconDefinition;
   export let loading: boolean
+  export let iconPosition: 'right' | 'left' = 'right'
+  export let disabled = false
 </script>
 
 <button
   on:click
-	class={`bg-white/30  p-2 py-1 xl:px-2 xl:py-1 rounded flex gap-1 items-center ${loading ? "hover:cursor-not-allowed hover:bg-white/10" : "shadow-lg hover:shadow-green-300/25 hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 "}`}
+	class={`${disabled || loading ? "cursor-not-allowed" : ""} bg-white/30  p-2 py-1 xl:px-2 xl:py-1 rounded flex gap-1 items-center ${loading ? "hover:cursor-not-allowed hover:bg-white/10" : "shadow-lg hover:shadow-green-300/25 hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 "}`}
 	type="submit"
-  disabled={loading}
+  disabled={disabled || loading}
 >
-	{text}
+  {#if iconPosition === 'right'}
+    {text}
+  {/if}
   {#if loading}
 	  <DoubleBounce color="#15be97" size="8" />
   {:else}
     <Fa class="ml-1" size="xs" {icon} />
+  {/if}
+  {#if iconPosition === 'left'}
+    {text}
   {/if}
 </button>

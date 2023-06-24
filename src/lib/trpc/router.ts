@@ -13,6 +13,7 @@ import {
 } from '$lib/server/prisma/neovimconfigs/service';
 import {
 	getAllNeovimPluginNames,
+	getAllPluginCategories,
 	getPlugin,
 	getPluginsByCategory,
 	getPluginsBySlug,
@@ -57,19 +58,23 @@ export const router = t.router({
 	getPopularPlugins: t.procedure.query(async () => {
 		return getPopularPlugins();
 	}),
+  listPluginCategories: t.procedure.query(async () => {
+    return getAllPluginCategories()
+  }),
 	searchPlugins: t.procedure
 		.input((input: unknown) => {
 			return z
 				.object({
 					query: z.string().optional(),
-					category: z.string().optional(),
+					categories: z.array(z.string()).default([]),
 					sorting: z.enum(['new', 'popular', 'trending']),
-					take: z.number().optional()
+          page: z.number().default(1),
+          take: z.number().optional(),
 				})
 				.parse(input);
 		})
 		.query(async ({ input }) => {
-			const plugins = await searchPlugins(input.query, input.category, input.sorting, input.take);
+			const plugins = await searchPlugins(input.query, input.categories, input.sorting, input.page, input.take);
 			return plugins;
 		}),
 	getConfigsForPlugin: t.procedure
@@ -156,7 +161,7 @@ export const router = t.router({
 	getRepositories: t.procedure.use(isAuthenticated).query(async ({ ctx }) => {
 		const user = ctx.getAuthenticatedUser();
 		const plugins = await searchPlugins();
-		const pluginNamesArr = plugins.filter((p) => p.category !== 'preconfigured').map((p) => p.name);
+		const pluginNamesArr = plugins.data.filter((p) => p.category !== 'preconfigured').map((p) => p.name);
 		const pluginNames = new Set(pluginNamesArr);
 		pluginNames.delete('vim');
 		pluginNames.delete('nvim');
