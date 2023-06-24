@@ -5,22 +5,14 @@
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
-	import {
-		faChevronDown,
-		faChevronUp,
-		faFilter,
-		faPuzzlePiece,
-		faSeedling,
-		faStar,
-		faX
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faFilter, faPuzzlePiece, faSeedling, faStar } from '@fortawesome/free-solid-svg-icons';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import { navigate } from '$lib/navigate';
 	import Modal from '$lib/components/Modal.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import { fly } from 'svelte/transition';
+	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
 
 	export let data: PageData;
 
@@ -70,7 +62,6 @@
 
 	$: selectedPluginsSet = new Set(selectedPlugins);
 
-	let expantedTags = false;
 	let availablePlugins: string[] = $page.data.plugins;
 </script>
 
@@ -172,75 +163,15 @@
 				</div>
 			</div>
 		</GlossyCard>
-		<div>
-			<GlossyCard>
-				<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-					<div class="flex text-xs font-semibold gap-2 flex-wrap">
-						{#if selectedPlugins.length > 0}
-							{#each selectedPlugins as plugin}
-								<CoolTextWithChildren>
-									<button
-										class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
-										on:click={() => {
-											selectedPluginsSet.delete(plugin);
-											selectedPlugins = [...selectedPluginsSet];
-											navigate($page, 'plugins', selectedPlugins.join(','), true);
-										}}
-									>
-										<div class="force-white-text">
-											<Fa icon={faX} size="xs" />
-										</div>
-										{plugin}
-									</button>
-								</CoolTextWithChildren>
-							{/each}
-						{:else}
-							<div class="font-semibold py-0.5 px-1">plugins</div>
-						{/if}
-					</div>
-					<div class="flex flex-wrap gap-1 text-xs mt-2">
-						{#each availablePlugins
-							.filter((c) => (selectedPluginsSet.size > 0 ? !selectedPluginsSet.has(c) : true))
-							.slice(0, expantedTags ? -1 : 10) as currCategory}
-							<CoolTextOnHover>
-								<button
-									in:fly
-									class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
-									on:click={() => {
-										selectedPlugins.push(currCategory);
-										selectedPlugins = selectedPlugins;
-										navigate($page, 'plugins', selectedPlugins.join(','), true);
-									}}
-								>
-									{currCategory}
-								</button>
-							</CoolTextOnHover>
-						{/each}
-					</div>
-					{#if !expantedTags}
-						<button
-							on:click={() => {
-								expantedTags = true;
-							}}
-							class="text-sm w-full font-semibold flex justify-center items-center gap-2"
-						>
-							see more
-							<Fa icon={faChevronDown} />
-						</button>
-					{:else}
-						<button
-							on:click={() => {
-								expantedTags = false;
-							}}
-							class="text-sm w-full font-semibold flex justify-center items-center gap-2"
-						>
-							see less
-							<Fa icon={faChevronUp} />
-						</button>
-					{/if}
-				</div>
-			</GlossyCard>
-		</div>
+			<MultiSelectFilter
+				title="plugins"
+				on:updated={({ detail }) => {
+					navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
+					selectedPluginsSet = new Set(detail.selected);
+				}}
+				items={availablePlugins}
+				selected={selectedPluginsSet}
+			/>
 	</div>
 </Modal>
 <div class="w-full flex flex-col items-center px-8">
