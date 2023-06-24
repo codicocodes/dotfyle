@@ -163,27 +163,41 @@
 				</div>
 			</div>
 		</GlossyCard>
-			<MultiSelectFilter
-				title="plugins"
-				on:updated={({ detail }) => {
-					navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
-					selectedPluginsSet = new Set(detail.selected);
-				}}
-				items={availablePlugins}
-				selected={selectedPluginsSet}
-			/>
+		<MultiSelectFilter
+			title="plugins"
+			on:updated={({ detail }) => {
+				navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
+				selectedPluginsSet = new Set(detail.selected);
+			}}
+			items={availablePlugins}
+			selected={selectedPluginsSet}
+		/>
 	</div>
 </Modal>
-<div class="w-full flex flex-col items-center px-8">
-	<div class="flex flex-col max-w-5xl w-full gap-4">
-		<SmallTitle title="Find Neovim configs" />
-		<div class="flex items-center justify-center mb-4 gap-2">
-			<input
-				bind:value={search}
-				class="w-full sm:w-1/2 p-1 sm:p-1 rounded-lg text-black text-lg font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
-			/>
-			<Button on:click={() => (showFilter = true)} text="Filter" loading={false} icon={faFilter} />
+<div class="w-full flex flex-col items-center px-4">
+	<div class="flex flex-col max-w-5xl w-full">
+		<div class="flex items-center justify-between mt-2 sm:mt-4 mb-2">
+			<SmallTitle title="Find Neovim plugins" />
+			<div class="flex justify-end gap-2 sm:w-1/2">
+				<input
+					bind:value={search}
+          placeholder="filter configs"
+					class="hidden sm:flex p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
+				/>
+				<Button
+					on:click={() => (showFilter = true)}
+					text="Filter"
+					loading={false}
+					icon={faFilter}
+				/>
+			</div>
 		</div>
+
+		<input
+			bind:value={search}
+      placeholder="filter configs"
+			class="flex sm:hidden p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
+		/>
 		<div class="flex flex-col h-[calc(100vh-220px)] sm:h-[calc(100vh-320px)]">
 			<!-- 
           we need to use a virtual list otherwise rerendering is too heavy

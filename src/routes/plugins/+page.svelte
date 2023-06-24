@@ -5,14 +5,7 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
-	import {
-		faChartSimple,
-		faChevronDown,
-		faChevronUp,
-		faFilter,
-		faFire,
-		faSeedling
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faChartSimple, faFilter, faFire, faSeedling } from '@fortawesome/free-solid-svg-icons';
 	import { onMount } from 'svelte';
 	import Fa from 'svelte-fa';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
@@ -35,7 +28,6 @@
 	let sort: 'popular' | 'new' | 'trending' =
 		rawSort === 'popular' || rawSort === 'new' || rawSort === 'trending' ? rawSort : 'popular';
 	let search = $page.url.searchParams.get('q') ?? '';
-	let expantedTags = false;
 	let availableCategories: string[] = [];
 	$: showFilter = false;
 
@@ -208,17 +200,31 @@
 		</div>
 	</div>
 </Modal>
-<div class="w-full flex flex-col items-center px-8">
-	<div class="flex flex-col max-w-5xl w-full gap-4">
-		<SmallTitle title="Find Neovim plugins" />
-		<div class="flex items-center justify-center gap-2">
-			<input
-				bind:value={search}
-				class="w-full sm:w-1/2 p-1 sm:p-1 rounded-lg text-black text-lg font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
-			/>
-			<Button on:click={() => (showFilter = true)} text="Filter" loading={false} icon={faFilter} />
+<div class="w-full flex flex-col items-center px-4">
+	<div class="flex flex-col max-w-5xl w-full">
+		<div class="flex items-center justify-between mt-2 sm:mt-4 mb-2">
+			<SmallTitle title="Find Neovim plugins" />
+			<div class="flex justify-end gap-2 sm:w-1/2">
+				<input
+					bind:value={search}
+          placeholder="filter plugins"
+					class="hidden sm:flex p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
+				/>
+				<Button
+					on:click={() => (showFilter = true)}
+					text="Filter"
+					loading={false}
+					icon={faFilter}
+				/>
+			</div>
 		</div>
-		<div class="grid grid-cols-10 sm:gap-4 my-2 sm:my-4 max-w-5xl text-xl">
+
+		<input
+			bind:value={search}
+      placeholder="filter plugins"
+			class="flex sm:hidden p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
+		/>
+		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
 				<div class="flex flex-col h-[calc(100vh-340px)] sm:h-[calc(100vh-320px)]">
 					<!-- 
