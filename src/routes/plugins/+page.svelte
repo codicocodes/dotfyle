@@ -184,22 +184,6 @@
 			</div>
 		</div>
 
-		<form
-			class="hidden grow flex w-full sm:hidden"
-			on:submit|preventDefault={() => {
-				navigate($page, 'page', '1');
-				navigate($page, 'q', search, true);
-			}}
-		>
-			<div class="flex grow gap-2">
-				<input
-					bind:value={search}
-					placeholder="search plugins"
-					class="w-full p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80"
-				/>
-				<Button text="Search" loading={false} icon={faSearch} />
-			</div>
-		</form>
 		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
 				<div class="flex flex-col gap-2">

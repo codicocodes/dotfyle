@@ -1,5 +1,6 @@
 import type { NeovimConfig, NeovimPluginManager } from '@prisma/client';
 import { prismaClient } from '../client';
+import { paginator } from '../pagination';
 import type {
 	CreateNeovimConfigDTO,
 	NeovimConfigWithMetaData,
@@ -8,6 +9,26 @@ import type {
 	NestedNeovimConfigWithMetaData,
 	NestedNeovimConfigWithPlugins
 } from './schema';
+
+const sortings = {
+	neovimConfigPlugins: {
+    _count: 'desc',
+	},
+	new: {
+		createdAt: 'desc'
+	},
+	stars: [
+		{
+			stars: 'desc'
+		},
+		{
+			repo: 'asc'
+		},
+		{
+			root: 'asc'
+		}
+	]
+} as const;
 
 export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
 	const configs = await prismaClient.neovimConfig.findMany({
@@ -190,16 +211,16 @@ export async function syncLanguageServers(id: number, sha: string, languageServe
 							}
 						},
 						create: {
-              languageServer: {
-                connectOrCreate: {
-                  where: {
-                    name: languageServerName,
-                  },
-                  create: {
-                    name: languageServerName,
-                  }
-                }
-              },
+							languageServer: {
+								connectOrCreate: {
+									where: {
+										name: languageServerName
+									},
+									create: {
+										name: languageServerName
+									}
+								}
+							},
 							sync: {
 								connectOrCreate: {
 									where: {
@@ -212,7 +233,7 @@ export async function syncLanguageServers(id: number, sha: string, languageServe
 										sha,
 										config: {
 											connect: {
-												id,
+												id
 											}
 										}
 									}
@@ -300,9 +321,29 @@ export async function saveLeaderkey(id: number, leaderkey: string): Promise<Neov
 	});
 }
 
-export async function searchNeovimConfigs(pluginIdentifiers: string[] | undefined) {
-	const configs = await prismaClient.neovimConfig.findMany({
+export async function searchNeovimConfigs(
+	query: string | undefined = undefined,
+	pluginIdentifiers: string[] | undefined,
+	sorting: 'new' | 'stars' | 'plugins' = 'new',
+	page: number | undefined = undefined,
+	take: number | undefined = undefined
+) {
+	const queries = query?.split('/');
+	const mode = 'insensitive';
+	const args = {
 		where: {
+			...(query && queries
+				? queries.length > 1
+					? {
+							AND: [
+								{ owner: { contains: queries[0], mode } },
+								{ repo: { contains: queries[1], mode } }
+							]
+					  }
+					: {
+							OR: [{ owner: { contains: query, mode } }, { repo: { contains: query, mode } }]
+					  }
+				: {}),
 			...(pluginIdentifiers && pluginIdentifiers.length > 0
 				? {
 						AND: pluginIdentifiers.map((identifier) => {
@@ -333,12 +374,18 @@ export async function searchNeovimConfigs(pluginIdentifiers: string[] | undefine
 				}
 			}
 		},
-		orderBy: {
-			createdAt: 'desc'
-		}
-	});
+		orderBy: sortings[sorting]
+	};
 
-	return configs.map(attachMetaData);
+	const { data: nestedConfigData, meta } = await paginator({
+		perPage: take
+	})<NestedNeovimConfigWithMetaData>(prismaClient.neovimConfig, args, { page });
+
+	const data = nestedConfigData.map(attachMetaData);
+	return {
+		data,
+		meta
+	};
 }
 
 export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData[]> {

@@ -5,7 +5,13 @@
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
-	import { faFilter, faPuzzlePiece, faSeedling, faStar } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faFilter,
+		faPuzzlePiece,
+		faSearch,
+		faSeedling,
+		faStar
+	} from '@fortawesome/free-solid-svg-icons';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import { navigate } from '$lib/navigate';
@@ -13,6 +19,7 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
 
 	export let data: PageData;
 
@@ -25,38 +32,6 @@
 	let rawSort: string = $page.url.searchParams.get('sort') ?? 'new';
 
 	let sorting = sortingOptions.includes(rawSort) ? rawSort : 'new';
-
-	$: filteredConfig = data.configs.filter((p) => {
-		const searchable =
-			p.owner +
-			p.repo +
-			p.root +
-			p.initFile +
-			p.pluginManager +
-			`${p.repo}/${p.root}/${p.initFile}` +
-			`${p.repo} ${p.root} ${p.initFile}`;
-
-		return searchable.toLowerCase().includes(search.toLowerCase());
-	});
-
-	$: {
-		if (sorting === 'new') {
-			data.configs = data.configs.sort((a, b) => {
-				if (a.createdAt === b.createdAt) return 0;
-				return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
-			});
-		}
-		if (sorting === 'stars') {
-			data.configs = data.configs.sort((a, b) => {
-				return a.stars > b.stars ? -1 : 1;
-			});
-		}
-		if (sorting === 'plugins') {
-			data.configs = data.configs.sort((a, b) => {
-				return a.pluginCount > b.pluginCount ? -1 : 1;
-			});
-		}
-	}
 
 	$: selectedPlugins = $page.url.searchParams.get('plugins')?.split(',').filter(Boolean) ?? [];
 
@@ -73,7 +48,7 @@
 					<button
 						on:click={() => {
 							sorting = 'new';
-							navigate($page, 'sort', sorting);
+							navigate($page, 'sort', sorting, true);
 						}}
 					>
 						{#if sorting === 'new'}
@@ -103,7 +78,7 @@
 					<button
 						on:click={() => {
 							sorting = 'stars';
-							navigate($page, 'sort', sorting);
+							navigate($page, 'sort', sorting, true);
 						}}
 					>
 						{#if sorting === 'stars'}
@@ -133,7 +108,7 @@
 					<button
 						on:click={() => {
 							sorting = 'plugins';
-							navigate($page, 'sort', sorting);
+							navigate($page, 'sort', sorting, true);
 						}}
 					>
 						{#if sorting === 'plugins'}
@@ -176,14 +151,27 @@
 </Modal>
 <div class="w-full flex flex-col items-center px-4">
 	<div class="flex flex-col max-w-5xl w-full">
-		<div class="flex items-center justify-between mt-2 sm:mt-4 mb-2">
+		<div
+			class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-2 sm:mt-4 mb-2 gap-2"
+		>
 			<SmallTitle title="Find Neovim plugins" />
 			<div class="flex justify-end gap-2 sm:w-1/2">
-				<input
-					bind:value={search}
-          placeholder="filter configs"
-					class="hidden sm:flex p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
-				/>
+				<form
+					class="grow"
+					on:submit|preventDefault={() => {
+						navigate($page, 'page', '1');
+						navigate($page, 'q', search, true);
+					}}
+				>
+					<div class="flex grow gap-2">
+						<input
+							bind:value={search}
+							placeholder="search configs"
+							class="p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
+						/>
+						<Button text="Search" loading={false} icon={faSearch} />
+					</div>
+				</form>
 				<Button
 					on:click={() => (showFilter = true)}
 					text="Filter"
@@ -192,34 +180,23 @@
 				/>
 			</div>
 		</div>
-
-		<input
-			bind:value={search}
-      placeholder="filter configs"
-			class="flex sm:hidden p-1 sm:p-1 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full"
-		/>
-		<div class="flex flex-col h-[calc(100vh-220px)] sm:h-[calc(100vh-320px)]">
-			<!-- 
-          we need to use a virtual list otherwise rerendering is too heavy
-          only way i got it to work was with 100vh - 420px to ensure we don't have double scroll y bars
-          if improving this ensure that there is not double scrollbars on either mobile or desktop
-      -->
-			<VirtualList items={filteredConfig} let:item>
-				<div class="my-2">
-					<NeovimConfigCard
-						slug={item.slug}
-						repo={item.repo}
-						owner={item.owner}
-						avatar={item.ownerAvatar}
-						initFile={item.initFile}
-						root={item.root}
-						stars={item.stars.toString()}
-						pluginManager={item.pluginManager ?? 'unknown'}
-						pluginCount={item.pluginCount.toString()}
-						showGithubLink={false}
-					/>
-				</div>
-			</VirtualList>
+		<div class="flex flex-col gap-2 my-2">
+			{#each data.configs as item}
+				<NeovimConfigCard
+					slug={item.slug}
+					repo={item.repo}
+					owner={item.owner}
+					avatar={item.ownerAvatar}
+					initFile={item.initFile}
+					root={item.root}
+					stars={item.stars.toString()}
+					pluginManager={item.pluginManager ?? 'unknown'}
+					pluginCount={item.pluginCount.toString()}
+					showGithubLink={false}
+				/>
+			{/each}
 		</div>
+
+    <Pagination page={$page} next={data.pagination.next} previous={data.pagination.prev} />
 	</div>
 </div>

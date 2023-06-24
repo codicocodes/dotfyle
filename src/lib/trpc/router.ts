@@ -172,16 +172,20 @@ export const router = t.router({
 		const configs = await getNewestNeovimConfigs();
 		return configs;
 	}),
-	getConfigs: t.procedure
+	searchConfigs: t.procedure
 		.input((input: unknown) => {
 			return z
 				.object({
-					plugins: z.array(z.string()).optional()
+					query: z.string().optional(),
+					plugins: z.array(z.string()).optional(),
+					sorting: z.enum(['new', 'stars', 'plugins']),
+          page: z.number().default(1),
+          take: z.number().optional(),
 				})
 				.parse(input);
 		})
 		.query(async ({ input }) => {
-			const configs = await searchNeovimConfigs(input.plugins);
+			const configs = await searchNeovimConfigs(input.query, input.plugins, input.sorting, input.page, input.take);
 			return configs;
 		}),
 	getPluginIdentifiers: t.procedure.query(async () => {
