@@ -11,23 +11,22 @@
 		faChevronUp,
 		faFilter,
 		faFire,
-		faSeedling,
-		faX
+		faSeedling
 	} from '@fortawesome/free-solid-svg-icons';
 	import { onMount } from 'svelte';
 	import Fa from 'svelte-fa';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
-	import { fly } from 'svelte/transition';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import type { PageData } from './$types';
 	import { navigate } from '$lib/navigate';
 	import Modal from '$lib/components/Modal.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
 
 	$: selectedCategories =
 		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
 
-	$: selectedCategoriesSet = new Set(selectedCategories);
+	let selectedCategoriesSet = new Set(selectedCategories);
 
 	let plugins: NeovimPluginWithCount[] = [];
 
@@ -202,63 +201,15 @@
 					<div class="font-semibold py-0.5 px-1 flex text-xs font-semibold gap-2 flex-wrap">
 						plugin categories
 					</div>
-					<div class="flex flex-wrap gap-1 text-xs mt-2">
-						{#each selectedCategories as category}
-							<CoolTextWithChildren>
-								<button
-									class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
-									on:click={() => {
-										selectedCategoriesSet.delete(category);
-										selectedCategories = [...selectedCategoriesSet];
-										navigate($page, 'categories', selectedCategories.join(','));
-									}}
-								>
-									<div class="force-white-text">
-										<Fa icon={faX} size="xs" />
-									</div>
-									{category}
-								</button>
-							</CoolTextWithChildren>
-						{/each}
-						{#each availableCategories
-							.filter( (c) => (selectedCategoriesSet.size > 0 ? !selectedCategoriesSet.has(c) : true) )
-							.slice(0, expantedTags ? -1 : 20) as currCategory}
-							<CoolTextOnHover>
-								<button
-									in:fly
-									class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-semibold`}
-									on:click={() => {
-										selectedCategories.push(currCategory);
-										selectedCategories = selectedCategories;
-										navigate($page, 'categories', selectedCategories.join(','));
-									}}
-								>
-									{currCategory}
-								</button>
-							</CoolTextOnHover>
-						{/each}
-					</div>
-					{#if !expantedTags}
-						<button
-							on:click={() => {
-								expantedTags = true;
-							}}
-							class="text-sm w-full font-semibold flex justify-center items-center gap-2"
-						>
-							see more
-							<Fa icon={faChevronDown} />
-						</button>
-					{:else}
-						<button
-							on:click={() => {
-								expantedTags = false;
-							}}
-							class="text-sm w-full font-semibold flex justify-center items-center gap-2"
-						>
-							see less
-							<Fa icon={faChevronUp} />
-						</button>
-					{/if}
+					<MultiSelectFilter
+						on:updated={({ detail }) => {
+							console.log(detail.selected);
+							navigate($page, 'categories', Array.from(detail.selected).join(','));
+              selectedCategoriesSet = new Set(detail.selected)
+						}}
+						items={availableCategories}
+						selected={selectedCategoriesSet}
+					/>
 				</div>
 			</GlossyCard>
 		</div>
