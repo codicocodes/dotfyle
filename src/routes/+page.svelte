@@ -86,27 +86,6 @@
 	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
-				<Fa icon={faBomb} size="sm" />
-				breaking changes
-			</h3>
-		</div>
-		<BigGridContainer>
-			{#each data.breaking as post, _}
-				{#if post.breakingChange}
-					<PostCard
-            date={new Date(post.createdAt)}
-						url="/plugins/{post.breakingChange.plugin.owner}/{post.breakingChange.plugin.name}"
-						title="Breaking change in {post.breakingChange?.plugin.name}"
-						text={post.title}
-					/>
-				{/if}
-			{/each}
-		</BigGridContainer>
-	</div>
-
-	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
-		<div class="mb-2 flex justify-between pl-1 tracking-wide">
-			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faSeedling} size="sm" />
 				new configs
 			</h3>
@@ -173,6 +152,27 @@
 					category={plugin.category}
 					shortDescription={plugin.shortDescription}
 				/>
+			{/each}
+		</BigGridContainer>
+	</div>
+
+	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+		<div class="mb-2 flex justify-between pl-1 tracking-wide">
+			<h3 class="flex items-center gap-1 text-lg font-semibold">
+				<Fa icon={faBomb} size="sm" />
+				breaking changes
+			</h3>
+		</div>
+		<BigGridContainer>
+			{#each data.breaking as post, _}
+				{#if post.breakingChange}
+					<PostCard
+            date={new Date(post.createdAt)}
+						url="/plugins/{post.breakingChange.plugin.owner}/{post.breakingChange.plugin.name}"
+						title="Breaking change in {post.breakingChange?.plugin.name}"
+						text={post.title}
+					/>
+				{/if}
 			{/each}
 		</BigGridContainer>
 	</div>
