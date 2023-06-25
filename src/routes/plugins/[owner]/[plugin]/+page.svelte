@@ -21,6 +21,15 @@
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 3);
 	let syncingPlugin = false;
+
+	let readme = '';
+
+	async function fetchReadme() {
+    if (readme) return
+		const { owner, name } = data.plugin;
+		readme = await trpc($page).getReadme.query({ owner, name });
+	}
+
 </script>
 
 <svelte:head>
@@ -110,6 +119,7 @@
 					>
 					<Tab
 						disabled={false}
+            on:click={fetchReadme}
 						class={({ selected }) => (selected ? selectedStyle : unSelectedStyles)}>Readme</Tab
 					>
 				</div>
@@ -150,7 +160,10 @@
 								<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
 									configs using {data.plugin.name}
 								</h3>
-								<CoolLink href={`/configs?plugins=${data.plugin.owner}/${data.plugin.name}`} text="more configs" />
+								<CoolLink
+									href={`/configs?plugins=${data.plugin.owner}/${data.plugin.name}`}
+									text="more configs"
+								/>
 							</div>
 
 							<div
@@ -160,7 +173,7 @@
 								{#each data.configs as conf, _}
 									<div in:fade>
 										<NeovimConfigCard
-                      slug={conf.slug}
+											slug={conf.slug}
 											repo={conf.repo}
 											owner={conf.owner}
 											avatar={conf.ownerAvatar}
@@ -169,7 +182,7 @@
 											stars={conf.stars.toString()}
 											pluginManager={conf.pluginManager ?? 'unknown'}
 											pluginCount={conf.pluginCount.toString()}
-                      showGithubLink={false}
+											showGithubLink={false}
 										/>
 									</div>
 								{/each}
@@ -178,11 +191,7 @@
 					{/if}
 				</TabPanel>
 				<TabPanel>
-					{#if data.plugin.readme}
-						<Readme readme={data.plugin.readme} />
-					{:else}
-						<span>Nothing to see here</span>
-					{/if}
+					<Readme readme={readme} />
 				</TabPanel>
 			</TabPanels>
 		</TabGroup>

@@ -136,11 +136,6 @@ const selectConfigCount = {
 	}
 };
 
-const selectWithReadme = {
-	...selectConfigCount,
-	readme: true
-};
-
 export async function searchPlugins(
 	query: string | undefined = undefined,
 	categories: string[] = [],
@@ -214,7 +209,7 @@ export async function getPopularPlugins(): Promise<NeovimPluginWithCount[]> {
 
 export async function getPlugin(owner: string, name: string): Promise<NeovimPluginWithCount> {
 	const { _count, ...plugin } = await prismaClient.neovimPlugin.findUniqueOrThrow({
-		select: selectWithReadme,
+		select: selectConfigCount,
 		where: {
 			owner_name: {
 				owner,
@@ -226,6 +221,19 @@ export async function getPlugin(owner: string, name: string): Promise<NeovimPlug
 		...plugin,
 		configCount: _count.neovimConfigPlugins
 	};
+}
+
+export async function getReadme(owner: string, name: string): Promise<string> {
+	const { readme } = await prismaClient.neovimPlugin.findUniqueOrThrow({
+		select: { readme: true },
+		where: {
+			owner_name: {
+				owner,
+				name
+			}
+		}
+	});
+	return readme;
 }
 
 export async function getPluginsBySlug(
