@@ -6,13 +6,14 @@
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
-	import { faRotate, faStar, faUserGroup, faX } from '@fortawesome/free-solid-svg-icons';
+	import { faBomb, faRotate, faStar, faUserGroup, faX } from '@fortawesome/free-solid-svg-icons';
 	import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@rgossiaux/svelte-headlessui';
 	import Fa from 'svelte-fa';
 	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import Readme from '$lib/components/readme/Readme.svelte';
+	import PostCard from '$lib/components/PostCard.svelte';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
@@ -25,11 +26,10 @@
 	let readme = '';
 
 	async function fetchReadme() {
-    if (readme) return
+		if (readme) return;
 		const { owner, name } = data.plugin;
 		readme = await trpc($page).getReadme.query({ owner, name });
 	}
-
 </script>
 
 <svelte:head>
@@ -119,7 +119,7 @@
 					>
 					<Tab
 						disabled={false}
-            on:click={fetchReadme}
+						on:click={fetchReadme}
 						class={({ selected }) => (selected ? selectedStyle : unSelectedStyles)}>Readme</Tab
 					>
 				</div>
@@ -127,6 +127,32 @@
 
 			<TabPanels>
 				<TabPanel class="flex flex-col w-full items-center justify-between gap-8">
+					{#if data.breaking.length > 0}
+						<div class="flex flex-col w-full">
+							<div class="mb-2 flex justify-between pl-1 tracking-wide">
+								<h3 class="flex items-center gap-1 text-lg font-semibold">
+									<Fa icon={faBomb} size="sm" />
+									breaking changes
+								</h3>
+							</div>
+							<div
+								in:fade
+								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
+							>
+								{#each data.breaking as post, _}
+									{#if post.breakingChange}
+										<PostCard
+											date={new Date(post.createdAt)}
+											url="/plugins/{post.breakingChange.plugin.owner}/{post.breakingChange.plugin
+												.name}"
+											title="Breaking change in {post.breakingChange?.plugin.name}"
+											text={post.title}
+										/>
+									{/if}
+								{/each}
+							</div>
+						</div>
+					{/if}
 					<div class="flex flex-col w-full">
 						<div class="mb-2 flex justify-between pl-1 tracking-wide">
 							<h3 class="flex items-center gap-1 text-lg font-semibold">
@@ -191,7 +217,7 @@
 					{/if}
 				</TabPanel>
 				<TabPanel>
-					<Readme readme={readme} />
+					<Readme {readme} />
 				</TabPanel>
 			</TabPanels>
 		</TabGroup>

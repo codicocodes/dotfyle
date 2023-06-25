@@ -32,7 +32,7 @@ import {
 import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
 import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
 import { getLanguageServersBySlug } from '$lib/server/prisma/languageservers/service';
-import { getPosts } from '$lib/server/prisma/posts/services';
+import { getBreakingChangesByPlugin, getPosts } from '$lib/server/prisma/posts/services';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -284,6 +284,13 @@ export const router = t.router({
 		})
 		.query(async ({ input: { type } }) => {
 			return getPosts(type, 6);
+		}),
+	getBreakingCommits: t.procedure
+		.input((input: unknown) => {
+			return z.object({ owner: z.string(), name: z.string() }).parse(input);
+		})
+		.query(async ({ input: { owner, name } }) => {
+			return getBreakingChangesByPlugin(owner, name, 3)
 		})
 });
 
