@@ -36,6 +36,10 @@
 
 	$: selectedPluginsSet = new Set(selectedPlugins);
 
+	$: selectedLanguageServers = $page.url.searchParams.get('languageservers')?.split(',').filter(Boolean) ?? [];
+
+	$: selectedLanguageServersSet = new Set(selectedLanguageServers);
+
 	let availablePlugins: string[] = $page.data.plugins;
 </script>
 
@@ -148,6 +152,16 @@
 			}}
 			items={availablePlugins}
 			selected={selectedPluginsSet}
+		/>
+		<MultiSelectFilter
+			title="language servers"
+			on:updated={({ detail }) => {
+        navigate($page, 'page', '1');
+				navigate($page, 'languageservers', Array.from(detail.selected).join(','), true);
+				selectedLanguageServersSet = new Set(detail.selected);
+			}}
+			items={data.languageServers}
+			selected={selectedLanguageServersSet}
 		/>
 	</div>
 </Modal>

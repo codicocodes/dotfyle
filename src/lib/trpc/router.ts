@@ -31,7 +31,7 @@ import {
 } from '$lib/server/nvim-sync/config/syncRepoInfo';
 import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
 import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
-import { getLanguageServersBySlug } from '$lib/server/prisma/languageservers/service';
+import { getLanguageServersBySlug, listLanguageServers } from '$lib/server/prisma/languageservers/service';
 import { getBreakingChangesByPlugin, getPosts } from '$lib/server/prisma/posts/services';
 
 export const router = t.router({
@@ -61,6 +61,9 @@ export const router = t.router({
 	}),
 	listPluginCategories: t.procedure.query(async () => {
 		return getAllPluginCategories();
+	}),
+	listLanguageServers: t.procedure.query(async () => {
+		return listLanguageServers();
 	}),
 	searchPlugins: t.procedure
 		.input((input: unknown) => {
@@ -199,19 +202,19 @@ export const router = t.router({
 				.object({
 					query: z.string().optional(),
 					plugins: z.array(z.string()).optional(),
+					languageServers: z.array(z.string()).optional(),
 					sorting: z.enum(['new', 'stars', 'plugins']),
 					page: z.number().default(1),
 					take: z.number().optional()
 				})
 				.parse(input);
 		})
-		.query(async ({ input }) => {
+		.query(async ({ input: {query, plugins, sorting, page, take, languageServers} }) => {
+      console.log({ languageServers })
 			const configs = await searchNeovimConfigs(
-				input.query,
-				input.plugins,
-				input.sorting,
-				input.page,
-				input.take
+        {
+          query, plugins, sorting, page, take, languageServers
+        }
 			);
 			return configs;
 		}),

@@ -323,13 +323,23 @@ export async function saveLeaderkey(id: number, leaderkey: string): Promise<Neov
 	});
 }
 
-export async function searchNeovimConfigs(
-	query: string | undefined = undefined,
-	pluginIdentifiers: string[] | undefined,
-	sorting: 'new' | 'stars' | 'plugins' = 'new',
-	page: number | undefined = undefined,
-	take: number | undefined = undefined
-) {
+export type ConfigSearchOptions = {
+	query?: string | undefined;
+	plugins?: string[];
+	languageServers?: string[];
+	sorting: 'new' | 'stars' | 'plugins';
+	page?: number;
+	take?: number;
+};
+
+export async function searchNeovimConfigs({
+	query,
+	plugins,
+  languageServers,
+	sorting,
+	page,
+	take
+}: ConfigSearchOptions) {
 	const queries = query?.split('/');
 	const mode = 'insensitive';
 	const args = {
@@ -346,9 +356,9 @@ export async function searchNeovimConfigs(
 							OR: [{ owner: { contains: query, mode } }, { repo: { contains: query, mode } }]
 					  }
 				: {}),
-			...(pluginIdentifiers && pluginIdentifiers.length > 0
+			...(plugins && plugins.length > 0
 				? {
-						AND: pluginIdentifiers.map((identifier) => {
+						AND: plugins.map((identifier) => {
 							const [owner, name] = identifier.split('/');
 							return {
 								neovimConfigPlugins: {
@@ -357,6 +367,19 @@ export async function searchNeovimConfigs(
 											owner,
 											name
 										}
+									}
+								}
+							};
+						})
+				  }
+				: {}),
+			...(languageServers && languageServers.length > 0
+				? {
+						AND: languageServers.map((languageServerName) => {
+							return {
+								languageServerMappings: {
+									some: {
+                    languageServerName
 									}
 								}
 							};
@@ -382,7 +405,6 @@ export async function searchNeovimConfigs(
 	const { data: nestedConfigData, meta } = await paginator({
 		perPage: take
 	})<NestedNeovimConfigWithMetaData>(prismaClient.neovimConfig, args, { page });
-
 	const data = nestedConfigData.map(attachMetaData);
 	return {
 		data,

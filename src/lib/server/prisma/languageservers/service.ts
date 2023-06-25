@@ -21,3 +21,8 @@ export async function getLanguageServersBySlug(
 	});
 	return languageServers
 }
+
+export async function listLanguageServers(): Promise<string[]> {
+  const languageServers = await prismaClient.languageServer.findMany()
+  return languageServers.map(ls => ls.name)
+}

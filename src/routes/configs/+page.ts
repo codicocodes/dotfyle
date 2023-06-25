@@ -11,21 +11,29 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const pluginFilter =
 		rawPluginIdentifiers === '' ? [] : rawPluginIdentifiers?.split(',').filter(Boolean);
 
-	const [res, plugins] = await Promise.all([
+	const rawLanguageServers = event.url.searchParams.get('languageservers');
+
+	const languageServersFilter =
+		rawLanguageServers === '' ? [] : rawLanguageServers?.split(',').filter(Boolean);
+
+	const [res, plugins, languageServers] = await Promise.all([
 		trpc(event).searchConfigs.query({
 			query,
 			sorting,
 			plugins: pluginFilter,
+			languageServers: languageServersFilter,
 			page: isNaN(page) ? 1 : page
 		}),
 		trpc(event)
 			.getPluginIdentifiers.query()
-			.then((names) => names.map((identifier) => `${identifier.owner}/${identifier.name}`))
+			.then((names) => names.map((identifier) => `${identifier.owner}/${identifier.name}`)),
+		trpc(event).listLanguageServers.query()
 	]);
 
 	return {
 		configs: res.data,
 		pagination: res.meta,
-		plugins
+		plugins,
+		languageServers
 	};
 };
