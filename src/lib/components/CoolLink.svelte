@@ -5,10 +5,12 @@
 
 	export let text: string;
 	export let href: string | undefined;
+	export let target: string | undefined;
 </script>
 
 <a
 	{href}
+  {target}
 	class={`font-semibold flex items-center gap-1 text-green-500 hover:underline underline-offset-4 decoration-2 ${
 		href ? 'hover:cursor-pointer' : 'hover:cursor-not-allowed'
 	}`}
