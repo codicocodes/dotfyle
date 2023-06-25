@@ -170,7 +170,7 @@
 		<div
 			class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-2 sm:mt-4 mb-2 gap-2"
 		>
-			<SmallTitle title="Find Neovim plugins" />
+			<SmallTitle title="Find Neovim configs" />
 			<div class="flex justify-end gap-2 sm:w-1/2">
 				<form
 					class="grow"
