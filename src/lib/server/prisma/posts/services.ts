@@ -1,4 +1,4 @@
-import type { Post } from "@prisma/client";
+import type { BreakingChange, NeovimPlugin, Post } from "@prisma/client";
 import { prismaClient } from "../client";
 
 
@@ -8,7 +8,13 @@ const PostTypes = {
 
 type PostType = (typeof PostTypes)[keyof typeof PostTypes];
 
-export async function getBreakingChangesByPlugin(owner: string, name: string, take: number) {
+export type PostContainer = (Post & {
+    breakingChange: (BreakingChange & {
+        plugin: NeovimPlugin;
+    }) | null;
+})
+
+export async function getBreakingChangesByPlugin(owner: string, name: string, take: number): Promise<PostContainer[]> {
   const type = PostTypes.breakingChanges
   return prismaClient.post.findMany({
     include: {
@@ -37,7 +43,7 @@ export async function getBreakingChangesByPlugin(owner: string, name: string, ta
 export async function getPosts(
   type: PostType,
   take: number,
-) {
+): Promise<PostContainer[]> {
   return prismaClient.post.findMany({
     include: {
       breakingChange: {

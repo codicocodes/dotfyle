@@ -17,7 +17,7 @@
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
-	import PostCard from '$lib/components/PostCard.svelte';
+	import PostContainer from '$lib/components/PostContainer.svelte';
 
 	export let data: PageData;
 </script>
@@ -166,12 +166,7 @@
 		<BigGridContainer>
 			{#each data.breaking as post, _}
 				{#if post.breakingChange}
-					<PostCard
-            date={new Date(post.createdAt)}
-						url="/plugins/{post.breakingChange.plugin.owner}/{post.breakingChange.plugin.name}"
-						title="Breaking change in {post.breakingChange?.plugin.name}"
-						text={post.title}
-					/>
+					<PostContainer {post} />
 				{/if}
 			{/each}
 		</BigGridContainer>

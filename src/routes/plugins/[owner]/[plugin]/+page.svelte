@@ -13,7 +13,7 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import Readme from '$lib/components/readme/Readme.svelte';
-	import PostCard from '$lib/components/PostCard.svelte';
+	import PostContainer from '$lib/components/PostContainer.svelte';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
@@ -141,12 +141,8 @@
 							>
 								{#each data.breaking as post, _}
 									{#if post.breakingChange}
-										<PostCard
-											date={new Date(post.createdAt)}
-											url="/plugins/{post.breakingChange.plugin.owner}/{post.breakingChange.plugin
-												.name}"
-											title="Breaking change in {post.breakingChange?.plugin.name}"
-											text={post.title}
+										<PostContainer
+                      post={post}
 										/>
 									{/if}
 								{/each}
