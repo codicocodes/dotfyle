@@ -21,7 +21,6 @@
 		"@sveltejs/adapter-auto": "^2.0.1",
 		"@sveltejs/adapter-node": "^1.2.4",
 		"@sveltejs/kit": "^1.16.2",
-		"@sveltejs/svelte-virtual-list": "^3.0.1",
 		"@types/jsonwebtoken": "^9.0.2",
 		"@types/marked": "^4.3.0",
 		"@types/nprogress": "^0.2.0",
