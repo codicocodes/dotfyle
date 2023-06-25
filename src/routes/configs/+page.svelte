@@ -1,5 +1,4 @@
 <script lang="ts">
-	import VirtualList from '@sveltejs/svelte-virtual-list';
 	import { page } from '$app/stores';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
@@ -78,6 +77,7 @@
 					<button
 						on:click={() => {
 							sorting = 'stars';
+							navigate($page, 'page', '1');
 							navigate($page, 'sort', sorting, true);
 						}}
 					>
@@ -108,6 +108,7 @@
 					<button
 						on:click={() => {
 							sorting = 'plugins';
+							navigate($page, 'page', '1');
 							navigate($page, 'sort', sorting, true);
 						}}
 					>
@@ -141,6 +142,7 @@
 		<MultiSelectFilter
 			title="plugins"
 			on:updated={({ detail }) => {
+        navigate($page, 'page', '1');
 				navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
 				selectedPluginsSet = new Set(detail.selected);
 			}}
