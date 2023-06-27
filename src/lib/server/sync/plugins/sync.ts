@@ -26,7 +26,7 @@ export class PluginSyncer {
 	async syncBreakingChanges() {
 		const commits = await fetchGitCommits(
 			this.token,
-			oneWeekAgo(),
+			this.plugin.lastSyncedAt ?? oneWeekAgo(),
 			this.plugin.owner,
 			this.plugin.name
 		);
