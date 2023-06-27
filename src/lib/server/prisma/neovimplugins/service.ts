@@ -136,6 +136,14 @@ const selectConfigCount = {
 	}
 };
 
+
+export async function getAllPlugins() {
+  const nestedPluginData = await prismaClient.neovimPlugin.findMany({
+    select: selectConfigCount,
+  })
+	return nestedPluginData.map(flattenConfigCount);
+}
+
 export async function searchPlugins(
 	query: string | undefined = undefined,
 	categories: string[] = [],
