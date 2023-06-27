@@ -44,7 +44,10 @@
     @apply bg-gray-800 p-4 border-l-4 my-4;
   }
   :global(#markdown-post-container code) {
-    @apply bg-gray-800 p-1;
+    @apply bg-black p-1 text-white;
+  }
+  :global(#markdown-post-container img) {
+    @apply p-1;
   }
   :global(#markdown-post-container iframe) {
     @apply w-full my-2;

@@ -12,8 +12,8 @@
 	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
-	import Readme from '$lib/components/readme/Readme.svelte';
 	import PostContainer from '$lib/components/PostContainer.svelte';
+	import MarkdownPost from '$lib/components/MarkdownPost.svelte';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
@@ -213,7 +213,7 @@
 					{/if}
 				</TabPanel>
 				<TabPanel>
-					<Readme {readme} />
+					<MarkdownPost content={readme} />
 				</TabPanel>
 			</TabPanels>
 		</TabGroup>
