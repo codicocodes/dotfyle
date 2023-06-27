@@ -169,7 +169,7 @@
 	</OuterLayout>
 
 	<footer class="sticky mx-auto max-w-full xl:max-w-7xl w-full sm:mt-4 sm:px-6 lg:px-8">
-		<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+		<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col hidden">
 			<div class="w-full p-4 flex flex-col items-center justify-center gap-4">
 				<SmallTitle title="Dotfyle Weekly" />
 				<span class="w-full sm:w-2/3 lg:w-1/2">
