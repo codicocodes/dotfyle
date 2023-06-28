@@ -168,6 +168,7 @@
 	</OuterLayout>
 
 	<footer class="sticky mx-auto max-w-full xl:max-w-7xl w-full sm:mt-4 sm:px-6 lg:px-8">
+		
 		<div class="flex items-center justify-center">
 			<div class="flex gap-4 text-gray-400 items-center">
 				<a

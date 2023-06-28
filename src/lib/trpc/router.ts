@@ -32,7 +32,7 @@ import {
 import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
 import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
 import { getLanguageServersBySlug, listLanguageServers } from '$lib/server/prisma/languageservers/service';
-import { getBreakingChangesByPlugin, getPosts } from '$lib/server/prisma/posts/services';
+import { getBreakingChangesByPlugin, getPosts, getTwinByIssue, getTwinPosts } from '$lib/server/prisma/posts/services';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -283,10 +283,26 @@ export const router = t.router({
 
 	getPosts: t.procedure
 		.input((input: unknown) => {
-			return z.object({ type: z.enum(['breaking-change']) }).parse(input);
+			return z.object({ type: z.enum(['breaking-change', 'twin']) }).parse(input);
 		})
 		.query(async ({ input: { type } }) => {
 			return getPosts(type, 6);
+		}),
+
+  getTwinPosts: t.procedure
+		.input((input: unknown) => {
+			return z.object({ page: z.number() }).parse(input);
+		})
+		.query(async ({ input: { page } }) => {
+			return getTwinPosts(page);
+		}),
+
+	getTwinByIssue: t.procedure
+		.input((input: unknown) => {
+			return z.object({ issue: z.number() }).parse(input);
+		})
+		.query(async ({ input: { issue } }) => {
+			return getTwinByIssue(issue);
 		}),
 	getBreakingCommits: t.procedure
 		.input((input: unknown) => {

@@ -4,7 +4,7 @@
 	import { DoubleBounce } from 'svelte-loading-spinners';
 	export let text: string;
 	export let icon: IconDefinition;
-  export let loading: boolean
+  export let loading = false
   export let iconPosition: 'right' | 'left' = 'right'
   export let disabled = false
 </script>

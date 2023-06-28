@@ -136,6 +136,14 @@ model Post {
   createdAt      DateTime        @default(now())
 }
 
+model TwinPost {
+  title       String
+  issue       Int          @id @unique
+  createdAt   DateTime     @default(now())
+  content     String
+  license     String?
+}
+
 model BreakingChange {
   id          Int          @id @default(autoincrement())
   post        Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
