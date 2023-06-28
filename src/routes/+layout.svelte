@@ -17,7 +17,6 @@
 	import type { LayoutData } from './$types';
 	import nProgress from 'nprogress';
 	import { onMount } from 'svelte';
-	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
 
@@ -169,19 +168,7 @@
 	</OuterLayout>
 
 	<footer class="sticky mx-auto max-w-full xl:max-w-7xl w-full sm:mt-4 sm:px-6 lg:px-8">
-		<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col hidden">
-			<div class="w-full p-4 flex flex-col items-center justify-center gap-4">
-				<SmallTitle title="Dotfyle Weekly" />
-				<span class="w-full sm:w-2/3 lg:w-1/2">
-					Get weekly email updates including new plugins, updates and breaking changes. Coming soon...
-				</span>
-				<input
-					type=""
-					placeholder="subscribe with your email"
-					class="p-1 sm:p-1 rounded text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full sm:w-2/3 lg:w-1/2"
-				/>
-			</div>
-		</div>
+		
 		<div class="flex items-center justify-center">
 			<div class="flex gap-4 text-gray-400 items-center">
 				<a

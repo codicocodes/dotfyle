@@ -9,6 +9,8 @@
 </svelte:head>
 
 <MediumHeroTitle>
+<a href="/this-week-in-neovim">
 	<CoolText text="This Week in Neovim" />
+</a>
 </MediumHeroTitle>
 <slot />
