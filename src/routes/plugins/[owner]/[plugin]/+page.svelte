@@ -25,6 +25,12 @@
 
 	let readme = '';
 
+	$: {
+		if (data.plugin.id) {
+			readme = '';
+		}
+	}
+
 	async function fetchReadme() {
 		if (readme) return;
 		const { owner, name } = data.plugin;
