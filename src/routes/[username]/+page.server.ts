@@ -10,7 +10,7 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 		trpc(event).getUserByUsername.query(username),
 		trpc(event).getConfigsByUsername.query(username) as unknown as NeovimConfigWithMetaData[]
 	]). catch(() => {
-    throw error(404, "user not found")
+    throw error(404)
   });
 	return {
 		me,

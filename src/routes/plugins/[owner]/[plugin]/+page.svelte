@@ -147,9 +147,7 @@
 							>
 								{#each data.breaking as post, _}
 									{#if post.breakingChange}
-										<PostContainer
-                      post={post}
-										/>
+										<PostContainer {post} />
 									{/if}
 								{/each}
 							</div>

@@ -25,7 +25,7 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 		}) as unknown as LanguageServer[],
     getNeovimConfigSyncs(username, slug)
 	]).catch(() => {
-		throw error(404, 'config not found');
+		throw error(404);
 	});
 
 	return {
