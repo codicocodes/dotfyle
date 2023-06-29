@@ -12,3 +12,4 @@ jobs:
         with:
           endpoint: https://dotfyle.com/api/seeder/plugins
           configuration: '{ "method": "GET", "headers": {"Authorization": "${{ secrets.INTERNAL_API_TOKEN }}"} }'
+          retry: true
