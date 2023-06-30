@@ -81,6 +81,8 @@ model NeovimPlugin {
 
   breakChanges BreakingChange[]
 
+  media Media[]
+
   @@unique([owner, name])
 }
 
@@ -137,11 +139,11 @@ model Post {
 }
 
 model TwinPost {
-  title       String
-  issue       Int          @id @unique
-  createdAt   DateTime     @default(now())
-  content     String
-  license     String?
+  title     String
+  issue     Int      @id @unique
+  createdAt DateTime @default(now())
+  content   String
+  license   String?
 }
 
 model BreakingChange {
@@ -152,4 +154,11 @@ model BreakingChange {
   pluginId    Int
   externalUrl String       @unique
   sha         String
+}
+
+model Media {
+  id             Int           @id @default(autoincrement())
+  url            String        @unique
+  NeovimPlugin   NeovimPlugin? @relation(fields: [neovimPluginId], references: [id])
+  neovimPluginId Int?
 }

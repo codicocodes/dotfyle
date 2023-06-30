@@ -1,5 +1,7 @@
 import { fetchGitCommits, fetchGithubRepositoryByName, fetchReadme } from '$lib/server/github/api';
+import { GithubMediaParser } from '$lib/server/media/parser';
 import { upsertBreakingChange } from '$lib/server/prisma/breakingChanges/service';
+import { prismaClient } from '$lib/server/prisma/client';
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { getPlugin, updatePlugin } from '$lib/server/prisma/neovimplugins/service';
 import { getGithubToken } from '$lib/server/prisma/users/service';
@@ -10,9 +12,11 @@ import { TRPCError } from '@trpc/server';
 export class PluginSyncer {
 	plugin: NeovimPlugin;
 	configCount: number;
+	mediaParser: GithubMediaParser;
 	constructor(private token: string, { configCount, ...plugin }: NeovimPluginWithCount) {
 		this.plugin = plugin;
 		this.configCount = configCount;
+		this.mediaParser = new GithubMediaParser();
 	}
 	async sync() {
 		await Promise.all([this.syncStars(), this.syncReadme(), this.syncBreakingChanges()]);
@@ -46,37 +50,20 @@ export class PluginSyncer {
 
 	async syncReadme() {
 		let readme = await fetchReadme(this.token, this.plugin.owner, this.plugin.name);
-
-		const invalidGithubLinksRegex =
-			/https:\/\/github.com\/[a-zA-Z0-9/]+\/blob\/[a-zA-Z0-9/._]+.(png|jpg|jpeg|mp4|webp)/g;
-
-		const invalidGithubLinkMatches = readme.matchAll(invalidGithubLinksRegex);
-
-		for (const invalidGithubLinkMatch of invalidGithubLinkMatches) {
-			const invalidGithubLink = invalidGithubLinkMatch[0];
-			const validGithubLink = invalidGithubLink .replace('github.com', 'raw.githubusercontent.com')
-				.replace('/blob', '');
-			readme = readme.replaceAll(invalidGithubLink, validGithubLink);
-		}
-
-		const validGithubLinkRegex =
-			/https:\/\/(raw|user-images).githubusercontent.com\/[a-zA-Z0-9/]+\/[a-zA-Z0-9/\-._]+.(png|jpg|jpeg|mp4|gif)/g;
-
-		const validGithubLinkMatches = readme.matchAll(validGithubLinkRegex);
-
-		for (const validGithubLinkMatch of validGithubLinkMatches) {
-			const media = validGithubLinkMatch[0];
-			console.log({ media });
-		}
-
-    const githubAssetRegex = new RegExp(`https://github.com/${this.plugin.owner}/${this.plugin.name}/assets/[0-9]+/[a-zA-Z0-9-]+`, 'g')
-
-    for (const validAssetUrlMatches of readme.matchAll(githubAssetRegex)) {
-			const asset = validAssetUrlMatches[0];
-			console.log({ asset });
-    }
-
+		readme = this.mediaParser.replaceInvalidGithubUrls(readme);
 		this.plugin.readme = readme;
+		this.syncMedia(readme);
+	}
+
+	async syncMedia(readme: string) {
+		const media = this.mediaParser.findMediaUrls(readme, this.plugin.owner, this.plugin.name);
+		await prismaClient.media.createMany({
+      skipDuplicates: true,
+			data: media.map((url) => ({
+				url,
+				neovimPluginId: this.plugin.id
+			}))
+		});
 	}
 
 	async updatePlugin() {
