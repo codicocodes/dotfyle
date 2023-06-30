@@ -42,6 +42,8 @@
 
 ## File Explorer
 
+- echasnovski/mini.files
+
 ## Project
 
 ## Color
