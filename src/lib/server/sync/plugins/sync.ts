@@ -54,17 +54,13 @@ export class PluginSyncer {
 
 		for (const invalidGithubLinkMatch of invalidGithubLinkMatches) {
 			const invalidGithubLink = invalidGithubLinkMatch[0];
-			const validGithubLink = invalidGithubLink
-				.replace('github.com', 'raw.githubusercontent.com')
+			const validGithubLink = invalidGithubLink .replace('github.com', 'raw.githubusercontent.com')
 				.replace('/blob', '');
 			readme = readme.replaceAll(invalidGithubLink, validGithubLink);
 		}
 
 		const validGithubLinkRegex =
 			/https:\/\/(raw|user-images).githubusercontent.com\/[a-zA-Z0-9/]+\/[a-zA-Z0-9/\-._]+.(png|jpg|jpeg|mp4|gif)/g;
-
-		// TODO: it's not matching e.g. 
-    // - https://github.com/folke/flash.nvim/assets/292349/90af85e3-3f22-4c51-af4b-2a2488c9560b
 
 		const validGithubLinkMatches = readme.matchAll(validGithubLinkRegex);
 
