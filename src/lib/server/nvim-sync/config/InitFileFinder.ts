@@ -14,7 +14,18 @@ export interface InitFile {
 }
 
 export class InitFileFinder {
-	excluded = ['/lua/', 'ginit.vim'];
+	excluded = ['ginit.vim'];
+  // @TODO: fix maybe later
+  // fail this
+  // init.lua
+  //    /codico
+  //        /lua
+  //            init.lua
+  //
+  // allow this
+  //    /astro-nvim
+  //        /lua
+  //            init.lua
 
 	findAllInitFile(root: GithubTree): InitFile[] {
 		const { tree } = root;
