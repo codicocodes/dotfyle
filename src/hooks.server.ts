@@ -26,7 +26,7 @@ export const printPageVisits: Handle = ({ event, resolve }) => {
   const path = event.url.pathname;
   const page = path + (search ? `?${search}` : "")
   if (!page.includes('trpc') && !page.includes('api')) {
-    console.log({ page })
+    console.log({ page }, event.request.headers.get('host'))
   }
   return resolve(event)
 };
