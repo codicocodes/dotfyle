@@ -73,6 +73,13 @@ export class PluginSyncer {
 			console.log({ media });
 		}
 
+    const githubAssetRegex = new RegExp(`https://github.com/${this.plugin.owner}/${this.plugin.name}/assets/[0-9]+/[a-zA-Z0-9-]+`, 'g')
+
+    for (const validAssetUrlMatches of readme.matchAll(githubAssetRegex)) {
+			const asset = validAssetUrlMatches[0];
+			console.log({ asset });
+    }
+
 		this.plugin.readme = readme;
 	}
 
