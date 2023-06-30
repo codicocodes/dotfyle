@@ -15,11 +15,7 @@ export class PluginSyncer {
 		this.configCount = configCount;
 	}
 	async sync() {
-		await Promise.all([
-      this.syncStars(), 
-      this.syncReadme(), 
-      this.syncBreakingChanges(),
-    ]);
+		await Promise.all([this.syncStars(), this.syncReadme(), this.syncBreakingChanges()]);
 		return this.updatePlugin();
 	}
 
@@ -35,7 +31,9 @@ export class PluginSyncer {
 		for (const commit of commits) {
 			const firstCommitLine = commit.commit.message.split('\n')[0];
 			if (regex_1.test(firstCommitLine)) {
-        breakingChangesTasks.push(upsertBreakingChange(this.plugin.id, commit.sha, commit.html_url, commit.commit.message))
+				breakingChangesTasks.push(
+					upsertBreakingChange(this.plugin.id, commit.sha, commit.html_url, commit.commit.message)
+				);
 			}
 		}
 	}
@@ -47,7 +45,34 @@ export class PluginSyncer {
 	}
 
 	async syncReadme() {
-		const readme = await fetchReadme(this.token, this.plugin.owner, this.plugin.name);
+		let readme = await fetchReadme(this.token, this.plugin.owner, this.plugin.name);
+
+		const invalidGithubLinksRegex =
+			/https:\/\/github.com\/[a-zA-Z0-9/]+\/blob\/[a-zA-Z0-9/._]+.(png|jpg|jpeg|mp4|webp)/g;
+
+		const invalidGithubLinkMatches = readme.matchAll(invalidGithubLinksRegex);
+
+		for (const invalidGithubLinkMatch of invalidGithubLinkMatches) {
+			const invalidGithubLink = invalidGithubLinkMatch[0];
+			const validGithubLink = invalidGithubLink
+				.replace('github.com', 'raw.githubusercontent.com')
+				.replace('/blob', '');
+			readme = readme.replaceAll(invalidGithubLink, validGithubLink);
+		}
+
+		const validGithubLinkRegex =
+			/https:\/\/(raw|user-images).githubusercontent.com\/[a-zA-Z0-9/]+\/[a-zA-Z0-9/\-._]+.(png|jpg|jpeg|mp4|gif)/g;
+
+		// TODO: it's not matching e.g. 
+    // - https://github.com/folke/flash.nvim/assets/292349/90af85e3-3f22-4c51-af4b-2a2488c9560b
+
+		const validGithubLinkMatches = readme.matchAll(validGithubLinkRegex);
+
+		for (const validGithubLinkMatch of validGithubLinkMatches) {
+			const media = validGithubLinkMatch[0];
+			console.log({ media });
+		}
+
 		this.plugin.readme = readme;
 	}
 
