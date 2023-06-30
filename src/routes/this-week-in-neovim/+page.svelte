@@ -5,6 +5,7 @@
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import Fa from 'svelte-fa';
 	import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
+	import CoolText from '$lib/components/CoolText.svelte';
 
 	export let data: PageData;
 </script>
@@ -16,9 +17,18 @@
 			new plugins and breaking changes.
 		</p>
 
-		<p class="flex text-xl font-light my-4">
-			TWiN was originally created by <a class="px-2 hover:text-green-400" href ="/this-week-in-neovim/46#update-twin">u/phaazon</a> 💚
-			Thank you for everything you've done for the community!
+		<p class="text-xl font-light my-4 inline">
+			TWiN was created by
+			<a href="https://github.com/phaazon" target="_blank">
+				<CoolText text="phaazon" />
+			</a>
+			who has decided to
+
+			<a href="https://dotfyle.com/this-week-in-neovim/46#update-twin" target="_blank">
+				<CoolText text="move away from the project" />
+			</a>
+
+			💚 Thank you for everything you've done for the community!
 		</p>
 
 		<h2 class="font-semibold text-3xl">Past issues</h2>
