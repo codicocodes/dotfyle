@@ -5,7 +5,7 @@
 
 	export let text: string;
 	export let href: string | undefined;
-	export let target: string | undefined;
+	export let target = "_blank";
 </script>
 
 <a

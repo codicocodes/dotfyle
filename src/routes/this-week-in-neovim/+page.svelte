@@ -24,7 +24,7 @@
 			</a>
 			who has decided to
 
-			<a href="https://dotfyle.com/this-week-in-neovim/46#update-twin" target="_blank">
+			<a href="/this-week-in-neovim/46#update-twin" target="_blank">
 				<CoolText text="move away from the project" />
 			</a>
 
