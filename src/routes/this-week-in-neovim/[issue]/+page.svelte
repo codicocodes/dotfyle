@@ -12,6 +12,11 @@
 	$: tweetUrl = `https://twitter.com/intent/tweet?url=${url}&text=${tweetText}`;
 </script>
 
+<svelte:head>
+	<title>This Week in Neovim {data.title}</title>
+	<meta name="description" content="Newsletter about the Neovim plugin ecosystem" />
+</svelte:head>
+
 <h1>
 	<SmallTitle title={data.title} />
 </h1>
