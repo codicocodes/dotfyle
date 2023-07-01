@@ -31,8 +31,17 @@ import {
 } from '$lib/server/nvim-sync/config/syncRepoInfo';
 import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
 import { InitFileFinder, InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
-import { getLanguageServersBySlug, listLanguageServers } from '$lib/server/prisma/languageservers/service';
-import { getBreakingChangesByPlugin, getPosts, getTwinByIssue, getTwinPosts } from '$lib/server/prisma/posts/services';
+import {
+	getLanguageServersBySlug,
+	listLanguageServers
+} from '$lib/server/prisma/languageservers/service';
+import {
+	getBreakingChangesByPlugin,
+	getPosts,
+	getTwinByIssue,
+	getTwinPosts
+} from '$lib/server/prisma/posts/services';
+import { getMediaForPlugin } from '$lib/server/prisma/media/service';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -209,13 +218,16 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: {query, plugins, sorting, page, take, languageServers} }) => {
-      console.log({ languageServers })
-			const configs = await searchNeovimConfigs(
-        {
-          query, plugins, sorting, page, take, languageServers
-        }
-			);
+		.query(async ({ input: { query, plugins, sorting, page, take, languageServers } }) => {
+			console.log({ languageServers });
+			const configs = await searchNeovimConfigs({
+				query,
+				plugins,
+				sorting,
+				page,
+				take,
+				languageServers
+			});
 			return configs;
 		}),
 	getPluginIdentifiers: t.procedure.query(async () => {
@@ -289,7 +301,7 @@ export const router = t.router({
 			return getPosts(type, 6);
 		}),
 
-  getTwinPosts: t.procedure
+	getTwinPosts: t.procedure
 		.input((input: unknown) => {
 			return z.object({ page: z.number() }).parse(input);
 		})
@@ -309,7 +321,14 @@ export const router = t.router({
 			return z.object({ owner: z.string(), name: z.string() }).parse(input);
 		})
 		.query(async ({ input: { owner, name } }) => {
-			return getBreakingChangesByPlugin(owner, name, 3)
+			return getBreakingChangesByPlugin(owner, name, 3);
+		}),
+	getMediaForPlugin: t.procedure
+		.input((input: unknown) => {
+			return z.object({ owner: z.string(), name: z.string() }).parse(input);
+		})
+		.query(async ({ input: { owner, name } }) => {
+			return getMediaForPlugin(owner, name);
 		})
 });
 

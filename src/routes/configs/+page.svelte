@@ -154,6 +154,7 @@
 			selected={selectedPluginsSet}
 		/>
 		<MultiSelectFilter
+      expandAtCount={35}
 			title="language servers"
 			on:updated={({ detail }) => {
         navigate($page, 'page', '1');

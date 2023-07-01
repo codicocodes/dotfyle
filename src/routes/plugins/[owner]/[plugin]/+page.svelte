@@ -6,7 +6,7 @@
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
-	import { faBomb, faRotate, faStar, faUserGroup, faX } from '@fortawesome/free-solid-svg-icons';
+	import { faBomb, faCameraRetro, faRotate, faStar, faUserGroup, faX } from '@fortawesome/free-solid-svg-icons';
 	import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@rgossiaux/svelte-headlessui';
 	import Fa from 'svelte-fa';
 	import { fade } from 'svelte/transition';
@@ -14,6 +14,7 @@
 	import { page } from '$app/stores';
 	import PostContainer from '$lib/components/PostContainer.svelte';
 	import MarkdownPost from '$lib/components/MarkdownPost.svelte';
+	import Modal from '$lib/components/Modal.svelte';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
@@ -36,6 +37,8 @@
 		const { owner, name } = data.plugin;
 		readme = await trpc($page).getReadme.query({ owner, name });
 	}
+
+	let selectedImageUrl = '';
 </script>
 
 <svelte:head>
@@ -44,6 +47,9 @@
 	</title>
 </svelte:head>
 
+<Modal showModal={!!selectedImageUrl} onClose={() => (selectedImageUrl = '')}>
+	<img class="rounded" alt="" src={selectedImageUrl} />
+</Modal>
 <div class="w-full flex flex-col items-center h-full my-14 px-8">
 	<div class="flex flex-col max-w-5xl w-full gap-2">
 		<div class="flex flex-col gap-2">
@@ -213,7 +219,31 @@
 									</div>
 								{/each}
 							</div>
-						</div>
+							</div>
+					{/if}
+
+					{#if data.media.length > 0}
+						<div class="flex flex-col w-full">
+							<div class="mb-2 flex justify-between pl-1 tracking-wide">
+								<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
+									<Fa icon={faCameraRetro} size="sm" />
+									media
+								</h3>
+							</div>
+								<div
+									in:fade
+									class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
+								>
+									{#each data.media as media}
+										<img
+											class="rounded hover:cursor-pointer"
+											on:click={() => (selectedImageUrl = media.url)}
+											alt=""
+											src={media.url}
+										/>
+									{/each}
+								</div>
+							</div>
 					{/if}
 				</TabPanel>
 				<TabPanel>

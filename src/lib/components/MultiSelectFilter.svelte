@@ -7,6 +7,7 @@
 	import { fly } from 'svelte/transition';
 	import GlossyCard from './GlossyCard.svelte';
 
+	export let expandAtCount = 20;
 	export let title: string;
 	export let items: string[];
 	export let selected: Set<string>;
@@ -56,7 +57,7 @@
 			{#each items
 				.filter((c) => (selected.size > 0 ? !selected.has(c) : true))
 				.filter((c) => c.includes(filter))
-				.slice(0, expanded ? -1 : 20) as currItem}
+				.slice(0, expanded ? -1 : expandAtCount) as currItem}
 				<CoolTextOnHover>
 					<button
 						in:fly

@@ -10,7 +10,6 @@
 		faFileCode,
 		faFire,
 		faFlag,
-		faNewspaper,
 		faPuzzlePiece,
 		faSearch,
 		faSeedling
@@ -36,7 +35,7 @@
 		<div class="flex justify-center">
 			<a
 				href="/this-week-in-neovim"
-				class="flex gap-2 items-center rounded-full p-4 py-2 bg-gradient-to-br from-cyan-500 to-green-500 shadow-xl shadow-green-300/25 text-sm font-semibold"
+				class="flex gap-2 items-center rounded-full p-4 py-2 bg-gradient-to-br from-cyan-500 to-green-500 shadow-xl shadow-green-300/25 text-xs font-semibold text-slate-900"
 			>
 				<Fa icon={faFlag} />
 				TWiN is coming to Dotfyle

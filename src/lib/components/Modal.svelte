@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { faCheck } from "@fortawesome/free-solid-svg-icons";
-	import Button from "./Button.svelte";
+	import { faCheck } from '@fortawesome/free-solid-svg-icons';
+	import Button from './Button.svelte';
 
 	export let showModal: boolean;
-  export let onClose: () => void
+	export let onClose: () => void;
 
 	let dialog: HTMLDialogElement;
 
@@ -12,7 +12,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
-class="bg-neutral-700 text-white"
+	class="bg-neutral-800 text-white p-4"
 	bind:this={dialog}
 	on:close={() => onClose()}
 	on:click|self={() => dialog.close()}
@@ -20,21 +20,21 @@ class="bg-neutral-700 text-white"
 	<div on:click|stopPropagation>
 		<slot name="header" />
 		<slot />
-	<div class="flex w-full justify-center">
-    <Button icon={faCheck} text="Done" loading={false} on:click={() => dialog.close()}/>
-	</div>
+		<div class="flex w-full justify-center">
+			<Button icon={faCheck} text="Done" loading={false} on:click={() => dialog.close()} />
+		</div>
 	</div>
 </dialog>
 
 <style>
 	dialog {
-		max-width: 32em;
+		max-width: 64em;
 		border-radius: 0.2em;
 		border: none;
 		padding: 0;
 	}
 	dialog::backdrop {
-		background: rgba(0, 0, 0, 0.3);
+		/* background: rgba(0, 0, 0, 0.3); */
 	}
 	dialog > div {
 		padding: 1em;
