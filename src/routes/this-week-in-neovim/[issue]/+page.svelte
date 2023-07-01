@@ -2,9 +2,14 @@
 	import Button from '$lib/components/Button.svelte';
 	import MarkdownPost from '$lib/components/MarkdownPost.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
+	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 	import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+	import Fa from 'svelte-fa';
 	import type { PageData } from './$types';
 	export let data: PageData;
+	$: url = `https://dotfyle.com/this-week-in-neovim/${data.issue}`;
+	$: tweetText = `This Week in Neovim ${data.title.replace('#', '')}`;
+	$: tweetUrl = `https://twitter.com/intent/tweet?url=${url}&text=${tweetText}`;
 </script>
 
 <h1>
@@ -39,3 +44,9 @@
 		/>
 	</a>
 {/if}
+
+<div class="flex mt-2">
+	<a href={tweetUrl} target="blank" class="block p-4 bg-blue-400 rounded-full">
+		<Fa icon={faTwitter} />
+	</a>
+</div>
