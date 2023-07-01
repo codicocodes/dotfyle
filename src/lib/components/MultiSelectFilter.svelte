@@ -32,7 +32,7 @@
 
 <GlossyCard>
 	<div class="flex flex-col px-4 py-1 sm:p-4 w-full gap-2">
-		<div class="font-semibold px-1 flex text-xs font-semibold gap-2 flex-wrap">
+		<div class="px-1 flex text-xs font-semibold gap-2 flex-wrap">
 			{title}
 		</div>
 		<input

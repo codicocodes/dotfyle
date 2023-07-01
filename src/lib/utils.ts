@@ -53,3 +53,10 @@ export const ADMIN_GITHUB_ID = Number(PUBLIC_ADMIN_USER_GITHUB_ID);
 export function isAdmin(user: User): boolean {
   return user.githubId === ADMIN_GITHUB_ID;
 }
+
+export function getMediaType(url: string): 'image' | 'video' {
+  if(url.endsWith(".mov") || url.endsWith(".mp4")) {
+    return 'video'
+  }
+  return 'image'
+}

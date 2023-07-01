@@ -4,9 +4,16 @@
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import { trpc } from '$lib/trpc/client';
-	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
+	import { getMediaType, hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
-	import { faBomb, faCameraRetro, faRotate, faStar, faUserGroup, faX } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faBomb,
+		faCameraRetro,
+		faRotate,
+		faStar,
+		faUserGroup,
+		faX
+	} from '@fortawesome/free-solid-svg-icons';
 	import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@rgossiaux/svelte-headlessui';
 	import Fa from 'svelte-fa';
 	import { fade } from 'svelte/transition';
@@ -48,7 +55,11 @@
 </svelte:head>
 
 <Modal showModal={!!selectedImageUrl} onClose={() => (selectedImageUrl = '')}>
-	<img class="rounded" alt="" src={selectedImageUrl} />
+	{#if getMediaType(selectedImageUrl) === 'video'}
+		<video class="rounded:cursor-pointer" src={selectedImageUrl} autoplay />
+	{:else}
+		<img class="rounded:cursor-pointer" alt="" src={selectedImageUrl} />
+	{/if}
 </Modal>
 <div class="w-full flex flex-col items-center h-full my-14 px-8">
 	<div class="flex flex-col max-w-5xl w-full gap-2">
@@ -219,7 +230,7 @@
 									</div>
 								{/each}
 							</div>
-							</div>
+						</div>
 					{/if}
 
 					{#if data.media.length > 0}
@@ -230,20 +241,29 @@
 									media
 								</h3>
 							</div>
-								<div
-									in:fade
-									class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
-								>
-									{#each data.media as media}
+							<div
+								in:fade
+								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
+							>
+								{#each data.media as media}
+									{#if getMediaType(media.url) === 'video'}
+										<video
+											autoplay
+											class="rounded hover:cursor-pointer"
+											on:click={() => (selectedImageUrl = media.url)}
+											src={media.url}
+										/>
+									{:else}
 										<img
 											class="rounded hover:cursor-pointer"
 											on:click={() => (selectedImageUrl = media.url)}
 											alt=""
 											src={media.url}
 										/>
-									{/each}
-								</div>
+									{/if}
+								{/each}
 							</div>
+						</div>
 					{/if}
 				</TabPanel>
 				<TabPanel>
