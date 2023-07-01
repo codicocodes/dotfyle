@@ -267,7 +267,7 @@
 					{/if}
 				</TabPanel>
 				<TabPanel>
-					<MarkdownPost content={readme} />
+					<MarkdownPost content="" />
 				</TabPanel>
 			</TabPanels>
 		</TabGroup>
