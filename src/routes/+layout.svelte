@@ -9,13 +9,7 @@
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import { isAdmin } from '$lib/utils';
 	import { faDiscord, faGithub, faTwitch } from '@fortawesome/free-brands-svg-icons';
-	import {
-		faBars,
-		faKeyboard,
-		faSignOut,
-		faSync,
-		faUser
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faBars, faKeyboard, faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
@@ -119,9 +113,9 @@
 	<div on:keypress={close} on:click={close} class="absolute h-full w-full bg-white-25 z-10" />
 {/if}
 <div>
-	<div class="flex items-center justify-between w-full px-8 gap-4 mt-2">
-		<div class="flex items-center w-full">
-			<div class="flex w-full gap-12 grow">
+	<div class="flex items-center justify-between px-8 gap-4 mt-2">
+		<div class="flex items-center">
+			<div class="flex gap-12">
 				<a href="/" class="text-2xl tracking-tight font-black">
 					<CoolText text="dotfyle" />
 				</a>
