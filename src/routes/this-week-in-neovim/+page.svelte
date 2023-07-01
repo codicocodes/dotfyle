@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import Fa from 'svelte-fa';
-	import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
+	import { faChevronCircleRight, faRss } from '@fortawesome/free-solid-svg-icons';
 	import CoolText from '$lib/components/CoolText.svelte';
 
 	export let data: PageData;
@@ -29,6 +29,13 @@
 			</a>
 
 			💚 Thank you for everything you've done for the community!
+		</p>
+		<p class="text-xl font-light my-4 flex items-center gap-2">
+			<Fa class="inline" size="xs" icon={faRss} />
+			An rss feed to consume TWiN is not supported but
+			<a href="https://github.com/codicocodes/dotfyle/issues/37" target="_blank">
+				<CoolText text="tracked in this issue." />
+			</a>
 		</p>
 
 		<h2 class="font-semibold text-3xl">Past issues</h2>
