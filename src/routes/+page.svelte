@@ -20,6 +20,7 @@
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import PostContainer from '$lib/components/PostContainer.svelte';
+	import GlossyCard from '$lib/components/GlossyCard.svelte';
 
 	export let data: PageData;
 </script>
@@ -32,17 +33,16 @@
 	/>
 </svelte:head>
 
-		<div class="flex justify-center mt-8">
-			<a
-				href="/this-week-in-neovim"
-				class="flex gap-2 items-center rounded-full p-4 py-2 bg-gradient-to-br from-cyan-500 to-green-500 shadow-xl shadow-green-300/25 text-xs font-semibold text-slate-900"
-			>
-				<Fa icon={faFlag} />
-				TWiN is coming to Dotfyle
-				<Fa icon={faChevronCircleRight} />
-			</a>
-		</div>
-
+<div class="flex justify-center mt-8">
+	<a
+		href="/this-week-in-neovim"
+		class="flex gap-2 items-center rounded-full p-4 py-2 bg-gradient-to-br from-cyan-500 to-green-500 shadow-xl shadow-green-300/25 text-xs font-semibold text-slate-900"
+	>
+		<Fa icon={faFlag} />
+		TWiN is coming to Dotfyle
+		<Fa icon={faChevronCircleRight} />
+	</a>
+</div>
 
 <div class="flex flex-col gap-8 my-4">
 	<div class="flex flex-col justify-center items-center">
@@ -105,22 +105,32 @@
 			<CoolLink href="/configs" text="more configs" />
 		</div>
 
-		<BigGridContainer>
-			{#each data.configs as conf, _}
-				<NeovimConfigCard
-					slug={conf.slug}
-					repo={conf.repo}
-					owner={conf.owner}
-					avatar={conf.ownerAvatar}
-					initFile={conf.initFile}
-					root={conf.root}
-					stars={conf.stars.toString()}
-					pluginManager={conf.pluginManager ?? 'unknown'}
-					pluginCount={conf.pluginCount.toString()}
-					showGithubLink={false}
-				/>
-			{/each}
-		</BigGridContainer>
+		{#await data.loading.configs}
+			<BigGridContainer>
+				{#each [null, null, null, null, null, null] as _n, _}
+					<GlossyCard loading>
+						<div class="min-h-[92px]" />
+					</GlossyCard>
+				{/each}
+			</BigGridContainer>
+		{:then configs}
+			<BigGridContainer>
+				{#each configs as conf, _}
+					<NeovimConfigCard
+						slug={conf.slug}
+						repo={conf.repo}
+						owner={conf.owner}
+						avatar={conf.ownerAvatar}
+						initFile={conf.initFile}
+						root={conf.root}
+						stars={conf.stars.toString()}
+						pluginManager={conf.pluginManager ?? 'unknown'}
+						pluginCount={conf.pluginCount.toString()}
+						showGithubLink={false}
+					/>
+				{/each}
+			</BigGridContainer>
+		{/await}
 	</div>
 
 	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
@@ -132,18 +142,28 @@
 			<CoolLink href="/plugins?sort=new" text="more plugins" />
 		</div>
 
-		<BigGridContainer>
-			{#each data.newPlugins as plugin, _}
-				<NeovimPluginCard
-					owner={plugin.owner}
-					name={plugin.name}
-					stars={plugin.stars.toString()}
-					configCount={plugin.configCount}
-					category={plugin.category}
-					shortDescription={plugin.shortDescription}
-				/>
-			{/each}
-		</BigGridContainer>
+		{#await data.loading.newPlugins}
+			<BigGridContainer>
+				{#each [null, null, null, null, null, null] as _n, _}
+					<GlossyCard loading>
+						<div class="min-h-[92px]" />
+					</GlossyCard>
+				{/each}
+			</BigGridContainer>
+		{:then res}
+			<BigGridContainer>
+				{#each res.data as plugin, _}
+					<NeovimPluginCard
+						owner={plugin.owner}
+						name={plugin.name}
+						stars={plugin.stars.toString()}
+						configCount={plugin.configCount}
+						category={plugin.category}
+						shortDescription={plugin.shortDescription}
+					/>
+				{/each}
+			</BigGridContainer>
+		{/await}
 	</div>
 
 	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
@@ -155,18 +175,28 @@
 			<CoolLink href="/plugins?sort=trending" text="more plugins" />
 		</div>
 
-		<BigGridContainer>
-			{#each data.trendingPlugins as plugin, _}
-				<NeovimPluginCard
-					owner={plugin.owner}
-					name={plugin.name}
-					stars={plugin.stars.toString()}
-					configCount={plugin.configCount}
-					category={plugin.category}
-					shortDescription={plugin.shortDescription}
-				/>
-			{/each}
-		</BigGridContainer>
+		{#await data.loading.trendingPlugins}
+			<BigGridContainer>
+				{#each [null, null, null, null, null, null] as _n, _}
+					<GlossyCard loading>
+						<div class="min-h-[92px]" />
+					</GlossyCard>
+				{/each}
+			</BigGridContainer>
+		{:then res}
+			<BigGridContainer>
+				{#each res.data as plugin, _}
+					<NeovimPluginCard
+						owner={plugin.owner}
+						name={plugin.name}
+						stars={plugin.stars.toString()}
+						configCount={plugin.configCount}
+						category={plugin.category}
+						shortDescription={plugin.shortDescription}
+					/>
+				{/each}
+			</BigGridContainer>
+		{/await}
 	</div>
 
 	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
@@ -176,12 +206,23 @@
 				breaking changes
 			</h3>
 		</div>
-		<BigGridContainer>
-			{#each data.breaking as post, _}
-				{#if post.breakingChange}
-					<PostContainer {post} />
-				{/if}
-			{/each}
-		</BigGridContainer>
+
+		{#await data.loading.breaking}
+			<BigGridContainer>
+				{#each [null, null, null, null, null, null] as _n, _}
+					<GlossyCard loading>
+						<div class="min-h-[102px]" />
+					</GlossyCard>
+				{/each}
+			</BigGridContainer>
+		{:then breaking}
+			<BigGridContainer>
+				{#each breaking as post, _}
+					{#if post.breakingChange}
+						<PostContainer {post} />
+					{/if}
+				{/each}
+			</BigGridContainer>
+		{/await}
 	</div>
 </div>
