@@ -156,7 +156,7 @@
 			/>
 		{/await}
 
-		{#await data.filter.plugins then languageServers}
+		{#await data.filter.languageServers then languageServers}
 			<MultiSelectFilter
 				expandAtCount={35}
 				title="language servers"
