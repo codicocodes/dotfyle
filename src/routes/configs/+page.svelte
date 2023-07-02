@@ -19,6 +19,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
@@ -40,6 +41,14 @@
 		$page.url.searchParams.get('languageservers')?.split(',').filter(Boolean) ?? [];
 
 	$: selectedLanguageServersSet = new Set(selectedLanguageServers);
+
+	let availablePlugins: string[] = [];
+	let languageServers: string[] = [];
+
+	onMount(() => {
+		data.filter.languageServers.then((ls) => (languageServers = ls));
+		data.filter.plugins.then((plugins) => (availablePlugins = plugins));
+	});
 </script>
 
 <Modal showModal={showFilter} onClose={() => (showFilter = false)}>
@@ -143,32 +152,27 @@
 			</div>
 		</GlossyCard>
 
-		{#await data.filter.plugins then plugins}
-			<MultiSelectFilter
-				title="plugins"
-				on:updated={({ detail }) => {
-					navigate($page, 'page', '1');
-					navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
-					selectedPluginsSet = new Set(detail.selected);
-				}}
-				items={plugins}
-				selected={selectedPluginsSet}
-			/>
-		{/await}
-
-		{#await data.filter.languageServers then languageServers}
-			<MultiSelectFilter
-				expandAtCount={35}
-				title="language servers"
-				on:updated={({ detail }) => {
-					navigate($page, 'page', '1');
-					navigate($page, 'languageservers', Array.from(detail.selected).join(','), true);
-					selectedLanguageServersSet = new Set(detail.selected);
-				}}
-				items={languageServers}
-				selected={selectedLanguageServersSet}
-			/>
-		{/await}
+		<MultiSelectFilter
+			title="plugins"
+			on:updated={({ detail }) => {
+				navigate($page, 'page', '1');
+				navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
+				selectedPluginsSet = new Set(detail.selected);
+			}}
+			items={availablePlugins}
+			selected={selectedPluginsSet}
+		/>
+		<MultiSelectFilter
+			expandAtCount={35}
+			title="language servers"
+			on:updated={({ detail }) => {
+				navigate($page, 'page', '1');
+				navigate($page, 'languageservers', Array.from(detail.selected).join(','), true);
+				selectedLanguageServersSet = new Set(detail.selected);
+			}}
+			items={languageServers}
+			selected={selectedLanguageServersSet}
+		/>
 	</div>
 </Modal>
 <div class="w-full flex flex-col items-center px-4">
