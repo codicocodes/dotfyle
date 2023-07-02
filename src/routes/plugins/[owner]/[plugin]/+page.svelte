@@ -58,8 +58,7 @@
 	{#if getMediaType(selectedImageUrl) === 'video'}
 		<video class="rounded:cursor-pointer" src={selectedImageUrl} autoplay />
 	{:else}
-		<img
-    class="rounded:cursor-pointer" alt="" src={selectedImageUrl} />
+		<img class="rounded:cursor-pointer" alt="" src={selectedImageUrl} />
 	{/if}
 </Modal>
 <div class="w-full flex flex-col items-center h-full my-14 px-8">
@@ -171,6 +170,38 @@
 							</div>
 						</div>
 					{/if}
+					{#if data.media.length > 0}
+						<div class="flex flex-col w-full">
+							<div class="mb-2 flex justify-between pl-1 tracking-wide">
+								<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
+									<Fa icon={faCameraRetro} size="sm" />
+									media
+								</h3>
+							</div>
+							<div
+								in:fade
+								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
+							>
+								{#each data.media as media}
+									{#if getMediaType(media.url) === 'video'}
+										<video
+											autoplay
+											class="rounded hover:cursor-pointer"
+											on:click={() => (selectedImageUrl = media.url)}
+											src={media.url}
+										/>
+									{:else}
+										<img
+											class="rounded hover:cursor-pointer"
+											on:click={() => (selectedImageUrl = media.url)}
+											alt=""
+											src={media.url}
+										/>
+									{/if}
+								{/each}
+							</div>
+						</div>
+					{/if}
 					<div class="flex flex-col w-full">
 						<div class="mb-2 flex justify-between pl-1 tracking-wide">
 							<h3 class="flex items-center gap-1 text-lg font-semibold">
@@ -229,39 +260,6 @@
 											showGithubLink={false}
 										/>
 									</div>
-								{/each}
-							</div>
-						</div>
-					{/if}
-
-					{#if data.media.length > 0}
-						<div class="flex flex-col w-full">
-							<div class="mb-2 flex justify-between pl-1 tracking-wide">
-								<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
-									<Fa icon={faCameraRetro} size="sm" />
-									media
-								</h3>
-							</div>
-							<div
-								in:fade
-								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
-							>
-								{#each data.media as media}
-									{#if getMediaType(media.url) === 'video'}
-										<video
-											autoplay
-											class="rounded hover:cursor-pointer"
-											on:click={() => (selectedImageUrl = media.url)}
-											src={media.url}
-										/>
-									{:else}
-										<img
-											class="rounded hover:cursor-pointer"
-											on:click={() => (selectedImageUrl = media.url)}
-											alt=""
-											src={media.url}
-										/>
-									{/if}
 								{/each}
 							</div>
 						</div>
