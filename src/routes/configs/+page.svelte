@@ -36,11 +36,10 @@
 
 	$: selectedPluginsSet = new Set(selectedPlugins);
 
-	$: selectedLanguageServers = $page.url.searchParams.get('languageservers')?.split(',').filter(Boolean) ?? [];
+	$: selectedLanguageServers =
+		$page.url.searchParams.get('languageservers')?.split(',').filter(Boolean) ?? [];
 
 	$: selectedLanguageServersSet = new Set(selectedLanguageServers);
-
-	let availablePlugins: string[] = $page.data.plugins;
 </script>
 
 <Modal showModal={showFilter} onClose={() => (showFilter = false)}>
@@ -143,27 +142,33 @@
 				</div>
 			</div>
 		</GlossyCard>
-		<MultiSelectFilter
-			title="plugins"
-			on:updated={({ detail }) => {
-        navigate($page, 'page', '1');
-				navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
-				selectedPluginsSet = new Set(detail.selected);
-			}}
-			items={availablePlugins}
-			selected={selectedPluginsSet}
-		/>
-		<MultiSelectFilter
-      expandAtCount={35}
-			title="language servers"
-			on:updated={({ detail }) => {
-        navigate($page, 'page', '1');
-				navigate($page, 'languageservers', Array.from(detail.selected).join(','), true);
-				selectedLanguageServersSet = new Set(detail.selected);
-			}}
-			items={data.languageServers}
-			selected={selectedLanguageServersSet}
-		/>
+
+		{#await data.filter.plugins then plugins}
+			<MultiSelectFilter
+				title="plugins"
+				on:updated={({ detail }) => {
+					navigate($page, 'page', '1');
+					navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
+					selectedPluginsSet = new Set(detail.selected);
+				}}
+				items={plugins}
+				selected={selectedPluginsSet}
+			/>
+		{/await}
+
+		{#await data.filter.plugins then languageServers}
+			<MultiSelectFilter
+				expandAtCount={35}
+				title="language servers"
+				on:updated={({ detail }) => {
+					navigate($page, 'page', '1');
+					navigate($page, 'languageservers', Array.from(detail.selected).join(','), true);
+					selectedLanguageServersSet = new Set(detail.selected);
+				}}
+				items={languageServers}
+				selected={selectedLanguageServersSet}
+			/>
+		{/await}
 	</div>
 </Modal>
 <div class="w-full flex flex-col items-center px-4">
@@ -214,6 +219,6 @@
 			{/each}
 		</div>
 
-    <Pagination page={$page} next={data.pagination.next} previous={data.pagination.prev} />
+		<Pagination page={$page} next={data.pagination.next} previous={data.pagination.prev} />
 	</div>
 </div>

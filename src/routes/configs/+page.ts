@@ -16,24 +16,22 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const languageServersFilter =
 		rawLanguageServers === '' ? [] : rawLanguageServers?.split(',').filter(Boolean);
 
-	const [res, plugins, languageServers] = await Promise.all([
-		trpc(event).searchConfigs.query({
-			query,
-			sorting,
-			plugins: pluginFilter,
-			languageServers: languageServersFilter,
-			page: isNaN(page) ? 1 : page
-		}),
-		trpc(event)
-			.getPluginIdentifiers.query()
-			.then((names) => names.map((identifier) => `${identifier.owner}/${identifier.name}`)),
-		trpc(event).listLanguageServers.query()
-	]);
+	const res = await trpc(event).searchConfigs.query({
+		query,
+		sorting,
+		plugins: pluginFilter,
+		languageServers: languageServersFilter,
+		page: isNaN(page) ? 1 : page
+	});
 
 	return {
 		configs: res.data,
 		pagination: res.meta,
-		plugins,
-		languageServers
+		filter: {
+			plugins: trpc(event)
+				.getPluginIdentifiers.query()
+				.then((names) => names.map((identifier) => `${identifier.owner}/${identifier.name}`)),
+			languageServers: trpc(event).listLanguageServers.query()
+		}
 	};
 };
