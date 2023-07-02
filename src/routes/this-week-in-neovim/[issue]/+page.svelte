@@ -7,38 +7,33 @@
 	import Fa from 'svelte-fa';
 	import type { PageData } from './$types';
 	export let data: PageData;
-	$: url = `https://dotfyle.com/this-week-in-neovim/${data.issue}`;
-	$: tweetText = `This Week in Neovim ${data.title.replace('#', '')}`;
+	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
+	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
 	$: tweetUrl = `https://twitter.com/intent/tweet?url=${url}&text=${tweetText}`;
 </script>
 
-<svelte:head>
-	<title>This Week in Neovim {data.title}</title>
-	<meta name="description" content="Newsletter about the Neovim plugin ecosystem" />
-</svelte:head>
-
 <h1>
-	<SmallTitle title={data.title} />
+	<SmallTitle title={data.post.title} />
 </h1>
 
 <div class="flex justify-between">
-	{#if data.issue > 1}
-		<a href="/this-week-in-neovim/{data.issue - 1}">
+	{#if data.post.issue > 1}
+		<a href="/this-week-in-neovim/{data.post.issue - 1}">
 			<Button iconPosition="left" text="Previous" icon={faChevronLeft} />
 		</a>
 	{:else}
 		<div />
 	{/if}
-	{#if data.issue < data.total}
-		<a href="/this-week-in-neovim/{data.issue + 1}">
+	{#if data.post.issue < data.post.total}
+		<a href="/this-week-in-neovim/{data.post.issue + 1}">
 			<Button text="Next" icon={faChevronRight} />
 		</a>
 	{/if}
 </div>
 
-<MarkdownPost content={data.content} />
+<MarkdownPost content={data.post.content} />
 
-{#if data.license === 'CC-BY-SA'}
+{#if data.post.license === 'CC-BY-SA'}
 	<a
 		href="https://github.com/phaazon/this-week-in-neovim-contents/blob/master/LICENSE"
 		target="_blank"

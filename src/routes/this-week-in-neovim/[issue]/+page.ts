@@ -11,5 +11,10 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const post = await trpc(event).getTwinByIssue.query({ issue }).catch(() => {
     throw error(404)
   })
-	return post;
+	return { 
+    post,
+    seo: {
+      title: `This Week in Neovim ${post.title}`
+    }
+  };
 };

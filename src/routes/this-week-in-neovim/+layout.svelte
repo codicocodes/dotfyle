@@ -5,10 +5,8 @@
 </script>
 
 <svelte:head>
-	{#if $page.url.pathname === '/this-week-in-neovim'}
-		<title>This Week in Neovim</title>
-		<meta name="description" content="Newsletter about the Neovim plugin ecosystem" />
-	{/if}
+  <title>{$page.data.seo?.title ?? "This Week in Neovim"}</title>
+  <meta name="description" content="Newsletter about the Neovim plugin ecosystem" />
 </svelte:head>
 
 <MediumHeroTitle>
