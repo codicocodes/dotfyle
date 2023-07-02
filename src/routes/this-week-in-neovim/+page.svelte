@@ -30,8 +30,8 @@
 
 			💚 Thank you for everything you've done for the community!
 		</p>
-		<p class="text-xl font-light my-4 flex items-center gap-2">
-			<Fa class="inline" size="xs" icon={faRss} />
+		<p class="text-xl font-light my-4 items-center gap-2 inline">
+			<Fa class="inline mr-2" size="xs" icon={faRss} />
 			An rss feed to consume TWiN is not supported but
 			<a href="https://github.com/codicocodes/dotfyle/issues/37" target="_blank">
 				<CoolText text="tracked in this issue." />
