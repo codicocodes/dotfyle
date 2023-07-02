@@ -39,6 +39,8 @@
 		target="_blank"
 	>
 		<img
+      height="10"
+      width="10"
 			alt="CC-BY-SA"
 			src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg"
 		/>

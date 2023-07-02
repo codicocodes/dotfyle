@@ -19,7 +19,7 @@
 	class="relative flex flex-col justify-between overflow-hidden rounded-md border border-green-300/25 bg-white/5 transition-colors w-full shadow-lg hover:shadow-green-300/25"
 >
 	<div class="flex items-center space-x-2 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20">
-		<img src={avatar} alt="" class="h-10 w-10 rounded-full" />
+		<img src={avatar} alt="" class="h-10 w-10 rounded-full" height="10" width="10" />
 		<div class="text-sm md:text-base font-semibold tracking-wide">
 			<CoolTextOnHover>
 				<a href={`/${owner}/${slug}`}>

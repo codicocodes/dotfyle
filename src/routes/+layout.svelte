@@ -10,7 +10,6 @@
 	import { isAdmin } from '$lib/utils';
 	import { faDiscord, faGithub, faTwitch } from '@fortawesome/free-brands-svg-icons';
 	import { faBars, faKeyboard, faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
-	import { Avatar } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
 	import '../app.css';
@@ -145,7 +144,7 @@
 						<span class="hidden sm:inline">
 							{user.username}
 						</span>
-						<Avatar src={user.avatarUrl} width="w-10" />
+            <img height="10" width="10" src={user.avatarUrl} class="w-10 h-10 rounded-full" />
 					</div>
 				</button>
 			{:else}

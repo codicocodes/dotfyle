@@ -58,7 +58,8 @@
 	{#if getMediaType(selectedImageUrl) === 'video'}
 		<video class="rounded:cursor-pointer" src={selectedImageUrl} autoplay />
 	{:else}
-		<img class="rounded:cursor-pointer" alt="" src={selectedImageUrl} />
+		<img
+    class="rounded:cursor-pointer" alt="" src={selectedImageUrl} />
 	{/if}
 </Modal>
 <div class="w-full flex flex-col items-center h-full my-14 px-8">
