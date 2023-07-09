@@ -23,11 +23,11 @@
   }
 </script>
 
-<h1>
+<h1 class="p-2">
 	<SmallTitle title={data.post.title} />
 </h1>
 
-<div class="flex justify-between">
+<div class="flex justify-between p-2">
 	{#if data.post.issue > 1}
 		<a href="/this-week-in-neovim/{data.post.issue - 1}">
 			<Button iconPosition="left" text="Previous" icon={faChevronLeft} />
