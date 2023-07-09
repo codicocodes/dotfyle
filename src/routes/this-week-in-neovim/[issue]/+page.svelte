@@ -4,12 +4,23 @@
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 	import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+	import { marked } from 'marked';
 	import Fa from 'svelte-fa';
+  import DOMPurify from 'dompurify';
 	import type { PageData } from './$types';
+	import { browser } from '$app/environment';
 	export let data: PageData;
 	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
 	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
 	$: tweetUrl = `https://twitter.com/intent/tweet?url=${url}&text=${tweetText}`;
+
+  let cleanedHtml = ''
+
+  $: {
+    if (browser) {
+      cleanedHtml = DOMPurify(window).sanitize(marked(data.post.content))
+    }
+  }
 </script>
 
 <h1>
@@ -31,7 +42,7 @@
 	{/if}
 </div>
 
-<HtmlContent content={data.post.cleanedHtml} />
+<HtmlContent content={cleanedHtml} />
 
 {#if data.post.license === 'CC-BY-SA'}
 	<a

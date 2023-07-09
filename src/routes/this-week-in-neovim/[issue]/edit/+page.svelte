@@ -6,13 +6,12 @@
 	import { marked } from 'marked';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import { faEye, faEyeSlash, faSave } from '@fortawesome/free-solid-svg-icons';
+	import { faEye, faSave } from '@fortawesome/free-solid-svg-icons';
 	let clean = '';
 	let preview = false;
 
 	$: {
-		const purify = DOMPurify(window);
-		clean = purify.sanitize(marked.parse(data.post.content));
+		clean = DOMPurify(window).sanitize(marked.parse(data.post.content));
 	}
 </script>
 
@@ -23,8 +22,8 @@
 <form method="POST">
 	<div class="flex gap-2 mx-2">
 		<Button type="button" icon={faEye} text="Preview" on:click={() => (preview = true)} />
-		<Button formaction='?/update' icon={faSave} text="Save" />
-		<Button formaction='?/publish' icon={faSave} text="Publish" />
+		<Button formaction="?/update" icon={faSave} text="Save" />
+		<Button formaction="?/publish" icon={faSave} text="Publish" />
 	</div>
 
 	<input

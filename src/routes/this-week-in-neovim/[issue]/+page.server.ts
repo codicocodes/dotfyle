@@ -1,9 +1,6 @@
 import { trpc } from '$lib/trpc/client';
 import { error, redirect } from '@sveltejs/kit';
 import type { ActionData, PageServerLoad, PageServerLoadEvent } from './$types';
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
-import { marked } from 'marked';
 import { z } from 'zod';
 
 export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
@@ -15,12 +12,9 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 	const post = await trpc(event).getTwinByIssue.query({ issue }).catch(() => {
     throw error(404)
   })
-  const win = new JSDOM("").window
-  const purify = DOMPurify(win);
 	return { 
     post: {
     ...post,
-    cleanedHtml: purify.sanitize(marked.parse(post.content)),
     },
     seo: {
       title: `This Week in Neovim ${post.title}`

@@ -44,10 +44,7 @@ import {
 	getTwinPosts
 } from '$lib/server/prisma/posts/services';
 import { getMediaForPlugin } from '$lib/server/prisma/media/service';
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
 import { marked } from 'marked';
-import { TwinPostBuilder } from '$lib/server/twin/builder';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -136,9 +133,7 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { owner, name } }) => {
-			const win = new JSDOM('').window;
-			const purify = DOMPurify(win);
-			return purify.sanitize(marked.parse(await getReadme(owner, name)));
+			return await getReadme(owner, name);
 		}),
 	getLanguageServersBySlug: t.procedure
 		.input((input: unknown) => {

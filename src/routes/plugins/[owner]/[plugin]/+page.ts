@@ -9,7 +9,7 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 			.getPlugin.query({ owner, name })
 			.then(async (plugin) => {
 				const relatedPlugins = await trpc(event).getPluginsByCategory.query(plugin.category);
-        return [plugin, relatedPlugins]
+        return [plugin, relatedPlugins] as const
 			}),
 		trpc(event).getConfigsForPlugin.query({ owner, name }),
 		trpc(event).getBreakingCommits.query({ owner, name }),
