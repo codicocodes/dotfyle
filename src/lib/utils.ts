@@ -39,12 +39,12 @@ export function hasBeenOneDay(dateString: string) {
     return date.getTime() < dayAgo;
 }
 
-export function oneWeekAgo() {
+export function daysAgo(days: number) {
     const hourMS = 1000 * 60 * 60;
     const dayMS = hourMS * 24;
-    const weekMS = dayMS * 7
-    const weekAgo = Date.now() - weekMS;
-    return new Date(weekAgo)
+    const weekMS = dayMS * days
+    const daysAgo = Date.now() - weekMS;
+    return new Date(daysAgo)
 }
 
 

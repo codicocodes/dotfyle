@@ -5,7 +5,7 @@ import { prismaClient } from '$lib/server/prisma/client';
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { getPlugin, updatePlugin } from '$lib/server/prisma/neovimplugins/service';
 import { getGithubToken } from '$lib/server/prisma/users/service';
-import { hasBeenOneDay, oneWeekAgo } from '$lib/utils';
+import { daysAgo, hasBeenOneDay } from '$lib/utils';
 import type { NeovimPlugin } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 
@@ -26,7 +26,7 @@ export class PluginSyncer {
 	async syncBreakingChanges() {
 		const commits = await fetchGitCommits(
 			this.token,
-			this.plugin.lastSyncedAt ?? oneWeekAgo(),
+			this.plugin.lastSyncedAt ?? daysAgo(7),
 			this.plugin.owner,
 			this.plugin.name
 		);
