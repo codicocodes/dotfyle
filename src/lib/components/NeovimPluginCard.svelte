@@ -15,7 +15,7 @@
 >
 	<div class="h-full flex space-x-4 p-2 pl-5 transition-colors items-start">
 		<div class="w-full h-full flex flex-col gap-1">
-			<div class="flex w-fulll justify-between">
+			<div class="flex w-full justify-between">
 				<CoolTextOnHover>
 					<a
 						href={`/plugins/${owner}/${name}`}

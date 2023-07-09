@@ -18,7 +18,8 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
         page: 1,
         take: 6
       }),
-      breaking: trpc(event).getPosts.query({ type: 'breaking-change' })
+      breaking: trpc(event).getPosts.query({ type: 'breaking-change' }),
+      twin: trpc(event).getTwinPosts.query({ page: 1, size: 3}),
 		},
 	};
 };

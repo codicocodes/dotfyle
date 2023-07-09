@@ -306,10 +306,10 @@ export const router = t.router({
 
 	getTwinPosts: t.procedure
 		.input((input: unknown) => {
-			return z.object({ page: z.number() }).parse(input);
+			return z.object({ page: z.number(), size: z.number().default(10) }).parse(input);
 		})
-		.query(async ({ input: { page } }) => {
-			return getTwinPosts(page);
+		.query(async ({ input: { page, size } }) => {
+			return getTwinPosts(page, size);
 		}),
 
 	getTwinByIssue: t.procedure

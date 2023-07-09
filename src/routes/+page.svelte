@@ -10,6 +10,7 @@
 		faFileCode,
 		faFire,
 		faFlag,
+		faNewspaper,
 		faPuzzlePiece,
 		faSearch,
 		faSeedling
@@ -21,6 +22,8 @@
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import PostContainer from '$lib/components/PostContainer.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
+	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
+	import { humanizeAbsolute } from '$lib/utils';
 
 	export let data: PageData;
 </script>
@@ -96,6 +99,52 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+		<div class="mb-2 flex justify-between pl-1 tracking-wide">
+			<h3 class="flex items-center gap-1 text-lg font-semibold">
+				<Fa icon={faNewspaper} size="sm" />
+				This Week in Neovim
+			</h3>
+			<CoolLink href="/this-week-in-neovim" text="more issues" />
+		</div>
+
+		{#await data.loading.twin}
+			<BigGridContainer>
+				{#each [null, null, null] as _n, _}
+					<GlossyCard loading>
+						<div class="min-h-[92px]" />
+					</GlossyCard>
+				{/each}
+			</BigGridContainer>
+		{:then posts}
+			<BigGridContainer>
+				{#each posts.data as post, _}
+					<div
+						class="relative flex flex-col justify-between overflow-hidden rounded-md border border-green-300/25 bg-white/10 transition-colors w-full shadow-lg hover:shadow-green-300/25 hover:bg-white/20 px-4 py-2"
+					>
+						{#if post.publishedAt}
+							<div class="flex items-center space-x-2">
+						<div class="text-sm font-semibold tracking-wide md:text-base">
+									{new Date(post.publishedAt).toLocaleDateString()}
+								</div>
+							</div>
+						{/if}
+						<div class="flex items-center space-x-2 pt-2 py-1">
+							<CoolTextOnHover>
+								<a class="flex gap-2 items-center" href="/this-week-in-neovim/{post.issue}">
+									<span class="text-xs font-medium tracking-wide md:text-sm">
+										{post.title}
+									</span>
+								</a>
+							</CoolTextOnHover>
+						</div>
+					</div>
+				{/each}
+			</BigGridContainer>
+		{/await}
+	</div>
+
 	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
