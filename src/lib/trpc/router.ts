@@ -23,6 +23,8 @@ import {
 } from '$lib/server/prisma/neovimplugins/service';
 import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
 import { hasBeenOneDay } from '$lib/utils';
+import { generateTwinIssue, updateTwinIssue, publishTwinIssue } from '$lib/trpc/domains/twin';
+
 import { TRPCError } from '@trpc/server';
 import {
 	syncExistingRepoInfo,
@@ -42,6 +44,10 @@ import {
 	getTwinPosts
 } from '$lib/server/prisma/posts/services';
 import { getMediaForPlugin } from '$lib/server/prisma/media/service';
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
+import { marked } from 'marked';
+import { TwinPostBuilder } from '$lib/server/twin/builder';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -130,7 +136,9 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { owner, name } }) => {
-			return getReadme(owner, name);
+			const win = new JSDOM('').window;
+			const purify = DOMPurify(win);
+			return purify.sanitize(marked.parse(await getReadme(owner, name)));
 		}),
 	getLanguageServersBySlug: t.procedure
 		.input((input: unknown) => {
@@ -314,7 +322,8 @@ export const router = t.router({
 			return z.object({ issue: z.number() }).parse(input);
 		})
 		.query(async ({ input: { issue } }) => {
-			return getTwinByIssue(issue);
+      const post = await getTwinByIssue(issue);
+      return post
 		}),
 	getBreakingCommits: t.procedure
 		.input((input: unknown) => {
@@ -329,7 +338,10 @@ export const router = t.router({
 		})
 		.query(async ({ input: { owner, name } }) => {
 			return getMediaForPlugin(owner, name);
-		})
+		}),
+	generateTwinIssue,
+	updateTwinIssue,
+	publishTwinIssue
 });
 
 export type Router = typeof router;

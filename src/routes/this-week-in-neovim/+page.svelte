@@ -47,8 +47,12 @@
 						href="/this-week-in-neovim/{post.issue}"
 					>
 						<span>{new Date(post.createdAt).toLocaleDateString()} </span>
-						<span class="flex gap-2 items-center"
-							>{post.title}
+						<span class="hidden sm:flex gap-2 items-center">
+              {post.title}
+							<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
+						</span>
+						<span class="flex sm:hidden gap-2 items-center">
+              Issue #{post.issue}
 							<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
 						</span>
 					</a>
