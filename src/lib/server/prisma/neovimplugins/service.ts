@@ -1,4 +1,4 @@
-import { daysAgo } from '$lib/utils';
+import { oneWeekAgo } from '$lib/utils';
 import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
 import { paginator, type PaginatedResult } from '../pagination';
@@ -334,7 +334,7 @@ export async function getAddedCountSince(since: Date): Promise<Record<number, nu
 }
 
 export async function syncWeeklyTrending() {
-	const since = daysAgo(7);
+	const since = oneWeekAgo();
 	const countByPluginID = await getAddedCountSince(since);
 	await prismaClient.neovimPlugin.updateMany({
 		data: {

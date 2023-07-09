@@ -1,10 +1,22 @@
 <script lang="ts">
+	import DOMPurify from 'dompurify';
 	import { fade } from 'svelte/transition';
 	export let content: string;
+	import { marked } from 'marked';
+	import { browser } from '$app/environment';
+
+	let clean = '';
+
+	$: {
+		if (browser) {
+			const purify = DOMPurify(window);
+			clean = purify.sanitize(marked.parse(content));
+		}
+	}
 </script>
 
 <div in:fade id="markdown-post-container" class="shadow-md p-2">
-	{@html content}
+	{@html clean}
 </div>
 
 <style lang="postcss">

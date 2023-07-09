@@ -1,6 +1,5 @@
 import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { prismaClient } from '$lib/server/prisma/client';
-import { TwinPostBuilder } from '$lib/server/twin/builder';
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
 import { readFileSync } from 'fs';
 
@@ -18,12 +17,11 @@ class TwinFetcher {
 			inputs.map(async ({ url, issue, title, ...post }) => {
 				const content = await fetch(url).then((r) => r.text());
 				return {
-					title,
-					content,
-					issue,
-					license: 'CC-BY-SA',
-					createdAt: post.createdAt,
-					publishedAt: post.createdAt
+            title,
+						content,
+						issue,
+            license: "CC-BY-SA",
+            createdAt: post.createdAt,
 				};
 			})
 		);
@@ -49,7 +47,7 @@ class TwinFetcher {
 					issue,
 					title,
 					url,
-					createdAt: date
+					createdAt: date,
 				};
 			});
 	}
@@ -66,10 +64,9 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 					issue: post.issue
 				},
 				create: post,
-				update: post
+        update: post,
 			});
 		})
 	);
-
 	return new Response('TWIN data has been seeded');
 };

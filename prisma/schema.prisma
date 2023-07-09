@@ -139,12 +139,11 @@ model Post {
 }
 
 model TwinPost {
-  title       String
-  issue       Int       @id @unique
-  createdAt   DateTime  @default(now())
-  publishedAt DateTime? @default(now())
-  content     String
-  license     String?
+  title     String
+  issue     Int      @id @unique
+  createdAt DateTime @default(now())
+  content   String
+  license   String?
 }
 
 model BreakingChange {
