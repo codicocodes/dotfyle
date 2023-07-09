@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import MarkdownPost from '$lib/components/MarkdownPost.svelte';
+	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 	import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -31,7 +31,7 @@
 	{/if}
 </div>
 
-<MarkdownPost content={data.post.content} />
+<HtmlContent content={data.post.cleanedHtml} />
 
 {#if data.post.license === 'CC-BY-SA'}
 	<a
