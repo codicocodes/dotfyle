@@ -10,9 +10,10 @@
 	let clean = '';
 	let preview = false;
 
-	$: {
+  function openPreview() {
 		clean = DOMPurify(window).sanitize(marked.parse(data.post.content));
-	}
+    preview = true
+  }
 </script>
 
 <Modal showModal={preview} onClose={() => (preview = false)}>
@@ -21,7 +22,7 @@
 
 <form method="POST">
 	<div class="flex gap-2 mx-2">
-		<Button type="button" icon={faEye} text="Preview" on:click={() => (preview = true)} />
+		<Button type="button" icon={faEye} text="Preview" on:click={openPreview} />
 		<Button formaction="?/update" icon={faSave} text="Save" />
 		<Button formaction="?/publish" icon={faSave} text="Publish" />
 	</div>
