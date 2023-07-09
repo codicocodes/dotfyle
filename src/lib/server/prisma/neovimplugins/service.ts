@@ -319,7 +319,14 @@ export async function getAddedCountSince(since: Date): Promise<Record<number, nu
 		where: {
 			createdAt: {
 				gt: since
-			}
+			},
+      config: {
+        is: {
+          createdAt: {
+            lt: since
+          }
+        }
+      }
 		}
 	});
 	const countByPluginID = pluginMappings.reduce((counter: Record<number, number>, curr) => {
