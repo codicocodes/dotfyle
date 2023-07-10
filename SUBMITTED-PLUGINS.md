@@ -51,6 +51,7 @@
 - echasnovski/mini.hipatterns
 
 ## Colorscheme
+- xero/miasma.nvim
 
 ## Colorscheme Creation
 
