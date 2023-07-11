@@ -9,7 +9,7 @@
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import { isAdmin } from '$lib/utils';
 	import { faDiscord, faGithub, faTwitch } from '@fortawesome/free-brands-svg-icons';
-	import { faBars, faKeyboard, faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
+	import { faBars, faKeyboard, faRss, faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
 	import '../app.css';
@@ -238,6 +238,15 @@
 				>
 					<Fa icon={faKeyboard} />
 					<span class="ml-1">type</span>
+				</a>
+
+				<a
+					href="https://dotfyle.com/this-week-in-neovim/rss.xml"
+					class="flex items-center hover:text-orange-400"
+					target="blank"
+				>
+					<Fa icon={faRss} />
+					<span class="ml-1">rss</span>
 				</a>
 			</div>
 		</div>
