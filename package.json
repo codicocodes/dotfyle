@@ -24,6 +24,7 @@
 		"@types/jsonwebtoken": "^9.0.2",
 		"@types/marked": "^4.3.0",
 		"@types/nprogress": "^0.2.0",
+		"@types/rss": "^0.0.30",
 		"@typescript-eslint/eslint-plugin": "^5.59.2",
 		"@typescript-eslint/parser": "^5.59.2",
 		"autoprefixer": "^10.4.14",
@@ -60,6 +61,7 @@
 		"delay": "^5.0.0",
 		"jsonwebtoken": "^9.0.0",
 		"p-limit": "github:sindresorhus/p-limit",
+		"rss": "^1.2.2",
 		"svelte-fa": "^3.0.3",
 		"trpc-sveltekit": "^3.5.7",
 		"zod": "^3.21.4"
