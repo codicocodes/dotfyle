@@ -1,4 +1,4 @@
-import type { User } from '@prisma/client';
+import type { Media, User } from "@prisma/client";
 import { PUBLIC_ADMIN_USER_GITHUB_ID } from '$env/static/public';
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse/lib';
@@ -57,18 +57,21 @@ export function isAdmin(user: User): boolean {
 	return user.githubId === ADMIN_GITHUB_ID;
 }
 
-export function getMediaType(url: string): 'image' | 'video' {
-	if (url.endsWith('.mov') || url.endsWith('.mp4')) {
-		return 'video';
-	}
-	return 'image';
-}
-
 export async function sanitizeHtml(html: string) {
 	const clean = await unified()
 		.use(rehypeParse)
+    .use(rehypeStringify)
 		.use(rehypeSanitize)
-		.use(rehypeStringify)
 		.process(html);
 	return clean.toString();
+}
+
+export function getMediaType(media: Media): 'image' | 'video' {
+  const {url, type} = media
+  if (type.includes("video")) return "video"
+  if (type.includes("image")) return "image"
+  if(url.endsWith(".mov") || url.endsWith(".mp4")) {
+    return 'video'
+  }
+  return 'image'
 }
