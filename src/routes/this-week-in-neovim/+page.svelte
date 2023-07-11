@@ -32,9 +32,9 @@
 		</p>
 		<p class="text-xl font-light my-4 items-center gap-2 inline">
 			<Fa class="inline mr-2" size="xs" icon={faRss} />
-			An rss feed to consume TWiN is not supported but
-			<a href="https://github.com/codicocodes/dotfyle/issues/37" target="_blank">
-				<CoolText text="tracked in this issue." />
+			An rss feed to consume TWiN can be found 
+			<a href="/this-week-in-neovim/rss.xml" target="_blank">
+				<CoolText text="here." />
 			</a>
 		</p>
 
