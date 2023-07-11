@@ -1,4 +1,7 @@
 import { isAuthenticated } from './middlewares/auth';
+import { remark } from 'remark';
+import rehypeSanitize from 'rehype-sanitize';
+import remarkHTML from 'remark-html';
 import { t } from './t';
 import { z } from 'zod';
 import { getGithubRepositories, getRepoFileTree } from '$lib/server/github/services';
@@ -133,7 +136,8 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { owner, name } }) => {
-			return await getReadme(owner, name);
+			const markdown = await getReadme(owner, name);
+			return remark().use(remarkHTML).processSync(markdown).toString();
 		}),
 	getLanguageServersBySlug: t.procedure
 		.input((input: unknown) => {
@@ -317,8 +321,8 @@ export const router = t.router({
 			return z.object({ issue: z.number() }).parse(input);
 		})
 		.query(async ({ input: { issue } }) => {
-      const post = await getTwinByIssue(issue);
-      return post
+			const post = await getTwinByIssue(issue);
+			return post;
 		}),
 	getBreakingCommits: t.procedure
 		.input((input: unknown) => {

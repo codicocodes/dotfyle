@@ -2,16 +2,16 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
-	import DOMPurify from 'dompurify';
-	import { marked } from 'marked';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { faEye, faSave } from '@fortawesome/free-solid-svg-icons';
+	import { remark } from 'remark';
+	import remarkHtml from 'remark-html';
 	let clean = '';
 	let preview = false;
 
   function openPreview() {
-		clean = DOMPurify(window).sanitize(marked.parse(data.post.content));
+    clean =  remark().use(remarkHtml).processSync(data.post.content).toString();
     preview = true
   }
 </script>

@@ -22,8 +22,6 @@
 	import PostContainer from '$lib/components/PostContainer.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
-  import DOMPurify from 'dompurify';
-	import { marked } from 'marked';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
@@ -44,8 +42,7 @@
 	async function fetchReadme() {
 		if (readme) return;
 		const { owner, name } = data.plugin;
-		const unsafeReadme = await trpc($page).getReadme.query({ owner, name });
-    readme = DOMPurify(window).sanitize(marked(unsafeReadme))
+		readme = await trpc($page).getReadme.query({ owner, name });
 	}
 
 	let selectedImageUrl = '';
