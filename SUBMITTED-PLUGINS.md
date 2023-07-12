@@ -89,6 +89,7 @@
 
 - echasnovski/mini.nvim
 - echasnovski/mini.animate
+- MisanthropicBit/decipher.nvim
 
 ## Terminal Integration
 
