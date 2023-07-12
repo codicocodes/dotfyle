@@ -5,13 +5,13 @@
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { faEye, faSave } from '@fortawesome/free-solid-svg-icons';
-	import { remark } from 'remark';
-	import remarkHtml from 'remark-html';
+	import { sanitizeHtml } from '$lib/utils';
+	import { marked } from 'marked';
 	let clean = '';
 	let preview = false;
 
-  function openPreview() {
-    clean =  remark().use(remarkHtml).processSync(data.post.content).toString();
+  async function openPreview() {
+    clean = await sanitizeHtml(marked(data.post.content))
     preview = true
   }
 </script>

@@ -1,8 +1,8 @@
 import RSS from 'rss';
 import type { RequestHandler } from '@sveltejs/kit';
-import { remark } from 'remark';
-import remarkHTML from 'remark-html';
 import { prismaClient } from '$lib/server/prisma/client';
+import { marked } from 'marked';
+import { sanitizeHtml } from '$lib/utils';
 
 export const GET: RequestHandler = async () => {
 	const feed = new RSS({
@@ -23,12 +23,13 @@ export const GET: RequestHandler = async () => {
 
 	for (const post of posts) {
 		if (!post.publishedAt) continue;
-		const content = remark().use(remarkHTML).processSync(post.content);
+    const html = marked(post.content)
+    const description = await sanitizeHtml(html)
 		feed.item({
 			title: post.title,
 			url: `https://dotfyle.com/this-week-in-neovim/${post.issue}`,
 			date: post.publishedAt,
-			description: content.toString()
+			description,
 		});
 	}
 	return new Response(feed.xml({ indent: true }), {

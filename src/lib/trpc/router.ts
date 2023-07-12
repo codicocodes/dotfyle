@@ -1,7 +1,4 @@
 import { isAuthenticated } from './middlewares/auth';
-import { remark } from 'remark';
-import rehypeSanitize from 'rehype-sanitize';
-import remarkHTML from 'remark-html';
 import { t } from './t';
 import { z } from 'zod';
 import { getGithubRepositories, getRepoFileTree } from '$lib/server/github/services';
@@ -25,7 +22,7 @@ import {
 	searchPlugins
 } from '$lib/server/prisma/neovimplugins/service';
 import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
-import { hasBeenOneDay } from '$lib/utils';
+import { sanitizeHtml, hasBeenOneDay } from '$lib/utils';
 import { generateTwinIssue, updateTwinIssue, publishTwinIssue } from '$lib/trpc/domains/twin';
 
 import { TRPCError } from '@trpc/server';
@@ -137,7 +134,8 @@ export const router = t.router({
 		})
 		.query(async ({ input: { owner, name } }) => {
 			const markdown = await getReadme(owner, name);
-			return remark().use(remarkHTML).processSync(markdown).toString();
+			const html = marked(markdown);
+      return sanitizeHtml(html)
 		}),
 	getLanguageServersBySlug: t.procedure
 		.input((input: unknown) => {
