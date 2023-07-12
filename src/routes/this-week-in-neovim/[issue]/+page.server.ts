@@ -2,8 +2,8 @@ import { trpc } from '$lib/trpc/client';
 import { error, redirect } from '@sveltejs/kit';
 import type { ActionData, PageServerLoad, PageServerLoadEvent } from './$types';
 import { z } from 'zod';
-import { remark } from 'remark';
-import remarkHtml from 'remark-html';
+import { sanitizeHtml } from '$lib/utils';
+import { marked } from 'marked';
 
 export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
 	const issueStr = event.params.issue;
@@ -14,7 +14,9 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 	const post = await trpc(event).getTwinByIssue.query({ issue }).catch(() => {
     throw error(404)
   })
-  const cleanHtml =  remark().use(remarkHtml).processSync(post.content).toString();
+
+  const cleanHtml = await sanitizeHtml(marked(post.content))
+
 	return { 
     post: {
       ...post,
