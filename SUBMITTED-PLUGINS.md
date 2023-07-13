@@ -112,6 +112,8 @@
 
 ## Git
 
+- https://github.com/NeogitOrg/neogit
+
 ## GitHub
 
 ## Motion
