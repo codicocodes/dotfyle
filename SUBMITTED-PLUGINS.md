@@ -112,7 +112,7 @@
 
 ## Git
 
-- https://github.com/NeogitOrg/neogit
+- NeogitOrg/neogit
 
 ## GitHub
 
