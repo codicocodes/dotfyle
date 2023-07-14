@@ -20,9 +20,9 @@ export class PluginSyncer {
 	}
 	async sync() {
 		await Promise.all([
-			// this.syncStars(),
-			this.syncReadme()
-			// this.syncBreakingChanges(),
+			this.syncStars(),
+			this.syncReadme(),
+			this.syncBreakingChanges(),
 		]);
 		return this.updatePlugin();
 	}
@@ -70,7 +70,6 @@ export class PluginSyncer {
 				}));
 			})
 		);
-    console.log(data)
 		await prismaClient.media.createMany({
 			skipDuplicates: true,
 			data
