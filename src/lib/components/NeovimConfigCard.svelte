@@ -21,11 +21,13 @@
 	<div class="flex items-center space-x-2 bg-white/10 p-2 pl-5 transition-colors hover:bg-white/20">
 		<img src={avatar} alt="" class="h-10 w-10 rounded-full" height="10" width="10" />
 		<div class="text-sm md:text-base font-semibold tracking-wide">
+    <div>
 			<CoolTextOnHover>
 				<a href={`/${owner}/${slug}`}>
 					{owner}/{repo}
 				</a>
 			</CoolTextOnHover>
+    </div>
 			<span class="text-sm font-normal">{`/${root}`}</span>
 		</div>
 	</div>
