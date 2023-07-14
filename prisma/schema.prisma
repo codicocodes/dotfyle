@@ -160,6 +160,7 @@ model BreakingChange {
 model Media {
   id             Int           @id @default(autoincrement())
   url            String        @unique
+  type           String        @default("")
   NeovimPlugin   NeovimPlugin? @relation(fields: [neovimPluginId], references: [id])
   neovimPluginId Int?
 }

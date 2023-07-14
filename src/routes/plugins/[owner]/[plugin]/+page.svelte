@@ -22,6 +22,7 @@
 	import PostContainer from '$lib/components/PostContainer.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
+	import type { Media } from '@prisma/client';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
@@ -45,7 +46,7 @@
 		readme = await trpc($page).getReadme.query({ owner, name });
 	}
 
-	let selectedImageUrl = '';
+	let selectedMedia: Media | undefined;
 </script>
 
 <svelte:head>
@@ -54,11 +55,11 @@
 	</title>
 </svelte:head>
 
-<Modal showModal={!!selectedImageUrl} onClose={() => (selectedImageUrl = '')}>
-	{#if getMediaType(selectedImageUrl) === 'video'}
-		<video class="rounded:cursor-pointer" src={selectedImageUrl} autoplay />
-	{:else}
-		<img class="rounded:cursor-pointer" alt="" src={selectedImageUrl} />
+<Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
+	{#if selectedMedia && getMediaType(selectedMedia) === 'video'}
+		<video class="rounded:cursor-pointer" src={selectedMedia.url} autoplay />
+	{:else if selectedMedia}
+		<img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />
 	{/if}
 </Modal>
 <div class="w-full flex flex-col items-center h-full my-14 px-8">
@@ -187,13 +188,13 @@
 										<video
 											autoplay
 											class="rounded hover:cursor-pointer"
-											on:click={() => (selectedImageUrl = media.url)}
+											on:click={() => (selectedMedia = media)}
 											src={media.url}
 										/>
 									{:else}
 										<img
 											class="rounded hover:cursor-pointer"
-											on:click={() => (selectedImageUrl = media.url)}
+											on:click={() => (selectedMedia = media)}
 											alt=""
 											src={media.url}
 										/>

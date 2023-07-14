@@ -19,7 +19,11 @@ export class PluginSyncer {
 		this.mediaParser = new GithubMediaParser();
 	}
 	async sync() {
-		await Promise.all([this.syncStars(), this.syncReadme(), this.syncBreakingChanges()]);
+		await Promise.all([
+			// this.syncStars(),
+			this.syncReadme()
+			// this.syncBreakingChanges(),
+		]);
 		return this.updatePlugin();
 	}
 
@@ -57,12 +61,19 @@ export class PluginSyncer {
 
 	async syncMedia(readme: string) {
 		const media = this.mediaParser.findMediaUrls(readme, this.plugin.owner, this.plugin.name);
+		const data = await Promise.all(
+			media.map(async (url) => {
+				return fetch(url).then((r) => ({
+					url,
+					type: r.headers.get('Content-Type') ?? "",
+					neovimPluginId: this.plugin.id
+				}));
+			})
+		);
+    console.log(data)
 		await prismaClient.media.createMany({
-      skipDuplicates: true,
-			data: media.map((url) => ({
-				url,
-				neovimPluginId: this.plugin.id
-			}))
+			skipDuplicates: true,
+			data
 		});
 	}
 
