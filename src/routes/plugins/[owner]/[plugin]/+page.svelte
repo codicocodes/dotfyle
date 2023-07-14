@@ -184,7 +184,7 @@
 								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
 							>
 								{#each data.media as media}
-									{#if getMediaType(media.url) === 'video'}
+									{#if getMediaType(media) === 'video'}
 										<video
 											autoplay
 											class="rounded hover:cursor-pointer"
