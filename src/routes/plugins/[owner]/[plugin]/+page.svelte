@@ -203,32 +203,6 @@
 							</div>
 						</div>
 					{/if}
-					<div class="flex flex-col w-full">
-						<div class="mb-2 flex justify-between pl-1 tracking-wide">
-							<h3 class="flex items-center gap-1 text-lg font-semibold">
-								other {data.plugin.category} plugins
-							</h3>
-							<CoolLink href={`/plugins?categories=${data.plugin.category}`} text="more plugins" />
-						</div>
-
-						<div
-							in:fade
-							class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
-						>
-							{#each categoryPlugins as plugin, _}
-								<div in:fade>
-									<NeovimPluginCard
-										owner={plugin.owner}
-										name={plugin.name}
-										stars={plugin.stars.toString()}
-										configCount={plugin.configCount}
-										category={plugin.category}
-										shortDescription={plugin.shortDescription}
-									/>
-								</div>
-							{/each}
-						</div>
-					</div>
 
 					{#if data.configs.length > 0}
 						<div class="flex flex-col w-full">
@@ -265,6 +239,33 @@
 							</div>
 						</div>
 					{/if}
+
+					<div class="flex flex-col w-full">
+						<div class="mb-2 flex justify-between pl-1 tracking-wide">
+							<h3 class="flex items-center gap-1 text-lg font-semibold">
+								other {data.plugin.category} plugins
+							</h3>
+							<CoolLink href={`/plugins?categories=${data.plugin.category}`} text="more plugins" />
+						</div>
+
+						<div
+							in:fade
+							class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
+						>
+							{#each categoryPlugins as plugin, _}
+								<div in:fade>
+									<NeovimPluginCard
+										owner={plugin.owner}
+										name={plugin.name}
+										stars={plugin.stars.toString()}
+										configCount={plugin.configCount}
+										category={plugin.category}
+										shortDescription={plugin.shortDescription}
+									/>
+								</div>
+							{/each}
+						</div>
+					</div>
 				</TabPanel>
 				<TabPanel>
 					<HtmlContent content={readme} />
