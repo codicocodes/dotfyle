@@ -35,16 +35,24 @@ export function validateConfigPath(root: GithubTree, path: string): undefined {
 	throw new TRPCError({ message: 'cannot find init file in repo', code: 'BAD_REQUEST' });
 }
 
+export const createNeovimConfigSlug = (name: string, root: string): string => {
+	const slug = `${name}${root ? `-${root}` : ''}`
+		.replaceAll('/', '-')
+		.replaceAll(/[^A-Za-z-]/g, '')
+		.toLowerCase();
+
+  return slug
+}
+
 export function upsertNeovimConfigDTOFactory(
 	owner: string,
 	root: string,
 	init: string,
 	repo: GithubRepository
 ) {
-	const slug = `${repo.name}${root ? `-${root}` : ''}`
-		.replaceAll('/', '-')
-		.replaceAll(/[^A-Za-z-]/g, '')
-		.toLowerCase();
+
+  const slug = createNeovimConfigSlug(repo.name, root)
+
 	const upsertDTO: CreateNeovimConfigDTO = {
 		githubId: repo.id,
 		stars: repo.stargazers_count,

@@ -1,4 +1,11 @@
-import type { NeovimConfig, NeovimPluginManager } from '@prisma/client';
+import { createNeovimConfigSlug } from '$lib/server/nvim-sync/config/syncRepoInfo';
+import type {
+	NeovimConfig,
+	NeovimPluginManager,
+	GithubRepository,
+	NvimConfig,
+	ToolConfig
+} from '@prisma/client';
 import { prismaClient } from '../client';
 import { paginator } from '../pagination';
 import type {
@@ -32,14 +39,47 @@ const sortings = {
 	]
 } as const;
 
+const flattenNestedNvimConfig = (
+	nvimConfig: NvimConfig,
+	toolConfig: ToolConfig,
+	repository: GithubRepository
+): NeovimConfig => {
+	if (!repository.userId) throw new Error('GithubRepository must be connected to a user');
+	return {
+		id: repository.id,
+		owner: repository.owner,
+		slug: createNeovimConfigSlug(repository.name, toolConfig.root),
+		repo: repository.name,
+		root: toolConfig.root,
+		initFile: nvimConfig.initFile,
+		branch: repository.mainBranch,
+		leaderkey: nvimConfig.leaderkey,
+		fork: repository.fork,
+		githubId: repository.githubId,
+		stars: repository.stars,
+		userId: repository.userId,
+		pluginManager: nvimConfig.pluginManager as NeovimPluginManager,
+		createdAt: repository.createdAt,
+		lastSyncedAt: nvimConfig.lastSyncedAt
+	};
+};
+
 export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
-	const configs = await prismaClient.neovimConfig.findMany({
+	const configs = await prismaClient.nvimConfig.findMany({
 		include: {
-			user: {
-				select: {
-					githubToken: {
-						select: {
-							accessToken: true
+			toolConfig: {
+				include: {
+					repository: {
+						include: {
+							user: {
+								select: {
+									githubToken: {
+										select: {
+											accessToken: true
+										}
+									}
+								}
+							}
 						}
 					}
 				}
@@ -47,12 +87,20 @@ export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
 		}
 	});
 	return configs
-		.map(({ user, ...config }) => {
-			return {
-				...config,
-				_token: user.githubToken?.accessToken
-			};
-		})
+		.map(
+			({
+				toolConfig: {
+					repository: { user, ...repository },
+					...toolConfig
+				},
+				...config
+			}) => {
+				return {
+					...flattenNestedNvimConfig(config, toolConfig, repository),
+					_token: user!.githubToken?.accessToken
+				};
+			}
+		)
 		.filter((c) => !!c._token) as NeovimConfigWithToken[];
 }
 
@@ -335,7 +383,7 @@ export type ConfigSearchOptions = {
 export async function searchNeovimConfigs({
 	query,
 	plugins,
-  languageServers,
+	languageServers,
 	sorting,
 	page,
 	take
@@ -379,7 +427,7 @@ export async function searchNeovimConfigs({
 							return {
 								languageServerMappings: {
 									some: {
-                    languageServerName
+										languageServerName
 									}
 								}
 							};

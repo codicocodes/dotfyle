@@ -221,6 +221,7 @@ model NvimConfig {
   toolConfigId           Int                            @unique
   initFile               String
   pluginManager          String                         @default("unknown")
+  leaderkey              String                         @default("unknown")
   lastSyncedAt           DateTime                       @default(now())
   neovimConfigPlugins    NeovimConfigPlugins[]
   languageServerMappings NeovimConfigToLanguageServer[]

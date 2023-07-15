@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { NeovimConfig, NeovimConfigPlugins, NeovimPlugin } from '@prisma/client';
+import type { GithubRepository, NeovimConfig, NeovimConfigPlugins, NeovimPlugin, NvimConfig, Tool, ToolConfig } from '@prisma/client';
 
 export const CreateNeovimConfigDTO = z.object({
 	githubId: z.number(),
@@ -35,6 +35,14 @@ export type NestedNeovimConfigWithToken = NeovimConfig & {
             accessToken: string;
         } | undefined;
     };
+}
+
+export interface NestedToolConfigWithRepository extends ToolConfig {
+  repository: GithubRepository
+}
+
+export interface NestedNvimConfigWithRepository extends NvimConfig {
+  toolConfig: NestedToolConfigWithRepository;
 }
 
 export interface NeovimConfigWithToken extends NeovimConfig {
