@@ -10,7 +10,9 @@ export const generateTwinIssue = t.procedure
 		return z.object({ issue: z.number(), days: z.number().optional().default(7) }).parse(input);
 	})
 	.query(async ({ input: { issue, days } }) => {
-		return await new TwinPostBuilder().run(issue, days);
+    const twinBuilder =  new TwinPostBuilder()
+    await twinBuilder.validate(issue)
+		return await twinBuilder.run(issue, days);
 	});
 
 export const updateTwinIssue = t.procedure

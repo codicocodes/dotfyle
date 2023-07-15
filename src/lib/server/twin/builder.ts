@@ -3,9 +3,27 @@ import { readFileSync } from 'fs';
 import { daysAgo } from '$lib/utils';
 import type { Media, NeovimPlugin } from '@prisma/client';
 
+export class IssueAlreadyPublished extends Error {
+  constructor() {
+    const message = 'This issue has already been published'
+    super(message)
+  }
+}
+
 export class TwinPostBuilder {
 	newPluginTemplate = './twin/new-plugin-template.md';
 	template = './twin/template.md';
+
+  async validate(issue: number) {
+		const twinIssue = await prismaClient.twinPost.findUnique({
+      where: {
+        issue
+      }
+    })
+    if (!twinIssue) return
+    if (!twinIssue.publishedAt) return
+    throw new IssueAlreadyPublished()
+  }
 
 	async run(issue: number, days: number) {
     const newPlugins = await this.getNewPlugins(days)
