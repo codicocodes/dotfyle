@@ -6,7 +6,7 @@
 <form class="w-full flex gap-2 justify-center" method="POST">
 	<div class="flex flex-col">
 		<label class=""> issue number </label>
-		<input type="number" class="rounded px-2 text-black" name="issue"/>
+		<input autofocus type="number" class="rounded px-2 text-black" name="issue"/>
 	</div>
 	<div class="flex flex-col">
 		<label class="">days ago</label>

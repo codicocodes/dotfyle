@@ -1,8 +1,4 @@
-<h3>
-  <a href="#{fullname}">
-    {fullname}
-  </a>
-</h3>
+#### [{fullname}](#{fullname})
 
 ![]({image})
 
@@ -10,5 +6,6 @@
 
 - [Github]({githubUrl})
 - [Dotfyle]({dotfyleUrl})
+- [Reddit]()
 
 ---

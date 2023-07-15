@@ -15,7 +15,10 @@
 		@apply sm:text-3xl font-semibold tracking-wider my-2;
 	}
 	:global(#markdown-post-container h3) {
-		@apply sm:text-2xl font-semibold tracking-wider;
+		@apply sm:text-2xl font-semibold tracking-wider my-1;
+	}
+	:global(#markdown-post-container h4) {
+		@apply sm:text-xl font-semibold tracking-wider my-1;
 	}
 	:global(#markdown-post-container p) {
 		@apply text-sm sm:text-lg my-2 gap-2 break-words;
