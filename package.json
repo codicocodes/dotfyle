@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "node build/index.js",
+		"data-migrations": "vite-node --options.transformMode.ssr='/.*/' src/lib/server/scripts/run-data-migrations.ts",
 		"dev": "vite dev",
 		"build": "npx prisma migrate deploy && npx prisma generate && vite build",
 		"preview": "vite preview",
@@ -49,6 +50,7 @@
 		"typescript": "^4.9.5",
 		"unified": "^10.1.2",
 		"vite": "^4.4.4",
+		"vite-node": "^0.33.0",
 		"vitest": "^0.25.8"
 	},
 	"type": "module",

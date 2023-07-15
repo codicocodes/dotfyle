@@ -11,15 +11,16 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  username      String         @unique
-  avatarUrl     String
-  githubId      Int            @unique
-  githubToken   GithubToken?
-  neovimConfigs NeovimConfig[]
-  createdAt     DateTime       @default(now())
-  lastLoginAt   DateTime       @default(now())
-  loginCount    Int            @default(0)
+  id               Int                @id @default(autoincrement())
+  username         String             @unique
+  avatarUrl        String
+  githubId         Int                @unique
+  githubToken      GithubToken?
+  neovimConfigs    NeovimConfig[]
+  createdAt        DateTime           @default(now())
+  lastLoginAt      DateTime           @default(now())
+  loginCount       Int                @default(0)
+  GithubRepository GithubRepository[]
 }
 
 model GithubToken {
@@ -99,22 +100,28 @@ model NeovimConfigToLanguageServer {
   languageServerName String
   config             NeovimConfig      @relation(fields: [configId], references: [id])
   configId           Int
+  nvimConfig         NvimConfig?       @relation(fields: [nvimConfigId], references: [id])
+  nvimConfigId       Int?
   sync               NeovimConfigSync? @relation(fields: [configId, sha], references: [configId, sha])
   sha                String
 
   @@id([languageServerName, configId])
+  @@unique([languageServerName, nvimConfigId])
 }
 
 model NeovimConfigPlugins {
-  config    NeovimConfig      @relation(fields: [configId], references: [id], onDelete: Cascade)
-  configId  Int
-  plugin    NeovimPlugin      @relation(fields: [pluginId], references: [id], onDelete: Cascade)
-  pluginId  Int
-  createdAt DateTime          @default(now())
-  sync      NeovimConfigSync? @relation(fields: [sha, configId], references: [sha, configId], onDelete: Cascade)
-  sha       String?
+  nvimConfig   NvimConfig?       @relation(fields: [nvimConfigId], references: [id], onDelete: Cascade)
+  nvimConfigId Int?
+  config       NeovimConfig      @relation(fields: [configId], references: [id], onDelete: Cascade)
+  configId     Int
+  plugin       NeovimPlugin      @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  pluginId     Int
+  createdAt    DateTime          @default(now())
+  sync         NeovimConfigSync? @relation(fields: [sha, configId], references: [sha, configId], onDelete: Cascade)
+  sha          String?
 
   @@id([configId, pluginId])
+  @@unique([nvimConfigId, pluginId])
 }
 
 model NeovimConfigSync {
@@ -125,8 +132,12 @@ model NeovimConfigSync {
   config                NeovimConfig                   @relation(fields: [configId], references: [id], onDelete: Cascade)
   configId              Int
 
+  nvimConfig   NvimConfig? @relation(fields: [nvimConfigId], references: [id], onDelete: Cascade)
+  nvimConfigId Int?
+
   @@id([configId, sha])
   @@unique([sha, configId])
+  @@unique([nvimConfigId, sha])
 }
 
 model Post {
@@ -163,4 +174,55 @@ model Media {
   type           String        @default("")
   NeovimPlugin   NeovimPlugin? @relation(fields: [neovimPluginId], references: [id])
   neovimPluginId Int?
+}
+
+model GithubRepository {
+  id         Int          @id @default(autoincrement())
+  githubId   Int          @unique
+  owner      String
+  name       String
+  readme     String       @default("")
+  createdAt  DateTime     @default(now())
+  tools      ToolConfig[]
+  stars      Int
+  fork       Boolean
+  mainBranch String
+  user       User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int?
+
+  @@unique([owner, name])
+}
+
+model Tool {
+  name    String
+  configs ToolConfig[]
+
+  @@id([name])
+  @@unique([name])
+}
+
+model ToolConfig {
+  id           Int              @id @default(autoincrement())
+  tool         Tool             @relation(fields: [toolName], references: [name], onDelete: Cascade)
+  toolName     String
+  repository   GithubRepository @relation(fields: [repositoryId], references: [id])
+  repositoryId Int
+  root         String           @default("/")
+  createdAt    DateTime         @default(now())
+
+  nvimConfig NvimConfig?
+
+  @@unique([repositoryId, root])
+}
+
+model NvimConfig {
+  id                     Int                            @id @default(autoincrement())
+  toolConfig             ToolConfig                     @relation(fields: [toolConfigId], references: [id], onDelete: Cascade)
+  toolConfigId           Int                            @unique
+  initFile               String
+  pluginManager          String                         @default("unknown")
+  lastSyncedAt           DateTime                       @default(now())
+  neovimConfigPlugins    NeovimConfigPlugins[]
+  languageServerMappings NeovimConfigToLanguageServer[]
+  syncs                  NeovimConfigSync[]
 }
