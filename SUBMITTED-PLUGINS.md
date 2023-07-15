@@ -52,6 +52,7 @@
 
 ## Colorscheme
 - xero/miasma.nvim
+- antonk52/lake.nvim
 
 ## Colorscheme Creation
 
@@ -70,6 +71,7 @@
 ## Tabline
 
 - echasnovski/mini.tabline
+- willothy/nvim-cokeline
 
 ## Cursorline
 
@@ -90,6 +92,8 @@
 - echasnovski/mini.nvim
 - echasnovski/mini.animate
 - MisanthropicBit/decipher.nvim
+- GCBallesteros/NotebookNavigator.nvim
+- subnut/nvim-ghost.nvim
 
 ## Terminal Integration
 
@@ -100,6 +104,8 @@
 ## Test
 
 ## Code Runner
+
+- Zeioth/compiler.nvim
 
 ## Neovim Lua Development
 
@@ -126,7 +132,6 @@
 
 ## Mouse
 
-
 ## Scrolling
 
 ## Scrollbar
@@ -141,6 +146,8 @@
 - echasnovski/mini.ai
 - echasnovski/mini.splitjoin
 - echasnovski/mini.basics
+- HiPhish/rainbow-delimiters.nvim
+- KaitlynEthylia/TreePin
 
 ## Comment
 
@@ -149,6 +156,7 @@
 ## Formatting
 
 - echasnovski/mini.align
+- elentok/format-on-save.nvim
 
 ## Indent
 
