@@ -62,7 +62,16 @@ function parsePluginLink(item: string): string {
 function parsePluginFullName(item: string): string {
 	const match = /\[(.*?)\]/.exec(item);
 	if (!match || typeof match[1] !== 'string') throw new Error('Unexpected');
-	return match[1];
+  let name = match[1];
+  switch (name) {
+    // incorrectly entered plugin name in rockerBOO/awesome-neovim
+    case 'niuiic/dap-utils':
+      name = 'niuiic/dap-utils.nvim'
+      break;
+    default:
+      break;
+  }
+	return name
 }
 
 export function parsePlugin({ category, item }: RawPlugin): PluginDTO {
