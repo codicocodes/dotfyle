@@ -58,6 +58,8 @@ export class NeovimConfigSyncer {
 		await Promise.all([
 			saveLeaderkey(this.config.id, this.leaderkey),
 			syncLanguageServers(this.config.id, this.tree.sha, this.languageServers).then(() => {
+        // NOTE: if these are not done sequentially there is a race condition due to 
+        // connectOrCreate the sync in both utils
 				return syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
 			})
 		]);
