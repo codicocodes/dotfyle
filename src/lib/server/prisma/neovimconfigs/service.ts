@@ -420,11 +420,16 @@ export async function updatePluginManager(
 }
 
 export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWithPlugins> {
-	const config = await prismaClient.neovimConfig.findUniqueOrThrow({
+	const nvimConfig = await prismaClient.nvimConfig.findUniqueOrThrow({
 		where: {
 			id
 		},
 		include: {
+      toolConfig: {
+        include: {
+          repository: true,
+        }
+      },
 			neovimConfigPlugins: {
 				include: {
 					plugin: true
@@ -432,7 +437,13 @@ export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWith
 			}
 		}
 	});
-	return attachPlugins(config);
+
+  const { toolConfig: { repository, ...toolConfig}, ...nestedConfig } = nvimConfig
+  const config =  flattenNestedNvimConfig(nestedConfig, toolConfig, repository)
+	return {
+    ...config,
+    plugins: nvimConfig.neovimConfigPlugins.map(p => p.plugin),
+  }
 }
 
 export async function syncLanguageServers(id: number, sha: string, languageServers: string[]) {
@@ -469,10 +480,10 @@ export async function syncLanguageServers(id: number, sha: string, languageServe
 							sync: {
 								connectOrCreate: {
 									where: {
-										configId_sha: {
-											configId: id,
-											sha
-										}
+                    sha_configId: {
+                      configId: id,
+                      sha,
+                    }
 									},
 									create: {
 										sha,
