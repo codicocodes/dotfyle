@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
+	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -10,12 +11,19 @@
 	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
 	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
 	$: tweetUrl = `https://twitter.com/intent/tweet?url=${url}&text=${tweetText}`;
-
 </script>
 
 <h1 class="p-2">
 	<SmallTitle title={data.post.title} />
 </h1>
+
+{#if data.post.publishedAt}
+	<h5 class="flex justify-center">
+		<time class="font-light p-2" itemprop="datePublished" datetime={data.post.publishedAt}>
+      {new Date(data.post.publishedAt).toLocaleDateString()}
+    </time>
+	</h5>
+{/if}
 
 <div class="flex justify-between p-2">
 	{#if data.post.issue > 1}
@@ -40,8 +48,8 @@
 		target="_blank"
 	>
 		<img
-      height="10"
-      width="10"
+			height="10"
+			width="10"
 			alt="CC-BY-SA"
 			src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg"
 		/>
