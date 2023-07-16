@@ -54,6 +54,7 @@ export const migrateNvimConfigs = async () => {
 			create: {
 				root: c.root ?? '/',
 				createdAt: c.createdAt,
+        slug: c.slug,
 				tool: {
 					connect: {
 						name: 'neovim'

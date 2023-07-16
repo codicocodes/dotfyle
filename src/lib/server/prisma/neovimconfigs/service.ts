@@ -46,7 +46,7 @@ const flattenNestedNvimConfig = (
 ): NeovimConfig => {
 	if (!repository.userId) throw new Error('GithubRepository must be connected to a user');
 	return {
-		id: repository.id,
+		id: nvimConfig.id, // TODO: repository.id should be main identifier at the end of this migrations, and this `flattenNestedNvimConfig` should not exist
 		owner: repository.owner,
 		slug: createNeovimConfigSlug(repository.name, toolConfig.root),
 		repo: repository.name,
@@ -109,11 +109,19 @@ export async function getConfigsForPlugin(
 	name: string,
 	take: number
 ): Promise<NeovimConfigWithMetaData[]> {
-	const configs = await prismaClient.neovimConfig.findMany({
+	const configs = await prismaClient.nvimConfig.findMany({
 		include: {
-			user: {
-				select: {
-					avatarUrl: true
+			toolConfig: {
+				include: {
+					repository: {
+						include: {
+							user: {
+								select: {
+									avatarUrl: true
+								}
+							}
+						}
+					}
 				}
 			},
 			_count: {
@@ -134,29 +142,67 @@ export async function getConfigsForPlugin(
 		},
 		orderBy: [
 			{
-				stars: 'desc'
+				toolConfig: {
+					repository: {
+						stars: 'desc'
+					}
+				}
 			},
 			{
-				repo: 'asc'
+				toolConfig: {
+					repository: {
+						name: 'asc'
+					}
+				}
 			},
 			{
-				root: 'asc'
+				toolConfig: {
+					root: 'asc'
+				}
 			}
 		],
 		take
 	});
-	return configs.map(attachMetaData);
+
+	return configs.map((nestedConfig) => {
+		const {
+			toolConfig: {
+				repository: { user, ...repository },
+				...toolConfig
+			},
+			...config
+		} = nestedConfig;
+		return {
+			...flattenNestedNvimConfig(config, toolConfig, repository),
+			ownerAvatar: user!.avatarUrl,
+			pluginCount: nestedConfig._count.neovimConfigPlugins
+		};
+	});
 }
 
 export async function getConfigBySlug(
 	owner: string,
 	slug: string
 ): Promise<NeovimConfigWithMetaData> {
-	const config = await prismaClient.neovimConfig.findFirstOrThrow({
+	const {
+		toolConfig: {
+			repository: { user, ...repository },
+			...toolConfig
+		},
+		...config
+	} = await prismaClient.nvimConfig.findFirstOrThrow({
 		include: {
-			user: {
-				select: {
-					avatarUrl: true
+			toolConfig: {
+				include: {
+					repository: {
+						include: {
+							user: {
+								select: {
+									avatarUrl: true
+								}
+							}
+						}
+					}
 				}
 			},
 			_count: {
@@ -166,62 +212,211 @@ export async function getConfigBySlug(
 			}
 		},
 		where: {
-			slug,
-			user: {
-				username: owner
+			toolConfig: {
+				slug: slug,
+				repository: {
+					owner,
+					user: {
+						username: owner
+					}
+				}
 			}
 		},
 		orderBy: [
 			{
-				stars: 'desc'
+				toolConfig: {
+					repository: {
+						stars: 'desc'
+					}
+				}
 			},
 			{
-				repo: 'asc'
+				toolConfig: {
+					repository: {
+						name: 'asc'
+					}
+				}
 			},
 			{
-				root: 'asc'
+				toolConfig: {
+					root: 'asc'
+				}
 			}
 		]
 	});
-	return attachMetaData(config);
+	return {
+		...flattenNestedNvimConfig(config, toolConfig, repository),
+		ownerAvatar: user!.avatarUrl,
+		pluginCount: 1
+	};
 }
 
 export async function getConfigsByUsername(username: string): Promise<NeovimConfigWithMetaData[]> {
-	const configs = await prismaClient.neovimConfig.findMany({
+	const configs = await prismaClient.nvimConfig.findMany({
 		include: {
-			user: { select: { avatarUrl: true } },
+			toolConfig: {
+				include: {
+					repository: {
+						include: {
+							user: {
+								select: {
+									avatarUrl: true
+								}
+							}
+						}
+					}
+				}
+			},
 			_count: {
 				select: {
 					neovimConfigPlugins: true
 				}
 			}
 		},
-		where: { user: { username } },
-		orderBy: [{ stars: 'desc' }, { repo: 'asc' }, { root: 'asc' }]
+		where: {
+			toolConfig: {
+				repository: {
+					user: {
+						username
+					}
+				}
+			}
+		},
+		orderBy: [
+			{
+				toolConfig: {
+					repository: {
+						stars: 'desc'
+					}
+				}
+			},
+			{
+				toolConfig: {
+					repository: {
+						name: 'asc'
+					}
+				}
+			},
+			{
+				toolConfig: {
+					root: 'asc'
+				}
+			}
+		]
 	});
-	return configs.map(attachMetaData);
+	return configs.map(
+		({
+			toolConfig: {
+				repository: { user, ...repository },
+				...toolConfig
+			},
+			...config
+		}) => {
+			return {
+				...flattenNestedNvimConfig(config, toolConfig, repository),
+				ownerAvatar: user!.avatarUrl,
+				pluginCount: config._count.neovimConfigPlugins
+			};
+		}
+	);
 }
 export async function upsertNeovimConfig(
 	userId: number,
-	config: CreateNeovimConfigDTO
+	configDTO: CreateNeovimConfigDTO
 ): Promise<NeovimConfig> {
 	const lastSyncedAt = new Date();
-	const { owner, repo, root } = config;
-	const data = { userId, lastSyncedAt, ...config };
-	const user = await prismaClient.neovimConfig.upsert({
-		where: { owner_repo_root: { owner, repo, root } },
-		create: data,
-		update: data
+	const { config, toolConfig, repository } = await prismaClient.$transaction(async (tx) => {
+		const repository = await tx.githubRepository.upsert({
+			where: {
+				githubId: configDTO.githubId
+			},
+			create: {
+				githubId: configDTO.githubId,
+				mainBranch: configDTO.branch,
+				stars: configDTO.stars,
+				name: configDTO.repo,
+				owner: configDTO.owner,
+				fork: configDTO.fork,
+				userId: userId
+			},
+			update: {
+				githubId: configDTO.githubId,
+				mainBranch: configDTO.branch,
+				stars: configDTO.stars,
+				name: configDTO.repo,
+				owner: configDTO.owner,
+				fork: configDTO.fork,
+				userId: userId
+			}
+		});
+
+		const toolConfig = await tx.toolConfig.upsert({
+			where: {
+				repositoryId_root: {
+					repositoryId: repository.id,
+					root: configDTO.root
+				}
+			},
+			create: {
+				slug: configDTO.slug,
+				root: configDTO.root ?? '/',
+				repositoryId: repository.id,
+				toolName: 'neovim'
+			},
+			update: {
+				slug: configDTO.slug,
+				root: configDTO.root ?? '/',
+				repositoryId: repository.id,
+				toolName: 'neovim'
+			}
+		});
+
+		const config = await tx.nvimConfig.upsert({
+			where: {
+				toolConfigId: toolConfig.id
+			},
+			create: {
+				initFile: configDTO.initFile,
+				toolConfigId: toolConfig.id,
+				lastSyncedAt
+			},
+			update: {
+				initFile: configDTO.initFile,
+				lastSyncedAt
+			}
+		});
+		return {
+			repository,
+			toolConfig,
+			config
+		};
 	});
-	return user;
+	return flattenNestedNvimConfig(config, toolConfig, repository);
 }
 
 export async function updatePluginManager(
 	id: number,
 	pluginManager: NeovimPluginManager
 ): Promise<NeovimConfig> {
-	const config = await prismaClient.neovimConfig.update({ where: { id }, data: { pluginManager } });
-	return config;
+	const nestedConfig = await prismaClient.nvimConfig.update({
+		include: {
+			toolConfig: {
+				include: {
+					repository: true
+				}
+			}
+		},
+		where: { id },
+		data: { pluginManager }
+	});
+  const {
+    toolConfig: {
+      repository,
+      ...toolConfig
+    },
+    ...config
+  } = nestedConfig;
+	return flattenNestedNvimConfig(config, toolConfig, repository)
 }
 
 export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWithPlugins> {
@@ -241,7 +436,7 @@ export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWith
 }
 
 export async function syncLanguageServers(id: number, sha: string, languageServers: string[]) {
-	await prismaClient.neovimConfig.update({
+	await prismaClient.nvimConfig.update({
 		where: {
 			id
 		},
@@ -360,8 +555,8 @@ export async function syncConfigPlugins(
 		.then(attachPlugins);
 }
 
-export async function saveLeaderkey(id: number, leaderkey: string): Promise<NeovimConfig> {
-	return await prismaClient.neovimConfig.update({
+export async function saveLeaderkey(id: number, leaderkey: string) {
+	return await prismaClient.nvimConfig.update({
 		where: {
 			id
 		},
@@ -461,11 +656,19 @@ export async function searchNeovimConfigs({
 }
 
 export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData[]> {
-	const configs = await prismaClient.neovimConfig.findMany({
+	const nvimConfigs = await prismaClient.nvimConfig.findMany({
 		include: {
-			user: {
-				select: {
-					avatarUrl: true
+			toolConfig: {
+				include: {
+					repository: {
+						include: {
+							user: {
+								select: {
+									avatarUrl: true
+								}
+							}
+						}
+					}
 				}
 			},
 			_count: {
@@ -475,12 +678,30 @@ export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData
 			}
 		},
 		orderBy: {
-			createdAt: 'desc'
+			toolConfig: {
+				repository: {
+					createdAt: 'desc'
+				}
+			}
 		},
 		take: 6
 	});
 
-	return configs.map(attachMetaData);
+	return nvimConfigs.map(
+		({
+			toolConfig: {
+				repository: { user, ...repository },
+				...toolConfig
+			},
+			...config
+		}) => {
+			return {
+				...flattenNestedNvimConfig(config, toolConfig, repository),
+				ownerAvatar: user!.avatarUrl,
+				pluginCount: config._count.neovimConfigPlugins
+			};
+		}
+	);
 }
 
 function attachMetaData({

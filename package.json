@@ -6,7 +6,7 @@
 		"start": "node build/index.js",
 		"data-migrations": "vite-node --options.transformMode.ssr='/.*/' src/lib/server/scripts/run-data-migrations.ts",
 		"dev": "vite dev",
-		"build": "npx prisma migrate deploy && npx prisma generate && vite build",
+		"build": "npx prisma migrate deploy && pnpm run data-migrations &&  npx prisma generate && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",

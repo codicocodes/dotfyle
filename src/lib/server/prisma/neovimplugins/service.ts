@@ -320,10 +320,14 @@ export async function getAddedCountSince(since: Date): Promise<Record<number, nu
 			createdAt: {
 				gt: since
 			},
-      config: {
+      nvimConfig: {
         is: {
-          createdAt: {
-            lt: since
+          toolConfig: {
+            repository: {
+              createdAt: {
+                lt: since
+              }
+            }
           }
         }
       }
