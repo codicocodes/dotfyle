@@ -3,6 +3,7 @@
 ## Plugin Manager
 
 ## LSP
+- nvimdev/guard.nvim
 
 ## LSP Installer
 
