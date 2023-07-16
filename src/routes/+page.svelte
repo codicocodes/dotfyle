@@ -29,7 +29,7 @@
 	<title>Discover and share neovim configs</title>
 	<meta
 		name="description"
-		content="Search and discover neovim plugins and share your neovim config"
+		content="Neovim plugin search. Find new plugins, trending plugins & popular plugins. Search for Neovim configurations by plugin manager, plugins or language servers."
 	/>
 </svelte:head>
 
