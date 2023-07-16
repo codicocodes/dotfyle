@@ -5,8 +5,8 @@
 </script>
 
 <svelte:head>
-  <title>{$page.data.seo?.title ?? "This Week in Neovim"}</title>
-  <meta name="description" content="Newsletter about the Neovim plugin ecosystem" />
+  <title>{$page.data.seo?.title ?? "This Week in Neovim | Neovim news"}</title>
+  <meta name="description" content="Neovim news and updates from the Neovim plugin ecosystem" />
 </svelte:head>
 
 <MediumHeroTitle>

@@ -23,7 +23,7 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
       cleanHtml
     },
     seo: {
-      title: `This Week in Neovim ${post.title}`
+      title: `This Week in Neovim: ${post.title} | Neovim news`
     }
   };
 };
