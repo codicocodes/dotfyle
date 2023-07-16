@@ -315,12 +315,12 @@ export async function getAllPluginCategories(): Promise<string[]> {
 }
 
 export async function getAddedCountSince(since: Date): Promise<Record<number, number>> {
-	const pluginMappings = await prismaClient.neovimConfigPlugins.findMany({
+	const pluginMappings = await prismaClient.nvimConfigPlugins.findMany({
 		where: {
 			createdAt: {
 				gt: since
 			},
-      nvimConfig: {
+      config: {
         is: {
           toolConfig: {
             repository: {
