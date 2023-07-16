@@ -14,7 +14,8 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 	const res = await fetch(url).then((r) => r.text());
 	event.setHeaders({
 		'Content-Type': 'image/svg+xml',
-		'Content-Length': res.toString().length.toString()
+		'Content-Length': res.toString().length.toString(),
+    'Cache-Control': `max-age=0, s-maxage=${24 * 60 * 10}`, // one day
 	});
 	return new Response(res);
 };
