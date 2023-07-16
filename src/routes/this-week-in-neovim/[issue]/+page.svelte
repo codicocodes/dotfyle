@@ -1,10 +1,13 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
-	import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faChevronLeft,
+		faChevronRight,
+		faEnvelope,
+	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import type { PageData } from './$types';
 	export let data: PageData;
@@ -20,8 +23,8 @@
 {#if data.post.publishedAt}
 	<h5 class="flex justify-center">
 		<time class="font-light p-2" itemprop="datePublished" datetime={data.post.publishedAt}>
-      {new Date(data.post.publishedAt).toLocaleDateString()}
-    </time>
+			{new Date(data.post.publishedAt).toLocaleDateString()}
+		</time>
 	</h5>
 {/if}
 
@@ -56,8 +59,29 @@
 	</a>
 {/if}
 
-<div class="flex mt-2">
-	<a href={tweetUrl} target="blank" class="block p-4 bg-blue-400 rounded-full">
-		<Fa icon={faTwitter} />
-	</a>
+<div class="flex flex-col mx-2 my-4 items-center justify-center w-full gap-2">
+	<div class="space-y-2">
+		<h4 class="text-2xl font-medium tracking-wide">Share This Week in Neovim</h4>
+		<div class="flex gap-2">
+			<a
+				title="Share on Twitter"
+				href={tweetUrl}
+				target="blank"
+				class="block p-4 bg-blue-400 rounded-full"
+			>
+				<Fa icon={faTwitter} />
+			</a>
+			<a
+				class="block p-4 bg-orange-600 rounded-full"
+				href="mailto:?subject=Checkout This Week in Neovim {data.post
+					.issue}&amp;body=Check out {data.post.title.replaceAll(
+					'#',
+					''
+				)}: https://www.dotfyle.com/this-week-in-neovim/{data.post.issue}"
+				title="Share by Email"
+			>
+				<Fa icon={faEnvelope} />
+			</a>
+		</div>
+	</div>
 </div>
