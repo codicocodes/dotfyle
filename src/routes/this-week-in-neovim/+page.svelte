@@ -46,7 +46,7 @@
 						class="flex text-xl font-light justify-between"
 						href="/this-week-in-neovim/{post.issue}"
 					>
-						<span>{new Date(post.createdAt).toLocaleDateString()} </span>
+						<span class="min-w-[150px]">{new Date(post.createdAt).toLocaleDateString()} </span>
 						<span class="hidden sm:flex gap-2 items-center">
               {post.title}
 							<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
