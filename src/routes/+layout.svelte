@@ -105,8 +105,11 @@
 
 <svelte:head>
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Dotfyle" />
-	<meta property="og:description" content="Discover and share neovim configs and plugins" />
+	<meta property="og:title" content="Dotfyle | Neovim Plugin Search | Neovim Config Search | Neovim News" />
+	<meta
+		name="description"
+		content="Find new plugins, trending plugins & popular plugins. Search for Neovim configurations by plugin manager, plugins or language servers. Read the lateset Neovim News in This Week in Neovim."
+	/>
 	<meta property="og:url" content="https://dotfyle.com" />
 	<meta property="og:image" content="/dotfyle.png" />
 	<meta name="twitter:card" content="summary_large_image" />

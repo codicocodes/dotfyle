@@ -26,10 +26,10 @@
 </script>
 
 <svelte:head>
-	<title>Discover and share neovim configs</title>
+	<title>Dotfyle | Neovim Plugin Search | Neovim Config Search | Neovim News</title>
 	<meta
 		name="description"
-		content="Neovim plugin search. Find new plugins, trending plugins & popular plugins. Search for Neovim configurations by plugin manager, plugins or language servers."
+		content="Find new, trending & popular Neovim plugins. Search for Neovim configurations by plugin manager, installed plugins or configured language servers. Read the lateset Neovim News in This Week in Neovim."
 	/>
 </svelte:head>
 
