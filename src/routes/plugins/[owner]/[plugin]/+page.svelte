@@ -62,7 +62,7 @@
 		<img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />
 	{/if}
 </Modal>
-<div class="w-full flex flex-col items-center h-full my-14 px-8">
+<div class="w-full flex flex-col items-center h-full my-14 px-4">
 	<div class="flex flex-col max-w-5xl w-full gap-2">
 		<div class="flex flex-col gap-2">
 			<h1 class="flex items-center text-xl sm:text-2xl font-semibold tracking-wide gap-2">

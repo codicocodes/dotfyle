@@ -58,7 +58,7 @@
 </svelte:head>
 
 <OuterLayout>
-	<div in:fade class="h-full flex flex-col gap-4 my-14 mx-4 sm:mx-8 lg:px-24">
+	<div in:fade class="h-full flex flex-col gap-4 my-14 mx-4 sm:mx-8">
 		<div class="flex flex-col gap-2">
 			<!-- profile area -->
 			<div class="flex items-center justify-end gap-2">
@@ -191,7 +191,7 @@
 				<div class="sm:hidden">
 					<PluginList {plugins} />
 				</div>
-				<div class="hidden sm:grid grid-cols-1 lg:grid-cols-3 gap-2">
+				<div class="hidden sm:grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
 					{#each plugins as plugin}
 						<NeovimPluginCard
 							owner={plugin.owner}
