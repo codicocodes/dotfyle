@@ -33,7 +33,7 @@
 	/>
 </svelte:head>
 
-<div class="flex justify-center mt-8">
+<div class="flex justify-center mt-8 w-full">
 	<a
 		href="/this-week-in-neovim"
 		class="flex gap-2 items-center rounded-full p-4 py-2 bg-gradient-to-br from-cyan-500 to-green-500 shadow-xl shadow-green-300/25 text-xs font-semibold text-slate-900"
@@ -96,7 +96,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+	<div class="px-4 sm:px-4 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faSeedling} size="sm" />
@@ -133,7 +133,7 @@
 		{/await}
 	</div>
 
-	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+	<div class="px-4 sm:px-4 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faSeedling} size="sm" />
@@ -166,7 +166,7 @@
 		{/await}
 	</div>
 
-	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+	<div class="px-4 sm:px-4 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faFire} size="sm" />
@@ -199,7 +199,7 @@
 		{/await}
 	</div>
 
-	<div class="max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col">
+	<div class="px-4 sm:px-4 flex flex-col">
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg font-semibold">
 				<Fa icon={faBomb} size="sm" />

@@ -9,16 +9,16 @@
 
 <style lang="postcss">
 	:global(#markdown-post-container h1) {
-		@apply text-4xl sm:text-6xl font-semibold tracking-wider my-8 break-words;
+		@apply text-4xl sm:text-4xl font-semibold tracking-wider my-8 break-words;
 	}
 	:global(#markdown-post-container h2) {
-		@apply text-3xl sm:text-5xl font-semibold tracking-wider my-4;
+		@apply text-3xl sm:text-4xl font-semibold tracking-wider my-4;
 	}
 	:global(#markdown-post-container h3) {
-		@apply text-2xl sm:text-4xl font-semibold tracking-wider my-4;
+		@apply text-2xl sm:text-3xl font-semibold tracking-wider my-4;
 	}
 	:global(#markdown-post-container h4) {
-		@apply text-xl sm:text-3xl font-semibold tracking-wider my-2;
+		@apply text-xl sm:text-2xl font-semibold tracking-wider my-2;
 	}
 	:global(#markdown-post-container p) {
 		@apply text-sm sm:text-lg my-2 gap-2 break-words;

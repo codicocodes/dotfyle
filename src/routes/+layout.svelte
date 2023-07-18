@@ -9,7 +9,17 @@
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import { isAdmin } from '$lib/utils';
 	import { faDiscord, faGithub, faTwitch } from '@fortawesome/free-brands-svg-icons';
-	import { faBars, faKeyboard, faRss, faSignOut, faSync, faUser } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faBars,
+		faKeyboard,
+		faNewspaper,
+		faRss,
+		faSearch,
+		faSignOut,
+		faSync,
+		faUser,
+		faWandSparkles
+	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
 	import '../app.css';
@@ -144,7 +154,7 @@
 						<span class="hidden sm:inline">
 							{user.username}
 						</span>
-            <img height="10" width="10" src={user.avatarUrl} class="w-10 h-10 rounded-full" />
+						<img height="10" width="10" src={user.avatarUrl} class="w-10 h-10 rounded-full" />
 					</div>
 				</button>
 			{:else}
@@ -200,57 +210,99 @@
 	{/if}
 	<OuterLayout>
 		<slot />
-	</OuterLayout>
 
-	<footer class="sticky mx-auto max-w-full xl:max-w-7xl w-full sm:mt-4 sm:px-6 lg:px-8">
-		<div class="flex items-center justify-center">
-			<div class="flex gap-4 text-gray-400 items-center">
-				<a
-					href="https://github.com/codicocodes/dotfyle"
-					class="flex items-center hover:text-white"
-					target="blank"
-				>
-					<Fa icon={faGithub} />
-					<span class="ml-1">star</span>
-				</a>
+	<footer
+		class="sticky mx-auto max-w-full xl:max-w-7xl w-full sm:mt-4 grid sm:grid-cols-2 xl:grid-cols-3 px-4 sm:px-4 gap-8 mb-8"
+	>
+		<div class="flex flex-col gap-2 text-gray-400 items-start">
+			<h3 class="text-2xl font-semibold tracking-wider">Features</h3>
+			<a
+				href="/plugins"
+				class="flex items-center hover:text-white gap-2"
+			>
+				<div class="flex items-start w-6">
+					<Fa icon={faSearch} />
+				</div>
+				<span class="ml-1">Neovim Plugin Search</span>
+			</a>
 
-				<a
-					href="https://discord.gg/AMbnnN5eep"
-					class="flex items-center hover:text-blue-300"
-					target="blank"
-				>
-					<Fa icon={faDiscord} />
-					<span class="ml-1">join</span>
-				</a>
-				<a
-					href="https://twitch.tv/codico"
-					class="flex items-center hover:text-purple-400"
-					target="blank"
-				>
-					<Fa icon={faTwitch} />
-					<span class="ml-1">live</span>
-				</a>
+			<a
+				href="/configs"
+				class="flex items-center hover:text-purple-400 gap-2"
+			>
+				<div class="flex items-start w-6">
+					<Fa icon={faWandSparkles} />
+				</div>
+				<span class="ml-1">Neovim Config Search</span>
+			</a>
 
-				<a
-					href="https://speedtyper.dev"
-					class="flex items-center hover:text-green-400"
-					target="blank"
-				>
-					<Fa icon={faKeyboard} />
-					<span class="ml-1">type</span>
-				</a>
+			<a
+				href="/this-week-in-neovim"
+				class="flex items-center hover:text-green-400 gap-2"
+			>
+				<div class="flex items-start w-6">
+					<Fa icon={faNewspaper} />
+				</div>
+				<span class="ml-1">This Week in Neovim</span>
+			</a>
 
-				<a
-					href="https://dotfyle.com/this-week-in-neovim/rss.xml"
-					class="flex items-center hover:text-orange-400"
-					target="blank"
-				>
+			<a
+				href="https://dotfyle.com/this-week-in-neovim/rss.xml"
+				class="flex items-center hover:text-orange-400 gap-2"
+			>
+				<div class="flex items-start w-6">
 					<Fa icon={faRss} />
-					<span class="ml-1">rss</span>
-				</a>
-			</div>
+				</div>
+				<span class="ml-1">This Week in Neovim RSS Feed</span>
+			</a>
+		</div>
+		<div class="flex flex-col gap-2 text-gray-400 items-start">
+			<h3 class="text-2xl font-semibold tracking-wider">Dotfyle</h3>
+			<a
+				href="https://github.com/codicocodes/dotfyle"
+				class="flex items-center hover:text-white gap-2"
+				target="blank"
+			>
+				<div class="flex items-start w-6">
+					<Fa icon={faGithub} />
+				</div>
+				<span class="ml-1">Github</span>
+			</a>
+
+			<a
+				href="https://discord.gg/AMbnnN5eep"
+				class="flex items-center hover:text-blue-300 gap-2"
+				target="blank"
+			>
+				<div class="flex items-start w-6">
+					<Fa icon={faDiscord} />
+				</div>
+				<span class="ml-1">Discord</span>
+			</a>
+			<a
+				href="https://twitch.tv/codico"
+				class="flex items-center hover:text-purple-400 gap-2"
+				target="blank"
+			>
+				<div class="flex items-start w-6">
+					<Fa icon={faTwitch} />
+				</div>
+				<span class="ml-1">Twitch</span>
+			</a>
+
+			<a
+				href="https://speedtyper.dev"
+				class="flex items-center hover:text-green-400 gap-2"
+				target="blank"
+			>
+				<div class="flex items-start w-6">
+					<Fa icon={faKeyboard} />
+				</div>
+				<span class="ml-1">Speedtyper.dev</span>
+			</a>
 		</div>
 	</footer>
+  </OuterLayout>
 </div>
 
 <style global>
