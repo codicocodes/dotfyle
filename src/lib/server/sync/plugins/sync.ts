@@ -57,6 +57,7 @@ export class PluginSyncer {
 		readme = this.mediaParser.replaceInvalidGithubUrls(readme);
 		this.plugin.readme = readme;
 		this.syncMedia(readme);
+    this.syncHasDotfyleShield(readme);
 	}
 
 	async syncMedia(readme: string) {
@@ -75,6 +76,15 @@ export class PluginSyncer {
 			data
 		});
 	}
+  
+  syncHasDotfyleShield(readme: string) {
+    if (!this.plugin.dotfyleShieldAddedAt) {
+      const shieldMatch = `https://dotfyle.com/plugins/${this.plugin.owner}/${this.plugin.name}/shield`
+      if (readme.includes(shieldMatch)) {
+        this.plugin.dotfyleShieldAddedAt = new Date()
+      }
+    }
+  }
 
 	async updatePlugin() {
 		this.plugin.lastSyncedAt = new Date();

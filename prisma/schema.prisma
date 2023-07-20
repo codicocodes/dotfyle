@@ -62,17 +62,18 @@ enum NeovimPluginManager {
 }
 
 model NeovimPlugin {
-  id               Int      @id @default(autoincrement())
-  owner            String
-  name             String
-  type             String
-  source           String
-  category         String
-  link             String
-  shortDescription String
-  createdAt        DateTime @default(now())
-  readme           String   @default("")
-  stars            Int      @default(0)
+  id                   Int       @id @default(autoincrement())
+  owner                String
+  name                 String
+  type                 String
+  source               String
+  category             String
+  link                 String
+  shortDescription     String
+  createdAt            DateTime  @default(now())
+  readme               String    @default("")
+  dotfyleShieldAddedAt DateTime?
+  stars                Int       @default(0)
 
   neovimConfigPlugins NeovimConfigPlugins[]
 
