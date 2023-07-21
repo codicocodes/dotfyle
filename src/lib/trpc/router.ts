@@ -17,6 +17,7 @@ import {
 	getPlugin,
 	getPluginsByCategory,
 	getPluginsBySlug,
+	getPluginsWithDotfyleShield,
 	getPopularPlugins,
 	getReadme,
 	searchPlugins
@@ -77,6 +78,9 @@ export const router = t.router({
 	listLanguageServers: t.procedure.query(async () => {
 		return listLanguageServers();
 	}),
+  recentPluginsWithDotfyleShields: t.procedure.query(() => {
+    return getPluginsWithDotfyleShield()
+  }),
 	searchPlugins: t.procedure
 		.input((input: unknown) => {
 			return z

@@ -129,6 +129,7 @@ const selectConfigCount = {
 	stars: true,
 	readme: false,
 	addedLastWeek: true,
+	dotfyleShieldAddedAt: true,
 	_count: {
 		select: {
 			neovimConfigPlugins: true
@@ -136,11 +137,27 @@ const selectConfigCount = {
 	}
 };
 
-
 export async function getAllPlugins() {
-  const nestedPluginData = await prismaClient.neovimPlugin.findMany({
-    select: selectConfigCount,
-  })
+	const nestedPluginData = await prismaClient.neovimPlugin.findMany({
+		select: selectConfigCount
+	});
+	return nestedPluginData.map(flattenConfigCount);
+}
+
+export async function getPluginsWithDotfyleShield() {
+	const nestedPluginData = await prismaClient.neovimPlugin.findMany({
+		where: {
+			dotfyleShieldAddedAt: {
+				not: null
+			}
+		},
+		select: selectConfigCount,
+		orderBy: {
+			dotfyleShieldAddedAt: 'desc'
+		},
+    take: 9,
+	});
+
 	return nestedPluginData.map(flattenConfigCount);
 }
 
@@ -320,13 +337,13 @@ export async function getAddedCountSince(since: Date): Promise<Record<number, nu
 			createdAt: {
 				gt: since
 			},
-      config: {
-        is: {
-          createdAt: {
-            lt: since
-          }
-        }
-      }
+			config: {
+				is: {
+					createdAt: {
+						lt: since
+					}
+				}
+			}
 		}
 	});
 	const countByPluginID = pluginMappings.reduce((counter: Record<number, number>, curr) => {
