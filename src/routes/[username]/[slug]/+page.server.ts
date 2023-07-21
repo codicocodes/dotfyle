@@ -9,7 +9,7 @@ import type { PageServerLoad, PageServerLoadEvent } from './$types';
 export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
 	const username = event.params.username;
 	const slug = event.params.slug;
-	const [me, config, plugins, languageServers, syncs] = await Promise.all([
+	const [me, config, plugins, languageServers] = await Promise.all([
 		trpc(event).getUser.query(),
 		trpc(event).getConfigBySlug.query({
 			username,
@@ -23,7 +23,6 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 			username,
 			slug
 		}) as unknown as LanguageServer[],
-    getNeovimConfigSyncs(username, slug)
 	]).catch(() => {
 		throw error(404);
 	});
