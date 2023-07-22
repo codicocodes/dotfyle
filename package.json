@@ -27,6 +27,7 @@
 		"@types/rss": "^0.0.30",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
+		"@zerodevx/svelte-toast": "^0.9.5",
 		"autoprefixer": "^10.4.14",
 		"eslint": "^8.44.0",
 		"eslint-config-prettier": "^8.8.0",

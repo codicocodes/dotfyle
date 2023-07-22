@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { SvelteToast } from '@zerodevx/svelte-toast'
 	import 'nprogress/nprogress.css';
 	import { invalidate } from '$app/navigation';
 	import { navigating } from '$app/stores';
@@ -72,6 +73,8 @@
 
 	let showNavModal = false;
 </script>
+
+<SvelteToast />
 
 <Modal showModal={showNavModal} onClose={() => (showNavModal = false)}>
 	<div class="my-4 flex flex-col gap-2">
