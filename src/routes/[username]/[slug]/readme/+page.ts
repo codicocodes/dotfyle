@@ -108,6 +108,7 @@ NVIM_APPNAME=${config.owner}/${config.repo}/${config.root} nvim
 	const html = sanitizeHtml(marked(readme));
 
 	return {
+    configPath,
 		readme,
 		html
 	};

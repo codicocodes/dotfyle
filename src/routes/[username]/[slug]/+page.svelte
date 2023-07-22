@@ -13,6 +13,7 @@
 	import ShareConfig from '$lib/components/ShareConfig.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
+	import { faMarkdown, faReadme } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faChevronRight,
 		faRotate,
@@ -99,39 +100,15 @@
 						isFork={config.fork ? 'yes' : 'no'}
 						leaderkey={config.leaderkey}
 					/>
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+					<div class="grid grid-cols-1 gap-2">
 						<CoolTextOnHover>
 							<GlossyCard>
-								<a href="/plugins" class="p-2 flex w-full items-center justify-between text-md">
+								<a href="/{config.owner}/{config.slug}/readme" class="p-2 flex w-full items-center justify-between text-md">
 									<div class="flex gap-2 items-center">
 										<span class="force-white-text">
-											<Fa icon={faSearch} size="xs" />
+											<Fa icon={faMarkdown} size="xs" />
 										</span>
-										<span class="flex items-center gap-1 lowercase"> find neovim plugins </span>
-									</div>
-									<div class="flex gap-4">
-										<button
-											class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
-										>
-											<Fa icon={faChevronRight} size="xs" />
-										</button>
-									</div>
-								</a>
-							</GlossyCard>
-						</CoolTextOnHover>
-
-						<CoolTextOnHover>
-							<GlossyCard>
-								<a
-									href="/configs"
-									in:slide
-									class="p-2 flex w-full items-center justify-between text-md"
-								>
-									<div class="flex gap-2 items-center">
-										<span class="force-white-text">
-											<Fa icon={faSearch} size="xs" />
-										</span>
-										<span class="flex items-center gap-1 lowercase"> find neovim configs </span>
+										<span class="flex items-center gap-1 lowercase"> Use an automatically generated readme for your neovim config</span>
 									</div>
 									<div class="flex gap-4">
 										<button
