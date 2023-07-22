@@ -11,7 +11,7 @@
 </script>
 
 <div
-	class="h-full flex flex-col justify-between rounded-md border border-green-300/25 bg-white/10 hover:bg-white/20 transition-colors shadow-lg hover:shadow-green-300/25"
+	class="h-full flex flex-col justify-between rounded-md bg-white/10 hover:bg-white/20 transition-colors shadow-lg"
 >
 	<div class="h-full flex space-x-4 p-2 pl-5 transition-colors items-start">
 		<div class="w-full h-full flex flex-col gap-1">
@@ -31,7 +31,7 @@
 				{/if}
 			</div>
 			{#if shortDescription}
-				<span class="text-xs font-medium tracking-wide md:text-sm">
+				<span class="text-xs font-medium tracking-wide md:text-sm whitespace-normal">
 					{shortDescription}
 				</span>
 			{/if}

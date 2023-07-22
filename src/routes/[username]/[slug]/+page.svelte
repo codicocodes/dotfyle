@@ -14,11 +14,10 @@
 	import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
-	import { faMarkdown, faReadme } from '@fortawesome/free-brands-svg-icons';
+	import { faMarkdown } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faChevronRight,
 		faRotate,
-		faSearch,
 		faUser,
 		faX
 	} from '@fortawesome/free-solid-svg-icons';
@@ -26,7 +25,7 @@
 	import { Highlight } from 'svelte-highlight';
 	import { bash } from 'svelte-highlight/languages';
 	import { githubDark } from 'svelte-highlight/styles';
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
