@@ -34,7 +34,7 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
   const configPath = `${config.owner}/${config.slug}`
 
   const badges = ['plugins', 'leaderkey', 'plugin-manager'].map(api => {
-    return `<a href="https://dotfyle.com/plugins/${configPath}"><img src="https://dotfyle.com/${configPath}/badges/${api}?style=flat" /></a>`
+    return `<a href="https://dotfyle.com/${configPath}"><img src="https://dotfyle.com/${configPath}/badges/${api}?style=flat" /></a>`
   }).join("").concat("\n\n")
 
   const badgeContainer = `<p>${badges}</p>\n\n`
