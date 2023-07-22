@@ -4,6 +4,10 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+  const code = `<a href="https://dotfyle.com/plugins/{owner}/{name}">
+  <img src="https://dotfyle.com/plugins/{owner}/{name}/shield" />
+</a>`
 </script>
 
 <div class="flex flex-col px-4">
@@ -31,14 +35,7 @@
 			<code class="w-auto rounded px-1 py-0.5 bg-gray-400 border border-gray-700">{'{name}'} </code>
 			with your GitHub username and repository name.
 		</span>
-		<pre>
-    <code class="text-gray-200">
-{`<a href="https://dotfyle.com/plugins/{owner}/{name}">
-  <img src="https://dotfyle.com/plugins/{owner}/{name}/shield" />
-</a>`}</code
-			>
-
-    </pre>
+		<pre class="p-2"><code class="text-gray-200">{code}</code></pre>
 	</section>
 	<section class="flex flex-col gap-2">
 		<h3>Query parameters</h3>
