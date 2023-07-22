@@ -1,5 +1,4 @@
 import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
-import { getNeovimConfigSyncs } from '$lib/server/prisma/neovimconfigsync/service';
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { trpc } from '$lib/trpc/client';
 import type { LanguageServer } from '@prisma/client';
