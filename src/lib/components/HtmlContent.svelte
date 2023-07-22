@@ -27,7 +27,7 @@
 		@apply text-sm sm:text-lg list-disc ml-8 py-1 break-words;
 	}
 	:global(#markdown-post-container pre) {
-		@apply bg-black p-4 sm:p-8 rounded-lg my-4 overflow-x-scroll text-sm sm:text-lg bg-opacity-50;
+		@apply bg-black p-4 sm:p-8 rounded-lg my-4 overflow-x-scroll text-sm sm:text-lg;
 	}
 	:global(#markdown-post-container a) {
 		@apply text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500;

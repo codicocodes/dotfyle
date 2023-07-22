@@ -11,6 +11,7 @@
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import PluginList from '$lib/components/PluginList.svelte';
 	import ShareConfig from '$lib/components/ShareConfig.svelte';
+	import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
 	import { trpc } from '$lib/trpc/client';
 	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faMarkdown, faReadme } from '@fortawesome/free-brands-svg-icons';
@@ -59,7 +60,7 @@
 </svelte:head>
 
 <OuterLayout>
-	<div in:fade class="h-full flex flex-col gap-4 my-14 mx-4 sm:mx-8">
+	<div in:fade class="h-full flex flex-col gap-4 my-14 mx-4">
 		<div class="flex flex-col gap-2">
 			<!-- profile area -->
 			<div class="flex items-center justify-end gap-2">
@@ -103,12 +104,17 @@
 					<div class="grid grid-cols-1 gap-2">
 						<CoolTextOnHover>
 							<GlossyCard>
-								<a href="/{config.owner}/{config.slug}/readme" class="p-2 flex w-full items-center justify-between text-md">
+								<a
+									href="/{config.owner}/{config.slug}/readme"
+									class="p-2 flex w-full items-center justify-between text-md"
+								>
 									<div class="flex gap-2 items-center">
 										<span class="force-white-text">
 											<Fa icon={faMarkdown} size="xs" />
 										</span>
-										<span class="flex items-center gap-1 lowercase"> Use an automatically generated readme for your neovim config</span>
+										<span class="flex items-center gap-1 lowercase">
+											Use an automatically generated readme for your neovim config</span
+										>
 									</div>
 									<div class="flex gap-4">
 										<button
@@ -120,6 +126,20 @@
 								</a>
 							</GlossyCard>
 						</CoolTextOnHover>
+					</div>
+					<div>
+						<h2 class="text-xl font-semibold tracking-wide my-2">Install instructions</h2>
+            <GlossyCard>
+						<p class="p-4 font-semibold">
+							Install requires Neovim 0.9+. Always review the code before installing a configuration.
+						</p>
+            </GlossyCard>
+						<p class="pt-2">Clone the repository and install plugins:</p>
+						<pre class="bg-black rounded p-4 my-2 overflow-hidden overflow-scroll"><code>{getInstallCommand(data.config)}</code
+							></pre>
+
+						<p class="pt-2">Run Neovim with this config:</p>
+						<pre class="bg-black rounded p-4 my-2 overflow-hidden overflow-scroll"><code>{getRunCommand(data.config)}</code></pre>
 					</div>
 
 					<div class="flex items-center justify-between">
