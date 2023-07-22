@@ -23,6 +23,9 @@
 		faX
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
+	import { Highlight } from 'svelte-highlight';
+	import { bash } from 'svelte-highlight/languages';
+	import { githubDark } from 'svelte-highlight/styles';
 	import { fade, slide } from 'svelte/transition';
 	import type { PageData } from './$types';
 
@@ -57,6 +60,7 @@
 
 <svelte:head>
 	<title>{config.owner}/{config.repo}{config.root ? `/${config.root}` : ''}: neovim config</title>
+	{@html githubDark}
 </svelte:head>
 
 <OuterLayout>
@@ -129,17 +133,17 @@
 					</div>
 					<div>
 						<h2 class="text-xl font-semibold tracking-wide my-2">Install instructions</h2>
-            <GlossyCard>
-						<p class="p-4 font-semibold">
-							Install requires Neovim 0.9+. Always review the code before installing a configuration.
-						</p>
-            </GlossyCard>
+						<GlossyCard>
+							<p class="p-4 font-semibold">
+								Install requires Neovim 0.9+. Always review the code before installing a
+								configuration.
+							</p>
+						</GlossyCard>
 						<p class="pt-2">Clone the repository and install plugins:</p>
-						<pre class="bg-black rounded p-4 my-2 overflow-hidden overflow-scroll"><code>{getInstallCommand(data.config)}</code
-							></pre>
+						<Highlight class="rounded" code={getInstallCommand(data.config)} language={bash} />
 
 						<p class="pt-2">Run Neovim with this config:</p>
-						<pre class="bg-black rounded p-4 my-2 overflow-hidden overflow-scroll"><code>{getRunCommand(data.config)}</code></pre>
+						<Highlight class="rounded" code={getRunCommand(data.config)} language={bash} />
 					</div>
 
 					<div class="flex items-center justify-between">

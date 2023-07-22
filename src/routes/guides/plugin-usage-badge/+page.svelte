@@ -1,4 +1,8 @@
 <script lang="ts">
+  import Highlight from "svelte-highlight";
+  import { vbscriptHtml } from "svelte-highlight/languages";
+  import github from "svelte-highlight/styles/github-dark";
+  // import typescript from "svelte-highlight/languages";
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import type { PageData } from './$types';
@@ -9,6 +13,10 @@
   <img src="https://dotfyle.com/plugins/{owner}/{name}/shield" />
 </a>`
 </script>
+
+<svelte:head>
+  {@html github}
+</svelte:head>
 
 <div class="flex flex-col px-4">
 	<div class="w-full justify-center text-left">
@@ -35,7 +43,7 @@
 			<code class="w-auto rounded px-1 py-0.5 bg-gray-400 border border-gray-700">{'{name}'} </code>
 			with your GitHub username and repository name.
 		</span>
-		<pre class="p-2"><code class="text-gray-200">{code}</code></pre>
+    <Highlight class="rounded" code={code} language={vbscriptHtml}/>
 	</section>
 	<section class="flex flex-col gap-2">
 		<h3>Query parameters</h3>
