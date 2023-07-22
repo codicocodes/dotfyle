@@ -3,9 +3,9 @@ import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/sch
 import { trpc } from '$lib/trpc/client';
 import type { LanguageServer } from '@prisma/client';
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad, PageServerLoadEvent } from './$types';
+import type { PageLoad, PageLoadEvent } from './$types';
 
-export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
+export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const username = event.params.username;
 	const slug = event.params.slug;
 	const [me, config, plugins, languageServers] = await Promise.all([
