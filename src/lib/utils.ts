@@ -75,3 +75,7 @@ export function getMediaType(media: Media): 'image' | 'video' {
   }
   return 'image'
 }
+
+export function copyToClipboard(data: string) {
+  navigator.clipboard.writeText(data);
+}
