@@ -63,8 +63,9 @@
 		</section>
 	</GlossyCard>
 
-	<GlossyCard>
-		<section class="flex flex-col gap-2 p-4">
+		<section class="flex flex-col gap-4">
+    <GlossyCard>
+		<div class="flex flex-col gap-2 p-4">
 		<h3>Plugins with the badge</h3>
 
 		<span
@@ -72,6 +73,9 @@
 			>These plugins added the Dotfyle usage badge to their GitHub Readme. Add the badge to your
 			plugins readme to get on the list. The list updates once a day.</span
 		>
+
+</div>
+	</GlossyCard>
 		{#await data.loading.plugins then plugins}
 			<BigGridContainer>
 				{#each plugins as plugin, _}
@@ -87,7 +91,6 @@
 			</BigGridContainer>
 		{/await}
 	</section>
-	</GlossyCard>
 </div>
 
 <style lang="postcss">
