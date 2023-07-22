@@ -51,7 +51,7 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 	);
 
 	installInstructions = installInstructions.concat(`\`\`\`sh
-git clone git@github.com/${config.owner}/${config.repo} ~/.config/${config.owner}/${config.repo}
+git clone git@github.com:${config.owner}/${config.repo} ~/.config/${config.owner}/${config.repo}
 ${installCommands[config.pluginManager?.toLowerCase() ?? 'unknown'] ?? ''}
 \`\`\`\n\n`);
 
