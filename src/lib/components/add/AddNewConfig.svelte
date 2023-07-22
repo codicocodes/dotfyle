@@ -1,27 +1,21 @@
 <script lang="ts">
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
-	import {
-		faFileCode,
-		faPuzzlePiece,
-		faRotate,
-		faUser,
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faFileCode, faRotate } from '@fortawesome/free-solid-svg-icons';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import RepoPicker from '$lib/components/RepoPicker.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { page } from '$app/stores';
-	import { fade, fly, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import InitFilePicker from '$lib/components/welcome-steps/InitFilePicker.svelte';
 	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
-	import type { NeovimPlugin, User } from '@prisma/client';
-	import PluginList from '$lib/components/PluginList.svelte';
+	import type { User } from '@prisma/client';
 	import UnsyncedNeovimConfigCard from '$lib/components/UnsyncedNeovimConfigCard.svelte';
 	import UnsyncedNeovimConfigMetaData from '$lib/components/UnsyncedNeovimConfigMetaData.svelte';
 	import type { GithubRepository } from '$lib/server/github/schema';
-	import ShareConfig from '../ShareConfig.svelte';
-	import CoolTextWithChildren from '../CoolTextWithChildren.svelte';
 	import type { InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
+	import { goto } from '$app/navigation';
+	import { DoubleBounce } from 'svelte-loading-spinners';
 
 	export let repositories: GithubRepository[];
 	export let user: User;
@@ -52,48 +46,13 @@
 			});
 		completed = true;
 		syncing = false;
-		unsyncedConfig.update((c) => ({
-			...c,
-			pluginManager: syncedConfig.pluginManager,
-			slug: syncedConfig.slug,
-			plugins: syncedConfig.plugins as unknown as NeovimPlugin[]
-		}));
+		goto(`/${syncedConfig.owner}/${syncedConfig.slug}`);
 	}
 </script>
 
 {#if syncing || completed}
-	<div
-		transition:fly={{ y: 100, duration: 1000 }}
-		class="flex flex-col w-full max-w-5xl gap-2 mx-12 my-2 px-8"
-	>
-		{#if completed}
-			<div in:slide class="flex justify-end gap-4">
-				<ShareConfig owner={$unsyncedConfig.owner ?? ''} slug={$unsyncedConfig.slug ?? ''} />
-				<a href={`/${$unsyncedConfig.owner}`} class=" bg-gray-700 p-2 rounded">
-					<CoolTextWithChildren>
-						<div class="flex flex-row gap-2">
-							<div class="flex items-center force-white-text">
-								<Fa icon={faUser} />
-							</div>
-							<span class="font-semibold">profile</span>
-						</div>
-					</CoolTextWithChildren>
-				</a>
-			</div>
-		{/if}
-
-		<UnsyncedNeovimConfigCard avatar={user.avatarUrl} />
-		<UnsyncedNeovimConfigMetaData {syncing} />
-
-		{#if $unsyncedConfig.plugins !== undefined && $unsyncedConfig.plugins.length > 0}
-			<div class="flex items-center justify-between">
-				<h3 class="flex items-center gap-1 text-sm tracking-wide font-semibold pl-1">
-					<Fa icon={faPuzzlePiece} />
-					plugins
-				</h3>
-			</div>
-			<PluginList plugins={$unsyncedConfig.plugins.map((p) => ({ ...p, configCount: -1 }))} />
-		{/if}
+	<div class="flex w-full justify-center">
+		<DoubleBounce color="#15be97" size="42" />
 	</div>
 {/if}
 
