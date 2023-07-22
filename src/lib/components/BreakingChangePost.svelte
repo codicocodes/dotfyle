@@ -18,7 +18,7 @@
 </script>
 
 <div
-	class="relative flex flex-col justify-between overflow-hidden rounded-md border border-green-300/25 bg-white/10 transition-colors w-full shadow-lg hover:shadow-green-300/25 hover:bg-white/20"
+	class="relative flex flex-col justify-between overflow-hidden rounded-md bg-white/10 transition-colors w-full hover:bg-white/20"
 >
 	<div class="flex items-center space-x-2 pt-2 py-1 pl-5">
 		<CoolTextOnHover>
