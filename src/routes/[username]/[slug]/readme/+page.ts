@@ -6,6 +6,7 @@ import { error } from '@sveltejs/kit';
 import { marked } from 'marked';
 import { sanitizeHtml } from '$lib/utils';
 import { trpc } from '$lib/trpc/client';
+import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const username = event.params.username;
@@ -42,25 +43,18 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 
 	let installInstructions =
 		'## Install Instructions\n\n > Install requires Neovim 0.9+. Always review the code before installing a configuration.\n\n';
-
-	const installCommands: Record<string, string> = {
-		lazy: `NVIM_APPNAME=${configPath}/${config.root} nvim --headless +Lazy! sync +qa`,
-		packer: `NVIM_APPNAME=${configPath}/${config.root} nvim --headless +"PackerSync" +qa`
-	};
-
 	installInstructions = installInstructions.concat(
 		'Clone the repository and install the plugins:\n\n'
 	);
 
 	installInstructions = installInstructions.concat(`\`\`\`sh
-git clone git@github.com:${config.owner}/${config.repo} ~/.config/${config.owner}/${config.repo}
-${installCommands[config.pluginManager?.toLowerCase() ?? 'unknown'] ?? ''}
+${getInstallCommand(config)}
 \`\`\`\n\n`);
 
 	installInstructions = installInstructions.concat('Open Neovim with this config:\n\n');
 
 	installInstructions = installInstructions.concat(`\`\`\`sh
-NVIM_APPNAME=${config.owner}/${config.repo}/${config.root} nvim
+${getRunCommand(config)}
 \`\`\`\n\n`);
 
 	let pluginSection = '## Plugins\n\n';
