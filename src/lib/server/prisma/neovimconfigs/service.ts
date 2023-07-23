@@ -456,3 +456,31 @@ function attachPlugins({
 		plugins: neovimConfigPlugins.map((p) => p.plugin)
 	};
 }
+
+export async function getNeovimConfigsWithDotfyleShield() {
+	const nestedConfigs = await prismaClient.neovimConfig.findMany({
+		where: {
+			dotfyleShieldAddedAt: {
+				not: null
+			}
+		},
+		include: {
+			user: {
+				select: {
+					avatarUrl: true
+				}
+			},
+			_count: {
+				select: {
+					neovimConfigPlugins: true
+				}
+			}
+		},
+		orderBy: {
+			dotfyleShieldAddedAt: 'desc'
+		},
+    take: 9,
+	});
+
+	return nestedConfigs.map(attachMetaData);
+}

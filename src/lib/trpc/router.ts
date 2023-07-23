@@ -8,6 +8,7 @@ import {
 	getConfigBySlug,
 	getConfigsByUsername,
 	getConfigsForPlugin,
+	getNeovimConfigsWithDotfyleShield,
 	getNewestNeovimConfigs,
 	searchNeovimConfigs
 } from '$lib/server/prisma/neovimconfigs/service';
@@ -82,6 +83,9 @@ export const router = t.router({
 	}),
   recentPluginsWithDotfyleShields: t.procedure.query(() => {
     return getPluginsWithDotfyleShield()
+  }),
+  recentConfigsWithDotfyleShields: t.procedure.query(() => {
+    return getNeovimConfigsWithDotfyleShield()
   }),
 	searchPlugins: t.procedure
 		.input((input: unknown) => {
