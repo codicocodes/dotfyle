@@ -45,19 +45,19 @@
 				>Dotfyle generates custom markdown based on metadata from your Neovim config.</span
 			>
 			<Highlight language={markdown} code={readmeStructure} />
-			<span class="inline whitespace-normal"
-				>You can change the markdown to your needs before saving it to GitHub.</span
-			>
+			<span class="inline whitespace-normal">
+        You can change the markdown to your needs before saving it to GitHub.
+      </span>
 		</section>
 	</GlossyCard>
 	<GlossyCard>
 		<section class="flex flex-col gap-2 p-4 w-full">
-			<h3>How to add your README</h3>
+			<h3>How to get your README markdown</h3>
 			<span class="inline whitespace-normal">
-				Navigate to your Neovim config readme on Dotfyle at <code class="bg-black px-1 py-0.5 rounded">{url}</code> and copy the markdown.
+				Navigate to your Neovim config on Dotfyle at (<code class="bg-black px-1 py-0.5 rounded">profile > config </code>) and add <code class="bg-black px-1 py-0.5 rounded">/readme</code> to the end of the url.
 			</span>
 			<span class="inline whitespace-normal">
-				If you don't know the url of your Neovim config on Dotfyle. Navigate to your profile page at <code class="bg-black px-1 py-0.5 rounded">{profileUrl}</code> and manually navigate to your config page. The username is the same as your GitHub username.
+				Copy the markdown from this page and use it on your GitHub readme.
 			</span>
 		</section>
 	</GlossyCard>
