@@ -6,10 +6,17 @@
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { copyToClipboard } from '$lib/utils';
 	import { faCopy } from '@fortawesome/free-solid-svg-icons';
+	import { Highlight } from 'svelte-highlight';
+	import { markdown } from 'svelte-highlight/languages';
+	import { githubDark } from 'svelte-highlight/styles';
 	import type { PageData } from './$types';
 	export let data: PageData;
 	let viewHtml = true;
 </script>
+
+<svelte:head>
+	{@html githubDark}
+</svelte:head>
 
 <div class="px-4">
 	<div class="text-xl flex gap-2 items-center font-semibold">
@@ -63,9 +70,9 @@
 			</button>
 		</div>
 
-		<div class="flex gap-2">
-			<a href="/{data.configPath}" class="flex items-center">
-				<CoolTextOnHover>back to</CoolTextOnHover>
+		<div class="flex gap-4">
+			<a href="/{data.config.owner}/{data.config.slug}" class="flex items-center">
+				<CoolTextOnHover>back to config</CoolTextOnHover>
 			</a>
 			<Button icon={faCopy} text="Copy Markdown" on:click={() => copyToClipboard(data.readme)} />
 		</div>
@@ -74,9 +81,7 @@
 	{#if viewHtml}
 		<HtmlContent content={data.html} />
 	{:else}
-		<textarea class="w-full min-h-screen my-8" disabled>
-			{data.readme}
-		</textarea>
+  <Highlight class='w-full my-8 overflow-x-scroll' code={data.readme}  language={markdown}/>
 	{/if}
 </div>
 
