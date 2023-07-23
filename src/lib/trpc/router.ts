@@ -30,6 +30,7 @@ import { TRPCError } from '@trpc/server';
 import {
 	syncExistingRepoInfo,
 	syncInitialRepoInfo,
+	syncReadme,
 	validateConfigPath
 } from '$lib/server/nvim-sync/config/syncRepoInfo';
 import { getNeovimConfigSyncer } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
@@ -46,6 +47,7 @@ import {
 } from '$lib/server/prisma/posts/services';
 import { getMediaForPlugin } from '$lib/server/prisma/media/service';
 import { marked } from 'marked';
+import { prismaClient } from '$lib/server/prisma/client';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -260,6 +262,7 @@ export const router = t.router({
 			}
 			const token = await getGithubToken(user.id);
 			const config = await syncExistingRepoInfo(token, configBeforeSync);
+      await syncReadme(token, config)
 			const syncer = await getNeovimConfigSyncer(user, config);
 			return await syncer.treeSync();
 		}),
@@ -287,6 +290,7 @@ export const router = t.router({
 				input.root,
 				input.initFile
 			);
+      await syncReadme(token, config)
 			const syncer = await getNeovimConfigSyncer(user, config);
 			return await syncer.treeSync();
 		}),

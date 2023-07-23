@@ -31,22 +31,23 @@ model GithubToken {
 }
 
 model NeovimConfig {
-  id            Int                  @id @default(autoincrement())
-  owner         String
-  slug          String
-  repo          String
-  root          String               @default("")
-  initFile      String
-  branch        String
-  leaderkey     String               @default("unknown")
-  fork          Boolean
-  githubId      Int
-  stars         Int
-  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        Int
-  pluginManager NeovimPluginManager?
-  createdAt     DateTime             @default(now())
-  lastSyncedAt  DateTime             @default(now())
+  id                   Int                  @id @default(autoincrement())
+  owner                String
+  slug                 String
+  repo                 String
+  root                 String               @default("")
+  initFile             String
+  branch               String
+  leaderkey            String               @default("unknown")
+  fork                 Boolean
+  githubId             Int
+  stars                Int
+  user                 User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               Int
+  pluginManager        NeovimPluginManager?
+  createdAt            DateTime             @default(now())
+  lastSyncedAt         DateTime             @default(now())
+  dotfyleShieldAddedAt DateTime?
 
   neovimConfigPlugins    NeovimConfigPlugins[]
   languageServerMappings NeovimConfigToLanguageServer[]
