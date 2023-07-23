@@ -19,7 +19,7 @@
 				<CoolTextOnHover>
 					<a
 						href={`/plugins/${owner}/${name}`}
-						class="text-sm font-semibold tracking-wide md:text-base"
+						class="text-sm font-semibold tracking-wide md:text-base whitespace-normal"
 					>
 						{owner}/{name}
 					</a>

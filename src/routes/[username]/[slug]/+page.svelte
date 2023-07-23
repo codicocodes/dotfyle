@@ -1,169 +1,137 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
-	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
-	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
-	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
-	import OuterLayout from '$lib/components/OuterLayout.svelte';
-	import PluginList from '$lib/components/PluginList.svelte';
-	import ShareConfig from '$lib/components/ShareConfig.svelte';
 	import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
-	import { trpc } from '$lib/trpc/client';
-	import { hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
-	import { faMarkdown } from '@fortawesome/free-brands-svg-icons';
+	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import {
-		faChevronRight,
-		faRotate,
-		faUser,
-		faX
+		faChevronCircleRight,
+		faChevronDown,
+		faChevronUp,
+		faStar
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { Highlight } from 'svelte-highlight';
 	import { bash } from 'svelte-highlight/languages';
 	import { githubDark } from 'svelte-highlight/styles';
-	import { fade } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	$: ({ config, plugins, me, languageServers } = data);
+	$: ({ config, plugins, languageServers } = data);
 
-	let syncing = false;
-
-	async function syncConfig() {
-		syncing = true;
-		const { plugins: syncedPlugins, ...syncedConfig } = await trpc(
-			$page
-		).syncExistingNeovimConfig.query({
-			owner: config.owner,
-			slug: config.slug
-		});
-
-		const pluginCount = syncedPlugins.length;
-		const syncedConfigWithMeta = {
-			...syncedConfig,
-			ownerAvatar: config.ownerAvatar,
-			createdAt: new Date(syncedConfig.createdAt),
-			lastSyncedAt: new Date(syncedConfig.lastSyncedAt),
-			pluginCount
-		};
-		config = syncedConfigWithMeta;
-		plugins = plugins;
-		syncing = false;
-		invalidate(() => true);
-	}
+	let seeInstallInstructions = false;
+	let seeLanguageServers = false;
 </script>
 
 <svelte:head>
-	<title>{config.owner}/{config.repo}{config.root ? `/${config.root}` : ''}: neovim config</title>
 	{@html githubDark}
 </svelte:head>
 
-<OuterLayout>
-	<div in:fade class="h-full flex flex-col gap-4 my-14 mx-4">
-		<div class="flex flex-col gap-2">
-			<!-- profile area -->
-			<div class="flex items-center justify-end gap-2">
-				<ShareConfig owner={config.owner} slug={config.slug} />
-				<a href={`/${config.owner}`} class=" bg-gray-700 p-2 rounded">
-					<CoolTextWithChildren>
-						<div class="flex flex-row gap-2">
-							<div class="flex items-center force-white-text">
-								<Fa icon={faUser} />
-							</div>
-							<span class="font-semibold">profile</span>
-						</div>
-					</CoolTextWithChildren>
+<div class="flex flex-col gap-4 px-4">
+	<h1 class="text-xl flex gap-2 items-center font-semibold">
+		<img
+			alt=""
+			class="inline h-8 w-8 rounded-full items-center"
+			height="8"
+			width="8"
+			src={config.ownerAvatar}
+		/>
+    <a href="/{config.owner}">
+		<CoolTextOnHover>
+			{config.owner}
+		</CoolTextOnHover>
+    </a>
+		/
+    <a href="/{config.owner}/{config.slug}">
+		<CoolTextOnHover>
+			{config.repo}
+			/
+			{config.root}
+		</CoolTextOnHover>
+    </a>
+	</h1>
+	<div class="flex gap-1 items-center justify-between font-semibold">
+		<div class="flex items-center gap-1">
+			<Fa size="xs" icon={faStar} />
+			{config.stars}
+		</div>
+
+		<a href="https://github.com/{config.owner}/{config.repo}" target="_blank">
+			<Button text="GitHub" icon={faGithub} />
+		</a>
+	</div>
+	<NeovimConfigMetaData
+		syncing={false}
+		pluginManager={config.pluginManager ?? 'unknown'}
+		pluginCount={config.pluginCount?.toString()}
+		root={config.root}
+		initFile={config.initFile}
+		isMonorepo={config.root ? 'yes' : 'no'}
+		isFork={config.fork ? 'yes' : 'no'}
+		leaderkey={config.leaderkey}
+	/>
+	<CoolTextOnHover>
+		<GlossyCard>
+			<div class="flex flex-col w-full gap-2">
+				<a
+					href="/{config.owner}/{config.slug}/readme"
+					class="p-4 text-xl w-full flex justify-between items-center"
+				>
+					<span class="font-semibold">Generate README markdown</span>
+					<div class="force-white-text">
+						<Fa icon={faChevronCircleRight} size="sm" />
+					</div>
 				</a>
 			</div>
-			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
-				<div class="flex flex-col gap-2 w-full">
-					<NeovimConfigCard
-						slug={config.slug}
-						repo={config.repo}
-						owner={config.owner}
-						avatar={config.ownerAvatar}
-						initFile={config.initFile}
-						root={config.root}
-						stars={config.stars.toString()}
-						pluginManager={config.pluginManager ?? 'unknown'}
-						pluginCount={config.pluginCount.toString()}
-						showGithubLink={true}
-					/>
-
-					<NeovimConfigMetaData
-						{syncing}
-						pluginManager={config.pluginManager ?? 'unknown'}
-						pluginCount={plugins.length.toString()}
-						root={config.root}
-						initFile={config.initFile}
-						isMonorepo={config.root ? 'yes' : 'no'}
-						isFork={config.fork ? 'yes' : 'no'}
-						leaderkey={config.leaderkey}
-					/>
-					<div class="grid grid-cols-1 gap-2">
-						<CoolTextOnHover>
-							<GlossyCard>
-								<a
-									href="/{config.owner}/{config.slug}/readme"
-									class="p-2 flex w-full items-center justify-between text-md"
-								>
-									<div class="flex gap-2 items-center">
-										<span class="force-white-text">
-											<Fa icon={faMarkdown} size="xs" />
-										</span>
-										<span class="flex items-center gap-1 lowercase">
-											Use an automatically generated readme for your neovim config</span
-										>
-									</div>
-									<div class="flex gap-4">
-										<button
-											class="px-4 py-1 rounded bg-white/25 hover:text-opacity-100 hover:bg-white/25 hover:text-white flex items-center justify-end force-white-text"
-										>
-											<Fa icon={faChevronRight} size="xs" />
-										</button>
-									</div>
-								</a>
-							</GlossyCard>
-						</CoolTextOnHover>
-					</div>
-					<div>
-						<h2 class="text-xl font-semibold tracking-wide my-2">Install instructions</h2>
+		</GlossyCard>
+	</CoolTextOnHover>
+	<GlossyCard>
+		<div class="flex flex-col w-full gap-2">
+			<button
+				on:click={() => (seeInstallInstructions = !seeInstallInstructions)}
+				class="p-4 text-xl w-full flex justify-between items-center"
+			>
+				<span class="font-semibold">Install instructions</span>
+				<Fa icon={!seeInstallInstructions ? faChevronDown : faChevronUp} size="sm" />
+			</button>
+			{#if seeInstallInstructions}
+				<div class="flex flex-col w-full gap-2" transition:slide>
+					<div class="flex w-full items-center gap-2 font-medium text-sm px-4">
 						<GlossyCard>
-							<p class="p-4 font-semibold">
+							<div
+								class="flex items-center gap-2 p-2 font-medium text-sm px-4 w-full whitespace-normal"
+							>
 								Install requires Neovim 0.9+. Always review the code before installing a
 								configuration.
-							</p>
-						</GlossyCard>
-						<p class="pt-2">Clone the repository and install plugins:</p>
-						<Highlight class="rounded" code={getInstallCommand(data.config)} language={bash} />
-
-						<p class="pt-2">Run Neovim with this config:</p>
-						<Highlight class="rounded" code={getRunCommand(data.config)} language={bash} />
-					</div>
-
-					<div class="flex items-center justify-between">
-						<span class="text-sm tracking-wide font-light">
-							last synced {humanizeAbsolute(new Date(config.lastSyncedAt))}
-						</span>
-						{#if me && hasBeenOneDay(config.lastSyncedAt.toString())}
-							<div class="flex items-center gap-1 text-sm font-semibold tracking-widest">
-								<Button on:click={syncConfig} text="sync" icon={faRotate} loading={syncing} />
 							</div>
-						{/if}
+						</GlossyCard>
 					</div>
+					<span class="mx-4 font-medium tracking-wide whitespace-normal"
+						>Clone the repository and install plugins</span
+					>
+					<Highlight class="mx-4 rounded" code={getInstallCommand(config)} language={bash} />
+					<span class="mx-4 font-medium tracking-wide whitespace-normal"
+						>Open Neovim with this configuration</span
+					>
+					<Highlight class="mx-4 pb-4 rounded" code={getRunCommand(config)} language={bash} />
 				</div>
-			</div>
+			{/if}
 		</div>
-		<div class="w-full gap-2 flex flex-col">
-			<h3 class="text-lg font-semibold tracking-wide lowercase mt-2">
-				{languageServers.length} language servers installed
-			</h3>
-			{#if plugins.length > 0}
-				<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+	</GlossyCard>
+	<GlossyCard>
+		<div class="flex flex-col w-full">
+			<button
+				on:click={() => (seeLanguageServers = !seeLanguageServers)}
+				class="p-4 text-xl w-full flex justify-between items-center"
+			>
+				<span class="font-semibold">Language Servers</span>
+				<Fa icon={!seeLanguageServers ? faChevronDown : faChevronUp} size="sm" />
+			</button>
+			{#if seeLanguageServers}
+				<div transition:slide class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 p-4">
 					{#each languageServers as ls}
 						<GlossyCard>
 							<div class="flex items-center gap-2 p-2 font-medium text-sm">
@@ -172,47 +140,26 @@
 						</GlossyCard>
 					{/each}
 				</div>
-			{:else}
-				<GlossyCard>
-					<div class="flex items-center gap-2 p-2 font-semibold text-sm">
-						<div class="text-red-500">
-							<Fa icon={faX} />
-						</div>
-						no plugins detected
-					</div>
-				</GlossyCard>
 			{/if}
 		</div>
-		<div class="w-full gap-2 flex flex-col">
-			<h3 class="text-lg font-semibold tracking-wide lowercase mt-2">
-				{plugins.length} plugins installed
-			</h3>
-			{#if plugins.length > 0}
-				<div class="sm:hidden">
-					<PluginList {plugins} />
-				</div>
-				<div class="hidden sm:grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
-					{#each plugins as plugin}
-						<NeovimPluginCard
-							owner={plugin.owner}
-							name={plugin.name}
-							stars={plugin.stars.toString()}
-							configCount={plugin.configCount}
-							category={plugin.category}
-							shortDescription={plugin.shortDescription}
-						/>
-					{/each}
-				</div>
-			{:else}
-				<GlossyCard>
-					<div class="flex items-center gap-2 p-2 font-semibold text-sm">
-						<div class="text-red-500">
-							<Fa icon={faX} />
-						</div>
-						no plugins detected
-					</div>
-				</GlossyCard>
-			{/if}
+	</GlossyCard>
+	<GlossyCard>
+		<div class="flex flex-col w-full">
+			<div class="p-4 text-xl w-full flex justify-between items-center">
+				<span class="font-semibold">Plugins</span>
+			</div>
+			<div transition:slide class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2 p-4">
+				{#each plugins as plugin}
+					<NeovimPluginCard
+						owner={plugin.owner}
+						name={plugin.name}
+						stars={plugin.stars.toString()}
+						configCount={plugin.configCount}
+						category={plugin.category}
+						shortDescription={plugin.shortDescription}
+					/>
+				{/each}
+			</div>
 		</div>
-	</div>
-</OuterLayout>
+	</GlossyCard>
+</div>

@@ -102,7 +102,7 @@ ${getRunCommand(config)}
 	const html = sanitizeHtml(marked(readme));
 
 	return {
-    configPath,
+    config,
 		readme,
 		html
 	};
