@@ -1,5 +1,8 @@
 # Plugin
 
+## AI
+- martineausimon/nvim-bard
+
 ## Plugin Manager
 
 ## LSP
@@ -14,6 +17,8 @@
 - echasnovski/mini.completion
 
 ## Programming Languages Support
+
+- llllvvuu/nvim-js-actions
 
 ## Golang
 
@@ -88,6 +93,8 @@
 
 ## Note Taking
 
+- serenevoid/kiwi.nvim
+
 ## Utility
 
 - echasnovski/mini.nvim
@@ -95,6 +102,8 @@
 - MisanthropicBit/decipher.nvim
 - GCBallesteros/NotebookNavigator.nvim
 - subnut/nvim-ghost.nvim
+- mrshmllow/open-handlers.nvim
+- mvaldes14/terraform.nvim
 
 ## Terminal Integration
 
@@ -174,6 +183,7 @@
 ## Split and Window
 
 - echasnovski/mini.bufremove
+- sourproton/tunnell.nvim
 
 ## Tmux
 
