@@ -1,4 +1,4 @@
-#### [{fullname}](#{fullname})
+#### {fullname}
 
 ![]({image})
 
