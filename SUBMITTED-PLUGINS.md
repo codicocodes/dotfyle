@@ -104,6 +104,7 @@
 - subnut/nvim-ghost.nvim
 - mrshmllow/open-handlers.nvim
 - mvaldes14/terraform.nvim
+- creativenull/dotfyle-metadata.nvim
 
 ## Terminal Integration
 
