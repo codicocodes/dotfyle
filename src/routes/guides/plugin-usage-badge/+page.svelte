@@ -16,6 +16,11 @@
 
 <svelte:head>
 	{@html github}
+	<title>Showcase your Neovim plugins usage with a badge</title>
+	<meta
+		name="description"
+		content="Add a badge to your Neovim plugins GitHub Readme to show the number of configs on Dotfyle using your plugin. This helps users find other Neovim configs using your plugin."
+	/>
 </svelte:head>
 
 <div class="flex flex-col px-4 gap-4">

@@ -29,6 +29,11 @@
 
 <svelte:head>
 	{@html github}
+	<title>How to automatically create a README for your Neovim config</title>
+	<meta
+		name="description"
+		content="Showcase your leaderkey, plugin manager, plugins and language servers from your Neovim config on your GitHub readme."
+	/>
 </svelte:head>
 
 <div class="flex flex-col px-4 gap-4">
