@@ -21,16 +21,15 @@
 
 <div class="flex flex-col px-4 gap-4">
 	<div class="w-full justify-center text-left">
-		<h1 class="w-full text-left">Adding a plugin usage badge to your readme</h1>
+		<h1 class="w-full text-left">Showcase your Neovim plugins usage with a badge</h1>
 		<p>
-			Showcase your plugins usage in Neovim configs on Dotfyle by adding a badge to your your GitHub
-			readme. Help users find other Neovim configs using your plugin.
+      Add a badge to your Neovim plugins GitHub Readme to show the number of configs on Dotfyle using your plugin. This helps users find other Neovim configs using your plugin.
 		</p>
 	</div>
 
 	<div class="">
 		<a href="/plugins/nvim-treesitter/nvim-treesitter">
-			<img src="/plugins/nvim-treesitter/nvim-treesitter/shield" />
+			<img alt='tree sitter usage' src="/plugins/nvim-treesitter/nvim-treesitter/shield" />
 		</a>
 	</div>
 	<GlossyCard>
