@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Highlight from 'svelte-highlight';
-	import { vbscriptHtml } from 'svelte-highlight/languages';
+	import { markdown } from 'svelte-highlight/languages';
 	import github from 'svelte-highlight/styles/github-dark';
-	// import typescript from "svelte-highlight/languages";
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import type { PageData } from './$types';
@@ -44,7 +43,7 @@
 			<code class="w-auto rounded px-1 py-0.5 bg-gray-400 border border-gray-700">{'{name}'} </code>
 			with your GitHub username and repository name.
 		</span>
-		<Highlight class="rounded" {code} language={vbscriptHtml} />
+		<Highlight class="rounded" {code} language={markdown} />
 	</section>
 	</GlossyCard>
 	<GlossyCard>
