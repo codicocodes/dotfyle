@@ -6,12 +6,10 @@
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { copyToClipboard } from '$lib/utils';
-	import { faChevronDown, faCopy } from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
+	import { faCopy } from '@fortawesome/free-solid-svg-icons';
 	import { Highlight } from 'svelte-highlight';
 	import { markdown } from 'svelte-highlight/languages';
 	import { githubDark } from 'svelte-highlight/styles';
-	import { slide } from 'svelte/transition';
 	import type { PageData } from './$types';
 	export let data: PageData;
 	let view = 'html';
@@ -44,8 +42,7 @@
 		<a href="/{data.config.owner}/{data.config.slug}">
 			<CoolTextOnHover>
 				{data.config.repo}
-				/
-				{data.config.root}
+				{!data.config.root ? data.config.root : `/ ${data.config.root}`}
 			</CoolTextOnHover>
 		</a>
 		/
@@ -130,7 +127,10 @@
 
 						<div class="flex w-full gap-2">
 							{#each ['plugins', 'leaderkey', 'plugin-manager'] as badge}
-								<img alt={badge} src="/{data.config.owner}/{data.config.slug}/badges/{badge}?style={style}" />
+								<img
+									alt={badge}
+									src="/{data.config.owner}/{data.config.slug}/badges/{badge}?style={style}"
+								/>
 							{/each}
 						</div>
 					</div>
