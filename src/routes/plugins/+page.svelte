@@ -36,7 +36,11 @@
 </script>
 
 <svelte:head>
-	<title>Search and find neovim plugins</title>
+	<title>Search and find Neovim plugins</title>
+	<meta
+		name="description"
+		content="Find the new, trending and popular Neovim Plugins. Filter by type of plugin."
+	/>
 </svelte:head>
 
 <Modal showModal={showFilter} onClose={() => (showFilter = false)}>
