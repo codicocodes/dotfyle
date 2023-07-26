@@ -31,6 +31,7 @@
 
 <svelte:head>
 	{@html githubDark}
+	<title>{data.config.owner}/{data.config.repo} - Neovim configuration, Install instructions, Neovim plugins & Language servers</title>
 </svelte:head>
 
 <div class="flex flex-col gap-4 px-4">
