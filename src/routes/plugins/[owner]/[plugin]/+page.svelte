@@ -51,8 +51,12 @@
 
 <svelte:head>
 	<title>
-		{data.plugin.owner}/{data.plugin.name}
+		{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives to {data.plugin.name}
 	</title>
+	<meta
+		name="description"
+		content="{data.plugin.shortDescription}"
+	/>
 </svelte:head>
 
 <Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
