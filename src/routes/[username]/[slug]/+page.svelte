@@ -27,12 +27,6 @@
 
 	let seeInstallInstructions = false;
 	let seeLanguageServers = false;
-	let seeBadgeInstructions = false;
-
-	let style = 'flat';
-	$: badgesHtml = `<a href="https://dotfyle.com/${data.config.owner}/${data.config.slug}"><img src="https://dotfyle.com/${data.config.owner}/${data.config.slug}/badges/plugins?style=${style}" /></a>
-<a href="https://dotfyle.com/${data.config.owner}/${data.config.slug}"><img src="https://dotfyle.com/${data.config.owner}/${data.config.slug}/badges/leaderkey?style=${style}" /></a>
-<a href="https://dotfyle.com/${data.config.owner}/${data.config.slug}"><img src="https://dotfyle.com/${data.config.owner}/${data.config.slug}/badges/plugin-manager?style=${style}" /></a>`;
 </script>
 
 <svelte:head>
