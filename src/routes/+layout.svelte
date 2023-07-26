@@ -268,7 +268,7 @@
 				href="/guides/auto-generated-readme"
 				class="flex items-center hover:text-white gap-2"
 			>
-				<span class="ml-1">How to generate a README for your Neovim config</span>
+				<span class="ml-1">How to automatically create a README for your Neovim config</span>
 			</a>
 <a
 				href="/guides/plugin-usage-badge"

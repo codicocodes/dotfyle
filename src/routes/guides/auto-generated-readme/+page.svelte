@@ -11,10 +11,6 @@
 
 	export let data: PageData;
 
-	const url = `https://dotfyle.com/{username}/{slug}/readme`;
-
-	const profileUrl = `https://dotfyle.com/{username}`;
-
 	const readmeStructure = `# Title
 - plugin count badge
 - leaderkey badge
@@ -37,7 +33,7 @@
 
 <div class="flex flex-col px-4 gap-4">
 	<div class="w-full justify-center text-left">
-		<h1 class="w-full text-left">How to generate a README for your Neovim config</h1>
+		<h1 class="w-full text-left">How to automatically create a README for your Neovim config</h1>
 		<p>
 			Showcase your leaderkey, plugin manager, plugins and language servers from your Neovim config
 			on your GitHub readme.
