@@ -19,7 +19,8 @@ export const GET: RequestHandler = async () => {
 		},
 		orderBy: {
 			issue: 'desc'
-		}
+		},
+    take: 10,
 	});
 
 	for (const post of posts) {
