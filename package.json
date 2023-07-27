@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"start": "node build/index.js",
+		"start": "node -r newrelic build/index.js",
 		"dev": "vite dev",
 		"build": "npx prisma migrate deploy && npx prisma generate && vite build",
 		"preview": "vite preview",
@@ -34,6 +34,7 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"highlight.js": "^11.8.0",
 		"marked": "^4.3.0",
+		"newrelic": "^10.6.0",
 		"nprogress": "^0.2.0",
 		"postcss": "^8.4.27",
 		"postcss-load-config": "^4.0.1",

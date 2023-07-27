@@ -5,6 +5,8 @@ import { sequence } from '@sveltejs/kit/hooks';
 import type { TRPCError, inferRouterContext, ProcedureType } from '@trpc/server';
 import { createTRPCHandle } from 'trpc-sveltekit';
 
+import newrelic from 'newrelic';
+
 export const onError = (opts: {
 	ctx?: inferRouterContext<Router>;
 	error: TRPCError;
