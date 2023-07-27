@@ -13,7 +13,7 @@ export class AsyncApiManager {
 		new AdminRequestValidator(event).validate();
   }
 
-	lock() {
+	start() {
 		if (this.running) {
 			throw error(429, 'limit');
 		}
@@ -41,10 +41,11 @@ export class AsyncApiManager {
 	async deferCleanup() {
     await Promise.all(this.queue)
     console.log("Async job completed.")
-    this.running = false;
     this.isRateLimited = false;
     this.tasksDone = 0;
     this.queue = []
+    this.runner = pLimit(10)
+    this.running = false;
 	}
 
   addToQueue(callback: () => Promise<void>) {
@@ -58,7 +59,7 @@ export function createAsyncTaskApi(getAsyncTasks: asyncTaskGetter) {
   const manager = new AsyncApiManager()
 	return async (event: RequestEvent) => {
 		manager.validate(event);
-		manager.lock();
+		manager.start();
 
 		const tasks = await getAsyncTasks();
 
