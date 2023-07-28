@@ -4,7 +4,16 @@ import { prismaClient } from '$lib/server/prisma/client';
 import { marked } from 'marked';
 import { sanitizeHtml } from '$lib/utils';
 
-export const GET: RequestHandler = async () => {
+// @TODO: Move caching to redis
+
+let cachedFeed: string | undefined
+
+export async function rebuildCachedTwinFeed() {
+  cachedFeed = await createTwinRssFeed()
+}
+
+async function createTwinRssFeed() {
+  console.time("createTwinRssFeed")
 	const feed = new RSS({
 		title: 'This Week in Neovim RSS Feed',
     description: 'This Week In Neovim is a weekly newsletter with updates from the Neovim ecosystem, including new plugins and breaking changes.',
@@ -34,7 +43,19 @@ export const GET: RequestHandler = async () => {
 			description,
 		});
 	}
-	return new Response(feed.xml({ indent: true }), {
+
+  const xml = feed.xml({ indent: true })
+
+  console.timeEnd("createTwinRssFeed")
+
+  return xml
+}
+
+export const GET: RequestHandler = async () => {
+  if (!cachedFeed) {
+    cachedFeed = await createTwinRssFeed()
+  }
+	return new Response(cachedFeed, {
 		headers: {
 			'Cache-Control': `max-age=0, s-maxage=${60 * 60 * 24}`, // seconds
 			'Content-Type': 'application/rss+xml'
