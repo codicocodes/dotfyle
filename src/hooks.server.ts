@@ -23,15 +23,26 @@ export const onError = (opts: {
 	delete error.stack;
 };
 
-export const printPageVisits: Handle = ({ event, resolve }) => {
-  const search = event.url.searchParams.toString()
-  const path = event.url.pathname;
-  const page = path + (search ? `?${search}` : "")
-  if (!page.includes('trpc') && !page.includes('api')) {
-    console.log({ page }, event.request.headers.get('host'))
+
+export const profilePerformance: Handle = async ({ event, resolve }) => {
+  const route = event.url.pathname
+
+  const start = performance.now()
+  const response = await resolve(event)
+  const end = performance.now()
+
+  const responseTime = end - start
+
+  if (responseTime >= 1000) {
+    console.log(`🐢 ${route} took ${responseTime.toFixed(2)} ms`)
   }
-  return resolve(event)
-};
+
+  if (responseTime < 1000) {
+    console.log(`🚀 ${route} took ${responseTime.toFixed(2)} ms`)
+  }
+
+  return response
+}
 
 const handleTrpc = createTRPCHandle({
 	router,
@@ -39,4 +50,4 @@ const handleTrpc = createTRPCHandle({
 	onError
 }) satisfies Handle
 
-export const handle = sequence(printPageVisits, handleTrpc);
+export const handle = sequence(profilePerformance, handleTrpc);
