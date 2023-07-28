@@ -23,12 +23,6 @@ export const onError = (opts: {
 	delete error.stack;
 };
 
-export const nameTransaction: Handle = ({ event, resolve }) => {
-  console.log("TransactionName", event.url.pathname)
-  newrelic.setTransactionName(event.url.pathname)
-  return resolve(event)
-}
-
 export const printPageVisits: Handle = ({ event, resolve }) => {
   const search = event.url.searchParams.toString()
   const path = event.url.pathname;
@@ -45,4 +39,4 @@ const handleTrpc = createTRPCHandle({
 	onError
 }) satisfies Handle
 
-export const handle = sequence(nameTransaction, printPageVisits, handleTrpc);
+export const handle = sequence(printPageVisits, handleTrpc);
