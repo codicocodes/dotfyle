@@ -287,7 +287,7 @@
 				<div class="flex items-start w-6">
 					<Fa icon={faGithub} />
 				</div>
-				<span class="ml-1">Github</span>
+				<span class="ml-1">GitHub</span>
 			</a>
 
 			<a

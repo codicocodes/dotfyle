@@ -4,7 +4,7 @@
 
 > {description}
 
-- [Github]({githubUrl})
+- [GitHub]({githubUrl})
 - [Dotfyle]({dotfyleUrl})
 - [Reddit]()
 
