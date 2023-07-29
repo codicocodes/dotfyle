@@ -7,10 +7,14 @@ import type { TRPCError, inferRouterContext, ProcedureType } from '@trpc/server'
 import { createTRPCHandle } from 'trpc-sveltekit';
 import { env } from '$env/dynamic/private';
 import { verifyToken } from '$lib/server/auth/services';
+import { NODE_ENV } from '$env/static/private';
+import { prismaClient } from '$lib/server/prisma/client';
 
 Sentry.init({
     dsn: env.SENTRY_DSN,
-    tracesSampleRate: 1
+    tracesSampleRate: 1,
+    environment: NODE_ENV,
+    integrations: [new Sentry.Integrations.Prisma({ client: prismaClient })],
 })
 
 export const onError = (opts: {
