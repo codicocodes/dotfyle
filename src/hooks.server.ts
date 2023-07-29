@@ -35,35 +35,34 @@ export const onError = (opts: {
 	delete error.stack;
 };
 
-
 export const profilePerformance: Handle = async ({ event, resolve }) => {
-  Sentry.withScope(scope => {
-    const user = verifyToken(event.cookies)
-    scope.setUser({ id: user?.id ?? "Anonymous" })
-  })
-  const route = event.url.pathname
+	Sentry.withScope((scope) => {
+		const user = verifyToken(event.cookies);
+		scope.setUser({ id: user?.id ?? 'Anonymous' });
+	});
+	const route = event.url.pathname;
 
-  const start = performance.now()
-  const response = await resolve(event)
-  const end = performance.now()
+	const start = performance.now();
+	const response = await resolve(event);
+	const end = performance.now();
 
-  const responseTime = end - start
+	const responseTime = end - start;
 
-  if (responseTime >= 1000) {
-    console.log(`🐢 ${route} took ${responseTime.toFixed(2)} ms`)
-  }
+	if (responseTime >= 1000) {
+		console.log(`🐢 ${route} took ${responseTime.toFixed(2)} ms`);
+	}
 
-  if (responseTime < 1000) {
-    console.log(`🚀 ${route} took ${responseTime.toFixed(2)} ms`)
-  }
+	if (responseTime < 1000) {
+		console.log(`🚀 ${route} took ${responseTime.toFixed(2)} ms`);
+	}
 
-  return response
-}
+	return response;
+};
 
 const handleTrpc = createTRPCHandle({
 	router,
 	createContext,
 	onError
-}) satisfies Handle
+}) satisfies Handle;
 
 export const handle = sequence(Sentry.sentryHandle(), profilePerformance, handleTrpc);
