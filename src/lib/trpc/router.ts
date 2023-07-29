@@ -48,7 +48,6 @@ import {
 } from '$lib/server/prisma/posts/services';
 import { getMediaForPlugin } from '$lib/server/prisma/media/service';
 import { marked } from 'marked';
-import { prismaClient } from '$lib/server/prisma/client';
 
 export const router = t.router({
 	syncPlugin: t.procedure
