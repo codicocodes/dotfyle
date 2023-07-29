@@ -15,7 +15,7 @@
 </script>
 
 <svelte:head>
-	<title>{profile.username} neovim configs</title>
+	<title>{profile.username} - Neovim configugurations</title>
 </svelte:head>
 
 <OuterLayout>
