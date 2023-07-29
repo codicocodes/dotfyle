@@ -4,22 +4,25 @@
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { DoubleBounce } from 'svelte-loading-spinners';
 	import { goto } from '$app/navigation';
+	import { isMaintenanceMode } from '$lib/utils';
 	let loading = false;
+  $: disabled = loading || isMaintenanceMode();
 </script>
 
 <form>
 	<button
+    disabled={disabled}
 		on:click={() => {
-			if (!loading) {
+			if (!disabled) {
 				goto('/api/auth/github');
 			}
 			loading = true;
 		}}
 	>
 		<a
-			href={loading ? null : '/api/auth/github'}
+			href={disabled ? null : '/api/auth/github'}
 			class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center ${
-				loading
+				disabled
 					? 'hover:bg-white/25 hover:cursor-not-allowed'
 					: 'hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25'
 			}`}
