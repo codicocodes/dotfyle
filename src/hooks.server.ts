@@ -1,11 +1,17 @@
+import * as Sentry from '@sentry/sveltekit';
 import { createContext } from '$lib/trpc/context';
 import { router, type Router } from '$lib/trpc/router';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import type { TRPCError, inferRouterContext, ProcedureType } from '@trpc/server';
 import { createTRPCHandle } from 'trpc-sveltekit';
+import { env } from '$env/dynamic/private';
+import { verifyToken } from '$lib/server/auth/services';
 
-import newrelic from 'newrelic';
+Sentry.init({
+    dsn: env.SENTRY_DSN,
+    tracesSampleRate: 1
+})
 
 export const onError = (opts: {
 	ctx?: inferRouterContext<Router>;
@@ -25,6 +31,10 @@ export const onError = (opts: {
 
 
 export const profilePerformance: Handle = async ({ event, resolve }) => {
+  Sentry.withScope(scope => {
+    const user = verifyToken(event.cookies)
+    scope.setUser({ id: user?.id ?? "Anonymous" })
+  })
   const route = event.url.pathname
 
   const start = performance.now()
@@ -50,4 +60,4 @@ const handleTrpc = createTRPCHandle({
 	onError
 }) satisfies Handle
 
-export const handle = sequence(profilePerformance, handleTrpc);
+export const handle = sequence(Sentry.sentryHandle(), profilePerformance, handleTrpc);
