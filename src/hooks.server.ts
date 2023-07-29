@@ -10,6 +10,8 @@ import { verifyToken } from '$lib/server/auth/services';
 import { NODE_ENV } from '$env/static/private';
 import { prismaClient } from '$lib/server/prisma/client';
 
+console.log("Starting server: ", { NODE_ENV })
+
 if (NODE_ENV === 'production') {
 	Sentry.init({
 		dsn: env.SENTRY_DSN,
