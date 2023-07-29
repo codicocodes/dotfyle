@@ -13,7 +13,7 @@ import { prismaClient } from '$lib/server/prisma/client';
 if (NODE_ENV === 'production') {
 	Sentry.init({
 		dsn: env.SENTRY_DSN,
-		tracesSampleRate: 1,
+		tracesSampleRate: 0.1,
 		environment: NODE_ENV,
 		integrations: [new Sentry.Integrations.Prisma({ client: prismaClient })]
 	});
