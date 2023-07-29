@@ -59,6 +59,7 @@
 ## Colorscheme
 - xero/miasma.nvim
 - antonk52/lake.nvim
+- xiantang/darcula-dark.nvim
 
 ## Colorscheme Creation
 
