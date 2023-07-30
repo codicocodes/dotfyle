@@ -4,9 +4,10 @@
 	export let url: string;
 </script>
 
+<meta name="description" content={description} />
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
-<meta name="description" content={description} />
+<meta property="og:description" content={description} />
 <meta property="og:url" content={url} />
 <meta property="og:image" content="/dotfyle.png" />
 <meta name="twitter:card" content="summary_large_image" />
