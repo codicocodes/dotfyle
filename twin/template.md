@@ -1,8 +1,8 @@
-## [Introduction](#introduction)
+## Introduction
 
 Hello everyone 👋
 
-## [Neovim core](#neovim-core)
+## Neovim core
 
 > Updates of Neovim itself, which are available on Neovim nightly.
 
@@ -12,13 +12,13 @@ Hello everyone 👋
 - [PR's on GitHub](https://github.com/neovim/neovim/pulls)
 
 
-## [Neovim Plugin Community](#plugins)
+## Neovim Plugin Community
 
 > Neovim is full of active plugins. This section is about the community and what is going on.
 
 ---
 
-### [Resources & articles](#resources)
+### Resources & articles
 
 <!---
 #### Title
@@ -27,15 +27,15 @@ Hello everyone 👋
 
 ---
 
-### [New plugins](#new-plugins)
+### New plugins
 
 {new-plugins-section}
 
-### [Updated plugins](#updated-plugins)
+### Updated plugins
 
 ---
 
-## [Contributing](#contributing)
+## Contributing
 
 Add your the plugin in either of the following to be featured in This Week in Neovim and Dotfyle: 
 
