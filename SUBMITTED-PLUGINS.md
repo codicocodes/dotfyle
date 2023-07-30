@@ -19,6 +19,7 @@
 ## Programming Languages Support
 
 - llllvvuu/nvim-js-actions
+- julienvincent/nvim-paredit
 
 ## Golang
 
