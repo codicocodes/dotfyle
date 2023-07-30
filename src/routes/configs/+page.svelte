@@ -53,6 +53,7 @@
 
 <svelte:head>
 	<title>Search and find Neovim configurations</title>
+	<meta property="og:title" content="Search and find Neovim configurations" />
 	<meta
 		name="description"
 		content="Find the newest Neovim configurations, the ones with the most plugins or with the most GitHub stars. Filter by plugins and language servers."
