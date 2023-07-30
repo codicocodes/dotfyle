@@ -28,7 +28,6 @@
 	import nProgress from 'nprogress';
 	import { onMount } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
-	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
 
@@ -106,14 +105,6 @@
 		<GithubLoginButton />
 	</div>
 </Modal>
-
-<svelte:head>
-	<OpenGraph
-		title="Dotfyle | Neovim Plugin Search | Neovim Config Search | Neovim News"
-		description="Find new plugins, trending plugins & popular plugins. Search for Neovim configurations by plugin manager, plugins or language servers. Read the lateset Neovim News in This Week in Neovim."
-		url="https://dotfyle.com"
-	/>
-</svelte:head>
 
 {#if isOpen}
 	<div on:keypress={close} on:click={close} class="absolute h-full w-full bg-white-25 z-10" />

@@ -21,15 +21,17 @@
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import PostContainer from '$lib/components/PostContainer.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
+	import OpenGraph from '$lib/components/OpenGraph.svelte';
 
 	export let data: PageData;
 </script>
 
 <svelte:head>
 	<title>Dotfyle | Neovim Plugin Search | Neovim Config Search | Neovim News</title>
-	<meta
-		name="description"
-		content="Find new, trending & popular Neovim plugins. Search for Neovim configurations by plugin manager, installed plugins or configured language servers. Read the lateset Neovim News in This Week in Neovim."
+	<OpenGraph
+		title="Dotfyle | Neovim Plugin Search | Neovim Config Search | Neovim News"
+		description="Find new plugins, trending plugins & popular plugins. Search for Neovim configurations by plugin manager, plugins or language servers. Read the lateset Neovim News in This Week in Neovim."
+		url="https://dotfyle.com"
 	/>
 </svelte:head>
 

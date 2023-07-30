@@ -7,9 +7,18 @@
 	import { faChevronCircleRight, faRss } from '@fortawesome/free-solid-svg-icons';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
+	import OpenGraph from '$lib/components/OpenGraph.svelte';
 
 	export let data: PageData;
 </script>
+
+<svelte:head>
+	<OpenGraph
+		title={$page.data.seo?.title ?? "This Week in Neovim | Neovim news"}
+		url="https://dotfyle.com/configs"
+		description="Neovim news and updates from the Neovim plugin ecosystem"
+	/>
+</svelte:head>
 
 <div class="w-full flex flex-col items-center px-4">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
