@@ -37,6 +37,7 @@
 
 <svelte:head>
 	<title>Search and find Neovim plugins</title>
+	<meta property="og:title" content="Search and find Neovim plugins" />
 	<meta
 		name="description"
 		content="Find the new, trending and popular Neovim Plugins. Filter by type of plugin."
