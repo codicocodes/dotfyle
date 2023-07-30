@@ -53,6 +53,7 @@
 	<title>
 		{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives to {data.plugin.name}
 	</title>
+	<meta property="og:title" content="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives to {data.plugin.name}" />
 	<meta
 		name="description"
 		content="{data.plugin.shortDescription}"
