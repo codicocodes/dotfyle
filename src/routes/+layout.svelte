@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SvelteToast } from '@zerodevx/svelte-toast'
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import 'nprogress/nprogress.css';
 	import { invalidate } from '$app/navigation';
 	import { navigating } from '$app/stores';
@@ -28,6 +28,7 @@
 	import nProgress from 'nprogress';
 	import { onMount } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
 
@@ -107,20 +108,11 @@
 </Modal>
 
 <svelte:head>
-	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Dotfyle | Neovim Plugin Search | Neovim Config Search | Neovim News" />
-	<meta
-		name="description"
-		content="Find new plugins, trending plugins & popular plugins. Search for Neovim configurations by plugin manager, plugins or language servers. Read the lateset Neovim News in This Week in Neovim."
+	<OpenGraph
+		title="Dotfyle | Neovim Plugin Search | Neovim Config Search | Neovim News"
+		description="Find new plugins, trending plugins & popular plugins. Search for Neovim configurations by plugin manager, plugins or language servers. Read the lateset Neovim News in This Week in Neovim."
+		url="https://dotfyle.com"
 	/>
-	<meta property="og:url" content="https://dotfyle.com" />
-	<meta property="og:image" content="/dotfyle.png" />
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:site" content="@codicocodes" />
-	<meta name="twitter:creator" content="@codicocodes" />
-	<meta name="twitter:title" content="Dotfyle" />
-	<meta name="twitter:description" content="Discover and share neovim configs and plugins" />
-	<meta name="twitter:image" content="/dotfyle.png" />
 </svelte:head>
 
 {#if isOpen}
@@ -217,113 +209,98 @@
 	<OuterLayout>
 		<slot />
 
-	<footer
-		class="sticky mx-auto max-w-full xl:max-w-7xl w-full sm:mt-4 grid sm:grid-cols-2 xl:grid-cols-3 px-4 sm:px-4 gap-8 mb-8"
-	>
-		<div class="flex flex-col gap-2 text-gray-400 items-start">
-			<h3 class="text-2xl font-semibold tracking-wider">Features</h3>
-			<a
-				href="/plugins"
-				class="flex items-center hover:text-white gap-2"
-			>
-				<div class="flex items-start w-6">
-					<Fa icon={faSearch} />
-				</div>
-				<span class="ml-1">Neovim Plugin Search</span>
-			</a>
+		<footer
+			class="sticky mx-auto max-w-full xl:max-w-7xl w-full sm:mt-4 grid sm:grid-cols-2 xl:grid-cols-3 px-4 sm:px-4 gap-8 mb-8"
+		>
+			<div class="flex flex-col gap-2 text-gray-400 items-start">
+				<h3 class="text-2xl font-semibold tracking-wider">Features</h3>
+				<a href="/plugins" class="flex items-center hover:text-white gap-2">
+					<div class="flex items-start w-6">
+						<Fa icon={faSearch} />
+					</div>
+					<span class="ml-1">Neovim Plugin Search</span>
+				</a>
 
-			<a
-				href="/configs"
-				class="flex items-center hover:text-purple-400 gap-2"
-			>
-				<div class="flex items-start w-6">
-					<Fa icon={faWandSparkles} />
-				</div>
-				<span class="ml-1">Neovim Config Search</span>
-			</a>
+				<a href="/configs" class="flex items-center hover:text-purple-400 gap-2">
+					<div class="flex items-start w-6">
+						<Fa icon={faWandSparkles} />
+					</div>
+					<span class="ml-1">Neovim Config Search</span>
+				</a>
 
-			<a
-				href="/this-week-in-neovim"
-				class="flex items-center hover:text-green-400 gap-2"
-			>
-				<div class="flex items-start w-6">
-					<Fa icon={faNewspaper} />
-				</div>
-				<span class="ml-1">This Week in Neovim</span>
-			</a>
+				<a href="/this-week-in-neovim" class="flex items-center hover:text-green-400 gap-2">
+					<div class="flex items-start w-6">
+						<Fa icon={faNewspaper} />
+					</div>
+					<span class="ml-1">This Week in Neovim</span>
+				</a>
 
-			<a
-				href="https://dotfyle.com/this-week-in-neovim/rss.xml"
-				class="flex items-center hover:text-orange-400 gap-2"
-			>
-				<div class="flex items-start w-6">
-					<Fa icon={faRss} />
-				</div>
-				<span class="ml-1">This Week in Neovim RSS Feed</span>
-			</a>
-		</div>
-<div class="flex flex-col gap-2 text-gray-400 items-start">
-			<h3 class="text-2xl font-semibold tracking-wider">Guides</h3>
-			<a
-				href="/guides/auto-generated-readme"
-				class="flex items-center hover:text-white gap-2"
-			>
-				<span class="ml-1">How to automatically create a README for your Neovim config</span>
-			</a>
-<a
-				href="/guides/plugin-usage-badge"
-				class="flex items-center hover:text-white gap-2"
-			>
-				<span class="ml-1">Showcase your Neovim plugins usage with a badge</span>
-			</a>
-		</div>
-		<div class="flex flex-col gap-2 text-gray-400 items-start">
-			<h3 class="text-2xl font-semibold tracking-wider">Dotfyle</h3>
-			<a
-				href="https://github.com/codicocodes/dotfyle"
-				class="flex items-center hover:text-white gap-2"
-				target="blank"
-			>
-				<div class="flex items-start w-6">
-					<Fa icon={faGithub} />
-				</div>
-				<span class="ml-1">GitHub</span>
-			</a>
+				<a
+					href="https://dotfyle.com/this-week-in-neovim/rss.xml"
+					class="flex items-center hover:text-orange-400 gap-2"
+				>
+					<div class="flex items-start w-6">
+						<Fa icon={faRss} />
+					</div>
+					<span class="ml-1">This Week in Neovim RSS Feed</span>
+				</a>
+			</div>
+			<div class="flex flex-col gap-2 text-gray-400 items-start">
+				<h3 class="text-2xl font-semibold tracking-wider">Guides</h3>
+				<a href="/guides/auto-generated-readme" class="flex items-center hover:text-white gap-2">
+					<span class="ml-1">How to automatically create a README for your Neovim config</span>
+				</a>
+				<a href="/guides/plugin-usage-badge" class="flex items-center hover:text-white gap-2">
+					<span class="ml-1">Showcase your Neovim plugins usage with a badge</span>
+				</a>
+			</div>
+			<div class="flex flex-col gap-2 text-gray-400 items-start">
+				<h3 class="text-2xl font-semibold tracking-wider">Dotfyle</h3>
+				<a
+					href="https://github.com/codicocodes/dotfyle"
+					class="flex items-center hover:text-white gap-2"
+					target="blank"
+				>
+					<div class="flex items-start w-6">
+						<Fa icon={faGithub} />
+					</div>
+					<span class="ml-1">GitHub</span>
+				</a>
 
-			<a
-				href="https://discord.gg/AMbnnN5eep"
-				class="flex items-center hover:text-blue-300 gap-2"
-				target="blank"
-			>
-				<div class="flex items-start w-6">
-					<Fa icon={faDiscord} />
-				</div>
-				<span class="ml-1">Discord</span>
-			</a>
-			<a
-				href="https://twitch.tv/codico"
-				class="flex items-center hover:text-purple-400 gap-2"
-				target="blank"
-			>
-				<div class="flex items-start w-6">
-					<Fa icon={faTwitch} />
-				</div>
-				<span class="ml-1">Twitch</span>
-			</a>
+				<a
+					href="https://discord.gg/AMbnnN5eep"
+					class="flex items-center hover:text-blue-300 gap-2"
+					target="blank"
+				>
+					<div class="flex items-start w-6">
+						<Fa icon={faDiscord} />
+					</div>
+					<span class="ml-1">Discord</span>
+				</a>
+				<a
+					href="https://twitch.tv/codico"
+					class="flex items-center hover:text-purple-400 gap-2"
+					target="blank"
+				>
+					<div class="flex items-start w-6">
+						<Fa icon={faTwitch} />
+					</div>
+					<span class="ml-1">Twitch</span>
+				</a>
 
-			<a
-				href="https://speedtyper.dev"
-				class="flex items-center hover:text-green-400 gap-2"
-				target="blank"
-			>
-				<div class="flex items-start w-6">
-					<Fa icon={faKeyboard} />
-				</div>
-				<span class="ml-1">Speedtyper.dev</span>
-			</a>
-		</div>
-	</footer>
-  </OuterLayout>
+				<a
+					href="https://speedtyper.dev"
+					class="flex items-center hover:text-green-400 gap-2"
+					target="blank"
+				>
+					<div class="flex items-start w-6">
+						<Fa icon={faKeyboard} />
+					</div>
+					<span class="ml-1">Speedtyper.dev</span>
+				</a>
+			</div>
+		</footer>
+	</OuterLayout>
 </div>
 
 <style global>
@@ -332,4 +309,3 @@
 		@apply bg-emerald-600;
 	}
 </style>
-

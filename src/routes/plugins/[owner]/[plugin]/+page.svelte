@@ -23,6 +23,7 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import type { Media } from '@prisma/client';
+	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
@@ -51,12 +52,13 @@
 
 <svelte:head>
 	<title>
-		{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives to {data.plugin.name}
+		{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives
+		to {data.plugin.name}
 	</title>
-	<meta property="og:title" content="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives to {data.plugin.name}" />
-	<meta
-		name="description"
-		content="{data.plugin.shortDescription}"
+	<OpenGraph
+		title="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives to {data.plugin.name}"
+		url="https://dotfyle.com/configs"
+		description={data.plugin.shortDescription}
 	/>
 </svelte:head>
 

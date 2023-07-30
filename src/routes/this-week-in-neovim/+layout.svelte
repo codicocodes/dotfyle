@@ -2,12 +2,16 @@
 	import { page } from '$app/stores';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import MediumHeroTitle from '$lib/components/MediumHeroTitle.svelte';
+	import OpenGraph from '$lib/components/OpenGraph.svelte';
 </script>
 
 <svelte:head>
   <title>{$page.data.seo?.title ?? "This Week in Neovim | Neovim news"}</title>
-	<meta property="og:title" content={$page.data.seo?.title ?? "This Week in Neovim | Neovim news"} />
-  <meta name="description" content="Neovim news and updates from the Neovim plugin ecosystem" />
+	<OpenGraph
+		title={$page.data.seo?.title ?? "This Week in Neovim | Neovim news"}
+		url="https://dotfyle.com/configs"
+		description="Neovim news and updates from the Neovim plugin ecosystem"
+	/>
 </svelte:head>
 
 <MediumHeroTitle>

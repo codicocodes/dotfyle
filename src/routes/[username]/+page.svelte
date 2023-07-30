@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
+	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
+	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import { humanizeAbsolute } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -16,8 +18,11 @@
 
 <svelte:head>
 	<title>{data.profile.username} - Neovim configugurations | Authored Neovim plugins</title>
-	<meta property="og:title" content={data.profile.username} />
-	<meta name="description" content="Dotfiles | Neovim configurations | Authored plugins" />
+	<OpenGraph
+		title={data.profile.username}
+		url="https://dotfyle.com/{data.profile.username}"
+		description="Dotfiles | Neovim configurations | Authored plugins"
+	/>
 </svelte:head>
 
 <OuterLayout>
@@ -80,7 +85,9 @@
 							Authored Neovim plugins
 						</h3>
 						<p class="text-lg font-light">
-							{data.profile.username} has authored {data.plugins.length} Neovim plugins. Their plugins have a total of {data.plugins.reduce((count, curr) => count + curr.configCount ,0)} installs across Dotfyle.
+							{data.profile.username} has authored {data.plugins.length} Neovim plugins. Their plugins
+							have a total of {data.plugins.reduce((count, curr) => count + curr.configCount, 0)} installs
+							across Dotfyle.
 						</p>
 						<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
 							{#each data.plugins as plugin, _}

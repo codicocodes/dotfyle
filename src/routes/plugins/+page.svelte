@@ -19,6 +19,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
+	import OpenGraph from '$lib/components/OpenGraph.svelte';
 
 	export let data: PageData;
 
@@ -37,10 +38,10 @@
 
 <svelte:head>
 	<title>Search and find Neovim plugins</title>
-	<meta property="og:title" content="Search and find Neovim plugins" />
-	<meta
-		name="description"
-		content="Find the new, trending and popular Neovim Plugins. Filter by type of plugin."
+	<OpenGraph
+		title="Search and find Neovim plugins"
+		url="https://dotfyle.com/configs"
+		description="Find the new, trending and popular Neovim Plugins. Filter by type of plugin."
 	/>
 </svelte:head>
 
