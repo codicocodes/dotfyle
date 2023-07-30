@@ -186,10 +186,16 @@
 
 - echasnovski/mini.bufremove
 - sourproton/tunnell.nvim
+- tamton-aquib/flirt.nvim
 
 ## Tmux
 
 ## Game
+
+## Fun
+
+- tamton-aquib/duck.nvim
+- tamton-aquib/zone.nvim
 
 ## Competitive Programming
 
