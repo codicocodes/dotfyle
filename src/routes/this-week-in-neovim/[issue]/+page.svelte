@@ -22,7 +22,7 @@
 	<OpenGraph
 		title={data.post.title}
 		url="https://dotfyle.com/this-week-in-neovim/{data.post.issue}"
-		description="This Week in Neovim #{data.post.issue} with news and updates from the Neovim plugin ecosystem and Neovim core."
+		description="This Week in Neovim {data.post.issue} with news and updates from the Neovim plugin ecosystem and Neovim core."
 	/>
 </svelte:head>
 
