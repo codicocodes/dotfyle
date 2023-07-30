@@ -6,6 +6,7 @@
 
 <svelte:head>
   <title>{$page.data.seo?.title ?? "This Week in Neovim | Neovim news"}</title>
+	<meta property="og:title" content={$page.data.seo?.title ?? "This Week in Neovim | Neovim news"} />
   <meta name="description" content="Neovim news and updates from the Neovim plugin ecosystem" />
 </svelte:head>
 
