@@ -4,7 +4,8 @@ import { TRPCError } from '@trpc/server';
 export enum InitFileNames {
 	initLua = 'init.lua',
 	initVim = 'init.vim',
-	vimRC = '.vimrc'
+  initFnl = 'init.fnl',
+	vimRC = '.vimrc',
 }
 
 export interface InitFile {
@@ -30,9 +31,10 @@ export class InitFileFinder {
 	findAllInitFile(root: GithubTree): InitFile[] {
 		const { tree } = root;
 		const initLuas = this._findInitFiles(tree, InitFileNames.initLua);
+    const initFnl = this._findInitFiles(tree, InitFileNames.initFnl);
 		const initVims = this._findInitFiles(tree, InitFileNames.initVim);
 		const vimRCs = this._findInitFiles(tree, InitFileNames.vimRC);
-		const paths = [...initLuas, ...initVims, ...vimRCs];
+		const paths = [...initLuas, ...initFnl, ...initVims, ...vimRCs];
 		if (!paths.length) {
 			throw new TRPCError({ message: 'failed to identify init file', code: 'BAD_REQUEST' });
 		}
