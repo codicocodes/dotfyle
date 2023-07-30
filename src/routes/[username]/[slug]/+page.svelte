@@ -6,18 +6,16 @@
 	import NeovimConfigMetaData from '$lib/components/NeovimConfigMetaData.svelte';
 	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
-	import { copyToClipboard } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faChevronCircleRight,
 		faChevronDown,
 		faChevronUp,
-		faCopy,
 		faStar
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { Highlight } from 'svelte-highlight';
-	import { bash, markdown } from 'svelte-highlight/languages';
+	import { bash } from 'svelte-highlight/languages';
 	import { githubDark } from 'svelte-highlight/styles';
 	import { slide } from 'svelte/transition';
 	import type { PageData } from './$types';
@@ -31,7 +29,9 @@
 
 <svelte:head>
 	{@html githubDark}
-	<title>{data.config.owner}/{data.config.repo} - Neovim configuration, Install instructions, Neovim plugins & Language servers</title>
+	<title>{data.config.owner}/{data.config.repo} - Neovim configuration</title>
+	<meta property="og:title" content="{data.config.owner}/{data.config.repo} - Neovim configuration" />
+	<meta name="description" content="Plugin Manager, Leaderkey, Install instructions, Neovim plugins & Language Servers" />
 </svelte:head>
 
 <div class="flex flex-col gap-4 px-4">
