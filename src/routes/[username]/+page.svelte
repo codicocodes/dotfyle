@@ -16,6 +16,8 @@
 
 <svelte:head>
 	<title>{data.profile.username} - Neovim configugurations | Authored Neovim plugins</title>
+	<meta property="og:title" content={data.profile.username} />
+	<meta name="description" content="Dotfiles | Neovim configurations | Authored plugins" />
 </svelte:head>
 
 <OuterLayout>
