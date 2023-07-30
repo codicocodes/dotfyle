@@ -51,6 +51,14 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Search and find Neovim configurations</title>
+	<meta
+		name="description"
+		content="Find the newest Neovim configurations, the ones with the most plugins or with the most GitHub stars. Filter by plugins and language servers."
+	/>
+</svelte:head>
+
 <Modal showModal={showFilter} onClose={() => (showFilter = false)}>
 	<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
 		<GlossyCard>

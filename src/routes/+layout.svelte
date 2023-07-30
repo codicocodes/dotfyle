@@ -262,6 +262,21 @@
 				<span class="ml-1">This Week in Neovim RSS Feed</span>
 			</a>
 		</div>
+<div class="flex flex-col gap-2 text-gray-400 items-start">
+			<h3 class="text-2xl font-semibold tracking-wider">Guides</h3>
+			<a
+				href="/guides/auto-generated-readme"
+				class="flex items-center hover:text-white gap-2"
+			>
+				<span class="ml-1">How to automatically create a README for your Neovim config</span>
+			</a>
+<a
+				href="/guides/plugin-usage-badge"
+				class="flex items-center hover:text-white gap-2"
+			>
+				<span class="ml-1">Showcase your Neovim plugins usage with a badge</span>
+			</a>
+		</div>
 		<div class="flex flex-col gap-2 text-gray-400 items-start">
 			<h3 class="text-2xl font-semibold tracking-wider">Dotfyle</h3>
 			<a
@@ -272,7 +287,7 @@
 				<div class="flex items-start w-6">
 					<Fa icon={faGithub} />
 				</div>
-				<span class="ml-1">Github</span>
+				<span class="ml-1">GitHub</span>
 			</a>
 
 			<a

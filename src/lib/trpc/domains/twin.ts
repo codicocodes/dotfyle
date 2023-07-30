@@ -3,6 +3,7 @@ import { t } from '../t';
 import { z } from 'zod';
 import { TwinPostBuilder } from '$lib/server/twin/builder';
 import { prismaClient } from '$lib/server/prisma/client';
+import { rebuildCachedTwinFeed } from '../../../routes/this-week-in-neovim/rss.xml/+server';
 
 export const generateTwinIssue = t.procedure
 	.use(isAdmin)
@@ -41,5 +42,8 @@ export const publishTwinIssue = t.procedure
 			data: {
 				publishedAt: new Date(),
 			}
-		});
+		}).then(r => {
+      rebuildCachedTwinFeed()
+      return r
+    });
 	});

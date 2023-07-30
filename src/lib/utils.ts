@@ -1,6 +1,6 @@
   import { toast } from '@zerodevx/svelte-toast'
 import type { Media, User } from "@prisma/client";
-import { PUBLIC_ADMIN_USER_GITHUB_ID } from '$env/static/public';
+import { PUBLIC_ADMIN_USER_GITHUB_ID, PUBLIC_MAINTENANCE_ENABLED } from '$env/static/public';
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse/lib';
 import rehypeSanitize from 'rehype-sanitize';
@@ -80,4 +80,8 @@ export function getMediaType(media: Media): 'image' | 'video' {
 export function copyToClipboard(data: string) {
   navigator.clipboard.writeText(data);
   toast.push("Copied to clipboard")
+}
+
+export function isMaintenanceMode() {
+  return PUBLIC_MAINTENANCE_ENABLED === 'true'
 }

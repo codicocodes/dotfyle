@@ -59,6 +59,7 @@
 ## Colorscheme
 - xero/miasma.nvim
 - antonk52/lake.nvim
+- xiantang/darcula-dark.nvim
 
 ## Colorscheme Creation
 
@@ -105,6 +106,7 @@
 - mrshmllow/open-handlers.nvim
 - mvaldes14/terraform.nvim
 - creativenull/dotfyle-metadata.nvim
+- chrisgrieser/nvim-early-retirement
 
 ## Terminal Integration
 
