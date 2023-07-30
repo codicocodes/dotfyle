@@ -13,9 +13,10 @@
 </script>
 
 <svelte:head>
+  <title>{"This Week in Neovim | Neovim news"}</title>
 	<OpenGraph
-		title={$page.data.seo?.title ?? "This Week in Neovim | Neovim news"}
-		url="https://dotfyle.com/configs"
+		title={"This Week in Neovim | Neovim news"}
+		url="https://dotfyle.com/this-week-in-neovim"
 		description="Neovim news and updates from the Neovim plugin ecosystem"
 	/>
 </svelte:head>

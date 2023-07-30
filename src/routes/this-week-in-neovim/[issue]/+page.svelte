@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
+	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 	import {
@@ -15,6 +16,15 @@
 	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
 	$: tweetUrl = `https://twitter.com/intent/tweet?url=${url}&text=${tweetText}&via=codicocodes`;
 </script>
+
+<svelte:head>
+  <title>{data.post.title}</title>
+	<OpenGraph
+		title={data.post.title}
+		url="https://dotfyle.com/this-week-in-neovim/{data.post.issue}"
+		description="This Week in Neovim #{data.post.issue} with news and updates from the Neovim plugin ecosystem and Neovim core."
+	/>
+</svelte:head>
 
 <h1 class="p-2">
 	<SmallTitle title={data.post.title} />

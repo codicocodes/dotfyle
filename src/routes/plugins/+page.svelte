@@ -40,7 +40,7 @@
 	<title>Search and find Neovim plugins</title>
 	<OpenGraph
 		title="Search and find Neovim plugins"
-		url="https://dotfyle.com/configs"
+		url="https://dotfyle.com/plugins"
 		description="Find the new, trending and popular Neovim Plugins. Filter by type of plugin."
 	/>
 </svelte:head>
