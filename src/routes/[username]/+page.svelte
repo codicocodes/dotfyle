@@ -78,7 +78,7 @@
 							Authored Neovim plugins
 						</h3>
 						<p class="text-lg font-light">
-							{data.profile.username} has authored {data.plugins.length} Neovim plugins.
+							{data.profile.username} has authored {data.plugins.length} Neovim plugins. Their plugins have a total of {data.plugins.reduce((count, curr) => count + curr.configCount ,0)} installs across Dotfyle.
 						</p>
 						<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
 							{#each data.plugins as plugin, _}
