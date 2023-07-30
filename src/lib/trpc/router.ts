@@ -16,6 +16,7 @@ import {
 	getAllNeovimPluginNames,
 	getAllPluginCategories,
 	getPlugin,
+	getPluginsByAuthor,
 	getPluginsByCategory,
 	getPluginsBySlug,
 	getPluginsWithDotfyleShield,
@@ -190,6 +191,13 @@ export const router = t.router({
 		})
 		.query(async ({ input: username }) => {
 			return getConfigsByUsername(username);
+		}),
+	getAuthoredPluginsByUsername: t.procedure
+		.input((input: unknown) => {
+			return z.string().parse(input);
+		})
+		.query(async ({ input: username }) => {
+			return getPluginsByAuthor(username);
 		}),
 	getUserByUsername: t.procedure
 		.input((input: unknown) => {

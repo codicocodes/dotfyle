@@ -388,3 +388,13 @@ export async function updatePlugin(plugin: NeovimPlugin): Promise<NeovimPlugin> 
 		data: plugin
 	});
 }
+
+
+export async function getPluginsByAuthor(owner: string): Promise<NeovimPluginWithCount[]> {
+	const plugins = await prismaClient.neovimPlugin.findMany({
+		select: selectConfigCount,
+		where: { owner },
+		orderBy: orderByPopularity,
+	});
+	return plugins.map(flattenConfigCount);
+}
