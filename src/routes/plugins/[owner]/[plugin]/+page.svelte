@@ -47,6 +47,8 @@
 		readme = await trpc($page).getReadme.query({ owner, name });
 	}
 
+  $: firstImage = data.media.filter(m => getMediaType(m) === "image")?.[0]?.url
+
 	let selectedMedia: Media | undefined;
 </script>
 
@@ -59,6 +61,7 @@
 		title="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives to {data.plugin.name}"
 		url="https://dotfyle.com/configs"
 		description={data.plugin.shortDescription}
+    image={firstImage }
 	/>
 </svelte:head>
 
