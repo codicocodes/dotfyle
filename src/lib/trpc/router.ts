@@ -241,7 +241,6 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { query, plugins, sorting, page, take, languageServers } }) => {
-			console.log({ languageServers });
 			const configs = await searchNeovimConfigs({
 				query,
 				plugins,
