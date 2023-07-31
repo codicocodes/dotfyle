@@ -21,6 +21,7 @@
 	<OpenGraph
 		title={data.profile.username}
 		url="https://dotfyle.com/{data.profile.username}"
+    image={data.profile.avatarUrl}
 		description="Dotfiles | Neovim configurations | Authored plugins"
 	/>
 </svelte:head>

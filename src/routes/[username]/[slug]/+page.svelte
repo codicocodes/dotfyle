@@ -35,6 +35,7 @@
 		title="{data.config.owner}/{data.config.repo} - Neovim configuration"
 		url="https://dotfyle.com/{data.config.owner}/{data.config.repo}"
 		description="Plugin Manager, Leaderkey, Install instructions, Neovim plugins & Language Servers"
+    image={data.config.ownerAvatar}
 	/>
 </svelte:head>
 
