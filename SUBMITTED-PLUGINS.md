@@ -46,6 +46,7 @@
 ## Fuzzy Finder
 
 - echasnovski/mini.fuzzy
+- Marskey/telescope-sg
 
 ## File Explorer
 
