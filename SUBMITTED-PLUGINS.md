@@ -162,6 +162,7 @@
 - echasnovski/mini.basics
 - HiPhish/rainbow-delimiters.nvim
 - KaitlynEthylia/TreePin
+- hrsh7th/nvim-pasta
 
 ## Comment
 
