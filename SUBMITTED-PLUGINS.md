@@ -145,6 +145,8 @@
 
 ## Keybinding
 
+- echasnovski/mini.clue
+
 ## Mouse
 
 ## Scrolling
