@@ -7,6 +7,7 @@
 
 ## LSP
 - nvimdev/guard.nvim
+- MaximilianLloyd/tw-values.nvim
 
 ## LSP Installer
 
