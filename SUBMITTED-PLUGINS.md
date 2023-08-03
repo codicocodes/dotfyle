@@ -21,6 +21,8 @@
 
 - llllvvuu/nvim-js-actions
 - julienvincent/nvim-paredit
+- bennypowers/nvim-regexplainer
+- bennypowers/webc.nvim
 
 ## Golang
 
@@ -167,6 +169,7 @@
 - HiPhish/rainbow-delimiters.nvim
 - KaitlynEthylia/TreePin
 - hrsh7th/nvim-pasta
+- bennypowers/splitjoin.nvim
 
 ## Comment
 
