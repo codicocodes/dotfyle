@@ -1,4 +1,5 @@
-import { fetchGitCommits, fetchGithubRepositoryByName, fetchReadme } from '$lib/server/github/api';
+import { fetchGitCommits, fetchGithubRepositoryByName, fetchReadme, fetchRepoFileTree } from '$lib/server/github/api';
+import type { GithubRepository } from '$lib/server/github/schema';
 import { GithubMediaParser } from '$lib/server/media/parser';
 import { upsertBreakingChange } from '$lib/server/prisma/breakingChanges/service';
 import { prismaClient } from '$lib/server/prisma/client';
@@ -19,11 +20,14 @@ export class PluginSyncer {
 		this.mediaParser = new GithubMediaParser();
 	}
 	async sync() {
+		const repo = await fetchGithubRepositoryByName(this.token, this.plugin.owner, this.plugin.name);
+    this.syncStars(repo),
+
 		await Promise.all([
-			this.syncStars(),
-			this.syncReadme(),
+			this.syncReadme(repo.default_branch),
 			this.syncBreakingChanges(),
 		]);
+
 		return this.updatePlugin();
 	}
 
@@ -46,22 +50,25 @@ export class PluginSyncer {
 		}
 	}
 
-	async syncStars() {
-		const repo = await fetchGithubRepositoryByName(this.token, this.plugin.owner, this.plugin.name);
+	async syncStars(repo: GithubRepository) {
 		this.plugin.stars = repo.stargazers_count;
 		this.plugin.shortDescription = repo.description ?? this.plugin.shortDescription;
 	}
 
-	async syncReadme() {
+	async syncReadme(default_branch: string) {
 		let readme = await fetchReadme(this.token, this.plugin.owner, this.plugin.name);
 		readme = this.mediaParser.replaceInvalidGithubUrls(readme);
 		this.plugin.readme = readme;
-		this.syncMedia(readme);
+		this.syncMedia(default_branch, readme);
     this.syncHasDotfyleShield(readme);
 	}
 
-	async syncMedia(readme: string) {
-		const media = this.mediaParser.findMediaUrls(readme, this.plugin.owner, this.plugin.name);
+	async syncMedia(default_branch: string, readme: string) {
+    const getCurrentSha = async () => {
+      const tree = await fetchRepoFileTree(this.token, this.plugin.owner, this.plugin.name, default_branch)
+      return tree.sha
+    }
+		const media = await this.mediaParser.findMediaUrls(getCurrentSha, readme, this.plugin.owner, this.plugin.name);
 		const data = await Promise.all(
 			media.map(async (url) => {
 				return fetch(url).then((r) => ({
