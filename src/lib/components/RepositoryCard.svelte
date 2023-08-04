@@ -10,7 +10,6 @@
 	export let category: string;
 	export let description: string;
 	export let thumbnail: Media | null = null;
-	console.log({ thumbnail });
 </script>
 
 <div
