@@ -3,9 +3,9 @@
 	import { markdown } from 'svelte-highlight/languages';
 	import github from 'svelte-highlight/styles/github-dark';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
-	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import type { PageData } from './$types';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
+	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 
 	export let data: PageData;
 
@@ -82,13 +82,14 @@
 		{#await data.loading.plugins then plugins}
 			<BigGridContainer>
 				{#each plugins as plugin, _}
-					<NeovimPluginCard
-						owner={plugin.owner}
+					<RepositoryCard
+						username={plugin.owner}
 						name={plugin.name}
 						stars={plugin.stars.toString()}
 						configCount={plugin.configCount}
 						category={plugin.category}
-						shortDescription={plugin.shortDescription}
+						description={plugin.shortDescription}
+            thumbnail={plugin.media[0]}
 					/>
 				{/each}
 			</BigGridContainer>

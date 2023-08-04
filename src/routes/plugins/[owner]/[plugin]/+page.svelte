@@ -2,7 +2,6 @@
 	import Button from '$lib/components/Button.svelte';
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
-	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { getMediaType, hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -24,13 +23,15 @@
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import type { Media } from '@prisma/client';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
+	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
+	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
 		'text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500 ';
 	export let data: PageData;
 
-	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 3);
+	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
 	let syncingPlugin = false;
 
 	let readme = '';
@@ -47,7 +48,7 @@
 		readme = await trpc($page).getReadme.query({ owner, name });
 	}
 
-  $: firstImage = data.media.filter(m => getMediaType(m) === "image")?.[0]?.url
+	$: firstImage = data.media.filter((m) => getMediaType(m) === 'image')?.[0]?.url;
 
 	let selectedMedia: Media | undefined;
 </script>
@@ -58,10 +59,11 @@
 		to {data.plugin.name}
 	</title>
 	<OpenGraph
-		title="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives to {data.plugin.name}"
+		title="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin
+			.name} | Alternatives to {data.plugin.name}"
 		url="https://dotfyle.com/configs"
 		description={data.plugin.shortDescription}
-    image={firstImage }
+		image={firstImage}
 	/>
 </svelte:head>
 
@@ -258,23 +260,21 @@
 							<CoolLink href={`/plugins?categories=${data.plugin.category}`} text="more plugins" />
 						</div>
 
-						<div
-							in:fade
-							class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
-						>
+            <BigGridContainer>
 							{#each categoryPlugins as plugin, _}
 								<div in:fade>
-									<NeovimPluginCard
-										owner={plugin.owner}
+									<RepositoryCard
+										username={plugin.owner}
 										name={plugin.name}
 										stars={plugin.stars.toString()}
 										configCount={plugin.configCount}
 										category={plugin.category}
-										shortDescription={plugin.shortDescription}
+										description={plugin.shortDescription}
+                    thumbnail={plugin.media[0]}
 									/>
 								</div>
 							{/each}
-						</div>
+            </BigGridContainer>
 					</div>
 				</TabPanel>
 				<TabPanel>

@@ -130,6 +130,7 @@ const selectConfigCount = {
 	readme: false,
 	addedLastWeek: true,
 	dotfyleShieldAddedAt: true,
+	media: true,
 	_count: {
 		select: {
 			neovimConfigPlugins: true
@@ -155,7 +156,7 @@ export async function getPluginsWithDotfyleShield() {
 		orderBy: {
 			dotfyleShieldAddedAt: 'desc'
 		},
-    take: 9,
+		take: 9
 	});
 
 	return nestedPluginData.map(flattenConfigCount);
@@ -218,7 +219,7 @@ export async function getPluginsByCategory(category: string): Promise<NeovimPlug
 			category
 		},
 		orderBy: orderByPopularity,
-		take: 4
+		take: 5
 	});
 	return plugins.map(flattenConfigCount);
 }
@@ -380,21 +381,23 @@ export async function syncWeeklyTrending() {
 	);
 }
 
-export async function updatePlugin(plugin: NeovimPlugin): Promise<NeovimPlugin> {
+export async function updatePlugin(
+	pluginWithMetaData: NeovimPluginWithCount
+): Promise<NeovimPlugin> {
+	const { media, ...data } = pluginWithMetaData;
 	return prismaClient.neovimPlugin.update({
 		where: {
-			id: plugin.id
+			id: data.id
 		},
-		data: plugin
+		data
 	});
 }
-
 
 export async function getPluginsByAuthor(owner: string): Promise<NeovimPluginWithCount[]> {
 	const plugins = await prismaClient.neovimPlugin.findMany({
 		select: selectConfigCount,
 		where: { owner },
-		orderBy: orderByPopularity,
+		orderBy: orderByPopularity
 	});
 	return plugins.map(flattenConfigCount);
 }
