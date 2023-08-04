@@ -38,7 +38,7 @@
 			<div class="h-22 w-72 rounded flex items-center">
 				{#if getMediaType(thumbnail) === 'image'}
 					<img
-						class="h-full w-full object-cover rounded-lg text-xs"
+						class="h-full w-full object-cover rounded-lg text-xs max-h-[7rem]"
 						on:error={() => console.log('failed loading thumbnail')}
 						style="object-position: center;"
 						src={thumbnail.url}
@@ -47,7 +47,7 @@
 				{/if}
 				{#if getMediaType(thumbnail) === 'video'}
 					<video
-						class="h-full w-full object-cover rounded-lg text-xs"
+						class="h-full w-full object-cover rounded-lg text-xs max-h-[7rem]"
 						on:error={() => console.log('failed loading thumbnail')}
 						style="object-position: center;"
 						src={thumbnail.url}
