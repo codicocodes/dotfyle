@@ -22,11 +22,9 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
-	import { getMediaType } from '$lib/utils';
 
 
 	export let data: PageData;
-console.log(data)
 </script>
 
 <svelte:head>
