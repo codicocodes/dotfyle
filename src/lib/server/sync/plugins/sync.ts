@@ -60,11 +60,22 @@ export class PluginSyncer {
 		const media = this.mediaParser.findMediaUrls(readme, this.plugin.owner, this.plugin.name);
 		const data = await Promise.all(
 			media.map(async (url) => {
-				return fetch(url).then((r) => ({
-					url,
-					type: r.headers.get('Content-Type') ?? '',
-					neovimPluginId: this.plugin.id
-				}));
+				return fetch(url).then((r) => {
+					const type = r.headers.get('Content-Type') ?? '';
+					if (!type) {
+						console.log(`missing Content-Type for ${url}`, {
+							owner: this.plugin.owner,
+							name: this.plugin.name,
+              status: r.status,
+              sttusText: r.statusText,
+						});
+					}
+					return {
+						url,
+						type,
+						neovimPluginId: this.plugin.id
+					};
+				});
 			})
 		);
 
