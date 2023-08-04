@@ -22,6 +22,7 @@
 - llllvvuu/nvim-js-actions
 - julienvincent/nvim-paredit
 - bennypowers/webc.nvim
+- calops/hmts.nvim
 
 ## Golang
 
