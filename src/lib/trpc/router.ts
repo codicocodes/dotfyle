@@ -51,7 +51,7 @@ import { getMediaForPlugin } from '$lib/server/prisma/media/service';
 import { marked } from 'marked';
 
 export const router = t.router({
-	syncPlugin: t.procedure
+	syncPlugin: t.procedure.use(isAuthenticated)
 		.input((input: unknown) => {
 			return z
 				.object({
@@ -62,7 +62,7 @@ export const router = t.router({
 		})
 		.query(async ({ input: { owner, name }, ctx }) => {
 			const user = ctx.getAuthenticatedUser();
-			const syncer = await getPluginSyncer(user.id, owner, name);
+			const syncer = await getPluginSyncer(user, owner, name);
 			return syncer.sync();
 		}),
 	getPluginsByCategory: t.procedure

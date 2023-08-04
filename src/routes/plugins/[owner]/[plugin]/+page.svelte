@@ -3,7 +3,7 @@
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import { trpc } from '$lib/trpc/client';
-	import { getMediaType, hasBeenOneDay, humanizeAbsolute } from '$lib/utils';
+	import { getMediaType, hasBeenOneDay, humanizeAbsolute, isAdmin } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faBomb,
@@ -114,7 +114,7 @@
 							never synced
 						</span>
 					{/if}
-					{#if data.user && (data.plugin.lastSyncedAt ? hasBeenOneDay(data.plugin.lastSyncedAt) : true)}
+					{#if data.user && (data.plugin.lastSyncedAt ? hasBeenOneDay(data.plugin.lastSyncedAt) || isAdmin(data.user): true)}
 						<div class="flex items-center gap-1">
 							<Button
 								on:click={async () => {

@@ -5,8 +5,8 @@ import { prismaClient } from '$lib/server/prisma/client';
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { getPlugin, updatePlugin } from '$lib/server/prisma/neovimplugins/service';
 import { getGithubToken } from '$lib/server/prisma/users/service';
-import { daysAgo, hasBeenOneDay } from '$lib/utils';
-import type { NeovimPlugin } from '@prisma/client';
+import { daysAgo, hasBeenOneDay, isAdmin } from '$lib/utils';
+import type { NeovimPlugin, User } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 
 export class PluginSyncer {
@@ -84,14 +84,13 @@ export class PluginSyncer {
     // TODO: 2. Remove stale media
 		await Promise.all([
 			data
-				.filter((m) => m.type)
-				.map((m) => {
-					return prismaClient.media.upsert({
+				.map(async (m) => {
+					return await prismaClient.media.upsert({
 						where: {
 							url: m.url
 						},
 						create: m,
-						update: m
+						update: m,
 					});
 				})
 		]);
@@ -117,14 +116,14 @@ export class PluginSyncer {
 }
 
 export async function getPluginSyncer(
-	userId: number,
+	user: User,
 	owner: string,
 	name: string
 ): Promise<PluginSyncer> {
-	const token = await getGithubToken(userId);
 	const plugin = await getPlugin(owner, name);
-	if (plugin.lastSyncedAt && !hasBeenOneDay(plugin.lastSyncedAt.toString())) {
+	if (plugin.lastSyncedAt && !hasBeenOneDay(plugin.lastSyncedAt.toString()) && !isAdmin(user)) {
 		throw new TRPCError({ code: 'FORBIDDEN' });
 	}
+	const token = await getGithubToken(user.id);
 	return new PluginSyncer(token, plugin);
 }
