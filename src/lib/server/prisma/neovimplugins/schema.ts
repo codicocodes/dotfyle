@@ -1,4 +1,4 @@
-import type { NeovimPlugin } from '@prisma/client';
+import type { Media, NeovimPlugin } from '@prisma/client';
 import { z } from "zod";
 
 export const PluginDTO = z.object({
@@ -28,4 +28,5 @@ export type NestedNeovimPluginWithCount = NeovimPlugin & {
 
 export type NeovimPluginWithCount = NeovimPlugin & {
   configCount: number
+  media: Media[]
 }

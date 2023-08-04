@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
-	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import {
 		faChartSimple,
 		faFilter,
@@ -20,6 +19,7 @@
 	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
+	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 
 	export let data: PageData;
 
@@ -194,14 +194,14 @@
 			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
 				<div class="flex flex-col gap-2">
 					{#each data.plugins as item}
-						<NeovimPluginCard
-							size="lg"
-							owner={item.owner}
+          <RepositoryCard
+							username={item.owner}
 							name={item.name}
 							stars={item.stars.toString()}
 							configCount={item.configCount}
 							category={item.category}
-							shortDescription={item.shortDescription}
+							description={item.shortDescription}
+              thumbnail={item.media?.[0]}
 						/>
 					{/each}
 				</div>

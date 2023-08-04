@@ -17,13 +17,16 @@
 	import Fa from 'svelte-fa';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import CoolLink from '$lib/components/CoolLink.svelte';
-	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import PostContainer from '$lib/components/PostContainer.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
+	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
+	import { getMediaType } from '$lib/utils';
+
 
 	export let data: PageData;
+console.log(data)
 </script>
 
 <svelte:head>
@@ -155,13 +158,14 @@
 		{:then res}
 			<BigGridContainer>
 				{#each res.data as plugin, _}
-					<NeovimPluginCard
-						owner={plugin.owner}
+					<RepositoryCard
+						username={plugin.owner}
 						name={plugin.name}
 						stars={plugin.stars.toString()}
 						configCount={plugin.configCount}
 						category={plugin.category}
-						shortDescription={plugin.shortDescription}
+						description={plugin.shortDescription}
+            thumbnail={plugin.media?.[0]}
 					/>
 				{/each}
 			</BigGridContainer>
@@ -188,13 +192,14 @@
 		{:then res}
 			<BigGridContainer>
 				{#each res.data as plugin, _}
-					<NeovimPluginCard
-						owner={plugin.owner}
+					<RepositoryCard
+						username={plugin.owner}
 						name={plugin.name}
 						stars={plugin.stars.toString()}
 						configCount={plugin.configCount}
 						category={plugin.category}
-						shortDescription={plugin.shortDescription}
+						description={plugin.shortDescription}
+            thumbnail={plugin.media?.[0]}
 					/>
 				{/each}
 			</BigGridContainer>

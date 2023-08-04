@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
-	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
-	import NeovimPluginCard from '$lib/components/NeovimPluginCard.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import OuterLayout from '$lib/components/OuterLayout.svelte';
 	import { humanizeAbsolute } from '$lib/utils';
@@ -12,6 +10,7 @@
 	import Fa from 'svelte-fa';
 	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
+	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 
 	export let data: PageData;
 </script>
@@ -93,13 +92,14 @@
 						<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
 							{#each data.plugins as plugin, _}
 								<div in:fade>
-									<NeovimPluginCard
-										owner={plugin.owner}
+									<RepositoryCard
+										username={plugin.owner}
 										name={plugin.name}
 										stars={plugin.stars.toString()}
 										configCount={plugin.configCount}
 										category={plugin.category}
-										shortDescription={plugin.shortDescription}
+										description={plugin.shortDescription}
+                    thumbnail={plugin.media[0]}
 									/>
 								</div>
 							{/each}
