@@ -382,9 +382,8 @@ export async function syncWeeklyTrending() {
 }
 
 export async function updatePlugin(
-	pluginWithMetaData: NeovimPluginWithCount
+	data: NeovimPlugin
 ): Promise<NeovimPlugin> {
-	const { media, ...data } = pluginWithMetaData;
 	return prismaClient.neovimPlugin.update({
 		where: {
 			id: data.id

@@ -13,17 +13,13 @@ export class PluginSyncer {
 	plugin: NeovimPlugin;
 	configCount: number;
 	mediaParser: GithubMediaParser;
-	constructor(private token: string, { configCount, ...plugin }: NeovimPluginWithCount) {
+	constructor(private token: string, { configCount, media, ...plugin }: NeovimPluginWithCount) {
 		this.plugin = plugin;
 		this.configCount = configCount;
 		this.mediaParser = new GithubMediaParser();
 	}
 	async sync() {
-		await Promise.all([
-			this.syncStars(),
-			this.syncReadme(),
-			this.syncBreakingChanges(),
-		]);
+		await Promise.all([this.syncStars(), this.syncReadme(), this.syncBreakingChanges()]);
 		return this.updatePlugin();
 	}
 
@@ -57,7 +53,7 @@ export class PluginSyncer {
 		readme = this.mediaParser.replaceInvalidGithubUrls(readme);
 		this.plugin.readme = readme;
 		this.syncMedia(readme);
-    this.syncHasDotfyleShield(readme);
+		this.syncHasDotfyleShield(readme);
 	}
 
 	async syncMedia(readme: string) {
@@ -66,25 +62,38 @@ export class PluginSyncer {
 			media.map(async (url) => {
 				return fetch(url).then((r) => ({
 					url,
-					type: r.headers.get('Content-Type') ?? "",
+					type: r.headers.get('Content-Type') ?? '',
 					neovimPluginId: this.plugin.id
 				}));
 			})
 		);
-		await prismaClient.media.createMany({
-			skipDuplicates: true,
+
+
+    // TODO: 1. allow multiple plugins per media url
+    // TODO: 2. Remove stale media
+		await Promise.all([
 			data
-		});
+				.filter((m) => m.type)
+				.map((m) => {
+					return prismaClient.media.upsert({
+						where: {
+							url: m.url
+						},
+						create: m,
+						update: m
+					});
+				})
+		]);
 	}
-  
-  syncHasDotfyleShield(readme: string) {
-    if (!this.plugin.dotfyleShieldAddedAt) {
-      const shieldMatch = `https://dotfyle.com/plugins/${this.plugin.owner}/${this.plugin.name}/shield`
-      if (readme.includes(shieldMatch)) {
-        this.plugin.dotfyleShieldAddedAt = new Date()
-      }
-    }
-  }
+
+	syncHasDotfyleShield(readme: string) {
+		if (!this.plugin.dotfyleShieldAddedAt) {
+			const shieldMatch = `https://dotfyle.com/plugins/${this.plugin.owner}/${this.plugin.name}/shield`;
+			if (readme.includes(shieldMatch)) {
+				this.plugin.dotfyleShieldAddedAt = new Date();
+			}
+		}
+	}
 
 	async updatePlugin() {
 		this.plugin.lastSyncedAt = new Date();
