@@ -6,6 +6,7 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad, PageLoadEvent } from './$types';
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
+  console.log("wrong load is being hit...")
 	const username = event.params.username;
 	const slug = event.params.slug;
 	const [me, config, plugins, languageServers] = await Promise.all([

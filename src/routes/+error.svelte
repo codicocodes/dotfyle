@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
-	console.log($page.error);
 	function is404(message?: string) {
 		return message?.includes('404');
 	}
