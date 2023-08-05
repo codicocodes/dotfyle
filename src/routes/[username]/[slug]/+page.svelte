@@ -20,6 +20,7 @@
 	import { slide } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
+	import Accordion from '$lib/components/accordion.svelte';
 
 	export let data: PageData;
 	$: ({ config, plugins, languageServers } = data);
@@ -99,61 +100,43 @@
 			</GlossyCard>
 		</CoolTextWithChildren>
 	{/if}
-	<GlossyCard>
-		<div class="flex flex-col w-full gap-2">
-			<button
-				on:click={() => (seeInstallInstructions = !seeInstallInstructions)}
-				class="p-4 text-xl w-full flex justify-between items-center"
-			>
-				<span class="font-semibold">Install instructions</span>
-				<Fa icon={!seeInstallInstructions ? faChevronDown : faChevronUp} size="sm" />
-			</button>
-			{#if seeInstallInstructions}
-				<div class="flex flex-col w-full gap-2" transition:slide>
-					<div class="flex w-full items-center gap-2 font-medium text-sm px-4">
-						<GlossyCard>
-							<div
-								class="flex items-center gap-2 p-2 font-medium text-sm px-4 w-full whitespace-normal"
-							>
-								Install requires Neovim 0.9+. Always review the code before installing a
-								configuration.
-							</div>
-						</GlossyCard>
+
+	<Accordion>
+		<span slot="title" class="font-semibold">Install instructions</span>
+
+		<div slot="content" class="flex flex-col w-full gap-2">
+			<div class="flex w-full items-center gap-2 font-medium text-sm px-4">
+				<GlossyCard>
+					<div
+						class="flex items-center gap-2 p-2 font-medium text-sm px-4 w-full whitespace-normal"
+					>
+						Install requires Neovim 0.9+. Always review the code before installing a configuration.
 					</div>
-					<span class="mx-4 font-medium tracking-wide whitespace-normal"
-						>Clone the repository and install plugins</span
-					>
-					<Highlight class="mx-4 rounded" code={getInstallCommand(config)} language={bash} />
-					<span class="mx-4 font-medium tracking-wide whitespace-normal"
-						>Open Neovim with this configuration</span
-					>
-					<Highlight class="mx-4 pb-4 rounded" code={getRunCommand(config)} language={bash} />
-				</div>
-			{/if}
-		</div>
-	</GlossyCard>
-	<GlossyCard>
-		<div class="flex flex-col w-full">
-			<button
-				on:click={() => (seeLanguageServers = !seeLanguageServers)}
-				class="p-4 text-xl w-full flex justify-between items-center"
+				</GlossyCard>
+			</div>
+			<span class="mx-4 font-medium tracking-wide whitespace-normal"
+				>Clone the repository and install plugins</span
 			>
-				<span class="font-semibold">Language Servers</span>
-				<Fa icon={!seeLanguageServers ? faChevronDown : faChevronUp} size="sm" />
-			</button>
-			{#if seeLanguageServers}
-				<div transition:slide class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 p-4">
-					{#each languageServers as ls}
-						<GlossyCard>
-							<div class="flex items-center gap-2 p-2 font-medium text-sm">
-								{ls.name}
-							</div>
-						</GlossyCard>
-					{/each}
-				</div>
-			{/if}
+			<Highlight class="mx-4 rounded" code={getInstallCommand(config)} language={bash} />
+			<span class="mx-4 font-medium tracking-wide whitespace-normal"
+				>Open Neovim with this configuration</span
+			>
+			<Highlight class="mx-4 pb-4 rounded" code={getRunCommand(config)} language={bash} />
 		</div>
-	</GlossyCard>
+	</Accordion>
+	<Accordion>
+		<span slot="title" class="font-semibold">Language Servers</span>
+		<div slot="content" class="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 p-4">
+			{#each languageServers as ls}
+				<GlossyCard>
+					<div class="flex items-center gap-2 p-2 font-medium text-sm">
+						{ls.name}
+					</div>
+				</GlossyCard>
+			{/each}
+		</div>
+	</Accordion>
+
 	<GlossyCard>
 		<div class="flex flex-col w-full">
 			<div class="p-4 text-xl w-full flex justify-between items-center">
