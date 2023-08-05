@@ -66,7 +66,7 @@
 					bind:this={inputRef}
 					type="search"
 					bind:value={search}
-					placeholder="search plugins"
+					placeholder="search {data.pagination.total} plugins"
 					class="w-full bg-transparent focus:outline-none w-full"
 					on:focus={() => (isfocused = true)}
 					on:blur={() => (isfocused = false)}
