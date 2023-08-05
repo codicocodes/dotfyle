@@ -8,8 +8,18 @@
 	import CoolText from '$lib/components/CoolText.svelte';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
+	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
+	import { navigate } from '$lib/navigate';
+	import Accordion from '$lib/components/accordion.svelte';
+	import Fa from 'svelte-fa';
+	import { faCircleXmark, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 	export let data: PageData;
+
+	$: selectedCategories =
+		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
+
+	$: selectedCategoriesSet = new Set(selectedCategories);
 </script>
 
 <svelte:head>
@@ -46,6 +56,44 @@
 				{/each}
 			</div>
 			<div class="w-full bg-white h-[0.05rem]" />
+		</div>
+
+		<div class="mb-4">
+			<Accordion>
+				<div slot="title" class="flex gap-2 items-center text-sm max-w-full inline">
+					<Fa icon={faFilter} size="sm" />
+					Filter
+				</div>
+
+				<div slot="description" class="flex text-xs font-thin gap-1 flex-wrap inline">
+					{#each selectedCategories as category}
+						<button
+							on:click={() => {
+								selectedCategoriesSet.delete(category);
+								selectedCategoriesSet = selectedCategoriesSet;
+								navigate($page, 'page', '1');
+								navigate($page, 'categories', Array.from(selectedCategoriesSet).join(','), true);
+							}}
+							class="bg-gray-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
+						>
+							{category}
+							<Fa icon={faCircleXmark} size="sm" />
+						</button>
+					{/each}
+				</div>
+
+				<MultiSelectFilter
+					slot="content"
+					title="plugin categories"
+					on:updated={({ detail }) => {
+						navigate($page, 'page', '1');
+						navigate($page, 'categories', Array.from(detail.selected).join(','), true);
+						selectedCategoriesSet = new Set(detail.selected);
+					}}
+					items={data.categories}
+					selected={selectedCategoriesSet}
+				/>
+			</Accordion>
 		</div>
 
 		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">

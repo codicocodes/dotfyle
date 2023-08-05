@@ -63,7 +63,6 @@
 
 <Modal showModal={showFilter} onClose={() => (showFilter = false)}>
 	<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
-		<GlossyCard>
 			<div class="flex flex-col p-4 w-full gap-2">
 				<div class="flex gap-2 text-sm font-semibold">
 					<button
@@ -160,7 +159,6 @@
 					</button>
 				</div>
 			</div>
-		</GlossyCard>
 
 		<MultiSelectFilter
 			title="plugins"
