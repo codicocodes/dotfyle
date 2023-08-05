@@ -66,11 +66,11 @@
 				</div>
 
 				<div slot="description" class="flex text-xs font-thin gap-1 flex-wrap inline">
-					{#each selectedCategories as category}
+					{#each Array.from(selectedCategoriesSet) as category}
 						<button
 							on:click={() => {
-								selectedCategoriesSet.delete(category);
-								selectedCategoriesSet = selectedCategoriesSet;
+                selectedCategoriesSet.delete(category);
+                selectedCategoriesSet = selectedCategoriesSet;
 								navigate($page, 'page', '1');
 								navigate($page, 'categories', Array.from(selectedCategoriesSet).join(','), true);
 							}}
