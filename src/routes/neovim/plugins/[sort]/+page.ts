@@ -68,12 +68,12 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
     pagination: res.meta,
     categories,
     content: content[sorting],
-    navigation: ['Top', 'Trending', 'New'].map((label) => {
+    navigation: [ 'Trending', 'Top', 'New'].map((label) => {
       const value = label.toLowerCase();
       return {
         label,
         value,
-        path: `/neovim-plugins/${value}`
+        path: `/neovim/plugins/${value}`
       };
     })
   };
