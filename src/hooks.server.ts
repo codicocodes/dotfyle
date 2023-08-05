@@ -50,13 +50,9 @@ export const profilePerformance: Handle = async ({ event, resolve }) => {
 
 	const responseTime = end - start;
 
-	if (responseTime >= 1000) {
-		console.log(`🐢 ${route} took ${responseTime.toFixed(2)} ms`);
-	}
+  const prefixIcon = responseTime >= 1000 ? '🐢' : '🚀'
 
-	if (responseTime < 1000) {
-		console.log(`🚀 ${route} took ${responseTime.toFixed(2)} ms`);
-	}
+  console.log(`${prefixIcon} ${route} took ${responseTime.toFixed(2)} ms`, event.request.referrer);
 
 	return response;
 };
