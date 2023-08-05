@@ -12,7 +12,7 @@
 	import { navigate } from '$lib/navigate';
 	import Accordion from '$lib/components/accordion.svelte';
 	import Fa from 'svelte-fa';
-	import { faCircleXmark, faFilter } from '@fortawesome/free-solid-svg-icons';
+	import { faCircleXmark, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 	export let data: PageData;
 
@@ -20,6 +20,11 @@
 		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
 
 	$: selectedCategoriesSet = new Set(selectedCategories);
+
+	let search = $page.url.searchParams.get('q') ?? '';
+
+	let isfocused = false;
+  let inputRef: HTMLInputElement
 </script>
 
 <svelte:head>
@@ -33,7 +38,7 @@
 
 <div class="w-full flex flex-col items-center px-4">
 	<div class="flex flex-col max-w-5xl w-full">
-		<div class="flex flex-col w-full items-center my-8 gap-4">
+		<div class="flex flex-col w-full items-center my-8 mb-4 gap-4">
 			<MediumHeroTitle>
 				<CoolText text={data.content.title} />
 			</MediumHeroTitle>
@@ -41,6 +46,45 @@
 				{data.content.description}
 			</p>
 		</div>
+
+		<form
+			action=""
+			class="grow flex justify-center"
+			on:submit|preventDefault={() => {
+				navigate($page, 'page', '1');
+				navigate($page, 'q', search, true);
+			}}
+		>
+			<!-- TODO: move to global search and move to other component-->
+			<div
+				class="flex gap-2 mb-4 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-1 sm:p-1 rounded-full text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full {isfocused
+					? 'shadow-xl shadow-green-300/25'
+					: ''}"
+			>
+				<Fa icon={faSearch} class="ml-1" />
+				<input
+          bind:this={inputRef}
+					type="search"
+					bind:value={search}
+					placeholder="search plugins"
+					class="w-full bg-transparent focus:outline-none w-full"
+					on:focus={() => (isfocused = true)}
+					on:blur={() => (isfocused = false)}
+				/>
+				{#if search}
+					<button
+						type="button"
+						on:click={() => {
+							search = '';
+							navigate($page, 'q', search, true);
+              inputRef.focus()
+						}}
+					>
+						<Fa icon={faCircleXmark} class="mr-1" />
+					</button>
+				{/if}
+			</div>
+		</form>
 		<div class="flex flex-col w-full items-center my-4 gap-4">
 			<div class="flex gap-6 font-medium text-lg">
 				{#each data.navigation as nav}
@@ -69,8 +113,8 @@
 					{#each Array.from(selectedCategoriesSet) as category}
 						<button
 							on:click={() => {
-                selectedCategoriesSet.delete(category);
-                selectedCategoriesSet = selectedCategoriesSet;
+								selectedCategoriesSet.delete(category);
+								selectedCategoriesSet = selectedCategoriesSet;
 								navigate($page, 'page', '1');
 								navigate($page, 'categories', Array.from(selectedCategoriesSet).join(','), true);
 							}}

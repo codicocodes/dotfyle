@@ -40,7 +40,6 @@ const getSorting = (event: PageLoadEvent) => {
 };
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
-	console.log('load...');
 	const query = event.url.searchParams.get('q') ?? undefined;
 
 	const selectedCategories =
