@@ -58,8 +58,6 @@
 		<a href="/{config.owner}/{config.slug}">
 			<CoolTextOnHover>
 				{config.repo}
-				/
-				{config.root}
 			</CoolTextOnHover>
 		</a>
 	</h1>
