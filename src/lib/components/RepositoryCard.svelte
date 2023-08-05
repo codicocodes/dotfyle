@@ -3,6 +3,7 @@
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 	import NeovimPluginMetaData from './NeovimPluginMetaData.svelte';
 	import { getMediaType } from '$lib/utils';
+	// TODO: Refactor to title isntead of username/name to be more input agnostic
 	export let username: string;
 	export let name: string;
 	export let stars: string;
@@ -13,10 +14,11 @@
 </script>
 
 <div
-	class="h-full flex flex-col justify-between rounded-md bg-white/10 hover:bg-white/20 transition-colors shadow-lg"
+	class="h-full flex flex-col justify-between rounded-md bg-white/10 hover:bg-white/20 transition-colors shadow-lg p-2 pl-5"
 >
-	<div class="h-full flex space-x-4 p-2 pl-5 transition-colors items-start min-h-[8rem]"> <!-- min-h-[8rem] corresponds to h-32 -->
-		<div class="w-full h-full flex flex-col gap-4"> 
+	<div class="h-full flex space-x-4 transition-colors items-start min-h-[8rem]">
+		<!-- min-h-[8rem] corresponds to h-32 -->
+		<div class="w-full h-full flex flex-col gap-4">
 			<div class="flex flex-col gap-1 h-full">
 				<div class="flex w-full">
 					<CoolTextOnHover>
@@ -32,7 +34,6 @@
 					{description}
 				</span>
 			</div>
-			<NeovimPluginMetaData {stars} {configCount} {category} />
 		</div>
 		{#if thumbnail}
 			<div class="h-22 w-72 rounded flex items-center">
@@ -56,4 +57,6 @@
 			</div>
 		{/if}
 	</div>
+	<!-- TODO: refactor to be a slot  -->
+	<NeovimPluginMetaData {stars} {configCount} {category} />
 </div>
