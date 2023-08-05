@@ -90,11 +90,15 @@
 				{#each data.navigation as nav}
 					{#if $page.params.sort === nav.value}
 						<a href={nav.path}>
-							<CoolTextWithChildren>{nav.label}</CoolTextWithChildren>
+							<button>
+								<CoolTextWithChildren>{nav.label}</CoolTextWithChildren>
+							</button>
 						</a>
 					{:else}
 						<a href={nav.path}>
-							<CoolTextOnHover>{nav.label}</CoolTextOnHover>
+							<button>
+								<CoolTextOnHover>{nav.label}</CoolTextOnHover>
+							</button>
 						</a>
 					{/if}
 				{/each}
