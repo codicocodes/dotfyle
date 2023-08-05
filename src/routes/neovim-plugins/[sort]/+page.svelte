@@ -24,15 +24,15 @@
 	let search = $page.url.searchParams.get('q') ?? '';
 
 	let isfocused = false;
-  let inputRef: HTMLInputElement
+	let inputRef: HTMLInputElement;
 </script>
 
 <svelte:head>
-	<title>Search and find Neovim plugins</title>
+	<title>{data.content.ogTitle}</title>
 	<OpenGraph
-		title="Search and find Neovim plugins"
-		url="https://dotfyle.com/plugins"
-		description="Find the new, trending and popular Neovim Plugins. Filter by type of plugin."
+		title={data.content.ogTitle}
+		description={data.content.ogDescription}
+		url="https://dotfyle.com/neovim-plugins/{$page.params.sort}"
 	/>
 </svelte:head>
 
@@ -63,7 +63,7 @@
 			>
 				<Fa icon={faSearch} class="ml-1" />
 				<input
-          bind:this={inputRef}
+					bind:this={inputRef}
 					type="search"
 					bind:value={search}
 					placeholder="search plugins"
@@ -77,7 +77,7 @@
 						on:click={() => {
 							search = '';
 							navigate($page, 'q', search, true);
-              inputRef.focus()
+							inputRef.focus();
 						}}
 					>
 						<Fa icon={faCircleXmark} class="mr-1" />
