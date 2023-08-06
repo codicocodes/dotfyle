@@ -18,6 +18,7 @@
 		faSearch,
 		faSignOut,
 		faSync,
+		faTerminal,
 		faUser,
 		faWandSparkles
 	} from '@fortawesome/free-solid-svg-icons';
@@ -117,7 +118,8 @@
 	<div class="flex items-center justify-between px-8 gap-4 mt-2">
 		<div class="flex items-center">
 			<div class="flex gap-12">
-				<a href="/" class="text-2xl tracking-tight font-black">
+				<a href="/" class="flex items-center gap-2 text-2xl tracking-tight font-black">
+					<Fa icon={faTerminal} size="xs" class="text-sm text-cyan-500 bg-transparent" />
 					<CoolText text="dotfyle" />
 				</a>
 				<div
