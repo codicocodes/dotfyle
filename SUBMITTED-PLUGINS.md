@@ -162,6 +162,7 @@
 
 - echasnovski/mini.pairs
 - echasnovski/mini.trailspace
+- echasnovski/mini.operators
 - echasnovski/mini.move
 - echasnovski/mini.ai
 - echasnovski/mini.splitjoin
