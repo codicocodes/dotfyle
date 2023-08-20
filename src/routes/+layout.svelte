@@ -90,7 +90,7 @@
 			Home
 		</a>
 		<a
-			href="/plugins"
+			href="/neovim/plugins/trending"
 			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25 justify-center"
 		>
 			Plugins
@@ -125,7 +125,7 @@
 				<div
 					class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg tracking-tight font-semibold"
 				>
-					<a href="/plugins">
+					<a href="/neovim/plugins/trending">
 						<CoolTextOnHover>plugins</CoolTextOnHover>
 					</a>
 
@@ -211,7 +211,7 @@
 		>
 			<div class="flex flex-col gap-2 text-gray-400 items-start">
 				<h3 class="text-2xl font-semibold tracking-wider">Features</h3>
-				<a href="/plugins" class="flex items-center hover:text-white gap-2">
+				<a href="/neovim/plugins/trending" class="flex items-center hover:text-white gap-2">
 					<div class="flex items-start w-6">
 						<Fa icon={faSearch} />
 					</div>

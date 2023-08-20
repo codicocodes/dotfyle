@@ -257,7 +257,7 @@
 							<h3 class="flex items-center gap-1 text-lg font-semibold">
 								other neovim {data.plugin.category} plugins
 							</h3>
-							<CoolLink href={`/plugins?categories=${data.plugin.category}`} text="more plugins" />
+							<CoolLink href={`/neovim/plugins/top?categories=${data.plugin.category}`} text="more plugins" />
 						</div>
 
             <BigGridContainer>

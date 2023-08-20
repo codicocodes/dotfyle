@@ -68,7 +68,7 @@
 				{:else}
 					<div class="flex flex-col sm:flex-row gap-2">
 						<a
-							href={'/plugins'}
+							href={'/neovim/plugins/trending'}
 							class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25`}
 						>
 							<Fa icon={faPuzzlePiece} />
@@ -131,7 +131,7 @@
 				<Fa icon={faSeedling} size="sm" />
 				new plugins
 			</h3>
-			<CoolLink href="/plugins?sort=new" text="more plugins" />
+			<CoolLink href="/neovim/plugins/new" text="more plugins" />
 		</div>
 
 		{#await data.loading.newPlugins}
@@ -165,7 +165,7 @@
 				<Fa icon={faFire} size="sm" />
 				trending plugins
 			</h3>
-			<CoolLink href="/plugins?sort=trending" text="more plugins" />
+			<CoolLink href="/neovim/plugins/trending" text="more plugins" />
 		</div>
 
 		{#await data.loading.trendingPlugins}
