@@ -119,7 +119,7 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { owner, name } }) => {
-			return getConfigsForPlugin(owner, name, 9);
+			return getConfigsForPlugin(owner, name, 4);
 		}),
 	getPlugin: t.procedure
 		.input((input: unknown) => {

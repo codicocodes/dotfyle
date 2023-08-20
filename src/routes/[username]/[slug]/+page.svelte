@@ -9,8 +9,6 @@
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faChevronCircleRight,
-		faChevronDown,
-		faChevronUp,
 		faStar
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
@@ -25,9 +23,6 @@
 
 	export let data: PageData;
 	$: ({ config, plugins, languageServers } = data);
-
-	let seeInstallInstructions = false;
-	let seeLanguageServers = false;
 </script>
 
 <svelte:head>

@@ -229,10 +229,7 @@
 						</div>
 
 						{#if data.configs.length > 0}
-							<div
-								in:fade
-								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
-							>
+							<BigGridContainer>
 								{#each data.configs as conf, _}
 									<div in:fade>
 										<NeovimConfigCard
@@ -249,7 +246,7 @@
 										/>
 									</div>
 								{/each}
-							</div>
+							</BigGridContainer>
 						{/if}
 					</div>
 
@@ -268,8 +265,8 @@
 							{#each categoryPlugins as plugin, _}
 								<div in:fade>
 									<RepositoryCard
-                    name="{plugin.owner}/{plugin.name}"
-                    link="/plugins/{plugin.owner}/{plugin.name}"
+										name="{plugin.owner}/{plugin.name}"
+										link="/plugins/{plugin.owner}/{plugin.name}"
 										description={plugin.shortDescription}
 										thumbnail={plugin.media?.[0]}
 									>
