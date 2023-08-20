@@ -108,12 +108,12 @@
 
 		<div class="mb-4">
 			<Accordion>
-				<div slot="title" class="flex gap-2 items-center text-sm max-w-full inline">
+				<div slot="title" class="flex gap-2 items-center text-sm max-w-full">
 					<Fa icon={faFilter} size="sm" />
 					Filter
 				</div>
 
-				<div slot="description" class="flex text-xs font-thin gap-1 flex-wrap inline">
+				<div slot="description" class="flex text-xs gap-1 flex-wrap">
 					{#each Array.from(selectedCategoriesSet) as category}
 						<button
 							on:click={() => {
