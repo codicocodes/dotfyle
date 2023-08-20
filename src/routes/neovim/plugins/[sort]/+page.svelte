@@ -13,12 +13,10 @@
 	import Accordion from '$lib/components/accordion.svelte';
 	import Fa from 'svelte-fa';
 	import {
-		faChevronCircleRight,
 		faCircleXmark,
 		faFilter,
 		faSearch
 	} from '@fortawesome/free-solid-svg-icons';
-	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 
 	export let data: PageData;
