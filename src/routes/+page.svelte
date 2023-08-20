@@ -36,17 +36,6 @@
 	/>
 </svelte:head>
 
-<div class="flex justify-center mt-8 w-full">
-	<a
-		href="/this-week-in-neovim"
-		class="flex gap-2 items-center rounded-full p-4 py-2 bg-gradient-to-br from-cyan-500 to-green-500 shadow-xl shadow-green-300/25 text-xs font-semibold text-slate-900"
-	>
-		<Fa icon={faFlag} />
-		TWiN is coming to Dotfyle
-		<Fa icon={faChevronCircleRight} />
-	</a>
-</div>
-
 <div class="flex flex-col gap-8 my-4">
 	<div class="flex flex-col justify-center items-center">
 		<div class="py-12 sm:py-8 md:py-12 lg:py-14 xl:py-12 2xl:py-28">
