@@ -13,22 +13,18 @@
 	export let thumbnail: Media | null = null;
 </script>
 
-<div
-	class="h-full flex flex-col justify-between rounded-md bg-white/10 hover:bg-white/20 transition-colors shadow-lg p-2 pl-5"
+<a
+	href={`/plugins/${username}/${name}`}
+	class="h-full flex flex-col justify-between rounded-md bg-white/10 transition-colors shadow-lg p-2 pl-5 border-[0.5px] border-gray-500 hover:border-gray-200"
 >
 	<div class="h-full flex space-x-4 transition-colors items-start min-h-[8rem]">
 		<!-- min-h-[8rem] corresponds to h-32 -->
 		<div class="w-full h-full flex flex-col gap-4">
 			<div class="flex flex-col gap-1 h-full">
 				<div class="flex w-full">
-					<CoolTextOnHover>
-						<a
-							href={`/plugins/${username}/${name}`}
-							class="text-sm font-semibold tracking-wide md:text-base whitespace-normal"
-						>
-							{username}/{name}
-						</a>
-					</CoolTextOnHover>
+					<span class="text-sm font-semibold tracking-wide md:text-base whitespace-normal">
+						{username}/{name}
+					</span>
 				</div>
 				<span class="text-xs font-medium tracking-wide md:text-sm whitespace-normal">
 					{description}
@@ -59,4 +55,4 @@
 	</div>
 	<!-- TODO: refactor to be a slot  -->
 	<NeovimPluginMetaData {stars} {configCount} {category} />
-</div>
+</a>
