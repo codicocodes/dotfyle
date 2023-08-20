@@ -12,7 +12,14 @@
 	import { navigate } from '$lib/navigate';
 	import Accordion from '$lib/components/accordion.svelte';
 	import Fa from 'svelte-fa';
-	import { faCircleXmark, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faChevronCircleRight,
+		faCircleXmark,
+		faFilter,
+		faSearch
+	} from '@fortawesome/free-solid-svg-icons';
+	import GlossyCard from '$lib/components/GlossyCard.svelte';
+	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 
 	export let data: PageData;
 
@@ -147,16 +154,20 @@
 		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
 				<div class="flex flex-col gap-2">
-					{#each data.plugins as item}
+					{#each data.plugins as plugin}
 						<RepositoryCard
-							username={item.owner}
-							name={item.name}
-							stars={item.stars.toString()}
-							configCount={item.configCount}
-							category={item.category}
-							description={item.shortDescription}
-							thumbnail={item.media?.[0]}
-						/>
+							username={plugin.owner}
+							name={plugin.name}
+							description={plugin.shortDescription}
+							thumbnail={plugin.media?.[0]}
+						>
+							<NeovimPluginMetaData
+								slot="footer"
+								stars={plugin.stars.toString()}
+								configCount={plugin.configCount}
+								category={plugin.category}
+							/>
+						</RepositoryCard>
 					{/each}
 				</div>
 				<Pagination

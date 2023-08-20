@@ -11,6 +11,7 @@
 	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
+	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 
 	export let data: PageData;
 </script>
@@ -20,7 +21,7 @@
 	<OpenGraph
 		title={data.profile.username}
 		url="https://dotfyle.com/{data.profile.username}"
-    image={data.profile.avatarUrl}
+		image={data.profile.avatarUrl}
 		description="Dotfiles | Neovim configurations | Authored plugins"
 	/>
 </svelte:head>
@@ -95,12 +96,16 @@
 									<RepositoryCard
 										username={plugin.owner}
 										name={plugin.name}
-										stars={plugin.stars.toString()}
-										configCount={plugin.configCount}
-										category={plugin.category}
 										description={plugin.shortDescription}
-                    thumbnail={plugin.media[0]}
-									/>
+										thumbnail={plugin.media[0]}
+									>
+										<NeovimPluginMetaData
+											slot="footer"
+											stars={plugin.stars.toString()}
+											configCount={plugin.configCount}
+											category={plugin.category}
+										/>
+									</RepositoryCard>
 								</div>
 							{/each}
 						</div>

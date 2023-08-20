@@ -25,6 +25,7 @@
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
+	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
@@ -114,7 +115,7 @@
 							never synced
 						</span>
 					{/if}
-					{#if data.user && (data.plugin.lastSyncedAt ? hasBeenOneDay(data.plugin.lastSyncedAt) || isAdmin(data.user): true)}
+					{#if data.user && (data.plugin.lastSyncedAt ? hasBeenOneDay(data.plugin.lastSyncedAt) || isAdmin(data.user) : true)}
 						<div class="flex items-center gap-1">
 							<Button
 								on:click={async () => {
@@ -257,24 +258,31 @@
 							<h3 class="flex items-center gap-1 text-lg font-semibold">
 								other neovim {data.plugin.category} plugins
 							</h3>
-							<CoolLink href={`/neovim/plugins/top?categories=${data.plugin.category}`} text="more plugins" />
+							<CoolLink
+								href={`/neovim/plugins/top?categories=${data.plugin.category}`}
+								text="more plugins"
+							/>
 						</div>
 
-            <BigGridContainer>
+						<BigGridContainer>
 							{#each categoryPlugins as plugin, _}
 								<div in:fade>
 									<RepositoryCard
 										username={plugin.owner}
 										name={plugin.name}
-										stars={plugin.stars.toString()}
-										configCount={plugin.configCount}
-										category={plugin.category}
 										description={plugin.shortDescription}
-                    thumbnail={plugin.media[0]}
-									/>
+										thumbnail={plugin.media?.[0]}
+									>
+										<NeovimPluginMetaData
+											slot="footer"
+											stars={plugin.stars.toString()}
+											configCount={plugin.configCount}
+											category={plugin.category}
+										/>
+									</RepositoryCard>
 								</div>
 							{/each}
-            </BigGridContainer>
+						</BigGridContainer>
 					</div>
 				</TabPanel>
 				<TabPanel>

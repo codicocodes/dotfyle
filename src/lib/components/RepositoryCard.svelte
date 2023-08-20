@@ -1,14 +1,10 @@
 <script lang="ts">
 	import type { Media } from '@prisma/client';
-	import CoolTextOnHover from './CoolTextOnHover.svelte';
 	import NeovimPluginMetaData from './NeovimPluginMetaData.svelte';
 	import { getMediaType } from '$lib/utils';
 	// TODO: Refactor to title isntead of username/name to be more input agnostic
 	export let username: string;
 	export let name: string;
-	export let stars: string;
-	export let configCount: number;
-	export let category: string;
 	export let description: string;
 	export let thumbnail: Media | null = null;
 </script>
@@ -53,6 +49,5 @@
 			</div>
 		{/if}
 	</div>
-	<!-- TODO: refactor to be a slot  -->
-	<NeovimPluginMetaData {stars} {configCount} {category} />
+  <slot name="footer" />
 </a>

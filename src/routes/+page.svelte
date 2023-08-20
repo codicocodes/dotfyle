@@ -22,7 +22,7 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
-
+	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 
 	export let data: PageData;
 </script>
@@ -148,12 +148,16 @@
 					<RepositoryCard
 						username={plugin.owner}
 						name={plugin.name}
-						stars={plugin.stars.toString()}
-						configCount={plugin.configCount}
-						category={plugin.category}
 						description={plugin.shortDescription}
-            thumbnail={plugin.media?.[0]}
-					/>
+						thumbnail={plugin.media?.[0]}
+					>
+						<NeovimPluginMetaData
+							slot="footer"
+							stars={plugin.stars.toString()}
+							configCount={plugin.configCount}
+							category={plugin.category}
+						/>
+					</RepositoryCard>
 				{/each}
 			</BigGridContainer>
 		{/await}
@@ -182,12 +186,16 @@
 					<RepositoryCard
 						username={plugin.owner}
 						name={plugin.name}
-						stars={plugin.stars.toString()}
-						configCount={plugin.configCount}
-						category={plugin.category}
 						description={plugin.shortDescription}
-            thumbnail={plugin.media?.[0]}
-					/>
+						thumbnail={plugin.media?.[0]}
+					>
+						<NeovimPluginMetaData
+							slot="footer"
+							stars={plugin.stars.toString()}
+							configCount={plugin.configCount}
+							category={plugin.category}
+						/>
+					</RepositoryCard>
 				{/each}
 			</BigGridContainer>
 		{/await}
