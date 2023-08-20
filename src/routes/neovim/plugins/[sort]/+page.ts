@@ -63,6 +63,8 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
     trpc(event).listPluginCategories.query()
   ]);
 
+  categories.sort()
+
   return {
     plugins: res.data,
     pagination: res.meta,
