@@ -42,7 +42,7 @@
 			<MediumHeroTitle>
 				<CoolText text={data.content.title} />
 			</MediumHeroTitle>
-			<p class="text-lg xl:mt-6">
+			<p class="text-lg">
 				{data.content.description}
 			</p>
 		</div>
