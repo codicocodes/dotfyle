@@ -94,8 +94,8 @@
 							{#each data.plugins as plugin, _}
 								<div in:fade>
 									<RepositoryCard
-										username={plugin.owner}
-										name={plugin.name}
+                    name="{plugin.owner}/{plugin.name}"
+                    link="/plugins/{plugin.owner}/{plugin.name}"
 										description={plugin.shortDescription}
 										thumbnail={plugin.media[0]}
 									>

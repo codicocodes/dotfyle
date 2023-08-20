@@ -144,9 +144,9 @@
 			<div transition:slide class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2 p-4">
 				{#each plugins as plugin}
 					<RepositoryCard
-						username={plugin.owner}
-						name={plugin.name}
-						description={plugin.shortDescription}
+            name="{plugin.owner}/{plugin.name}"
+            link="/plugins/{plugin.owner}/{plugin.name}"
+            description={plugin.shortDescription}
 						thumbnail={plugin.media?.[0]}
 					>
 						<NeovimPluginMetaData
