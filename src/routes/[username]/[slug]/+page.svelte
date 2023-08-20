@@ -7,10 +7,7 @@
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
-	import {
-		faChevronCircleRight,
-		faStar
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faChevronCircleRight, faStar } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { Highlight } from 'svelte-highlight';
 	import { bash } from 'svelte-highlight/languages';
@@ -131,28 +128,26 @@
 		</div>
 	</Accordion>
 
-	<GlossyCard>
-		<div class="flex flex-col w-full">
-			<div class="p-4 text-xl w-full flex justify-between items-center">
-				<span class="font-semibold">Plugins</span>
-			</div>
-			<div transition:slide class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2 p-4">
-				{#each plugins as plugin}
-					<RepositoryCard
-            name="{plugin.owner}/{plugin.name}"
-            link="/plugins/{plugin.owner}/{plugin.name}"
-            description={plugin.shortDescription}
-						thumbnail={plugin.media?.[0]}
-					>
-						<NeovimPluginMetaData
-							slot="footer"
-							stars={plugin.stars.toString()}
-							configCount={plugin.configCount}
-							category={plugin.category}
-						/>
-					</RepositoryCard>
-				{/each}
-			</div>
+	<div class="flex flex-col w-full">
+		<div class="text-xl w-full flex justify-between items-center py-2">
+			<span class="font-semibold">Plugins</span>
 		</div>
-	</GlossyCard>
+		<div transition:slide class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
+			{#each plugins as plugin}
+				<RepositoryCard
+					name="{plugin.owner}/{plugin.name}"
+					link="/plugins/{plugin.owner}/{plugin.name}"
+					description={plugin.shortDescription}
+					thumbnail={plugin.media?.[0]}
+				>
+					<NeovimPluginMetaData
+						slot="footer"
+						stars={plugin.stars.toString()}
+						configCount={plugin.configCount}
+						category={plugin.category}
+					/>
+				</RepositoryCard>
+			{/each}
+		</div>
+	</div>
 </div>
