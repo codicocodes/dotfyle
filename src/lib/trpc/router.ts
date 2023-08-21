@@ -26,7 +26,7 @@ import {
 } from '$lib/server/prisma/neovimplugins/service';
 import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
 import { sanitizeHtml, hasBeenOneDay } from '$lib/utils';
-import { generateTwinIssue, updateTwinIssue, publishTwinIssue } from '$lib/trpc/domains/twin';
+import { generateTwinIssue, updateTwinIssue, publishTwinIssue, getLatestTwinIssue } from '$lib/trpc/domains/twin';
 
 import { TRPCError } from '@trpc/server';
 import {
@@ -356,7 +356,8 @@ export const router = t.router({
 		}),
 	generateTwinIssue,
 	updateTwinIssue,
-	publishTwinIssue
+	publishTwinIssue,
+  getLatestTwinIssue,
 });
 
 export type Router = typeof router;

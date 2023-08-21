@@ -11,8 +11,8 @@ export const generateTwinIssue = t.procedure
 		return z.object({ issue: z.number(), days: z.number().optional().default(7) }).parse(input);
 	})
 	.query(async ({ input: { issue, days } }) => {
-    const twinBuilder =  new TwinPostBuilder()
-    await twinBuilder.validate(issue)
+		const twinBuilder = new TwinPostBuilder();
+		await twinBuilder.validate(issue);
 		return await twinBuilder.run(issue, days);
 	});
 
@@ -37,13 +37,34 @@ export const publishTwinIssue = t.procedure
 		return z.object({ issue: z.number() }).parse(input);
 	})
 	.query(async ({ input: { issue } }) => {
-		return await prismaClient.twinPost.update({
-			where: { issue },
-			data: {
-				publishedAt: new Date(),
-			}
-		}).then(r => {
-      rebuildCachedTwinFeed()
-      return r
-    });
+		return await prismaClient.twinPost
+			.update({
+				where: { issue },
+				data: {
+					publishedAt: new Date()
+				}
+			})
+			.then((r) => {
+				rebuildCachedTwinFeed();
+				return r;
+			});
 	});
+
+export const getLatestTwinIssue = t.procedure.query(async () => {
+	return await prismaClient.twinPost.findFirst({
+		select: {
+			publishedAt: true,
+			title: true,
+			issue: true,
+			content: false
+		},
+		where: {
+			publishedAt: {
+				not: null
+			}
+		},
+		orderBy: {
+			publishedAt: 'desc'
+		}
+	});
+});

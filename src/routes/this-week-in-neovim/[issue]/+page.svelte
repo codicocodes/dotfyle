@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import Button from '$lib/components/Button.svelte';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
+	import { updateLatestReadTwinPost } from '$lib/services/twin';
 	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faChevronLeft,
@@ -15,6 +17,11 @@
 	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
 	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
 	$: tweetUrl = `https://twitter.com/intent/tweet?url=${url}&text=${tweetText}&via=codicocodes`;
+  $: {
+    if (browser) {
+      updateLatestReadTwinPost(data.post.issue)
+    }
+  }
 </script>
 
 <svelte:head>

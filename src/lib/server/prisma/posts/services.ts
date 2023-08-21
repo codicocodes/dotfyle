@@ -81,11 +81,11 @@ export async function getTwinPosts(page: number) {
 			issue: true,
 			content: false
 		},
-    where: {
-      publishedAt: {
-        not: null
-      }
-    },
+		where: {
+			publishedAt: {
+				not: null
+			}
+		},
 		orderBy: {
 			createdAt: 'desc'
 		}
