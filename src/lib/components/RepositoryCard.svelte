@@ -1,8 +1,7 @@
 <script lang="ts">
 	import type { Media } from '@prisma/client';
 	import { getMediaType } from '$lib/utils';
-	// TODO: Refactor to title isntead of username/name to be more input agnostic
-	export let avatar: string = null;
+	export let avatar: string | null = null;
 	export let name: string;
 	export let link: string;
 	export let description: string;
