@@ -1,21 +1,8 @@
 import { z } from 'zod';
 
-export const GithubRepository = z.object({
-	id: z.number(),
-	owner: z.object({
-    login: z.string(),
-  }),
-	name: z.string(),
-	description: z.string().nullable(),
-	html_url: z.string(),
-	fork: z.boolean(),
-	stargazers_count: z.number(),
-	size: z.number(),
-	language: z.string().nullable(),
-	default_branch: z.string(),
-	created_at: z.string(),
-	updated_at: z.string()
-});
+import { GithubRepository as GHRepository } from "$lib/validation"
+
+export const GithubRepository = GHRepository
 
 export type GithubRepository = z.infer<typeof GithubRepository>;
 

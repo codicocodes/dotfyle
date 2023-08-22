@@ -85,3 +85,4 @@ export function copyToClipboard(data: string) {
 export function isMaintenanceMode() {
   return PUBLIC_MAINTENANCE_ENABLED === 'true'
 }
+

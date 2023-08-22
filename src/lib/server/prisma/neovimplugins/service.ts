@@ -284,20 +284,24 @@ export async function getPluginsBySlug(
 	return plugins.map(flattenConfigCount);
 }
 
+export async function upsertNeovimPlugin(plugin: PluginDTO): Promise<NeovimPlugin> {
+	const { shortDescription, ...update } = plugin;
+	const savedPlugin = await prismaClient.neovimPlugin.upsert({
+		where: {
+			owner_name: {
+				owner: plugin.owner,
+				name: plugin.name
+			}
+		},
+		create: plugin,
+		update
+	});
+  return savedPlugin
+}
+
 export async function upsertManyNeovimPlugins(plugins: PluginDTO[]): Promise<NeovimPlugin[]> {
 	const savedPluginsPromise = plugins.map(async (p) => {
-		const { shortDescription, ...update } = p;
-		const savedPlugin = await prismaClient.neovimPlugin.upsert({
-			where: {
-				owner_name: {
-					owner: p.owner,
-					name: p.name
-				}
-			},
-			create: p,
-			update
-		});
-		return savedPlugin;
+		return upsertNeovimPlugin(p);
 	});
 	return await Promise.all(savedPluginsPromise);
 }
@@ -381,9 +385,7 @@ export async function syncWeeklyTrending() {
 	);
 }
 
-export async function updatePlugin(
-	data: NeovimPlugin
-): Promise<NeovimPlugin> {
+export async function updatePlugin(data: NeovimPlugin): Promise<NeovimPlugin> {
 	return prismaClient.neovimPlugin.update({
 		where: {
 			id: data.id

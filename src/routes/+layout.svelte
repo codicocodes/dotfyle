@@ -18,7 +18,7 @@
 		faSignOut,
 		faSync,
 		faTerminal,
-		faUser,
+		faUser
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
@@ -31,6 +31,7 @@
 	import { browser } from '$app/environment';
 	import { getLatestReadTwinPost, updateLatestReadTwinPost } from '$lib/services/twin';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
+	import AddPluginContainer from '$lib/components/add-plugin-container.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
 
@@ -80,8 +81,8 @@
 
 	$: {
 		if (browser && data.latestTwinPost) {
-      const url = `/this-week-in-neovim/${data.latestTwinPost.issue}`
-      const notOnCurrentTwinIssue = !window.location.toString().includes(url)
+			const url = `/this-week-in-neovim/${data.latestTwinPost.issue}`;
+			const notOnCurrentTwinIssue = !window.location.toString().includes(url);
 			const read = getLatestReadTwinPost();
 			showTwinPost = notOnCurrentTwinIssue && (!read || read < data.latestTwinPost.issue);
 		}
@@ -151,10 +152,10 @@
 					href="/this-week-in-neovim/{data.latestTwinPost.issue}"
 					class="flex flex-row items-center justify-center bg-white/10 transition-colors shadow-lg p-2 px-5 border-gray-500 hover:border-gray-200 font-semibold mb-4 text-sm"
 				>
-        <span>
-					<Fa icon={faNewspaper} class="force-white-text inline mr-1" />
-					{data.latestTwinPost?.title}
-        </span>
+					<span>
+						<Fa icon={faNewspaper} class="force-white-text inline mr-1" />
+						{data.latestTwinPost?.title}
+					</span>
 				</a>
 			</CoolTextWithChildren>
 		</div>
@@ -188,6 +189,9 @@
 				<Fa size="xl" class="block: sm:hidden h-full" icon={faBars} />
 			</button>
 			{#if user}
+				{#if isAdmin(user)}
+					<AddPluginContainer />
+				{/if}
 				<button on:click={toggle}>
 					<div class="flex items-center gap-2 text-lg">
 						<span class="hidden sm:inline">

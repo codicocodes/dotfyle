@@ -1,9 +1,13 @@
-import { isAuthenticated } from './middlewares/auth';
+import { isAdmin, isAuthenticated } from './middlewares/auth';
 import { t } from './t';
 import { z } from 'zod';
-import { getGithubRepositories, getRepoFileTree } from '$lib/server/github/services';
+import {
+	getGithubRepositories,
+	getGithubRepository,
+	getRepoFileTree
+} from '$lib/server/github/services';
 import { getGithubToken, getUserByUsername } from '$lib/server/prisma/users/service';
-import { fetchRepoFileTree } from '$lib/server/github/api';
+import { fetchGithubRepositoryByName, fetchRepoFileTree } from '$lib/server/github/api';
 import {
 	getConfigBySlug,
 	getConfigsByUsername,
@@ -22,11 +26,18 @@ import {
 	getPluginsWithDotfyleShield,
 	getPopularPlugins,
 	getReadme,
-	searchPlugins
+	searchPlugins,
+	upsertManyNeovimPlugins,
+    upsertNeovimPlugin
 } from '$lib/server/prisma/neovimplugins/service';
-import { getPluginSyncer } from '$lib/server/sync/plugins/sync';
+import { getPluginSyncer, PluginSyncer } from '$lib/server/sync/plugins/sync';
 import { sanitizeHtml, hasBeenOneDay } from '$lib/utils';
-import { generateTwinIssue, updateTwinIssue, publishTwinIssue, getLatestTwinIssue } from '$lib/trpc/domains/twin';
+import {
+	generateTwinIssue,
+	updateTwinIssue,
+	publishTwinIssue,
+	getLatestTwinIssue
+} from '$lib/trpc/domains/twin';
 
 import { TRPCError } from '@trpc/server';
 import {
@@ -49,9 +60,12 @@ import {
 } from '$lib/server/prisma/posts/services';
 import { getMediaForPlugin } from '$lib/server/prisma/media/service';
 import { marked } from 'marked';
+import { validateRepositoryDataIsNeovimPlugin } from '$lib/validation';
+import { PluginDTO } from '$lib/server/prisma/neovimplugins/schema';
 
 export const router = t.router({
-	syncPlugin: t.procedure.use(isAuthenticated)
+	syncPlugin: t.procedure
+		.use(isAuthenticated)
 		.input((input: unknown) => {
 			return z
 				.object({
@@ -81,12 +95,12 @@ export const router = t.router({
 	listLanguageServers: t.procedure.query(async () => {
 		return listLanguageServers();
 	}),
-  recentPluginsWithDotfyleShields: t.procedure.query(() => {
-    return getPluginsWithDotfyleShield()
-  }),
-  recentConfigsWithDotfyleShields: t.procedure.query(() => {
-    return getNeovimConfigsWithDotfyleShield()
-  }),
+	recentPluginsWithDotfyleShields: t.procedure.query(() => {
+		return getPluginsWithDotfyleShield();
+	}),
+	recentConfigsWithDotfyleShields: t.procedure.query(() => {
+		return getNeovimConfigsWithDotfyleShield();
+	}),
 	searchPlugins: t.procedure
 		.input((input: unknown) => {
 			return z
@@ -145,7 +159,7 @@ export const router = t.router({
 		.query(async ({ input: { owner, name } }) => {
 			const markdown = await getReadme(owner, name);
 			const html = marked(markdown);
-      return sanitizeHtml(html)
+			return sanitizeHtml(html);
 		}),
 	getLanguageServersBySlug: t.procedure
 		.input((input: unknown) => {
@@ -272,7 +286,7 @@ export const router = t.router({
 			}
 			const token = await getGithubToken(user.id);
 			const config = await syncExistingRepoInfo(token, configBeforeSync);
-      await syncReadme(token, config)
+			await syncReadme(token, config);
 			const syncer = await getNeovimConfigSyncer(user, config);
 			return await syncer.treeSync();
 		}),
@@ -300,7 +314,7 @@ export const router = t.router({
 				input.root,
 				input.initFile
 			);
-      await syncReadme(token, config)
+			await syncReadme(token, config);
 			const syncer = await getNeovimConfigSyncer(user, config);
 			return await syncer.treeSync();
 		}),
@@ -357,7 +371,41 @@ export const router = t.router({
 	generateTwinIssue,
 	updateTwinIssue,
 	publishTwinIssue,
-  getLatestTwinIssue,
+	getLatestTwinIssue,
+	getGitHubRepository: t.procedure
+		.use(isAuthenticated)
+		.use(isAdmin)
+		.input((input: unknown) => {
+			return z.object({ owner: z.string(), name: z.string() }).parse(input);
+		})
+		.query(async ({ input: { owner, name }, ctx }) => {
+			const repository = await getGithubRepository(ctx.user!.id, owner, name);
+			return repository;
+		}),
+	createNeovimPlugin: t.procedure
+		.use(isAuthenticated)
+		.use(isAdmin)
+		.input((input: unknown) => {
+			// TODO: when making this public we can not just use any string for category
+			// we have to validate that it is a category currently in se
+			return z.object({ owner: z.string(), name: z.string(), category: z.string() }).parse(input);
+		})
+		.query(async ({ input: { owner, name, category }, ctx }) => {
+    const token = await getGithubToken(ctx.user!.id)
+    const repository = await fetchGithubRepositoryByName(token, owner, name)
+    validateRepositoryDataIsNeovimPlugin(repository);
+			const pluginDTO = {
+				type: 'github',
+				source: 'manually-created',
+				category,
+				link: repository.html_url,
+				owner,
+				name,
+				shortDescription: repository.description ?? "",
+			};
+			const plugin = await upsertNeovimPlugin(PluginDTO.parse(pluginDTO));
+      return new PluginSyncer(token, {...plugin, configCount: 0, media: [] }).sync()
+		})
 });
 
 export type Router = typeof router;

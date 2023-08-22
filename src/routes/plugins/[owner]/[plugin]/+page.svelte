@@ -70,7 +70,7 @@
 
 <Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
 	{#if selectedMedia && getMediaType(selectedMedia) === 'video'}
-		<video class="rounded:cursor-pointer" src={selectedMedia.url} autoplay />
+		<video class="rounded:cursor-pointer" src={selectedMedia.url} autoplay muted />
 	{:else if selectedMedia}
 		<img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />
 	{/if}
@@ -199,8 +199,9 @@
 								{#each data.media as media}
 									{#if getMediaType(media) === 'video'}
 										<video
-											autoplay
-											class="rounded hover:cursor-pointer"
+                      autoplay
+                      muted
+                      class="rounded hover:cursor-pointer"
 											on:click={() => (selectedMedia = media)}
 											src={media.url}
 										/>
