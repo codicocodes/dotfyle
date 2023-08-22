@@ -37,7 +37,7 @@
 	<OpenGraph
 		title={data.content.ogTitle}
 		description={data.content.ogDescription}
-		url="https://dotfyle.com/neovim-plugins/{$page.params.sort}"
+		url="https://dotfyle.com/neovim/plugins/{$page.params.sort}"
 	/>
 </svelte:head>
 
