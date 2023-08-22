@@ -12,12 +12,9 @@
 	import { navigate } from '$lib/navigate';
 	import Accordion from '$lib/components/accordion.svelte';
 	import Fa from 'svelte-fa';
-	import {
-		faCircleXmark,
-		faFilter,
-		faSearch
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faCircleXmark, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
+	import ShareContainer from '$lib/components/ShareContainer.svelte';
 
 	export let data: PageData;
 
@@ -52,9 +49,18 @@
 			</p>
 		</div>
 
+		<div class="flex w-full justify-center">
+			<ShareContainer
+				url={$page.url.origin + $page.url.pathname}
+				tweetText={data.content.title}
+				emailSubject={data.content.title}
+				emailBody={data.content.description}
+			/>
+		</div>
+
 		<form
 			action=""
-			class="grow flex justify-center"
+			class="grow flex justify-center items-center mt-6 mb-4 gap-2"
 			on:submit|preventDefault={() => {
 				navigate($page, 'page', '1');
 				navigate($page, 'q', search, true);
@@ -62,7 +68,7 @@
 		>
 			<!-- TODO: move to global search and move to other component-->
 			<div
-				class="flex gap-2 mb-4 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-1 sm:p-1 rounded-full text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 w-full {isfocused
+				class="flex gap-2 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-2 sm:p-3 rounded-full text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 {isfocused
 					? 'shadow-xl shadow-green-300/25'
 					: ''}"
 			>
@@ -90,6 +96,7 @@
 				{/if}
 			</div>
 		</form>
+
 		<div class="flex flex-col w-full items-center my-4 gap-4">
 			<div class="flex gap-6 font-medium text-lg">
 				{#each data.navigation as nav}
@@ -168,6 +175,7 @@
 						</RepositoryCard>
 					{/each}
 				</div>
+
 				<Pagination
 					page={$page}
 					next={$page.data.pagination.next}

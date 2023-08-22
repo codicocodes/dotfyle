@@ -41,12 +41,14 @@
 	</h5>
 {/if}
 
-<ShareContainer
-	{url}
-	{tweetText}
-	emailSubject="Checkout This Week in Neovim {data.post.issue}"
-	emailBody="Check out {data.post.title.replaceAll('#', '')}"
-/>
+<div class="flex w-full justify-center">
+	<ShareContainer
+		{url}
+		{tweetText}
+		emailSubject="Checkout This Week in Neovim {data.post.issue}"
+		emailBody="Check out {data.post.title.replaceAll('#', '')}"
+	/>
+</div>
 
 <div class="flex justify-between p-2">
 	{#if data.post.issue > 1}
