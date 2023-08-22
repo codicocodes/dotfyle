@@ -12,16 +12,13 @@
 	import { faDiscord, faGithub, faTwitch } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faBars,
-		faCalendarDay,
 		faKeyboard,
 		faNewspaper,
 		faRss,
-		faSearch,
 		faSignOut,
 		faSync,
 		faTerminal,
 		faUser,
-		faWandSparkles
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { DoubleBounce } from 'svelte-loading-spinners';
@@ -256,45 +253,40 @@
 		<footer class="flex flex-col max-w-full xl:max-w-7xl w-full sm:mt-4 px-4 sm:px-4 gap-4 mt-8">
 			<div class="sticky mx-auto grid sm:grid-cols-2 xl:grid-cols-3 gap-8 mb-8">
 				<div class="flex flex-col gap-2 text-gray-400 items-start">
-					<h3 class="text-2xl font-semibold tracking-wider">Features</h3>
+					<h3 class="text-2xl font-semibold tracking-wider">Sitemap</h3>
 					<a href="/neovim/plugins/trending" class="flex items-center hover:text-white gap-2">
-						<div class="flex items-start w-6">
-							<Fa icon={faSearch} />
-						</div>
-						<span class="ml-1">Neovim Plugin Search</span>
+						<span>Trending Neovim Plugins</span>
 					</a>
-
-					<a href="/configs" class="flex items-center hover:text-purple-400 gap-2">
-						<div class="flex items-start w-6">
-							<Fa icon={faWandSparkles} />
-						</div>
-						<span class="ml-1">Neovim Config Search</span>
+					<a href="/neovim/plugins/top" class="flex items-center hover:text-white gap-2">
+						<span>Top Neovim Plugins</span>
 					</a>
-
-					<a href="/this-week-in-neovim" class="flex items-center hover:text-green-400 gap-2">
-						<div class="flex items-start w-6">
-							<Fa icon={faNewspaper} />
-						</div>
-						<span class="ml-1">This Week in Neovim</span>
+					<a href="/neovim/plugins/new" class="flex items-center hover:text-white gap-2">
+						<span>New Neovim Plugins</span>
+					</a>
+					<a href="/configs" class="flex items-center hover:text-white gap-2">
+						<span>Awesome Neovim Configurations</span>
+					</a>
+					<a href="/this-week-in-neovim" class="flex items-center hover:text-white gap-2">
+						<span>This Week in Neovim</span>
 					</a>
 
 					<a
 						href="https://dotfyle.com/this-week-in-neovim/rss.xml"
 						class="flex items-center hover:text-orange-400 gap-2"
 					>
-						<div class="flex items-start w-6">
+						<div class="flex items-start w-4">
 							<Fa icon={faRss} />
 						</div>
-						<span class="ml-1">This Week in Neovim RSS Feed</span>
+						<span class="ml-1">RSS Feed</span>
 					</a>
 				</div>
 				<div class="flex flex-col gap-2 text-gray-400 items-start">
 					<h3 class="text-2xl font-semibold tracking-wider">Guides</h3>
 					<a href="/guides/auto-generated-readme" class="flex items-center hover:text-white gap-2">
-						<span class="ml-1">How to automatically create a README for your Neovim config</span>
+						<span class="">How to automatically create a README for your Neovim config</span>
 					</a>
 					<a href="/guides/plugin-usage-badge" class="flex items-center hover:text-white gap-2">
-						<span class="ml-1">Showcase your Neovim plugins usage with a badge</span>
+						<span class="">Showcase your Neovim plugins usage with a badge</span>
 					</a>
 				</div>
 				<div class="flex flex-col gap-2 text-gray-400 items-start">
