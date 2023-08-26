@@ -3,17 +3,12 @@
 	import type { PageData } from './$types';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
-	import MediumHeroTitle from '$lib/components/MediumHeroTitle.svelte';
-	import CoolText from '$lib/components/CoolText.svelte';
-	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
-	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import { faStar, faUsers } from '@fortawesome/free-solid-svg-icons';
-	import ShareContainer from '$lib/components/ShareContainer.svelte';
 	import ShowcaseCard from '$lib/components/ShowcaseCard.svelte';
 	import Fa from 'svelte-fa';
 	import { getMediaType } from '$lib/utils';
 	import PluginSearchNavigation from '$lib/components/PluginSearchNavigation.svelte';
-	import Search from '$lib/components/Search.svelte';
+	import SearchHeader from '$lib/components/SearchHeader.svelte';
 
 	export let data: PageData;
 
@@ -33,45 +28,12 @@
 
 <div class="w-full flex flex-col items-center px-4">
 	<div class="flex flex-col max-w-5xl w-full">
-		<div class="flex flex-col w-full items-center my-8 mb-4 gap-4">
-			<MediumHeroTitle>
-				<CoolText text={data.content.title} />
-			</MediumHeroTitle>
-			<p class="text-lg">
-				{data.content.description}
-			</p>
-		</div>
-
-		<div class="flex w-full justify-center">
-			<ShareContainer
-				url={$page.url.origin + $page.url.pathname}
-				tweetText={data.content.title}
-				emailSubject={data.content.title}
-				emailBody={data.content.description}
+		<div class="flex flex-col gap-2 my-2 mb-4">
+			<SearchHeader
+				content={data.content}
+				navigation={data.navigation}
+				pagination={data.pagination}
 			/>
-		</div>
-
-		<Search placeholder="Search {data.pagination.total} colorschemes" />
-
-		<div class="flex flex-col w-full items-center my-4 gap-4">
-			<div class="flex gap-6 font-medium text-lg">
-				{#each data.navigation as nav}
-					{#if $page.params.sort === nav.value}
-						<a href={nav.path}>
-							<button>
-								<CoolTextWithChildren>{nav.label}</CoolTextWithChildren>
-							</button>
-						</a>
-					{:else}
-						<a href={nav.path}>
-							<button>
-								<CoolTextOnHover>{nav.label}</CoolTextOnHover>
-							</button>
-						</a>
-					{/if}
-				{/each}
-			</div>
-			<div class="w-full bg-white h-[0.05rem]" />
 			<PluginSearchNavigation />
 		</div>
 
