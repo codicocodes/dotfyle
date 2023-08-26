@@ -5,13 +5,20 @@
 		{ label: 'Colorschemes', url: '/neovim/colorscheme/trending' },
 		{ label: 'Configurations', url: '/neovim/configurations/top' }
 	];
+
+	function isOnCurrentUrl(relativeUrl: string) {
+		const paths = relativeUrl.split('/');
+		paths.pop()
+		const pathWithoutSort = paths.join('/');
+		return $page.url.pathname.startsWith(pathWithoutSort);
+	}
 </script>
 
 <div class="w-full flex gap-2 mt-2 text-sm">
 	{#each links as link}
 		<a
 			href={link.url}
-			class="{$page.url.pathname.includes(link.url.split('/')[2])
+			class="{isOnCurrentUrl(link.url)
 				? 'bg-white text-black'
 				: 'bg-white/10 hover:bg-white text-white hover:text-black'} p-2 rounded-full font-semibold"
 		>
