@@ -70,9 +70,7 @@
 		} else nProgress.done();
 	}
 	onMount(() => {
-		fetch('/api/auth/refresh', { method: 'POST' }).then((r) => {
-			console.log(r.status);
-		});
+		fetch('/api/auth/refresh', { method: 'POST' });
 	});
 
 	let showNavModal = false;
@@ -120,7 +118,7 @@
 			href="/configs"
 			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25 justify-center"
 		>
-			Configs
+			Configurations
 		</a>
 		<a
 			href="/this-week-in-neovim"
@@ -168,18 +166,18 @@
 					<CoolText text="dotfyle" />
 				</a>
 				<div
-					class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg tracking-tight font-semibold"
+					class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg tracking-tight font-medium"
 				>
 					<a href="/neovim/plugins/trending">
-						<CoolTextOnHover>plugins</CoolTextOnHover>
+						<CoolTextOnHover>Plugins</CoolTextOnHover>
 					</a>
 
 					<a href="/configs">
-						<CoolTextOnHover>configs</CoolTextOnHover>
+						<CoolTextOnHover>Configurations</CoolTextOnHover>
 					</a>
 
 					<a href="/this-week-in-neovim">
-						<CoolTextOnHover>news</CoolTextOnHover>
+						<CoolTextOnHover>News</CoolTextOnHover>
 					</a>
 				</div>
 			</div>
