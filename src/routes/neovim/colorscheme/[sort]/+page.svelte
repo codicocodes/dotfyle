@@ -7,12 +7,16 @@
 	import CoolText from '$lib/components/CoolText.svelte';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
-	import { faStar, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+	import { faStar, faUsers } from '@fortawesome/free-solid-svg-icons';
 	import ShareContainer from '$lib/components/ShareContainer.svelte';
 	import ShowcaseCard from '$lib/components/ShowcaseCard.svelte';
 	import Fa from 'svelte-fa';
+	import { getMediaType } from '$lib/utils';
 
 	export let data: PageData;
+
+	$: ogThumbnail = data.plugins.flatMap(p => p.media).find(m => getMediaType(m) === 'image')
+
 </script>
 
 <svelte:head>
@@ -21,6 +25,7 @@
 		title={data.content.ogTitle}
 		description={data.content.ogDescription}
 		url="https://dotfyle.com/neovim/plugins/{$page.params.sort}"
+		image={ogThumbnail?.url}
 	/>
 </svelte:head>
 
