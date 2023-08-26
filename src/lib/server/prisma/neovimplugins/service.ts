@@ -162,6 +162,44 @@ export async function getPluginsWithDotfyleShield() {
 	return nestedPluginData.map(flattenConfigCount);
 }
 
+export async function getPluginsWithMedia(
+	category: string,
+	sorting: 'new' | 'popular' | 'trending' = 'trending',
+	page: number,
+	take: number,
+) {
+
+	const orderBy = orderByConfig[sorting];
+
+	const args = {
+		select: selectConfigCount,
+		where: {
+			category: {
+				equals: category,
+			},
+			media: {
+				some: {
+					type: {
+						contains: '',
+					}
+				},
+			},
+		},
+		orderBy
+	};
+
+	const { data: nestedPluginData, meta } = await paginator({
+		perPage: take
+	})<NestedNeovimPluginWithCount>(prismaClient.neovimPlugin, args, { page });
+
+	const data = nestedPluginData.map(flattenConfigCount);
+
+	return {
+		meta,
+		data
+	};
+}
+
 export async function searchPlugins(
 	query: string | undefined = undefined,
 	categories: string[] = [],
@@ -190,8 +228,9 @@ export async function searchPlugins(
 				: {
 						OR: [{ owner: { contains: query, mode } }, { name: { contains: query, mode } }]
 				  }
-			: {})
+			: {}),
 	};
+
 	const orderBy = orderByConfig[sorting];
 
 	const args = {

@@ -27,8 +27,7 @@ import {
 	getPopularPlugins,
 	getReadme,
 	searchPlugins,
-	upsertManyNeovimPlugins,
-    upsertNeovimPlugin
+	upsertNeovimPlugin
 } from '$lib/server/prisma/neovimplugins/service';
 import { getPluginSyncer, PluginSyncer } from '$lib/server/sync/plugins/sync';
 import { sanitizeHtml, hasBeenOneDay } from '$lib/utils';
@@ -196,7 +195,10 @@ export const router = t.router({
 		})
 		.query(async ({ input: { username, slug } }) => {
 			return getConfigBySlug(username, slug).catch(() => {
-				throw new TRPCError({ message: 'config not found', code: 'NOT_FOUND' });
+				throw new TRPCError({
+					message: 'config not found',
+					code: 'NOT_FOUND'
+				});
 			});
 		}),
 	getConfigsByUsername: t.procedure
@@ -219,7 +221,10 @@ export const router = t.router({
 		})
 		.query(async ({ input: username }) => {
 			return getUserByUsername(username).catch(() => {
-				throw new TRPCError({ message: 'user not found', code: 'NOT_FOUND' });
+				throw new TRPCError({
+					message: 'user not found',
+					code: 'NOT_FOUND'
+				});
 			});
 		}),
 	getUser: t.procedure.query(async ({ ctx }) => {
@@ -254,17 +259,21 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { query, plugins, sorting, page, take, languageServers } }) => {
-			const configs = await searchNeovimConfigs({
-				query,
-				plugins,
-				sorting,
-				page,
-				take,
-				languageServers
-			});
-			return configs;
-		}),
+		.query(
+			async ({
+				input: { query, plugins, sorting, page, take, languageServers }
+			}) => {
+				const configs = await searchNeovimConfigs({
+					query,
+					plugins,
+					sorting,
+					page,
+					take,
+					languageServers
+				});
+				return configs;
+			}
+		),
 	getPluginIdentifiers: t.procedure.query(async () => {
 		return getAllNeovimPluginNames();
 	}),
@@ -305,8 +314,16 @@ export const router = t.router({
 		.query(async ({ ctx, input }) => {
 			const user = ctx.getAuthenticatedUser();
 			const token = await getGithubToken(user.id);
-			const tree = await fetchRepoFileTree(token, user.username, input.repo, input.branch);
-			validateConfigPath(tree, input.root ? `${input.root}/${input.initFile}` : input.initFile);
+			const tree = await fetchRepoFileTree(
+				token,
+				user.username,
+				input.repo,
+				input.branch
+			);
+			validateConfigPath(
+				tree,
+				input.root ? `${input.root}/${input.initFile}` : input.initFile
+			);
 			const config = await syncInitialRepoInfo(
 				user,
 				user.username,
@@ -388,12 +405,18 @@ export const router = t.router({
 		.input((input: unknown) => {
 			// TODO: when making this public we can not just use any string for category
 			// we have to validate that it is a category currently in se
-			return z.object({ owner: z.string(), name: z.string(), category: z.string() }).parse(input);
+			return z
+				.object({
+					owner: z.string(),
+					name: z.string(),
+					category: z.string()
+				})
+				.parse(input);
 		})
 		.query(async ({ input: { owner, name, category }, ctx }) => {
-    const token = await getGithubToken(ctx.user!.id)
-    const repository = await fetchGithubRepositoryByName(token, owner, name)
-    validateRepositoryDataIsNeovimPlugin(repository);
+			const token = await getGithubToken(ctx.user!.id);
+			const repository = await fetchGithubRepositoryByName(token, owner, name);
+			validateRepositoryDataIsNeovimPlugin(repository);
 			const pluginDTO = {
 				type: 'github',
 				source: 'manually-created',
@@ -401,10 +424,14 @@ export const router = t.router({
 				link: repository.html_url,
 				owner,
 				name,
-				shortDescription: repository.description ?? "",
+				shortDescription: repository.description ?? ''
 			};
 			const plugin = await upsertNeovimPlugin(PluginDTO.parse(pluginDTO));
-      return new PluginSyncer(token, {...plugin, configCount: 0, media: [] }).sync()
+			return new PluginSyncer(token, {
+				...plugin,
+				configCount: 0,
+				media: []
+			}).sync();
 		})
 });
 
