@@ -35,19 +35,6 @@
 	</div>
 	<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-gray-600" />
 	<div class="flex flex-wrap gap-1 text-xs mt-2">
-		{#each Array.from(selected) as item}
-			<CoolTextWithChildren>
-				<button
-					class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
-					on:click={() => unselectItem(item)}
-				>
-					<div class="force-white-text">
-						<Fa icon={faX} size="xs" />
-					</div>
-					{item}
-				</button>
-			</CoolTextWithChildren>
-		{/each}
 		{#each items
 			.filter((c) => (selected.size > 0 ? !selected.has(c) : true))
 			.filter((c) => c.includes(filter))
