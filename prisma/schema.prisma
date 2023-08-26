@@ -18,8 +18,6 @@ model User {
   githubToken   GithubToken?
   neovimConfigs NeovimConfig[]
   createdAt     DateTime       @default(now())
-  lastLoginAt   DateTime       @default(now())
-  loginCount    Int            @default(0)
 }
 
 model GithubToken {

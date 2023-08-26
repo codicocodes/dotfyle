@@ -3,21 +3,6 @@ import type { User } from '@prisma/client';
 import { prismaClient } from './../client';
 import type { UpsertUserSchema } from './schema';
 
-export async function trackLogin(userId: number): Promise<void> {
-	const where = {
-		id: userId
-	};
-	await prismaClient.user.update({
-		where,
-		data: {
-			loginCount: {
-				increment: 1
-			},
-			lastLoginAt: new Date()
-		}
-	});
-}
-
 export async function upsertUser({ accessToken, ...userData }: UpsertUserSchema): Promise<User> {
 	const { githubId } = userData;
 	const create = {

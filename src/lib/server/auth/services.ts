@@ -5,7 +5,6 @@ import { JwtSecretError } from './errors';
 import { redirect, type Cookies } from '@sveltejs/kit';
 import { UserSchema } from '$lib/server/prisma/users/schema';
 import { getConfigsByUsername } from '../prisma/neovimconfigs/service';
-import { trackLogin } from '../prisma/users/service';
 
 export function getJwtAccessSecret(): string {
 	if (!JWT_ACCESS_SECRET || JWT_ACCESS_SECRET.length < 32) {
@@ -31,9 +30,9 @@ export function createCookie(cookies: Cookies, token: string, maxAge: number = 6
 		path: '/',
 		secure: NODE_ENV === 'production',
 		sameSite: 'lax',
-		maxAge, 
+		maxAge
 	});
-  return cookies.get(COOKIE_NAME) as string
+	return cookies.get(COOKIE_NAME) as string;
 }
 
 export function verifyToken(cookies: Cookies): User | null {
@@ -43,7 +42,7 @@ export function verifyToken(cookies: Cookies): User | null {
 	try {
 		return UserSchema.parse(jwtData);
 	} catch (err) {
-    console.error(err)
+		console.error({ err });
 		return null;
 	}
 }
@@ -56,16 +55,15 @@ export function refreshToken(c: Cookies, u: User) {
 export async function login(c: Cookies, u: User): Promise<never> {
 	const token = createSignedJwtToken(u);
 	createCookie(c, token);
-  await trackLogin(u.id)
-  const configs = await getConfigsByUsername(u.username)
-  if (configs.length > 0) {
-    throw redirect(302, `/${u.username}`);
-  } else {
-    throw redirect(302, '/welcome');
-  }
+	const configs = await getConfigsByUsername(u.username);
+	if (configs.length > 0) {
+		throw redirect(302, `/${u.username}`);
+	} else {
+		throw redirect(302, '/welcome');
+	}
 }
 
 export function logout(cookies: Cookies): string {
-  const cookie = createCookie(cookies, "", 0)
-  return cookie
+	const cookie = createCookie(cookies, '', 0);
+	return cookie;
 }
