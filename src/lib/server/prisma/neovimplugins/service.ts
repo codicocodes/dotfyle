@@ -163,6 +163,7 @@ export async function getPluginsWithDotfyleShield() {
 }
 
 export async function getPluginsWithMedia(
+	query: string,
 	category: string,
 	sorting: 'new' | 'popular' | 'trending' = 'trending',
 	page: number,
@@ -184,6 +185,7 @@ export async function getPluginsWithMedia(
 					}
 				},
 			},
+			...parsePluginQuery(query ?? ""),
 		},
 		orderBy
 	};
@@ -200,6 +202,25 @@ export async function getPluginsWithMedia(
 	};
 }
 
+function parsePluginQuery(query: string) {
+	const mode = 'insensitive';
+	const queries = query.split('/');
+	return {
+		...(query && queries
+			? queries.length > 1
+			? {
+				AND: [
+					{ owner: { contains: queries[0], mode } },
+					{ name: { contains: queries[1], mode } }
+				]
+			}
+				: {
+					OR: [{ owner: { contains: query, mode } }, { name: { contains: query, mode } }]
+				}
+					: {}),
+	}
+}
+
 export async function searchPlugins(
 	query: string | undefined = undefined,
 	categories: string[] = [],
@@ -207,8 +228,6 @@ export async function searchPlugins(
 	page: number | undefined = undefined,
 	take: number | undefined = undefined
 ): Promise<PaginatedResult<NeovimPluginWithCount>> {
-	const queries = query?.split('/');
-	const mode = 'insensitive';
 	const where = {
 		...(categories.length > 0
 			? {
@@ -217,18 +236,7 @@ export async function searchPlugins(
 					}
 			  }
 			: {}),
-		...(query && queries
-			? queries.length > 1
-				? {
-						AND: [
-							{ owner: { contains: queries[0], mode } },
-							{ name: { contains: queries[1], mode } }
-						]
-				  }
-				: {
-						OR: [{ owner: { contains: query, mode } }, { name: { contains: query, mode } }]
-				  }
-			: {}),
+			...parsePluginQuery(query ?? ""),
 	};
 
 	const orderBy = orderByConfig[sorting];

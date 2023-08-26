@@ -12,6 +12,8 @@
 	import ShowcaseCard from '$lib/components/ShowcaseCard.svelte';
 	import Fa from 'svelte-fa';
 	import { getMediaType } from '$lib/utils';
+	import PluginSearchNavigation from '$lib/components/PluginSearchNavigation.svelte';
+	import Search from '$lib/components/Search.svelte';
 
 	export let data: PageData;
 
@@ -49,6 +51,8 @@
 			/>
 		</div>
 
+		<Search placeholder="Search {data.pagination.total} colorschemes" />
+
 		<div class="flex flex-col w-full items-center my-4 gap-4">
 			<div class="flex gap-6 font-medium text-lg">
 				{#each data.navigation as nav}
@@ -68,6 +72,7 @@
 				{/each}
 			</div>
 			<div class="w-full bg-white h-[0.05rem]" />
+			<PluginSearchNavigation />
 		</div>
 
 		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">

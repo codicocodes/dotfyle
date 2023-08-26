@@ -46,9 +46,10 @@ const getSorting = (event: PageServerLoadEvent) => {
 };
 
 export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
+  const query = event.url.searchParams.get('q') ?? undefined;
   const sorting = getSorting(event);
   const page = getPage(event);
-  const res = await getPluginsWithMedia('colorscheme', sorting, page, 10);
+  const res = await getPluginsWithMedia(query ?? '', 'colorscheme', sorting, page, 10);
   return {
     plugins: res.data,
     pagination: res.meta,

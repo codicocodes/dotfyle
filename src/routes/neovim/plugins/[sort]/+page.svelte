@@ -15,6 +15,8 @@
 	import { faCircleXmark, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import ShareContainer from '$lib/components/ShareContainer.svelte';
+	import PluginSearchNavigation from '$lib/components/PluginSearchNavigation.svelte';
+	import Search from '$lib/components/Search.svelte';
 
 	export let data: PageData;
 
@@ -22,11 +24,6 @@
 		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
 
 	$: selectedCategoriesSet = new Set(selectedCategories);
-
-	let search = $page.url.searchParams.get('q') ?? '';
-
-	let isfocused = false;
-	let inputRef: HTMLInputElement;
 </script>
 
 <svelte:head>
@@ -58,45 +55,7 @@
 			/>
 		</div>
 
-		<form
-			action=""
-			class="grow flex justify-center items-center mt-6 mb-4 gap-2"
-			on:submit|preventDefault={() => {
-				navigate($page, 'page', '1');
-				navigate($page, 'q', search, true);
-			}}
-		>
-			<!-- TODO: move to global search and move to other component-->
-			<div
-				class="flex gap-2 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-2 sm:p-3 rounded-full text-black text-sm font-medium focus:outline-none focus:border-green-500 shadow-xl focus:shadow-green-300/25 focus:ring-1 focus:ring-green-500 bg-white/80 {isfocused
-					? 'shadow-xl shadow-green-300/25'
-					: ''}"
-			>
-				<Fa icon={faSearch} class="ml-1" />
-				<input
-					bind:this={inputRef}
-					type="search"
-					bind:value={search}
-					placeholder="search {data.pagination.total} plugins"
-					class="w-full bg-transparent focus:outline-none w-full"
-					on:focus={() => (isfocused = true)}
-					on:blur={() => (isfocused = false)}
-				/>
-				{#if search}
-					<button
-						type="button"
-						on:click={() => {
-							search = '';
-							navigate($page, 'q', search, true);
-							inputRef.focus();
-						}}
-					>
-						<Fa icon={faCircleXmark} class="mr-1" />
-					</button>
-				{/if}
-			</div>
-		</form>
-
+		<Search placeholder="Search {data.pagination.total} plugins" />
 		<div class="flex flex-col w-full items-center my-4 gap-4">
 			<div class="flex gap-6 font-medium text-lg">
 				{#each data.navigation as nav}
@@ -116,6 +75,7 @@
 				{/each}
 			</div>
 			<div class="w-full bg-white h-[0.05rem]" />
+			<PluginSearchNavigation />
 		</div>
 
 		<div class="mb-4">
