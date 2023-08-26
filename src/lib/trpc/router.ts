@@ -109,7 +109,7 @@ export const router = t.router({
 					categories: z.array(z.string()).default([]),
 					sorting: z.enum(['new', 'popular', 'trending']),
 					page: z.number().default(1),
-					take: z.number().optional()
+					take: z.number().max(10).optional()
 				})
 				.parse(input);
 		})
