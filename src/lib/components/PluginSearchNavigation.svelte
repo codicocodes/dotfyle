@@ -3,7 +3,8 @@
 	$page.url;
 	const links = [
 		{ label: 'Discover', url: '/neovim/plugins/trending' },
-		{ label: 'Colorschemes', url: '/neovim/colorscheme/trending' }
+		{ label: 'Colorschemes', url: '/neovim/colorscheme/trending' },
+		{ label: 'Configurations', url: '/neovim/configurations/top' },
 	];
 </script>
 

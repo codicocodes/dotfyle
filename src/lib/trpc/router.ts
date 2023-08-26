@@ -253,7 +253,7 @@ export const router = t.router({
 					query: z.string().optional(),
 					plugins: z.array(z.string()).optional(),
 					languageServers: z.array(z.string()).optional(),
-					sorting: z.enum(['new', 'stars', 'plugins']),
+					sorting: z.enum(['top', 'new', 'plugins']),
 					page: z.number().default(1),
 					take: z.number().optional()
 				})

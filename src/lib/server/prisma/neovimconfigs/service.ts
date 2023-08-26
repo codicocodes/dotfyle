@@ -19,7 +19,7 @@ const sortings = {
 	new: {
 		createdAt: 'desc'
 	},
-	stars: [
+	top: [
 		{
 			stars: 'desc'
 		},
@@ -327,7 +327,7 @@ export type ConfigSearchOptions = {
 	query?: string | undefined;
 	plugins?: string[];
 	languageServers?: string[];
-	sorting: 'new' | 'stars' | 'plugins';
+	sorting: 'top' | 'new' | 'plugins';
 	page?: number;
 	take?: number;
 };

@@ -9,7 +9,7 @@
 	import ShareContainer from './ShareContainer.svelte';
 
 	export let content: any;
-	export let pagination: any;
+	export let placeholder: string;
 	export let navigation: any[];
 </script>
 
@@ -31,7 +31,7 @@
 	/>
 </div>
 
-<Search placeholder="Search {pagination.total} plugins" />
+<Search placeholder={placeholder}/>
 <div class="flex flex-col w-full items-center mt-4 gap-4">
 	<div class="flex gap-6 font-medium text-lg">
 		{#each navigation as nav}

@@ -36,7 +36,7 @@
 			<SearchHeader
 				content={data.content}
 				navigation={data.navigation}
-				pagination={data.pagination}
+				placeholder="Search {data.pagination.total} plugins" 
 			/>
 			<PluginSearchNavigation />
 		</div>
