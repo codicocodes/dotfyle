@@ -12,7 +12,7 @@
 	import { navigate } from '$lib/navigate';
 	import Accordion from '$lib/components/accordion.svelte';
 	import Fa from 'svelte-fa';
-	import { faCircleXmark, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
+	import { faCircleXmark, faFilter } from '@fortawesome/free-solid-svg-icons';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import ShareContainer from '$lib/components/ShareContainer.svelte';
 	import PluginSearchNavigation from '$lib/components/PluginSearchNavigation.svelte';
