@@ -76,7 +76,7 @@
 							<Fa icon={faSearch} />
 						</a>
 						<a
-							href={'/configs'}
+							href={'/neovim/configurations/top'}
 							class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25`}
 						>
 							<Fa icon={faFileCode} />
@@ -94,7 +94,7 @@
 				<Fa icon={faSeedling} size="sm" />
 				new configs
 			</h3>
-			<CoolLink href="/configs" text="more configs" />
+			<CoolLink href="/neovim/configurations/top" text="more configs" />
 		</div>
 
 		{#await data.loading.configs}

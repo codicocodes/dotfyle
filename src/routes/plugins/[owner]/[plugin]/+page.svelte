@@ -62,7 +62,7 @@
 	<OpenGraph
 		title="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin
 			.name} | Alternatives to {data.plugin.name}"
-		url="https://dotfyle.com/configs"
+		url="/neovim/configurations/top"
 		description={data.plugin.shortDescription}
 		image={firstImage}
 	/>
@@ -224,7 +224,7 @@
 								neovim configs using {data.plugin.name}
 							</h3>
 							<CoolLink
-								href={`/configs?plugins=${data.plugin.owner}/${data.plugin.name}`}
+								href={`/neovim/configurations/top?plugins=${data.plugin.owner}/${data.plugin.name}`}
 								text="more configs"
 							/>
 						</div>

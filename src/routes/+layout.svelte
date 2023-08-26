@@ -115,7 +115,7 @@
 			Plugins
 		</a>
 		<a
-			href="/configs"
+			href="/neovim/configurations/top"
 			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25 justify-center"
 		>
 			Configurations
@@ -172,7 +172,7 @@
 						<CoolTextOnHover>Plugins</CoolTextOnHover>
 					</a>
 
-					<a href="/configs">
+					<a href="/neovim/configurations/top">
 						<CoolTextOnHover>Configurations</CoolTextOnHover>
 					</a>
 
@@ -275,7 +275,7 @@
 					<a href="/neovim/colorscheme/new" class="flex items-center hover:text-white gap-2">
 						<span>New Neovim Colorschemes</span>
 					</a>
-					<a href="/configs" class="flex items-center hover:text-white gap-2">
+					<a href="/neovim/configurations/top" class="flex items-center hover:text-white gap-2">
 						<span>Awesome Neovim Configurations</span>
 					</a>
 					<a href="/this-week-in-neovim" class="flex items-center hover:text-white gap-2">
