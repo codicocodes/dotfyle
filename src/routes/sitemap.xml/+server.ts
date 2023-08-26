@@ -45,6 +45,21 @@ xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
   <priority>0.9</priority>
 </url>
 <url>
+  <loc>${website}/neovim/colorscheme/trending</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.9</priority>
+</url>
+<url>
+  <loc>${website}/neovim/colorscheme/top</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.9</priority>
+</url>
+<url>
+  <loc>${website}/neovim/colorscheme/new</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.9</priority>
+</url>
+<url>
   <loc>${website}/configs</loc>
   <changefreq>daily</changefreq>
   <priority>0.9</priority>
