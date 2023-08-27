@@ -1,51 +1,54 @@
 import { prismaClient } from '../prisma/client';
 import { readFileSync } from 'fs';
-import { daysAgo } from '$lib/utils';
+import { daysAgo, getMediaType } from '$lib/utils';
 import type { Media, NeovimPlugin } from '@prisma/client';
 
 export class IssueAlreadyPublished extends Error {
-  constructor() {
-    const message = 'This issue has already been published'
-    super(message)
-  }
+	constructor() {
+		const message = 'This issue has already been published';
+		super(message);
+	}
 }
 
 export class TwinPostBuilder {
 	newPluginTemplate = './twin/new-plugin-template.md';
 	template = './twin/template.md';
 
-  async validate(issue: number) {
+	async validate(issue: number) {
 		const twinIssue = await prismaClient.twinPost.findUnique({
-      where: {
-        issue
-      }
-    })
-    if (!twinIssue) return
-    if (!twinIssue.publishedAt) return
-    throw new IssueAlreadyPublished()
-  }
+			where: {
+				issue
+			}
+		});
+		if (!twinIssue) return;
+		if (!twinIssue.publishedAt) return;
+		throw new IssueAlreadyPublished();
+	}
 
 	async run(issue: number, days: number) {
-    const newPlugins = await this.getNewPlugins(days)
+		const newPlugins = await this.getNewPlugins(days);
 		const content = await this.appendNewPlugins(newPlugins);
-    const title = `Issue #${issue}: ${newPlugins.map(p => p.name).slice(0, 3).join(", ")}`
+		const title = `Issue #${issue}: ${newPlugins
+			.map((p) => p.name)
+			.slice(0, 3)
+			.join(', ')}`;
 		const post = {
 			title,
 			content,
 			issue,
-      publishedAt: null,
+			publishedAt: null
 		};
 		return await prismaClient.twinPost.upsert({
 			where: {
-				issue,
+				issue
 			},
 			create: post,
 			update: post
 		});
 	}
 
-  async getNewPlugins(days: number) {
-		 const plugins = await prismaClient.neovimPlugin.findMany({
+	async getNewPlugins(days: number) {
+		const plugins = await prismaClient.neovimPlugin.findMany({
 			include: {
 				media: true
 			},
@@ -54,16 +57,16 @@ export class TwinPostBuilder {
 					gte: daysAgo(days)
 				}
 			},
-      orderBy: {
-        neovimConfigPlugins: {
-          _count: "desc"
-        }
-      },
+			orderBy: {
+				neovimConfigPlugins: {
+					_count: 'desc'
+				}
+			}
 		});
-    return plugins
-  }
+		return plugins;
+	}
 
-	async appendNewPlugins(plugins: (NeovimPlugin & { media: Media[]})[]) {
+	async appendNewPlugins(plugins: (NeovimPlugin & { media: Media[] })[]) {
 		const template = readFileSync(this.template, 'utf8');
 
 		const newPluginTemplate = readFileSync(this.newPluginTemplate, 'utf8');
@@ -71,16 +74,24 @@ export class TwinPostBuilder {
 		const newPlugins = [];
 
 		for (const plugin of plugins) {
-			let post = newPluginTemplate.replaceAll('{fullname}', `${plugin.owner}/${plugin.name}`);
-			post = post.replaceAll('{image}', plugin.media[0]?.url ?? '');
+			let post = newPluginTemplate.replaceAll(
+				'{fullname}',
+				`${plugin.owner}/${plugin.name}`
+			);
+			post = post.replaceAll('{image}', plugin.media.filter(m => getMediaType(m) === 'image')[0]?.url ?? '');
 			post = post.replaceAll('{category}', plugin.category);
 			post = post.replaceAll('{description}', plugin.shortDescription);
-			post = post.replaceAll('{githubUrl}', `https://github.com/${plugin.owner}/${plugin.name}`);
-			post = post.replaceAll('{dotfyleUrl}', `/plugins/${plugin.owner}/${plugin.name}`);
+			post = post.replaceAll(
+				'{githubUrl}',
+				`https://github.com/${plugin.owner}/${plugin.name}`
+			);
+			post = post.replaceAll(
+				'{dotfyleUrl}',
+				`/plugins/${plugin.owner}/${plugin.name}`
+			);
 			newPlugins.push(post);
 		}
 
-
-    return template.replaceAll('{new-plugins-section}', newPlugins.join("\n\n"))
+		return template.replaceAll('{new-plugins-section}', newPlugins.join('\n\n'));
 	}
 }
