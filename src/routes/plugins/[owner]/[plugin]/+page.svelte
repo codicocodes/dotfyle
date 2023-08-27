@@ -8,6 +8,7 @@
 	import {
 		faBomb,
 		faCameraRetro,
+		faDeleteLeft,
 		faRotate,
 		faStar,
 		faUserGroup,
@@ -52,6 +53,12 @@
 	$: firstImage = data.media.filter((m) => getMediaType(m) === 'image')?.[0]?.url;
 
 	let selectedMedia: Media | undefined;
+
+	async function deleteMedia(id: number) {
+		await trpc($page).deleteMedia.query({
+			id
+		});
+	}
 </script>
 
 <svelte:head>
@@ -68,13 +75,18 @@
 	/>
 </svelte:head>
 
-<Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
-	{#if selectedMedia && getMediaType(selectedMedia) === 'video'}
-		<video class="rounded:cursor-pointer" src={selectedMedia.url} autoplay muted />
-	{:else if selectedMedia}
-		<img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />
-	{/if}
-</Modal>
+{#if selectedMedia}
+	<Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
+		{#if data.user && isAdmin(data.user)}
+			<Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
+		{/if}
+		{#if getMediaType(selectedMedia) === 'video'}
+			<video class="rounded:cursor-pointer" src={selectedMedia.url} autoplay muted />
+		{:else}
+			<img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />
+		{/if}
+	</Modal>
+{/if}
 <div class="w-full flex flex-col items-center h-full my-14 px-4">
 	<div class="flex flex-col max-w-5xl w-full gap-2">
 		<div class="flex flex-col gap-2">
@@ -199,9 +211,9 @@
 								{#each data.media as media}
 									{#if getMediaType(media) === 'video'}
 										<video
-                      autoplay
-                      muted
-                      class="rounded hover:cursor-pointer"
+											autoplay
+											muted
+											class="rounded hover:cursor-pointer"
 											on:click={() => (selectedMedia = media)}
 											src={media.url}
 										/>

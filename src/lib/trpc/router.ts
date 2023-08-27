@@ -61,6 +61,7 @@ import { getMediaForPlugin } from '$lib/server/prisma/media/service';
 import { marked } from 'marked';
 import { validateRepositoryDataIsNeovimPlugin } from '$lib/validation';
 import { PluginDTO } from '$lib/server/prisma/neovimplugins/schema';
+import { prismaClient } from '$lib/server/prisma/client';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -259,21 +260,17 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(
-			async ({
-				input: { query, plugins, sorting, page, take, languageServers }
-			}) => {
-				const configs = await searchNeovimConfigs({
-					query,
-					plugins,
-					sorting,
-					page,
-					take,
-					languageServers
-				});
-				return configs;
-			}
-		),
+		.query(async ({ input: { query, plugins, sorting, page, take, languageServers } }) => {
+			const configs = await searchNeovimConfigs({
+				query,
+				plugins,
+				sorting,
+				page,
+				take,
+				languageServers
+			});
+			return configs;
+		}),
 	getPluginIdentifiers: t.procedure.query(async () => {
 		return getAllNeovimPluginNames();
 	}),
@@ -314,16 +311,8 @@ export const router = t.router({
 		.query(async ({ ctx, input }) => {
 			const user = ctx.getAuthenticatedUser();
 			const token = await getGithubToken(user.id);
-			const tree = await fetchRepoFileTree(
-				token,
-				user.username,
-				input.repo,
-				input.branch
-			);
-			validateConfigPath(
-				tree,
-				input.root ? `${input.root}/${input.initFile}` : input.initFile
-			);
+			const tree = await fetchRepoFileTree(token, user.username, input.repo, input.branch);
+			validateConfigPath(tree, input.root ? `${input.root}/${input.initFile}` : input.initFile);
 			const config = await syncInitialRepoInfo(
 				user,
 				user.username,
@@ -432,6 +421,19 @@ export const router = t.router({
 				configCount: 0,
 				media: []
 			}).sync();
+		}),
+	deleteMedia: t.procedure
+		.use(isAuthenticated)
+		.use(isAdmin)
+		.input((input: unknown) => {
+			return z
+				.object({
+					id: z.number()
+				})
+				.parse(input);
+		})
+		.query(async ({ input: { id } }) => {
+			await prismaClient.media.delete({ where: { id } });
 		})
 });
 
