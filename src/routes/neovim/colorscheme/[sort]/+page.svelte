@@ -5,9 +5,6 @@
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import {
 		faArrowTrendUp,
-		faArrowUp,
-		faArrowUpAZ,
-		faArrowUpRightDots,
 		faStar,
 		faUsers
 	} from '@fortawesome/free-solid-svg-icons';
