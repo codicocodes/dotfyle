@@ -118,6 +118,7 @@
 							stars={fetchedRepository.stargazers_count.toString()}
 							configCount={0}
 							category={selectedCategory ?? 'UNKNOWN CATEGORY'}
+							addedLastWeek={0}
 						/>
 					</RepositoryCard>
 

@@ -3,7 +3,14 @@
 	import type { PageData } from './$types';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
-	import { faStar, faUsers } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faArrowTrendUp,
+		faArrowUp,
+		faArrowUpAZ,
+		faArrowUpRightDots,
+		faStar,
+		faUsers
+	} from '@fortawesome/free-solid-svg-icons';
 	import ShowcaseCard from '$lib/components/ShowcaseCard.svelte';
 	import Fa from 'svelte-fa';
 	import { getMediaType } from '$lib/utils';
@@ -12,8 +19,7 @@
 
 	export let data: PageData;
 
-	$: ogThumbnail = data.plugins.flatMap(p => p.media).find(m => getMediaType(m) === 'image')
-
+	$: ogThumbnail = data.plugins.flatMap((p) => p.media).find((m) => getMediaType(m) === 'image');
 </script>
 
 <svelte:head>
@@ -32,7 +38,7 @@
 			<SearchHeader
 				content={data.content}
 				navigation={data.navigation}
-				placeholder="Search {data.pagination.total} colorschemes" 
+				placeholder="Search {data.pagination.total} colorschemes"
 			/>
 			<PluginSearchNavigation />
 		</div>
@@ -48,13 +54,26 @@
 							thumbnail={plugin.media?.[0]}
 						>
 							<div slot="footer" class="flex gap-4 font-medium text-base">
-								<span class="py-1 rounded-full flex gap-1 items-center font-semibold">
+								<span
+									title="GitHub stars"
+									class="py-1 rounded-full flex gap-1 items-center font-semibold"
+								>
 									<Fa icon={faStar} />
 									{plugin.stars}
 								</span>
-								<span class="py-1 rounded-full flex gap-1 items-center font-semibold">
+								<span
+									title="Total installs on Dotfyle"
+									class="py-1 rounded-full flex gap-1 items-center font-semibold"
+								>
 									<Fa icon={faUsers} />
 									{plugin.configCount}
+								</span>
+								<span
+									title="Installs last week"
+									class="py-1 rounded-full flex gap-1 items-center font-semibold"
+								>
+									<Fa icon={faArrowTrendUp} />
+									{plugin.addedLastWeek}
 								</span>
 							</div>
 						</ShowcaseCard>

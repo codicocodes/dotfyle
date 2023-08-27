@@ -156,6 +156,7 @@
 							stars={plugin.stars.toString()}
 							configCount={plugin.configCount}
 							category={plugin.category}
+							addedLastWeek={plugin.addedLastWeek}
 						/>
 					</RepositoryCard>
 				{/each}
@@ -194,6 +195,7 @@
 							stars={plugin.stars.toString()}
 							configCount={plugin.configCount}
 							category={plugin.category}
+							addedLastWeek={plugin.addedLastWeek}
 						/>
 					</RepositoryCard>
 				{/each}

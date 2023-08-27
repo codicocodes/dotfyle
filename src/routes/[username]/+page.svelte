@@ -94,8 +94,8 @@
 							{#each data.plugins as plugin, _}
 								<div in:fade>
 									<RepositoryCard
-                    name="{plugin.owner}/{plugin.name}"
-                    link="/plugins/{plugin.owner}/{plugin.name}"
+										name="{plugin.owner}/{plugin.name}"
+										link="/plugins/{plugin.owner}/{plugin.name}"
 										description={plugin.shortDescription}
 										thumbnail={plugin.media[0]}
 									>
@@ -104,6 +104,7 @@
 											stars={plugin.stars.toString()}
 											configCount={plugin.configCount}
 											category={plugin.category}
+											addedLastWeek={plugin.addedLastWeek}
 										/>
 									</RepositoryCard>
 								</div>
