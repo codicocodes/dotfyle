@@ -55,7 +55,10 @@ export class TwinPostBuilder {
 			where: {
 				createdAt: {
 					gte: daysAgo(days)
-				}
+				},
+				stars: {
+					lt: 200,
+				},
 			},
 			orderBy: {
 				neovimConfigPlugins: {
