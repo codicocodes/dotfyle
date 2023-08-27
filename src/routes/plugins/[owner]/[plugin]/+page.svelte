@@ -6,12 +6,14 @@
 	import { getMediaType, hasBeenOneDay, humanizeAbsolute, isAdmin } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import {
+		faArrowTrendUp,
 		faBomb,
 		faCameraRetro,
 		faDeleteLeft,
 		faRotate,
 		faStar,
 		faUserGroup,
+		faUsers,
 		faX
 	} from '@fortawesome/free-solid-svg-icons';
 	import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@rgossiaux/svelte-headlessui';
@@ -148,14 +150,24 @@
 				</div>
 			</div>
 
-			<div class="flex text-base sm:text-base font-semibold tracking-wide gap-2">
-				<span class="flex items-center gap-2">
-					<Fa icon={faStar} size="md" />
+			<div class="flex text-base sm:text-base font-semibold tracking-wide gap-4">
+				<span title="GitHub stars" class="py-1 rounded-full flex gap-1 items-center font-semibold">
+					<Fa icon={faStar} />
 					{data.plugin.stars}
 				</span>
-				<span class="flex items-center gap-2">
-					<Fa icon={faUserGroup} size="md" />
-					{data.plugin.configCount} dotfyle configs
+				<span
+					title="Total installs on Dotfyle"
+					class="py-1 rounded-full flex gap-1 items-center font-semibold"
+				>
+					<Fa icon={faUsers} />
+					{data.plugin.configCount}
+				</span>
+				<span
+					title="Installs last week"
+					class="py-1 rounded-full flex gap-1 items-center font-semibold"
+				>
+					<Fa icon={faArrowTrendUp} />
+					{data.plugin.addedLastWeek}
 				</span>
 			</div>
 		</div>
