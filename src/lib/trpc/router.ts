@@ -1,4 +1,4 @@
-import { isAdmin, isAuthenticated } from './middlewares/auth';
+import * as middlewares from './middlewares/auth';
 import { t } from './t';
 import { z } from 'zod';
 import {
@@ -30,7 +30,7 @@ import {
 	upsertNeovimPlugin
 } from '$lib/server/prisma/neovimplugins/service';
 import { getPluginSyncer, PluginSyncer } from '$lib/server/sync/plugins/sync';
-import { sanitizeHtml, hasBeenOneDay } from '$lib/utils';
+import { sanitizeHtml, hasBeenOneDay, isAdmin } from '$lib/utils';
 import {
 	generateTwinIssue,
 	updateTwinIssue,
@@ -65,7 +65,7 @@ import { prismaClient } from '$lib/server/prisma/client';
 
 export const router = t.router({
 	syncPlugin: t.procedure
-		.use(isAuthenticated)
+		.use(middlewares.isAuthenticated)
 		.input((input: unknown) => {
 			return z
 				.object({
@@ -231,7 +231,7 @@ export const router = t.router({
 	getUser: t.procedure.query(async ({ ctx }) => {
 		return ctx.user;
 	}),
-	getRepositories: t.procedure.use(isAuthenticated).query(async ({ ctx }) => {
+	getRepositories: t.procedure.use(middlewares.isAuthenticated).query(async ({ ctx }) => {
 		const user = ctx.getAuthenticatedUser();
 		const plugins = await searchPlugins();
 		const pluginNamesArr = plugins.data
@@ -275,7 +275,7 @@ export const router = t.router({
 		return getAllNeovimPluginNames();
 	}),
 	syncExistingNeovimConfig: t.procedure
-		.use(isAuthenticated)
+		.use(middlewares.isAuthenticated)
 		.input((input: unknown) => {
 			return z
 				.object({
@@ -297,7 +297,7 @@ export const router = t.router({
 			return await syncer.treeSync();
 		}),
 	createNeovimConfig: t.procedure
-		.use(isAuthenticated)
+		.use(middlewares.isAuthenticated)
 		.input((input: unknown) => {
 			return z
 				.object({
@@ -325,7 +325,7 @@ export const router = t.router({
 			return await syncer.treeSync();
 		}),
 	findRepoInitFiles: t.procedure
-		.use(isAuthenticated)
+		.use(middlewares.isAuthenticated)
 		.input((input: unknown) => {
 			return z.object({ repo: z.string(), branch: z.string() }).parse(input);
 		})
@@ -379,8 +379,8 @@ export const router = t.router({
 	publishTwinIssue,
 	getLatestTwinIssue,
 	getGitHubRepository: t.procedure
-		.use(isAuthenticated)
-		.use(isAdmin)
+		.use(middlewares.isAuthenticated)
+		.use(middlewares.isAdmin)
 		.input((input: unknown) => {
 			return z.object({ owner: z.string(), name: z.string() }).parse(input);
 		})
@@ -389,8 +389,8 @@ export const router = t.router({
 			return repository;
 		}),
 	createNeovimPlugin: t.procedure
-		.use(isAuthenticated)
-		.use(isAdmin)
+		.use(middlewares.isAuthenticated)
+		.use(middlewares.isAdmin)
 		.input((input: unknown) => {
 			// TODO: when making this public we can not just use any string for category
 			// we have to validate that it is a category currently in se
@@ -405,7 +405,9 @@ export const router = t.router({
 		.query(async ({ input: { owner, name, category }, ctx }) => {
 			const token = await getGithubToken(ctx.user!.id);
 			const repository = await fetchGithubRepositoryByName(token, owner, name);
-			validateRepositoryDataIsNeovimPlugin(repository);
+			if (!isAdmin(ctx!.user)) {
+				validateRepositoryDataIsNeovimPlugin(repository);
+			}
 			const pluginDTO = {
 				type: 'github',
 				source: 'manually-created',
@@ -423,8 +425,8 @@ export const router = t.router({
 			}).sync();
 		}),
 	deleteMedia: t.procedure
-		.use(isAuthenticated)
-		.use(isAdmin)
+		.use(middlewares.isAuthenticated)
+		.use(middlewares.isAdmin)
 		.input((input: unknown) => {
 			return z
 				.object({
