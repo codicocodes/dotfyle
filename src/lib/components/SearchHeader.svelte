@@ -14,6 +14,7 @@
 </script>
 
 <div class="flex flex-col w-full items-center my-8 gap-4">
+	<meta class="" itemprop="dateUpdated" content={new Date().toLocaleDateString()} />
 	<MediumHeroTitle>
 		<CoolText text={content.title} />
 	</MediumHeroTitle>
@@ -31,7 +32,7 @@
 	/>
 </div>
 
-<Search placeholder={placeholder}/>
+<Search {placeholder} />
 <div class="flex flex-col w-full items-center mt-4 gap-4">
 	<div class="flex gap-6 font-medium text-lg">
 		{#each navigation as nav}
