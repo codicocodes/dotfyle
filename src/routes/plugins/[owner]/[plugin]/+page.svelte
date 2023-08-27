@@ -81,9 +81,9 @@
 			<Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
 		{/if}
 		{#if getMediaType(selectedMedia) === 'video'}
-			<video class="rounded:cursor-pointer" src={selectedMedia.url} autoplay muted />
+			<video class="rounded:cursor-pointer" alt="video" src={selectedMedia.url} autoplay muted />
 		{:else}
-			<img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />
+			<img class="rounded:cursor-pointer" alt="image" src={selectedMedia.url} />
 		{/if}
 	</Modal>
 {/if}
