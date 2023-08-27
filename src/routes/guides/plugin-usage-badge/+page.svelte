@@ -85,8 +85,8 @@
 			<BigGridContainer>
 				{#each plugins as plugin, _}
 					<RepositoryCard
-            name="{plugin.owner}/{plugin.name}"
-            link="/plugins/{plugin.owner}/{plugin.name}"
+						name="{plugin.owner}/{plugin.name}"
+						link="/plugins/{plugin.owner}/{plugin.name}"
 						description={plugin.shortDescription}
 						thumbnail={plugin.media?.[0]}
 					>
