@@ -312,6 +312,17 @@ export async function syncConfigPlugins(
 		.then(attachPlugins);
 }
 
+export async function saveLoc(id: number, linesOfCode: number): Promise<NeovimConfig> {
+	return await prismaClient.neovimConfig.update({
+		where: {
+			id
+		},
+		data: {
+			linesOfCode
+		}
+	});
+}
+
 export async function saveLeaderkey(id: number, leaderkey: string): Promise<NeovimConfig> {
 	return await prismaClient.neovimConfig.update({
 		where: {

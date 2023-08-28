@@ -6,7 +6,8 @@ import {
 	saveLeaderkey,
 	syncLanguageServers,
 	updatePluginManager,
-	getConfigWithPlugins
+	getConfigWithPlugins,
+	saveLoc
 } from '$lib/server/prisma/neovimconfigs/service';
 import type { NeovimPluginIdentifier } from '$lib/server/prisma/neovimplugins/schema';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
@@ -21,6 +22,7 @@ export class NeovimConfigSyncer {
 	treeTraverser: GithubFileContentTraverser;
 	syncedPluginManager = false;
 	leaderkey = 'unknown';
+	loc = 0;
 	languageServers: string[] = [];
 	constructor(
 		token: string,
@@ -47,16 +49,22 @@ export class NeovimConfigSyncer {
 		return await this.fileSyncer();
 	}
 
+	async locCounter(content: string) {
+		this.loc = this.loc + content.split('\n').length;
+	}
+
 	async fileSyncer() {
 		for await (const content of this.treeTraverser.traverse()) {
 			await this.syncPluginManager(content);
 			this.findPlugins(content);
 			this.syncLeaderKey(content);
 			this.findLanguageServers(content);
+			this.locCounter(content);
 		}
 
 		await Promise.all([
 			saveLeaderkey(this.config.id, this.leaderkey),
+			saveLoc(this.config.id, this.loc),
 			syncLanguageServers(this.config.id, this.tree.sha, this.languageServers).then(() => {
 				return syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
 			})

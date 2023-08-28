@@ -47,6 +47,8 @@ model NeovimConfig {
   lastSyncedAt         DateTime             @default(now())
   dotfyleShieldAddedAt DateTime?
 
+  linesOfCode Int @default(0)
+
   neovimConfigPlugins    NeovimConfigPlugins[]
   languageServerMappings NeovimConfigToLanguageServer[]
   syncs                  NeovimConfigSync[]
