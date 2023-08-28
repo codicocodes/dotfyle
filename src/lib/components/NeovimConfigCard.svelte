@@ -1,8 +1,12 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
-	import { faBox, faCircle, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
-	import CoolTextOnHover from './CoolTextOnHover.svelte';
-	import { faGithub } from '@fortawesome/free-brands-svg-icons';
+	import {
+		faBox,
+		faCircle,
+		faCode,
+		faPuzzlePiece,
+		faStar
+	} from '@fortawesome/free-solid-svg-icons';
 	import RepositoryCard from './RepositoryCard.svelte';
 	export let owner: string;
 	export let repo: string;
@@ -13,11 +17,11 @@
 	export let pluginManager: string;
 	export let pluginCount: string;
 	export let slug: string;
-	export let showGithubLink: boolean;
+	export let loc: number;
 </script>
 
 <RepositoryCard
-  avatar={avatar}
+	{avatar}
 	name="{owner}/{repo}"
 	link="/{owner}/{slug}"
 	description="/{root}"
@@ -25,22 +29,34 @@
 	disableMinHeight
 >
 	<div slot="footer" class="flex font-medium mt-2">
-		<div class="flex grow gap-2">
-			<span class="py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
+		<div class="flex grow gap-4">
+			<span
+				title="GitHub stars"
+				class="py-1 rounded-full text-xs flex gap-1 items-center font-semibold"
+			>
 				<Fa icon={faStar} />
 				{stars}
 			</span>
-			<span class="py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
+			<span
+				title="Init file"
+				class="py-1 rounded-full text-xs flex gap-1 items-center font-semibold"
+			>
 				<Fa icon={faCircle} />
 				{initFile}
 			</span>
-			<span class="py-1 rounded-full text-xs flex gap-1 items-center font-semibold lowercase">
-				<Fa icon={faBox} />
-				{pluginManager || 'unknown'}
-			</span>
-			<span class="py-1 rounded-full text-xs flex gap-1 items-center font-semibold">
+			<span
+				title="Number of installed plugins"
+				class="py-1 rounded-full text-xs flex gap-1 items-center font-semibold"
+			>
 				<Fa icon={faPuzzlePiece} />
 				{pluginCount || 'unknown'}
+			</span>
+			<span
+				title="Lines of code"
+				class="py-1 rounded-full text-xs flex gap-1 items-center font-semibold"
+			>
+				<Fa icon={faCode} />
+				{loc}
 			</span>
 		</div>
 	</div></RepositoryCard

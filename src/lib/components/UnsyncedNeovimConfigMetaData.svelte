@@ -1,7 +1,5 @@
 <script lang="ts">
-	import {
-		faInfoCircle,
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	import NeovimConfigMetaData from './NeovimConfigMetaData.svelte';
@@ -12,13 +10,22 @@
 	<Fa icon={faInfoCircle} />
 	metadata
 </h3>
-<NeovimConfigMetaData 
-  syncing={syncing}
-  pluginManager={$unsyncedConfig.pluginManager ?? "unknown"}
-  pluginCount={$unsyncedConfig.plugins ? $unsyncedConfig.plugins.length.toString() : "unknown"}
-  root={$unsyncedConfig.root !== undefined ? ($unsyncedConfig.root ? $unsyncedConfig.root : "/") : "unknown" }
-  initFile={$unsyncedConfig.initFile ?? "unknown"}
-  isMonorepo={$unsyncedConfig.root !== undefined ? ($unsyncedConfig.root ? "yes" : "no") : "unknown"}
-  isFork={$unsyncedConfig.fork !== undefined ? ($unsyncedConfig.fork ? "yes" : "no") : "unknown"}
-  leaderkey="unknown"
+<NeovimConfigMetaData
+	{syncing}
+	pluginManager={$unsyncedConfig.pluginManager ?? 'unknown'}
+	pluginCount={$unsyncedConfig.plugins ? $unsyncedConfig.plugins.length.toString() : 'unknown'}
+	root={$unsyncedConfig.root !== undefined
+		? $unsyncedConfig.root
+			? $unsyncedConfig.root
+			: '/'
+		: 'unknown'}
+	initFile={$unsyncedConfig.initFile ?? 'unknown'}
+	isMonorepo={$unsyncedConfig.root !== undefined
+		? $unsyncedConfig.root
+			? 'yes'
+			: 'no'
+		: 'unknown'}
+	isFork={$unsyncedConfig.fork !== undefined ? ($unsyncedConfig.fork ? 'yes' : 'no') : 'unknown'}
+	leaderkey="unknown"
+	loc={0}
 />

@@ -5,14 +5,14 @@
 </script>
 
 <NeovimConfigCard
-  slug={$unsyncedConfig.slug ?? ""}
-	repo={$unsyncedConfig.repo ?? "unknown"}
-	owner={$unsyncedConfig.owner ?? "unknown"}
-	avatar={avatar}
-	initFile={$unsyncedConfig.initFile ?? "unknown"}
-	root={$unsyncedConfig.root ?? "unknown"}
-	stars={$unsyncedConfig.stars?.toString() ?? "unknown"}
-	pluginManager={$unsyncedConfig.pluginManager ?? "unknown"}
-	pluginCount={$unsyncedConfig.plugins?.length.toString() ?? "unknown"}
-  showGithubLink={false}
+	slug={$unsyncedConfig.slug ?? ''}
+	repo={$unsyncedConfig.repo ?? 'unknown'}
+	owner={$unsyncedConfig.owner ?? 'unknown'}
+	{avatar}
+	initFile={$unsyncedConfig.initFile ?? 'unknown'}
+	root={$unsyncedConfig.root ?? 'unknown'}
+	stars={$unsyncedConfig.stars?.toString() ?? 'unknown'}
+	pluginManager={$unsyncedConfig.pluginManager ?? 'unknown'}
+	pluginCount={$unsyncedConfig.plugins?.length.toString() ?? 'unknown'}
+	loc={0}
 />

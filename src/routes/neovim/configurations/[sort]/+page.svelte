@@ -271,7 +271,7 @@
 					stars={item.stars.toString()}
 					pluginManager={item.pluginManager ?? 'unknown'}
 					pluginCount={item.pluginCount.toString()}
-					showGithubLink={false}
+					loc={item.linesOfCode}
 				/>
 			{/each}
 		</div>

@@ -73,6 +73,7 @@
 		isMonorepo={config.root ? 'yes' : 'no'}
 		isFork={config.fork ? 'yes' : 'no'}
 		leaderkey={config.leaderkey}
+		loc={config.linesOfCode}
 	/>
 	{#if data.user?.id === config.userId}
 		<CoolTextWithChildren>

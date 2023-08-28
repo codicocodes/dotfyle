@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {
 		faBox,
+		faCode,
 		faCodeFork,
 		faDeleteLeft,
 		faFileCode,
@@ -21,6 +22,7 @@
 	export let isMonorepo: string;
 	export let isFork: string;
 	export let leaderkey: string;
+	export let loc: number;
 </script>
 
 <GlossyCard>
@@ -82,6 +84,23 @@
 		<div class="flex w-full items-center justify-between">
 			<span class="flex items-center gap-1">
 				<div class="w-[20px]">
+					<Fa icon={faCode} />
+				</div>
+				lines of code
+			</span>
+			<span class="flex items-center gap-1">
+				{#if syncing}
+					<DoubleBounce color="#15be97" size="8" />
+				{/if}
+				<span class="flex items-center gap-1">
+					{loc}
+				</span>
+			</span>
+		</div>
+
+		<div class="flex w-full items-center justify-between">
+			<span class="flex items-center gap-1">
+				<div class="w-[20px]">
 					<Fa icon={faLayerGroup} />
 				</div>
 				monorepo
@@ -114,7 +133,9 @@
 				{#if syncing}
 					<DoubleBounce color="#15be97" size="8" />
 				{/if}
-        <kbd class="px-2 py-1 border rounded-lg bg-gray-600 text-gray-100 border-gray-500">{leaderkey}</kbd>
+				<kbd class="px-2 py-1 border rounded-lg bg-gray-600 text-gray-100 border-gray-500"
+					>{leaderkey}</kbd
+				>
 			</span>
 		</div>
 	</div>

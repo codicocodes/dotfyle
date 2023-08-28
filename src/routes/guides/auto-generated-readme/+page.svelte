@@ -66,8 +66,10 @@
 		<section class="flex flex-col gap-2 p-4 w-full">
 			<h3>How to find your README</h3>
 			<span class="inline whitespace-normal">
-				Navigate to your Neovim config on Dotfyle at <code class="bg-black px-1 py-0.5 rounded">profile > config </code>. If you're logged in you will have an option to navigate to your readme.
-        If not, you can add <code class="bg-black px-1 py-0.5 rounded">/readme</code> to the end of the url. Copy
+				Navigate to your Neovim config on Dotfyle at <code class="bg-black px-1 py-0.5 rounded"
+					>profile > config
+				</code>. If you're logged in you will have an option to navigate to your readme. If not, you
+				can add <code class="bg-black px-1 py-0.5 rounded">/readme</code> to the end of the url. Copy
 				the markdown from this page and use it on your GitHub readme.
 			</span>
 			<span class="inline whitespace-normal">
@@ -101,7 +103,7 @@
 						stars={config.stars.toString()}
 						pluginManager={config.pluginManager ?? 'unknown'}
 						pluginCount={config.pluginCount.toString()}
-						showGithubLink={false}
+						loc={config.linesOfCode}
 					/>
 				{/each}
 			</BigGridContainer>
