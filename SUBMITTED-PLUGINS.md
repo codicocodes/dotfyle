@@ -202,6 +202,8 @@
 
 ## Game
 
+- NStefan002/speedtyper.nvim
+
 ## Fun
 
 - tamton-aquib/duck.nvim
