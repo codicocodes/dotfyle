@@ -60,7 +60,17 @@ xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
   <priority>0.9</priority>
 </url>
 <url>
-  <loc>${website}/configs</loc>
+  <loc>${website}/neovim/configurations/top</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.9</priority>
+</url>
+<url>
+  <loc>${website}/neovim/configurations/new</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.9</priority>
+</url>
+<url>
+  <loc>${website}/neovim/configurations/plugins</loc>
   <changefreq>daily</changefreq>
   <priority>0.9</priority>
 </url>
