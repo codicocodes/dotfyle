@@ -197,6 +197,7 @@
 - echasnovski/mini.bufremove
 - sourproton/tunnell.nvim
 - tamton-aquib/flirt.nvim
+- mrjones2014/smart-splits.nvim
 
 ## Tmux
 
