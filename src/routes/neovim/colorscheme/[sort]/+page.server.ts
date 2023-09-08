@@ -8,19 +8,19 @@ const content = {
     title: 'New Neovim Colorschemes',
     description: 'The newest Neovim colorschemes on Dotfyle',
     ogTitle: `New Neovim Colorschemes in ${new Date().getFullYear()}`,
-    ogDescription: `Learn about the newest Neovim colorschemes in ${new Date().getFullYear()}.`
+    ogDescription: `List of the newest Neovim colorschemes in ${new Date().getFullYear()}.`
   },
   popular: {
     title: 'Top Neovim Colorschemes',
     description: 'The most popular Neovim colorschemes on Dotfyle',
     ogTitle: `Top Neovim Colorschemes in ${new Date().getFullYear()}`,
-    ogDescription: `Learn about the most popular Neovim colorschemes in ${new Date().getFullYear()}.`
+    ogDescription: `List of the most popular Neovim colorschemes in ${new Date().getFullYear()}.`
   },
   trending: {
     title: 'Trending Neovim Colorschemes',
     description: 'Trending Neovim colorschemes on Dotfyle today',
     ogTitle: `Trending Neovim Colorschemes in ${new Date().getFullYear()}`,
-    ogDescription: `Learn about trending Neovim colorschemes in ${new Date().getFullYear()}.`
+    ogDescription: `List of trending Neovim colorschemes in ${new Date().getFullYear()}.`
   }
 } as const;
 

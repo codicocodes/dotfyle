@@ -24,13 +24,13 @@ const content = {
     title: 'Popular Neovim Configurations',
     description: 'The most popular Neovim configurations on Dotfyle',
     ogTitle: 'Popular Neovim Configurations',
-    ogDescription: `Learn about the most popular Neovim configurations in ${new Date().getFullYear()}.`
+    ogDescription: `List of the most popular Neovim configurations in ${new Date().getFullYear()}.`
   },
   new: {
     title: 'New Neovim Configurations',
     description: 'The newest Neovim configurations on Dotfyle',
     ogTitle: `New Neovim Configurations in ${new Date().getFullYear()}`,
-    ogDescription: `Learn about the newest Neovim configurations in ${new Date().getFullYear()}.`
+    ogDescription: `List of the newest Neovim configurations in ${new Date().getFullYear()}.`
   },
   plugins: {
     title: 'Plugin Heavy Neovim Configurations',
