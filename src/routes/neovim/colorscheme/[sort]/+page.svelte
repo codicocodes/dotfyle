@@ -42,40 +42,42 @@
 
 		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
-				<div class="flex flex-col gap-4">
+				<ol class="flex flex-col gap-4">
 					{#each data.plugins as plugin}
-						<ShowcaseCard
-							name="{plugin.owner}/{plugin.name}"
-							link="/plugins/{plugin.owner}/{plugin.name}"
-							description={plugin.shortDescription}
-							thumbnail={plugin.media?.[0]}
-						>
-							<div slot="footer" class="flex gap-4 font-medium text-base">
-								<span
-									title="GitHub stars"
-									class="py-1 rounded-full flex gap-1 items-center font-semibold"
-								>
-									<Fa icon={faStar} />
-									{plugin.stars}
-								</span>
-								<span
-									title="Total installs on Dotfyle"
-									class="py-1 rounded-full flex gap-1 items-center font-semibold"
-								>
-									<Fa icon={faUsers} />
-									{plugin.configCount}
-								</span>
-								<span
-									title="Installs last week"
-									class="py-1 rounded-full flex gap-1 items-center font-semibold"
-								>
-									<Fa icon={faArrowTrendUp} />
-									{plugin.addedLastWeek}
-								</span>
-							</div>
-						</ShowcaseCard>
+						<li>
+							<ShowcaseCard
+								name="{plugin.owner}/{plugin.name}"
+								link="/plugins/{plugin.owner}/{plugin.name}"
+								description={plugin.shortDescription}
+								thumbnail={plugin.media?.[0]}
+							>
+								<div slot="footer" class="flex gap-4 font-medium text-base">
+									<span
+										title="GitHub stars"
+										class="py-1 rounded-full flex gap-1 items-center font-semibold"
+									>
+										<Fa icon={faStar} />
+										{plugin.stars}
+									</span>
+									<span
+										title="Total installs on Dotfyle"
+										class="py-1 rounded-full flex gap-1 items-center font-semibold"
+									>
+										<Fa icon={faUsers} />
+										{plugin.configCount}
+									</span>
+									<span
+										title="Installs last week"
+										class="py-1 rounded-full flex gap-1 items-center font-semibold"
+									>
+										<Fa icon={faArrowTrendUp} />
+										{plugin.addedLastWeek}
+									</span>
+								</div>
+							</ShowcaseCard>
+						</li>
 					{/each}
-				</div>
+				</ol>
 
 				<Pagination
 					page={$page}
