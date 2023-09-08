@@ -1,1 +1,5 @@
+User-agent: *
+Disallow: /trpc/
+Disallow: /api/
+
 Sitemap: http://dotfyle.com/sitemap.xml
