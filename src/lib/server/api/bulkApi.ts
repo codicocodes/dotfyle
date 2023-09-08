@@ -4,14 +4,14 @@ import pLimit from 'p-limit';
 
 export class AsyncApiManager {
 	runner = pLimit(10);
-  queue: Promise<void>[] = []
+	queue: Promise<void>[] = [];
 	running = false;
 	isRateLimited = false;
 	tasksDone = 0;
 
-  validate(event: RequestEvent) {
+	validate(event: RequestEvent) {
 		new AdminRequestValidator(event).validate();
-  }
+	}
 
 	start() {
 		if (this.running) {
@@ -35,28 +35,29 @@ export class AsyncApiManager {
 		return () => {
 			this.tasksDone++;
 			console.log(`${this.tasksDone}/${totalTasks} tasks done.`);
+			console.log("Exiting")
 		};
 	}
 
 	async deferCleanup() {
-    await Promise.all(this.queue)
-    console.log("Async job completed.")
-    this.isRateLimited = false;
-    this.tasksDone = 0;
-    this.queue = []
-    this.runner = pLimit(10)
-    this.running = false;
+		await Promise.all(this.queue);
+		console.log('Async job completed.');
+		this.isRateLimited = false;
+		this.tasksDone = 0;
+		this.queue = [];
+		this.runner = pLimit(10);
+		this.running = false;
 	}
 
-  addToQueue(callback: () => Promise<void>) {
-    this.queue.push(this.runner(callback))
-  }
+	addToQueue(callback: () => Promise<void>) {
+		this.queue.push(this.runner(callback));
+	}
 }
 
 type asyncTaskGetter = () => Promise<(() => Promise<void>)[]>;
 
 export function createAsyncTaskApi(getAsyncTasks: asyncTaskGetter) {
-  const manager = new AsyncApiManager()
+	const manager = new AsyncApiManager();
 	return async (event: RequestEvent) => {
 		manager.validate(event);
 		manager.start();
@@ -76,6 +77,6 @@ export function createAsyncTaskApi(getAsyncTasks: asyncTaskGetter) {
 
 		manager.deferCleanup();
 
-		return new Response("Sync started");
+		return new Response('Sync started');
 	};
 }
