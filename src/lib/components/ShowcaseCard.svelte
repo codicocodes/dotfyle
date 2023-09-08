@@ -23,7 +23,7 @@
 		{/if}
 		{#if getMediaType(thumbnail) === 'video'}
 			<video
-				class="h-full w-full object-cover rounded-lg text-xs max-h-[7rem]"
+				class="h-full w-full object-cover rounded-lg text-xs"
 				on:error={() => console.log('failed loading thumbnail')}
 				style="object-position: center;"
 				src={thumbnail.url}
