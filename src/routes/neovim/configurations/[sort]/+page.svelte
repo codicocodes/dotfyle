@@ -184,14 +184,14 @@
 <div class="w-full flex flex-col items-center px-4">
 	<div class="flex flex-col max-w-5xl w-full">
 		<div class="flex flex-col mb-2">
-		<div class="flex flex-col gap-2 my-2 mb-4">
-			<SearchHeader
-				content={data.content}
-				navigation={data.navigation}
-				placeholder="Search {data.pagination.total} configurations"
-			/>
-			<PluginSearchNavigation />
-		</div>
+			<div class="flex flex-col gap-2 my-2 mb-4">
+				<SearchHeader
+					content={data.content}
+					navigation={data.navigation}
+					placeholder="Search {data.pagination.total} configurations"
+				/>
+				<PluginSearchNavigation />
+			</div>
 			<Accordion>
 				<div slot="title" class="flex gap-2 items-center text-sm max-w-full">
 					<Fa icon={faFilter} size="sm" />
