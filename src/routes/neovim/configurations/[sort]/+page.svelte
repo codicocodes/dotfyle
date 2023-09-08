@@ -259,22 +259,24 @@
 				</div>
 			</Accordion>
 		</div>
-		<div class="flex flex-col gap-2 my-2">
+		<ol class="flex flex-col gap-2 my-2">
 			{#each data.configs as item}
-				<NeovimConfigCard
-					slug={item.slug}
-					repo={item.repo}
-					owner={item.owner}
-					avatar={item.ownerAvatar}
-					initFile={item.initFile}
-					root={item.root}
-					stars={item.stars.toString()}
-					pluginManager={item.pluginManager ?? 'unknown'}
-					pluginCount={item.pluginCount.toString()}
-					loc={item.linesOfCode}
-				/>
+				<li>
+					<NeovimConfigCard
+						slug={item.slug}
+						repo={item.repo}
+						owner={item.owner}
+						avatar={item.ownerAvatar}
+						initFile={item.initFile}
+						root={item.root}
+						stars={item.stars.toString()}
+						pluginManager={item.pluginManager ?? 'unknown'}
+						pluginCount={item.pluginCount.toString()}
+						loc={item.linesOfCode}
+					/>
+				</li>
 			{/each}
-		</div>
+		</ol>
 
 		<Pagination page={$page} next={data.pagination.next} previous={data.pagination.prev} />
 	</div>
