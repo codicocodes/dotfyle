@@ -36,7 +36,7 @@
 			<SearchHeader
 				content={data.content}
 				navigation={data.navigation}
-				placeholder="Search {data.pagination.total} plugins" 
+				placeholder="Search {data.pagination.total} plugins"
 			/>
 			<PluginSearchNavigation />
 		</div>
@@ -81,24 +81,26 @@
 
 		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">
 			<div class="col-span-10 sm:col-span-10 flex flex-col gap-2 overscroll-none">
-				<div class="flex flex-col gap-2">
+				<ol class="flex flex-col gap-2">
 					{#each data.plugins as plugin}
-						<RepositoryCard
-							name="{plugin.owner}/{plugin.name}"
-							link="/plugins/{plugin.owner}/{plugin.name}"
-							description={plugin.shortDescription}
-							thumbnail={plugin.media?.[0]}
-						>
-							<NeovimPluginMetaData
-								slot="footer"
-								stars={plugin.stars.toString()}
-								configCount={plugin.configCount}
-								category={plugin.category}
-								addedLastWeek={plugin.addedLastWeek}
-							/>
-						</RepositoryCard>
+						<li>
+							<RepositoryCard
+								name="{plugin.owner}/{plugin.name}"
+								link="/plugins/{plugin.owner}/{plugin.name}"
+								description={plugin.shortDescription}
+								thumbnail={plugin.media?.[0]}
+							>
+								<NeovimPluginMetaData
+									slot="footer"
+									stars={plugin.stars.toString()}
+									configCount={plugin.configCount}
+									category={plugin.category}
+									addedLastWeek={plugin.addedLastWeek}
+								/>
+							</RepositoryCard>
+						</li>
 					{/each}
-				</div>
+				</ol>
 
 				<Pagination
 					page={$page}
