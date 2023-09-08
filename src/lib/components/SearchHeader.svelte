@@ -4,7 +4,6 @@
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 	import CoolTextWithChildren from './CoolTextWithChildren.svelte';
 	import MediumHeroTitle from './MediumHeroTitle.svelte';
-	import PluginSearchNavigation from './PluginSearchNavigation.svelte';
 	import Search from './Search.svelte';
 	import ShareContainer from './ShareContainer.svelte';
 
