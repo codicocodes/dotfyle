@@ -71,7 +71,7 @@
 	<OpenGraph
 		title="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin
 			.name} | Alternatives to {data.plugin.name}"
-		url="/neovim/configurations/top"
+		url="https://dotfyle.com/plugins/{data.plugin.owner}/{data.plugin.name}"
 		description={data.plugin.shortDescription}
 		image={firstImage}
 	/>
