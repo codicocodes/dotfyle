@@ -52,8 +52,9 @@
 							on:error={() => console.log('failed loading thumbnail')}
 							style="object-position: center;"
 							src={thumbnail.url}
-              autoplay
-              muted
+							autoplay
+							playsinline
+							muted
 						/>
 					{/if}
 				</div>

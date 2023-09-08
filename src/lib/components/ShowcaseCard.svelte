@@ -29,6 +29,7 @@
 				src={thumbnail.url}
 				autoplay
 				muted
+				playsinline
 			/>
 		{/if}
 	</div>

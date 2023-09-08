@@ -83,7 +83,14 @@
 			<Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
 		{/if}
 		{#if getMediaType(selectedMedia) === 'video'}
-			<video class="rounded:cursor-pointer" alt="video" src={selectedMedia.url} autoplay muted />
+			<video
+				class="rounded:cursor-pointer"
+				alt="video"
+				src={selectedMedia.url}
+				autoplay
+				muted
+				playsinline
+			/>
 		{:else}
 			<img class="rounded:cursor-pointer" alt="image" src={selectedMedia.url} />
 		{/if}
@@ -225,6 +232,7 @@
 										<video
 											autoplay
 											muted
+											playsinline
 											class="rounded hover:cursor-pointer"
 											on:click={() => (selectedMedia = media)}
 											src={media.url}
