@@ -36,6 +36,7 @@ export class AsyncApiManager {
 			this.tasksDone++;
 			console.log(`${this.tasksDone}/${totalTasks} tasks done.`);
 			console.log("Exiting")
+			process.exit(1)
 		};
 	}
 
