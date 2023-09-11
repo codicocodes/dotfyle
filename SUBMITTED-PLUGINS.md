@@ -115,6 +115,7 @@
 ## Terminal Integration
 
 ## Debugging
+- jonboh/nvim-dap-rr
 
 ## Quickfix
 - gabrielpoca/replacer.nvim
