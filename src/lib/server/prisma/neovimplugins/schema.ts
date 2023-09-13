@@ -21,6 +21,7 @@ export interface NeovimPluginIdentifier {
 
 
 export type NestedNeovimPluginWithCount = NeovimPlugin & {
+  media: Media[]
     _count: {
         neovimConfigPlugins: number;
     };

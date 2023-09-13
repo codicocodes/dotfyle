@@ -165,9 +165,7 @@
 					<Fa icon={faTerminal} size="xs" class="text-sm text-cyan-500 bg-transparent" />
 					<CoolText text="dotfyle" />
 				</a>
-				<div
-					class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg tracking-tight font-medium"
-				>
+				<div class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg tracking-tight font-medium">
 					<a href="/neovim/plugins/trending">
 						<CoolTextOnHover>Plugins</CoolTextOnHover>
 					</a>

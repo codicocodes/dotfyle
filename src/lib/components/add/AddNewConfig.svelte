@@ -2,9 +2,6 @@
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
 	import {
-		faBuilding,
-		faBuildingCircleArrowRight,
-		faBuildingColumns,
 		faFileCode,
 		faPersonDigging,
 		faRotate

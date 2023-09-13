@@ -12,7 +12,6 @@
 		faDeleteLeft,
 		faRotate,
 		faStar,
-		faUserGroup,
 		faUsers,
 		faX
 	} from '@fortawesome/free-solid-svg-icons';
@@ -32,7 +31,7 @@
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
 	const selectedStyle =
-		'text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500 ';
+		'text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500';
 	export let data: PageData;
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
@@ -92,7 +91,7 @@
 				playsinline
 			/>
 		{:else}
-			<img class="rounded:cursor-pointer" alt="image" src={selectedMedia.url} />
+			<img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />
 		{/if}
 	</Modal>
 {/if}
@@ -141,11 +140,10 @@
 							<Button
 								on:click={async () => {
 									syncingPlugin = true;
-									const updatedPlugin = await trpc($page).syncPlugin.query({
+									data.plugin = await trpc($page).syncPlugin.query({
 										owner: data.plugin.owner,
 										name: data.plugin.name
 									});
-									data.plugin = updatedPlugin;
 									syncingPlugin = false;
 								}}
 								text="sync"
