@@ -13,11 +13,12 @@
 </script>
 
 <svelte:head>
-  <title>{"This Week in Neovim | Neovim news"}</title>
+	<title>{'This Week in Neovim | Neovim news'}</title>
 	<OpenGraph
-		title={"This Week in Neovim | Neovim news"}
+		title={'This Week in Neovim | Neovim news'}
 		url="https://dotfyle.com/this-week-in-neovim"
 		description="Neovim news and updates from the Neovim plugin ecosystem"
+		image="/twin.png"
 	/>
 </svelte:head>
 
@@ -54,25 +55,23 @@
 			{#each data.posts as post}
 				<CoolTextOnHover>
 					<GlossyCard>
-            <div class="flex w-full p-4 whitespace-normal">
-								<a
-									class="flex w-full text-xl font-light justify-between"
-									href="/this-week-in-neovim/{post.issue}"
-								>
-									<span class="min-w-[150px]"
-										>{new Date(post.createdAt).toLocaleDateString()}
-									</span>
-									<span class="hidden sm:flex gap-4 items-center text-right">
-										{post.title}
-										<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
-									</span>
-									<span class="flex sm:hidden gap-4 items-center">
-										Issue #{post.issue}
-										<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
-									</span>
-								</a>
+						<div class="flex w-full p-4 whitespace-normal">
+							<a
+								class="flex w-full text-xl font-light justify-between"
+								href="/this-week-in-neovim/{post.issue}"
+							>
+								<span class="min-w-[150px]">{new Date(post.createdAt).toLocaleDateString()} </span>
+								<span class="hidden sm:flex gap-4 items-center text-right">
+									{post.title}
+									<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
+								</span>
+								<span class="flex sm:hidden gap-4 items-center">
+									Issue #{post.issue}
+									<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
+								</span>
+							</a>
 						</div>
-          </GlossyCard>
+					</GlossyCard>
 				</CoolTextOnHover>
 			{/each}
 		</div>
