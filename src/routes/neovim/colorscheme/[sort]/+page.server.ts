@@ -1,4 +1,5 @@
 import { getPluginsWithMedia } from '$lib/server/prisma/neovimplugins/service';
+import { DEFAULT_PAGE_SIZE } from '$lib/server/prisma/pagination';
 import { error } from '@sveltejs/kit';
 import { z } from 'zod';
 import type { PageServerLoad, PageServerLoadEvent } from './$types';
@@ -49,7 +50,7 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
   const query = event.url.searchParams.get('q') ?? undefined;
   const sorting = getSorting(event);
   const page = getPage(event);
-  const res = await getPluginsWithMedia(query ?? '', 'colorscheme', sorting, page, 10);
+  const res = await getPluginsWithMedia(query ?? '', 'colorscheme', sorting, page, DEFAULT_PAGE_SIZE);
   return {
     plugins: res.data,
     pagination: res.meta,
