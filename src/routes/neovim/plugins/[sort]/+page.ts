@@ -12,15 +12,15 @@ const content = {
   },
   popular: {
     title: 'Top Neovim Plugins',
-    description: 'The most popular Neovim plugins on Dotfyle',
+    description: 'The most popular Neovim plugins ranked by total number of installs across 800+ tracked Neovim configurations on Dotfyle',
     ogTitle: `Top Neovim Plugins in ${new Date().getFullYear()}`,
-    ogDescription: `List of the most popular Neovim plugins in ${new Date().getFullYear()}.`
+    ogDescription: `List of the most popular Neovim plugins by total number of installs across 800+ tracked Neovim configurations on Dotfyle.`
   },
   trending: {
     title: 'Trending Neovim Plugins',
-    description: 'Trending Neovim plugins on Dotfyle today',
+    description: 'Trending Neovim plugins ranked by recent installations across 800+ tracked Neovim configurations on Dotfyle',
     ogTitle: `Trending Neovim Plugins in ${new Date().getFullYear()}`,
-    ogDescription: `List of trending Neovim plugins in ${new Date().getFullYear()}.`
+    ogDescription: `List of trending Neovim plugins ranked by recent installations across 800+ tracked Neovim configurations on Dotfyle.`
   }
 } as const;
 

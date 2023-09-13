@@ -17,7 +17,7 @@
 	<MediumHeroTitle>
 		<CoolText text={content.title} />
 	</MediumHeroTitle>
-	<p class="text-lg">
+	<p class="text-lg text-center w-full sm:w-3/4 md:w-2/3 xl:w-1/2">
 		{content.description}
 	</p>
 </div>
