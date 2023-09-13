@@ -8,19 +8,22 @@ const content = {
     title: 'New Neovim Plugins',
     description: 'The newest Neovim plugins on Dotfyle',
     ogTitle: `New Neovim Plugins in ${new Date().getFullYear()}`,
-    ogDescription: `List of the newest Neovim plugins in ${new Date().getFullYear()}.`
+    ogDescription: `List of the newest Neovim plugins in ${new Date().getFullYear()}.`,
+    ogImage: '/new-plugins.png',
   },
   popular: {
     title: 'Top Neovim Plugins',
     description: 'The most popular Neovim plugins ranked by total number of installs across 800+ tracked Neovim configurations on Dotfyle',
     ogTitle: `Top Neovim Plugins in ${new Date().getFullYear()}`,
-    ogDescription: `List of the most popular Neovim plugins by total number of installs across 800+ tracked Neovim configurations on Dotfyle.`
+    ogDescription: `List of the most popular Neovim plugins by total number of installs across 800+ tracked Neovim configurations on Dotfyle.`,
+    ogImage: '/popular-plugins.png',
   },
   trending: {
     title: 'Trending Neovim Plugins',
     description: 'Trending Neovim plugins ranked by recent installations across 800+ tracked Neovim configurations on Dotfyle',
     ogTitle: `Trending Neovim Plugins in ${new Date().getFullYear()}`,
-    ogDescription: `List of trending Neovim plugins ranked by recent installations across 800+ tracked Neovim configurations on Dotfyle.`
+    ogDescription: `List of trending Neovim plugins ranked by recent installations across 800+ tracked Neovim configurations on Dotfyle.`,
+    ogImage: '/trending-plugins.png',
   }
 } as const;
 
