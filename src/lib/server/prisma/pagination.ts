@@ -14,10 +14,12 @@ export type PaginateOptions = { page?: number | string, perPage?: number | strin
 
 export type PaginateFunction = <T>(model: any, args?: any, options?: PaginateOptions) => Promise<PaginatedResult<T>>
 
+export const DEFAULT_PAGE_SIZE = 25
+
 export const paginator = (defaultOptions: PaginateOptions): PaginateFunction => {
   return async (model, args: any = { where: undefined }, options) => {
     const page = Number(options?.page || defaultOptions?.page) || 1;
-    const perPage = Number(options?.perPage || defaultOptions?.perPage) || 25;
+    const perPage = Number(options?.perPage || defaultOptions?.perPage) || DEFAULT_PAGE_SIZE;
 
     const skip = page > 0 ? perPage * (page - 1) : 0;
     const [total, data] = await Promise.all([
