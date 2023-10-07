@@ -46,8 +46,6 @@ export class AsyncApiManager {
 		this.queue = [];
 		this.runner = pLimit(10);
 		this.running = false;
-		console.log("Exiting")
-		process.exit(1)
 	}
 
 	addToQueue(callback: () => Promise<void>) {
