@@ -27,7 +27,7 @@
 	<title>{data.config.owner}/{data.config.repo} - Neovim configuration</title>
 	<OpenGraph
 		title="{data.config.owner}/{data.config.repo} - Neovim configuration"
-		url="https://dotfyle.com/{data.config.owner}/{data.config.repo}"
+		url="https://dotfyle.com/{data.config.owner}/{data.config.slug}"
 		description="Plugin Manager, Leaderkey, Install instructions, Neovim plugins & Language Servers"
 		image={data.config.ownerAvatar}
 	/>
