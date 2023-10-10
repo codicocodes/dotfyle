@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@fontsource-variable/inter':
+    specifier: ^5.0.13
+    version: 5.0.13
   '@fortawesome/free-brands-svg-icons':
     specifier: ^6.4.0
     version: 6.4.0
@@ -32,6 +35,9 @@ dependencies:
   jsonwebtoken:
     specifier: ^9.0.1
     version: 9.0.1
+  nanoid:
+    specifier: ^5.0.1
+    version: 5.0.1
   p-limit:
     specifier: github:sindresorhus/p-limit
     version: github.com/sindresorhus/p-limit/38a6773e552d24f4c9eb2d79d57b6cff017c587d
@@ -415,6 +421,10 @@ packages:
     resolution: {integrity: sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@fontsource-variable/inter@5.0.13:
+    resolution: {integrity: sha512-mb2WyZ2rHeqIG8aqGJIvLBOmo4sg2x7SHlsE6PUhwxbOicVzO59EZwSGtzNO3FmchuDPFVAxzcXYcR5B6jE6Qw==}
+    dev: false
 
   /@fortawesome/fontawesome-common-types@6.4.0:
     resolution: {integrity: sha512-HNii132xfomg5QVZw0HwXXpN22s7VBHQBv9CeOu9tfJnhsWQNd2lmTNi8CSrnw5B+5YOmzu1UoPAyxaXsJ6RgQ==}
@@ -2473,6 +2483,12 @@ packages:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid@5.0.1:
+    resolution: {integrity: sha512-vWeVtV5Cw68aML/QaZvqN/3QQXc6fBfIieAlu05m7FZW2Dgb+3f0xc0TTxuJW+7u30t7iSDTV/j3kVI0oJqIfQ==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: false
 
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}

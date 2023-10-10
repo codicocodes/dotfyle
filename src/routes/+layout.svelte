@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import 'nprogress/nprogress.css';
+	import '@fontsource-variable/inter';
 	import { invalidate } from '$app/navigation';
 	import { navigating } from '$app/stores';
 	import CoolText from '$lib/components/CoolText.svelte';
@@ -101,7 +102,7 @@
 <SvelteToast />
 
 <Modal showModal={showNavModal} onClose={() => (showNavModal = false)}>
-	<div class="my-4 flex flex-col gap-2">
+	<nav class="my-4 flex flex-col gap-2">
 		<a
 			href="/"
 			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25 justify-center"
@@ -127,7 +128,7 @@
 			News
 		</a>
 		<GithubLoginButton />
-	</div>
+	</nav>
 </Modal>
 
 {#if isOpen}
@@ -158,7 +159,7 @@
 			</CoolTextWithChildren>
 		</div>
 	{/if}
-	<div class="flex items-center justify-between px-8 gap-4 mt-2">
+	<header class="flex items-center justify-between px-8 gap-4 mt-2">
 		<div class="flex items-center">
 			<div class="flex gap-12">
 				<a href="/" class="flex items-center gap-2 text-2xl tracking-tight font-black">
@@ -188,12 +189,23 @@
 				{#if isAdmin(user)}
 					<AddPluginContainer />
 				{/if}
-				<button on:click={toggle}>
+				<button
+					on:click={toggle}
+					type="button"
+					aria-expanded={isOpen}
+					aria-controls={isOpen ? 'user-menu' : undefined}
+				>
 					<div class="flex items-center gap-2 text-lg">
 						<span class="hidden sm:inline">
 							{user.username}
 						</span>
-						<img height="10" width="10" src={user.avatarUrl} class="w-10 h-10 rounded-full" />
+						<img
+							alt="User's avatar"
+							height="10"
+							width="10"
+							src={user.avatarUrl}
+							class="w-10 h-10 rounded-full"
+						/>
 					</div>
 				</button>
 			{:else}
@@ -202,10 +214,10 @@
 				</div>
 			{/if}
 		</div>
-	</div>
+	</header>
 
 	{#if isOpen}
-		<div class="absolute right-0 w-40 mt-2 mr-6 z-50">
+		<div class="absolute right-0 w-40 mt-2 mr-6 z-50" id="user-menu">
 			<GlossyCard>
 				<div class="flex flex-col w-full h-full bg-gray-900 sm:bg-transparent">
 					{#if isAdmin(user)}
@@ -215,7 +227,7 @@
 									{#if syncing}
 										<DoubleBounce color="#15be97" size="8" />
 									{:else}
-										<Fa icon={faSync} />
+										<Fa icon={faSync} class="text-gray-100" />
 									{/if}
 								</div>
 								Sync plugins
@@ -229,7 +241,7 @@
 							class="px-4 py-2 flex gap-2 items-center"
 						>
 							<div class="force-white-text">
-								<Fa icon={faUser} />
+								<Fa icon={faUser} class="text-gray-100" />
 							</div>
 							Profile</a
 						>
@@ -237,7 +249,7 @@
 					<CoolTextOnHover>
 						<button class="px-4 py-2 flex gap-2 items-center" on:click={logout}>
 							<div class="force-white-text">
-								<Fa icon={faSignOut} />
+								<Fa icon={faSignOut} class="text-gray-100" />
 							</div>
 
 							Logout
@@ -348,10 +360,3 @@
 		</footer>
 	</OuterLayout>
 </div>
-
-<style global>
-	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-	:global(#nprogress .bar) {
-		@apply bg-emerald-600;
-	}
-</style>
