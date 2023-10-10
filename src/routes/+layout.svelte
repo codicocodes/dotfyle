@@ -187,7 +187,7 @@
 		</div>
 		<div class="flex gap-4 text-sm font-semibold items-center">
 			<ThemeSwitcher />
-			<button on:click={() => (showNavModal = true)}>
+			<button on:click={() => (showNavModal = true)} aria-label="Toggle navigation menu">
 				<Fa size="xl" class="block: sm:hidden h-full" icon={faBars} />
 			</button>
 			{#if user}
