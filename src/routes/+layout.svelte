@@ -33,6 +33,8 @@
 	import { getLatestReadTwinPost, updateLatestReadTwinPost } from '$lib/services/twin';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import AddPluginContainer from '$lib/components/add-plugin-container.svelte';
+	import { getTheme, setTheme } from '$lib/theme';
+	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
 
@@ -93,6 +95,8 @@
 			showTwinPost = false;
 		}
 	}
+
+	$: if (browser) setTheme(getTheme()); // If light theme add light class to <html>
 </script>
 
 <svelte:head>
@@ -182,6 +186,7 @@
 			</div>
 		</div>
 		<div class="flex gap-4 text-sm font-semibold items-center">
+			<ThemeSwitcher />
 			<button on:click={() => (showNavModal = true)}>
 				<Fa size="xl" class="block: sm:hidden h-full" icon={faBars} />
 			</button>
