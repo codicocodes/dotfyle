@@ -17,7 +17,6 @@
 <div class="w-full flex gap-2 mt-2 text-sm">
 	{#each links as link}
 		<a
-			data-sveltekit-reload
 			href={link.url}
 			class="{isOnCurrentUrl(link.url)
 				? 'bg-white text-black'
