@@ -35,7 +35,7 @@
 		"highlight.js": "^11.8.0",
 		"marked": "^4.3.0",
 		"nprogress": "^0.2.0",
-		"postcss": "^8.4.27",
+		"postcss": "^8.4.31",
 		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1",
