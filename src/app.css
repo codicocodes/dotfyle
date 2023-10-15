@@ -6,6 +6,10 @@
 	color: white !important;
 }
 
+body {
+    transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+}
+
 html {
 	color-scheme: dark;
 	--color-white: 255 255 255;
