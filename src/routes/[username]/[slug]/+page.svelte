@@ -84,8 +84,8 @@
 						class="p-4 text-xl w-full flex justify-between items-center"
 					>
 						<span class="font-semibold">Generate README markdown</span>
-						<div class="force-white-text">
-							<Fa icon={faChevronCircleRight} size="sm" />
+						<div>
+							<Fa icon={faChevronCircleRight} size="sm" class="text-white" />
 						</div>
 					</a>
 				</div>

@@ -1,12 +1,6 @@
 <script lang="ts">
 	import Fa from 'svelte-fa';
-	import {
-		faBox,
-		faCircle,
-		faCode,
-		faPuzzlePiece,
-		faStar
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faCircle, faCode, faPuzzlePiece, faStar } from '@fortawesome/free-solid-svg-icons';
 	import RepositoryCard from './RepositoryCard.svelte';
 	export let owner: string;
 	export let repo: string;

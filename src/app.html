@@ -4,29 +4,21 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="alternate" type="application/rss+xml" href="/this-week-in-neovim/rss.xml" title="This Week in Neovim RSS Feed">
-    <script>
-      function loadDarkmodeSettings() {
-        const availableThemes = ['dark', 'light']
-        const theme =  localStorage.theme || 'dark';
-        document.documentElement.classList.add(theme)
-
-        for (const aTheme of availableThemes) {
-          if (aTheme !== theme) {
-            document.documentElement.classList.remove(theme)
-          }
-        }
-      }
-      loadDarkmodeSettings()
-    </script>
+		<link rel="icon" href="/favicon.ico" />
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			href="/this-week-in-neovim/rss.xml"
+			title="This Week in Neovim RSS Feed"
+		/>
 		%sveltekit.head%
 	</head>
-	<body class="gruv:text-gray-100 text-gray-100 bg-gradient-to-r gruv:from-orange-800 gruv:to-yellow-800 from-neutral-900 to-slate-900">
+	<body
+		class="gruv:text-gray-100 text-gray-100 bg-gradient-to-r gruv:from-orange-800 gruv:to-yellow-800 from-neutral-900 to-slate-900"
+	>
 		<div id="svelte">%sveltekit.body%</div>
-    <div
-      class="fixed pointer-events-none w-full h-full top-0 left-0 -z-10 bg-gradient-to-r gruv:from-orange-800 gruv:to-yellow-800 from-neutral-900 to-slate-900"
-    ></div>
+		<div
+			class="fixed pointer-events-none w-full h-full top-0 left-0 -z-10 bg-gradient-to-r gruv:from-orange-800 gruv:to-yellow-800 from-neutral-900 to-slate-900"
+		></div>
 	</body>
 </html>

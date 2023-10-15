@@ -56,6 +56,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fontsource-variable/inter": "^5.0.13",
 		"@fortawesome/free-brands-svg-icons": "^6.4.0",
 		"@fortawesome/free-solid-svg-icons": "^6.4.0",
 		"@octokit/rest": "^19.0.13",
@@ -65,6 +66,7 @@
 		"@trpc/server": "^10.35.0",
 		"delay": "^5.0.0",
 		"jsonwebtoken": "^9.0.1",
+		"nanoid": "^5.0.1",
 		"p-limit": "github:sindresorhus/p-limit",
 		"rss": "^1.2.2",
 		"svelte-fa": "^3.0.4",

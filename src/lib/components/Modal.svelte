@@ -33,9 +33,9 @@
 		border: none;
 		padding: 0;
 	}
-	dialog::backdrop {
-		/* background: rgba(0, 0, 0, 0.3); */
-	}
+	/* dialog::backdrop {
+		background: rgba(0, 0, 0, 0.3); 
+	} */
 	dialog > div {
 		padding: 1em;
 	}
@@ -60,8 +60,5 @@
 		to {
 			opacity: 1;
 		}
-	}
-	button {
-		display: block;
 	}
 </style>
