@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { Stepper, Step } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
-	import {
-		faFileCode,
-		faPersonDigging,
-		faRotate
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faFileCode, faPersonDigging, faRotate } from '@fortawesome/free-solid-svg-icons';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import RepoPicker from '$lib/components/RepoPicker.svelte';
 	import { trpc } from '$lib/trpc/client';
@@ -74,14 +70,14 @@
 				start={0}
 				stepTerm=""
 				gap="gap-4"
-				badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-green-300/25"
-				active="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md border border-green-300/25 bg-white/5 transition-colors truncate text-ellipsis transition-colors"
+				badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-primary-300/25"
+				active="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md border border-primary-300/25 bg-white/5 transition-colors truncate text-ellipsis transition-colors"
 				on:complete={syncSelectedRepository}
-				buttonBack="bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-green-300/25"
+				buttonBack="bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-primary-300/25"
 				buttonBackLabel="Back"
-				buttonNext={`flex items-center bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-green-300/25`}
+				buttonNext={`flex items-center bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-primary-300/25`}
 				buttonNextLabel="Next"
-				buttonComplete="bg-emerald-500/90 px-4 py-2 rounded font-bold shadow-xl shadow-green-300/25 hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500"
+				buttonComplete="bg-primary-500/90 px-4 py-2 rounded font-bold shadow-xl shadow-primary-300/25 hover:bg-gradient-primary"
 				buttonCompleteLabel="Run sync"
 			>
 				<Step locked={!$unsyncedConfig.repo}>

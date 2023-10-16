@@ -43,11 +43,11 @@
 			<h3>How to add your badge</h3>
 			<span class="inline whitespace-normal">
 				Add the following HTML to your plugins readme but replace <code
-					class="w-auto rounded px-1 py-0.5 bg-gray-400 border border-gray-700"
+					class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700"
 					>{'{owner}'}
 				</code>
 				and
-				<code class="w-auto rounded px-1 py-0.5 bg-gray-400 border border-gray-700"
+				<code class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700"
 					>{'{name}'}
 				</code>
 				with your GitHub username and repository name.
@@ -60,7 +60,7 @@
 			<h3>Query parameters</h3>
 
 			<div>
-				<code class="w-auto rounded px-1 py-0.5 bg-gray-400 border border-gray-700">style</code>
+				<code class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700">style</code>
 				<i>string</i>
 			</div>
 

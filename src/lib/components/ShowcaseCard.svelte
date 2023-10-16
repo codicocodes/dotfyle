@@ -9,7 +9,7 @@
 
 <a
 	href={link}
-	class="h-full flex flex-col justify-between rounded-md p-2 border-[0.5px] border-transparent hover:border-gray-200 gap-4"
+	class="h-full flex flex-col justify-between rounded-md p-2 border-[0.5px] border-transparent hover:border-base-200 gap-4"
 >
 	<div class="sm:h-52 md:h-60 lg:h-72 xl:h-96 w-full rounded flex items-center">
 		{#if getMediaType(thumbnail) === 'image'}

@@ -25,7 +25,7 @@
 	});
 </script>
 
-<button on:click={() => (open = !open)} class=" bg-gray-700 p-2 rounded">
+<button on:click={() => (open = !open)} class=" bg-base-700 p-2 rounded">
 	<CoolTextWithChildren>
 		<div class="flex flex-row gap-2">
 			<div class="flex items-center force-white-text">
@@ -45,7 +45,7 @@
 			on:click={(e) => {
 				e.stopPropagation();
 			}}
-			class="z-50 fixed bg-gray-700 p-8 flex flex-col gap-8 rounded w-full mx-2 sm:w-1/3"
+			class="z-50 fixed bg-base-700 p-8 flex flex-col gap-8 rounded w-full mx-2 sm:w-1/3"
 		>
 			<h2 class="flex w-full font-semibold">Share</h2>
 			<div class="flex">

@@ -112,7 +112,7 @@
 								<GlossyCard>
 									<button
 										on:click={() => (style = currStyle)}
-										class="p-2 px-4 {currStyle === style ? 'bg-green-400/25' : ''}"
+										class="p-2 px-4 {currStyle === style ? 'bg-primary-400/25' : ''}"
 									>
 										{currStyle}
 									</button>

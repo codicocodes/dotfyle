@@ -109,25 +109,25 @@
 	<nav class="my-4 flex flex-col gap-2">
 		<a
 			href="/"
-			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25 justify-center"
+			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-primary shadow-xl hover:shadow-primary-300/25 justify-center"
 		>
 			Home
 		</a>
 		<a
 			href="/neovim/plugins/trending"
-			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25 justify-center"
+			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-primary shadow-xl hover:shadow-primary-300/25 justify-center"
 		>
 			Plugins
 		</a>
 		<a
 			href="/neovim/configurations/top"
-			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25 justify-center"
+			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-primary shadow-xl hover:shadow-primary-300/25 justify-center"
 		>
 			Configurations
 		</a>
 		<a
 			href="/this-week-in-neovim"
-			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25 justify-center"
+			class="bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-primary shadow-xl hover:shadow-primary-300/25 justify-center"
 		>
 			News
 		</a>
@@ -153,7 +153,7 @@
 			<CoolTextWithChildren>
 				<a
 					href="/this-week-in-neovim/{data.latestTwinPost.issue}"
-					class="flex flex-row items-center justify-center bg-white/10 transition-colors shadow-lg p-2 px-5 border-gray-500 hover:border-gray-200 font-semibold mb-4 text-sm"
+					class="flex flex-row items-center justify-center bg-white/10 transition-colors shadow-lg p-2 px-5 border-base-500 hover:border-base-200 font-semibold mb-4 text-sm"
 				>
 					<span>
 						<Fa icon={faNewspaper} class="force-white-text inline mr-1" />
@@ -224,7 +224,7 @@
 	{#if isOpen}
 		<div class="absolute right-0 w-40 mt-2 mr-6 z-50" id="user-menu">
 			<GlossyCard>
-				<div class="flex flex-col w-full h-full bg-gray-900 sm:bg-transparent">
+				<div class="flex flex-col w-full h-full bg-base-900 sm:bg-transparent">
 					{#if isAdmin(user)}
 						<CoolTextOnHover>
 							<button class="px-4 py-2 flex gap-2 items-center" on:click={syncPlugins}>
@@ -232,7 +232,7 @@
 									{#if syncing}
 										<DoubleBounce color="#15be97" size="8" />
 									{:else}
-										<Fa icon={faSync} class="text-gray-100" />
+										<Fa icon={faSync} class="text-base-100" />
 									{/if}
 								</div>
 								Sync plugins
@@ -246,7 +246,7 @@
 							class="px-4 py-2 flex gap-2 items-center"
 						>
 							<div class="force-white-text">
-								<Fa icon={faUser} class="text-gray-100" />
+								<Fa icon={faUser} class="text-base-100" />
 							</div>
 							Profile</a
 						>
@@ -254,7 +254,7 @@
 					<CoolTextOnHover>
 						<button class="px-4 py-2 flex gap-2 items-center" on:click={logout}>
 							<div class="force-white-text">
-								<Fa icon={faSignOut} class="text-gray-100" />
+								<Fa icon={faSignOut} class="text-base-100" />
 							</div>
 
 							Logout
@@ -269,7 +269,7 @@
 
 		<footer class="flex flex-col max-w-full xl:max-w-7xl w-full sm:mt-4 px-4 sm:px-4 gap-4 mt-8">
 			<div class="sticky mx-auto grid sm:grid-cols-2 xl:grid-cols-3 gap-8 mb-8">
-				<div class="flex flex-col gap-2 text-gray-400 items-start">
+				<div class="flex flex-col gap-2 text-base-400 items-start">
 					<h3 class="text-2xl font-semibold tracking-wider">Sitemap</h3>
 					<a href="/neovim/plugins/trending" class="flex items-center hover:text-white gap-2">
 						<span>Trending Neovim Plugins</span>
@@ -307,7 +307,7 @@
 						<span class="ml-1">RSS Feed</span>
 					</a>
 				</div>
-				<div class="flex flex-col gap-2 text-gray-400 items-start">
+				<div class="flex flex-col gap-2 text-base-400 items-start">
 					<h3 class="text-2xl font-semibold tracking-wider">Guides</h3>
 					<a href="/guides/auto-generated-readme" class="flex items-center hover:text-white gap-2">
 						<span class="">How to automatically create a README for your Neovim config</span>
@@ -316,7 +316,7 @@
 						<span class="">Showcase your Neovim plugins usage with a badge</span>
 					</a>
 				</div>
-				<div class="flex flex-col gap-2 text-gray-400 items-start">
+				<div class="flex flex-col gap-2 text-base-400 items-start">
 					<h3 class="text-2xl font-semibold tracking-wider">Dotfyle</h3>
 					<a
 						href="https://github.com/codicocodes/dotfyle"
@@ -352,7 +352,7 @@
 
 					<a
 						href="https://speedtyper.dev"
-						class="flex items-center hover:text-green-400 gap-2"
+						class="flex items-center hover:text-primary-400 gap-2"
 						target="blank"
 					>
 						<div class="flex items-start w-6">

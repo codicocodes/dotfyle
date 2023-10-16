@@ -16,15 +16,15 @@
 			<div class="flex gap-2 items-center w-full">
 				<img src={avatar} alt="" class="h-6 w-6 rounded-full" height="10" width="10" />
 				<CoolTextOnHover>
-				<span class="font-semibold">
-					{owner}
-				</span>
+					<span class="font-semibold">
+						{owner}
+					</span>
 				</CoolTextOnHover>
 				<span class="font-light"> / </span>
 				<CoolTextOnHover>
-				<span class="font-semibold">
-					{repo}
-				</span>
+					<span class="font-semibold">
+						{repo}
+					</span>
 				</CoolTextOnHover>
 			</div>
 			<div class="flex gap-1 items-center flex-wrap">
@@ -42,9 +42,13 @@
 	</div>
 
 	<div class="flex flex-grow justify-end items-center">
-		<div class="relative text-zinc-300 hover:text-white hover:cursor-pointer">
+		<div class="relative text-base-300 hover:text-white hover:cursor-pointer">
 			<img class="flex flex-end rounded max-h-[50px] blur-[1px]" height="20px" src={screenshot} />
-			<Fa class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2" size="sm" icon={faChevronCircleRight} />
+			<Fa
+				class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+				size="sm"
+				icon={faChevronCircleRight}
+			/>
 		</div>
 	</div>
 </div>

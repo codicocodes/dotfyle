@@ -72,7 +72,7 @@
 					{#if sorting === 'new'}
 						<CoolTextWithChildren>
 							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
 							>
 								<div class="flex items-center force-white-text">
 									<Fa icon={faSeedling} />
@@ -83,7 +83,7 @@
 					{:else}
 						<CoolTextOnHover>
 							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
 							>
 								<div class="flex items-center force-white-text">
 									<Fa icon={faSeedling} />
@@ -103,7 +103,7 @@
 					{#if sorting === 'stars'}
 						<CoolTextWithChildren>
 							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
 							>
 								<div class="flex items-center force-white-text">
 									<Fa icon={faStar} />
@@ -114,7 +114,7 @@
 					{:else}
 						<CoolTextOnHover>
 							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
 							>
 								<div class="flex items-center force-white-text">
 									<Fa icon={faStar} />
@@ -134,7 +134,7 @@
 					{#if sorting === 'plugins'}
 						<CoolTextWithChildren>
 							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
 							>
 								<div class="flex items-center force-white-text">
 									<Fa icon={faPuzzlePiece} />
@@ -145,7 +145,7 @@
 					{:else}
 						<CoolTextOnHover>
 							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-green-300/25 px-2 py-1 rounded"
+								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
 							>
 								<div class="flex items-center force-white-text">
 									<Fa icon={faPuzzlePiece} />
@@ -207,7 +207,7 @@
 								navigate($page, 'page', '1');
 								navigate($page, 'plugins', Array.from(selectedPluginsSet).join(','), true);
 							}}
-							class="bg-gray-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
+							class="bg-base-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
 						>
 							{plugin}
 							<Fa icon={faCircleXmark} size="sm" />
@@ -226,7 +226,7 @@
 									true
 								);
 							}}
-							class="bg-gray-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
+							class="bg-base-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
 						>
 							{server}
 							<Fa icon={faCircleXmark} size="sm" />
