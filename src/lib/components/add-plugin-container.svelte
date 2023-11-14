@@ -63,7 +63,7 @@
 
 <button
 	on:click={() => (openModal = true)}
-	class="border-[0.5px] border-gray-400 bg-white/20 p-2 rounded"
+	class="border-[0.5px] border-base-400 bg-white/20 p-2 rounded"
 	title="add plugin"
 >
 	<Fa icon={faPlus} size="xs" />
@@ -85,10 +85,14 @@
 				<div class="px-4 flex flex-col gap-2 my-4">
 					<div class="flex text-xs font-semibold gap-2 flex-wrap">Validation</div>
 					<div class="flex gap-2">
-						<span class="bg-white/10 px-2 py-1 rounded {owner ? 'text-green-400' : 'text-red-400'}">
+						<span
+							class="bg-white/10 px-2 py-1 rounded {owner ? 'text-primary-400' : 'text-red-400'}"
+						>
 							owner
 						</span>
-						<span class="bg-white/10 px-2 py-1 rounded {name ? 'text-green-400' : 'text-red-400'}">
+						<span
+							class="bg-white/10 px-2 py-1 rounded {name ? 'text-primary-400' : 'text-red-400'}"
+						>
 							repository
 						</span>
 						<Button

@@ -16,7 +16,7 @@
 	let expanded = false;
 
 	function unselectItem() {
-    selected = null
+		selected = null;
 	}
 
 	const dispatch = createEventDispatcher();
@@ -32,9 +32,9 @@
 	<div class="px-1 flex text-xs font-semibold gap-2 flex-wrap">
 		{title}
 	</div>
-	<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-gray-600" />
+	<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-base-600" />
 	<div class="flex flex-wrap gap-1 text-xs mt-2">
-      {#if selected}
+		{#if selected}
 			<CoolTextWithChildren>
 				<button
 					class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
@@ -46,7 +46,7 @@
 					{selected}
 				</button>
 			</CoolTextWithChildren>
-      {/if}
+		{/if}
 		{#each items
 			.filter((c) => selected !== c)
 			.filter((c) => c.toLowerCase().includes(filter.toLowerCase()))
@@ -54,7 +54,7 @@
 			<CoolTextOnHover>
 				<button
 					in:fly
-					class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-green-500 font-medium`}
+					class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-primary-500 font-medium`}
 					on:click={() => {
 						selected = currItem;
 						sendSelectionUpdated();

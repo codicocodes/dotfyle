@@ -29,9 +29,8 @@
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	const unSelectedStyles =
-		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 hover:underline';
-	const selectedStyle =
-		'text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500';
+		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary hover:underline';
+	const selectedStyle = 'text-transparent bg-clip-text bg-gradient-primary';
 	export let data: PageData;
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);

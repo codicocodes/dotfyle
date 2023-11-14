@@ -30,13 +30,13 @@
 		@apply bg-black p-4 sm:p-8 rounded-lg my-4 overflow-x-scroll text-sm sm:text-lg;
 	}
 	:global(#markdown-post-container a) {
-		@apply text-transparent bg-clip-text bg-gradient-to-br from-cyan-500 to-green-500;
+		@apply text-transparent bg-clip-text bg-gradient-primary;
 	}
 	:global(#markdown-post-container hr) {
 		@apply my-8;
 	}
 	:global(#markdown-post-container blockquote) {
-		@apply bg-gray-800 p-2 border-l-4 my-2;
+		@apply bg-base-800 p-2 border-l-4 my-2;
 	}
 	:global(#markdown-post-container code) {
 		@apply bg-black p-1 text-white;

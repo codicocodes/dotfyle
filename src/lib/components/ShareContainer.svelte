@@ -13,7 +13,7 @@
 <div class="flex items-center gap-2">
 	<button
 		title="Copy url"
-		class="block p-4 bg-gray-800 rounded-full"
+		class="block p-4 bg-base-800 rounded-full"
 		on:click={() => copyToClipboard(url)}
 	>
 		<Fa size="xs" icon={faCopy} />
@@ -22,12 +22,12 @@
 		title="Share on Twitter"
 		href={tweetUrl}
 		target="blank"
-		class="block p-4 bg-gray-800 rounded-full"
+		class="block p-4 bg-base-800 rounded-full"
 	>
 		<Fa size="xs" icon={faTwitter} />
 	</a>
 	<a
-		class="block p-4 bg-gray-800 rounded-full"
+		class="block p-4 bg-base-800 rounded-full"
 		href="mailto:?subject={emailSubject}&amp;body={emailBody}: {url}"
 		title="Share by Email"
 	>

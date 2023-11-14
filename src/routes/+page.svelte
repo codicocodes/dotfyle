@@ -69,7 +69,7 @@
 					<div class="flex flex-col sm:flex-row gap-2">
 						<a
 							href={'/neovim/plugins/trending'}
-							class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25`}
+							class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-primary shadow-xl hover:shadow-primary-300/25`}
 						>
 							<Fa icon={faPuzzlePiece} />
 							Search plugins
@@ -77,7 +77,7 @@
 						</a>
 						<a
 							href={'/neovim/configurations/top'}
-							class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-to-br hover:from-cyan-500 hover:to-green-500 shadow-xl hover:shadow-green-300/25`}
+							class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-primary shadow-xl hover:shadow-primary-300/25`}
 						>
 							<Fa icon={faFileCode} />
 							Search configs
@@ -146,8 +146,8 @@
 			<BigGridContainer>
 				{#each res.data as plugin, _}
 					<RepositoryCard
-            name="{plugin.owner}/{plugin.name}"
-            link="/plugins/{plugin.owner}/{plugin.name}"
+						name="{plugin.owner}/{plugin.name}"
+						link="/plugins/{plugin.owner}/{plugin.name}"
 						description={plugin.shortDescription}
 						thumbnail={plugin.media?.[0]}
 					>
@@ -185,8 +185,8 @@
 			<BigGridContainer>
 				{#each res.data as plugin, _}
 					<RepositoryCard
-            name="{plugin.owner}/{plugin.name}"
-            link="/plugins/{plugin.owner}/{plugin.name}"
+						name="{plugin.owner}/{plugin.name}"
+						link="/plugins/{plugin.owner}/{plugin.name}"
 						description={plugin.shortDescription}
 						thumbnail={plugin.media?.[0]}
 					>

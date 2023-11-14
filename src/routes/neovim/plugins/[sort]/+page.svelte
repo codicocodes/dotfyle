@@ -58,7 +58,7 @@
 								navigate($page, 'page', '1');
 								navigate($page, 'categories', Array.from(selectedCategoriesSet).join(','), true);
 							}}
-							class="bg-gray-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
+							class="bg-base-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
 						>
 							{category}
 							<Fa icon={faCircleXmark} size="sm" />
