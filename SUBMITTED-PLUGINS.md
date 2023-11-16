@@ -215,4 +215,6 @@
 
 ## Workflow
 
+- bennypowers/changesets.nvim
+
 ## Preconfigured Configuration
