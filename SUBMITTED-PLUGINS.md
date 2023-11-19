@@ -76,6 +76,8 @@
 
 ## Bars and Lines
 
+- MunifTanjim/nougat.nvim
+
 ## Statusline
 
 - echasnovski/mini.statusline
