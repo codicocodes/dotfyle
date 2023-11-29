@@ -11,7 +11,7 @@ export function getTrackedPlugins() {
 			.map(parseCategory)
 			.filter(isTrackedCategory)
 			.map(({ category, item }) => {
-				const plugin = item;
+				const plugin = item.replaceAll("`", "");
 				const shortDescription = '';
 				const link = `https://github.com/${plugin}`;
 				const [owner, name] = plugin.split('/');
