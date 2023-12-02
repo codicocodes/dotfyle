@@ -32,6 +32,8 @@
 
 ## Markdown and LaTeX
 
+- micangl/cmp-vimtex
+
 ## Language
 
 ## Syntax
