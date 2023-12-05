@@ -37,7 +37,7 @@
 	<div class="flex flex-wrap gap-1 text-xs mt-2">
 		{#each items
 			.filter((c) => (selected.size > 0 ? !selected.has(c) : true))
-			.filter((c) => c.includes(filter))
+			.filter((c) => c.toLowerCase().includes(filter.toLowerCase()))
 			.slice(0, expanded ? -1 : expandAtCount) as currItem}
 			<CoolTextOnHover>
 				<button
