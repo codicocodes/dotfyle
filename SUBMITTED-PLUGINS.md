@@ -48,6 +48,8 @@
 
 ## Search
 
+- FabianWirth/search.nvim
+
 ## Fuzzy Finder
 
 - echasnovski/mini.fuzzy
