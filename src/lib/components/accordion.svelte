@@ -25,7 +25,7 @@
 			<slot name="description" />
 		</div>
 		{#if open}
-			<div transition:slide class="w-full" {id}>
+			<div class="w-full" {id}>
 				<slot name="content" />
 			</div>
 		{/if}
