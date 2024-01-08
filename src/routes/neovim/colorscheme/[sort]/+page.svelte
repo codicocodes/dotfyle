@@ -24,7 +24,7 @@
 	<OpenGraph
 		title={data.content.ogTitle}
 		description={data.content.ogDescription}
-		url="https://dotfyle.com/neovim/plugins/{$page.params.sort}"
+		url="https://dotfyle.com/neovim/colorscheme/{$page.params.sort}"
 		image={ogThumbnail?.url}
 	/>
 </svelte:head>
