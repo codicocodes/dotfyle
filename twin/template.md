@@ -6,10 +6,14 @@ Hello everyone 👋
 
 > Updates of Neovim itself, which are available on Neovim nightly.
 
-- [@neovim](https://twitter.com/neovim) on Twitter
-- [Neovim news](https://neovim.io/doc/user/news.html)
-- `:h news.txt` updates in Neovim directly
-- [PR's on GitHub](https://github.com/neovim/neovim/pulls)
+> - [@neovim](https://twitter.com/neovim) on Twitter
+> - [Neovim news](https://neovim.io/doc/user/news.html)
+> - `:h news.txt` updates in Neovim directly
+> - [PR's on GitHub](https://github.com/neovim/neovim/pulls)
+
+### Neovim Core Commits
+
+{neovim-core-commits-section}
 
 
 ## Neovim Plugin Community
