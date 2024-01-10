@@ -1,6 +1,6 @@
-import { trpc } from "$lib/trpc/client";
-import { error, redirect } from "@sveltejs/kit";
-import type { Action } from "./$types";
+import { trpc } from '$lib/trpc/client';
+import { error, redirect } from '@sveltejs/kit';
+import type { Action } from './$types';
 
 export const actions: Action = {
 	update: async (event: any) => {
@@ -17,7 +17,7 @@ export const actions: Action = {
 			title,
 			issue
 		});
-    return post
+		return post;
 	},
 	publish: async (event: any) => {
 		const issueStr = event.params.issue;
@@ -28,7 +28,7 @@ export const actions: Action = {
 		const post = await trpc(event).publishTwinIssue.query({
 			issue
 		});
-    console.log("test")
-    throw redirect(302, `/this-week-in-neovim/${post.issue}`)
+		console.log('test');
+		throw redirect(302, `/this-week-in-neovim/${post.issue}`);
 	}
 };
