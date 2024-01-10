@@ -15,6 +15,7 @@
 		faBars,
 		faKeyboard,
 		faNewspaper,
+		faPlus,
 		faRss,
 		faSignOut,
 		faSync,
@@ -32,7 +33,6 @@
 	import { browser } from '$app/environment';
 	import { getLatestReadTwinPost, updateLatestReadTwinPost } from '$lib/services/twin';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
-	import AddPluginContainer from '$lib/components/add-plugin-container.svelte';
 	import { getTheme, setTheme } from '$lib/theme';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	export let data: LayoutData;
@@ -192,7 +192,13 @@
 			</button>
 			{#if user}
 				{#if isAdmin(user)}
-					<AddPluginContainer />
+					<a
+						href="/neovim/plugins/add"
+						class="border-[0.5px] border-base-400 bg-white/20 p-2 rounded"
+						title="add plugin"
+					>
+						<Fa icon={faPlus} size="xs" />
+					</a>
 				{/if}
 				<button
 					on:click={toggle}

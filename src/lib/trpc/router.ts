@@ -145,7 +145,9 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { owner, name } }) => {
-			return getPlugin(owner, name);
+			return getPlugin(owner, name).catch(() => {
+				throw new TRPCError({ code: 'NOT_FOUND' });
+			});
 		}),
 	getReadme: t.procedure
 		.input((input: unknown) => {
@@ -385,7 +387,9 @@ export const router = t.router({
 			return z.object({ owner: z.string(), name: z.string() }).parse(input);
 		})
 		.query(async ({ input: { owner, name }, ctx }) => {
-			const repository = await getGithubRepository(ctx.user!.id, owner, name);
+			const repository = await getGithubRepository(ctx.user!.id, owner, name).catch(() => {
+				throw new TRPCError({ code: 'NOT_FOUND' });
+			});
 			return repository;
 		}),
 	createNeovimPlugin: t.procedure
