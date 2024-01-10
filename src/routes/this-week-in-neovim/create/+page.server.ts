@@ -8,8 +8,10 @@ export const actions: Action = {
 		const data = await event.request.formData();
 		const issue = Number(data.get('issue'));
 		const days = Number(data.get('days'));
-		const input = z.object({ days: z.number(), issue: z.number() }).parse({ days, issue });
+		const input = z
+			.object({ days: z.number(), issue: z.number() })
+			.parse({ days, issue });
 		const post = await trpc(event).generateTwinIssue.query(input);
-    throw redirect(302, `/this-week-in-neovim/${post.issue}/edit`)
+		throw redirect(302, `/this-week-in-neovim/${post.issue}/edit`);
 	}
 };
