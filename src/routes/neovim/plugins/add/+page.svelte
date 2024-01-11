@@ -42,20 +42,24 @@
 	async function fetchRepository() {
 		if (owner && name) {
 			validationErrors = [];
-			const plugin = await trpc($page).getPlugin.query({ owner, name }).catch(() => {
-				return null
-			});
+			const plugin = await trpc($page)
+				.getPlugin.query({ owner, name })
+				.catch(() => {
+					return null;
+				});
 
 			if (plugin) {
 				pluginAlreadyExists = true;
 				return;
 			}
-			const fetchedRepository = await trpc($page).getGitHubRepository.query({ owner, name }).catch(() => {
-				repositoryDoesNotExist = true
-				return null
-			});
+			fetchedRepository = await trpc($page)
+				.getGitHubRepository.query({ owner, name })
+				.catch(() => {
+					return undefined;
+				});
+
 			if (!fetchedRepository) {
-				validationErrors.push("This repository does not exist on GitHub")
+				repositoryDoesNotExist = true;
 				return;
 			}
 			const parsed = NeovimPluginRepositorySchema.safeParse(fetchedRepository);
@@ -79,6 +83,20 @@
 
 <MediumHeroTitle>Add a Neovim Plugin to Dotfyle</MediumHeroTitle>
 <div class="mt-8 w-full grow">
+	<div class="flex gap-2 p-4">
+		<button
+			class="p-2 rounded {fetchedRepository ? 'bg-white/10' : 'bg-white/40'}"
+			on:click={() => {
+				fetchedRepository = undefined;
+				fullName = '';
+				repositoryDoesNotExist = false;
+				pluginAlreadyExists = false;
+			}}
+		>
+			1. Select repository
+		</button>
+		<div class="p-2 rounded {!fetchedRepository ? 'bg-white/10' : 'bg-white/40'}">2. Select category</div>
+	</div>
 	{#if !fetchedRepository}
 		<form class="px-4 flex flex-col gap-2 my-4">
 			<h3 class="flex text-xl font-semibold gap-2 flex-wrap">
@@ -88,8 +106,8 @@
 			<div class="w-full flex gap-2">
 				<input
 					on:change={() => {
-						pluginAlreadyExists = false
-						repositoryDoesNotExist = false
+						pluginAlreadyExists = false;
+						repositoryDoesNotExist = false;
 					}}
 					bind:value={fullName}
 					class="text-gray font-medium rounded p-2 w-full"
@@ -126,7 +144,7 @@
 		<div class="px-4 flex flex-col gap-2 my-4">
 			<RepositoryCard
 				name="{owner}/{name}"
-				link="/"
+				link=""
 				description={fetchedRepository.description ?? ''}
 			>
 				<NeovimPluginMetaData
@@ -145,10 +163,6 @@
 				{/each}
 				{#if !selectedCategory}
 					<li>Selecting a category is required</li>
-				{/if}
-
-				{#if !selectedCategory}
-					<li>This plugin already exists on Dotfyle</li>
 				{/if}
 			</ul>
 		</div>

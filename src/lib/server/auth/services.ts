@@ -5,6 +5,7 @@ import { JwtSecretError } from './errors';
 import { redirect, type Cookies } from '@sveltejs/kit';
 import { UserSchema } from '$lib/server/prisma/users/schema';
 import { getConfigsByUsername } from '../prisma/neovimconfigs/service';
+import { BASE_URL } from './github/settings';
 
 export function getJwtAccessSecret(): string {
 	if (!JWT_ACCESS_SECRET || JWT_ACCESS_SECRET.length < 32) {

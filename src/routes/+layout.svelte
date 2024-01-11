@@ -191,15 +191,13 @@
 				<Fa size="xl" class="block: sm:hidden h-full" icon={faBars} />
 			</button>
 			{#if user}
-				{#if isAdmin(user)}
-					<a
-						href="/neovim/plugins/add"
-						class="border-[0.5px] border-base-400 bg-white/20 p-2 rounded"
-						title="add plugin"
-					>
-						<Fa icon={faPlus} size="xs" />
-					</a>
-				{/if}
+				<a
+					href="/neovim/plugins/add"
+					class="border-[0.5px] border-base-400 bg-white/20 p-2 rounded"
+					title="add plugin"
+				>
+					<Fa icon={faPlus} size="xs" />
+				</a>
 				<button
 					on:click={toggle}
 					type="button"

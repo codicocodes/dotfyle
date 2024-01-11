@@ -33,7 +33,7 @@
 	<div class="px-1 flex text-xs font-semibold gap-2 flex-wrap">
 		{title}
 	</div>
-	<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-base-600" />
+	<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-gray" />
 	<div class="flex flex-wrap gap-1 text-xs mt-2">
 		{#each items
 			.filter((c) => (selected.size > 0 ? !selected.has(c) : true))

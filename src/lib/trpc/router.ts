@@ -382,7 +382,6 @@ export const router = t.router({
 	getLatestTwinIssue,
 	getGitHubRepository: t.procedure
 		.use(middlewares.isAuthenticated)
-		.use(middlewares.isAdmin)
 		.input((input: unknown) => {
 			return z.object({ owner: z.string(), name: z.string() }).parse(input);
 		})
@@ -394,7 +393,6 @@ export const router = t.router({
 		}),
 	createNeovimPlugin: t.procedure
 		.use(middlewares.isAuthenticated)
-		.use(middlewares.isAdmin)
 		.input((input: unknown) => {
 			// TODO: when making this public we can not just use any string for category
 			// we have to validate that it is a category currently in se

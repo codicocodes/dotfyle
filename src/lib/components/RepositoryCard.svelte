@@ -11,7 +11,7 @@
 
 <a
 	href={link}
-	class="h-full flex flex-col justify-between rounded-md bg-white/10 transition-colors shadow-lg p-2 px-5 border-[0.5px] border-base-500 hover:border-base-200"
+	class="{!link ? 'pointer-events-none' : ''} h-full flex flex-col justify-between rounded-md bg-white/10 transition-colors shadow-lg p-2 px-5 border-[0.5px] border-base-500 hover:border-base-200"
 >
 	<div class="flex flex-col gap-1 text-sm">
 		<div
