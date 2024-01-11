@@ -57,7 +57,8 @@ export async function login(c: Cookies, u: User, next: string|null): Promise<nev
 	createCookie(c, token);
 	const configs = await getConfigsByUsername(u.username);
 	if (next) {
-		throw redirect(302, next);
+		const url = `${BASE_URL}/${next}`
+		throw redirect(302, url);
 	} else if (configs.length > 0) {
 		throw redirect(302, `/${u.username}`);
 	} else {
