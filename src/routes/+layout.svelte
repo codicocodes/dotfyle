@@ -200,6 +200,7 @@
 					href="/neovim/plugins/add"
 					class="border-[0.5px] border-base-400 bg-white/20 p-2 rounded"
 					title="add plugin"
+					data-umami-event="Add Plugin - Started"
 				>
 					<Fa icon={faPlus} size="xs" />
 				</a>

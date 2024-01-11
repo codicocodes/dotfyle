@@ -95,7 +95,9 @@
 		>
 			1. Select repository
 		</button>
-		<div class="p-2 rounded {!fetchedRepository ? 'bg-white/10' : 'bg-white/40'}">2. Select category</div>
+		<div class="p-2 rounded {!fetchedRepository ? 'bg-white/10' : 'bg-white/40'}">
+			2. Select category
+		</div>
 	</div>
 	{#if !fetchedRepository}
 		<form class="px-4 flex flex-col gap-2 my-4">
@@ -119,6 +121,7 @@
 					disabled={!owner || !name || repositoryDoesNotExist || pluginAlreadyExists}
 					icon={faSearch}
 					text="Search"
+					event="Add Plugin - Search"
 				/>
 			</div>
 			<ul class="text-red-400 flex flex-col">
@@ -182,6 +185,7 @@
 			text="Save Plugin"
 			icon={faFloppyDisk}
 			on:click={savePlugin}
+			event="Add Plugin - Create"
 		/>
 	{/if}
 </div>

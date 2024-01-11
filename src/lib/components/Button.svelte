@@ -4,6 +4,7 @@
 	import { DoubleBounce } from 'svelte-loading-spinners';
 	export let text: string;
 	export let icon: IconDefinition;
+	export let event: string | undefined = undefined;
 	export let loading = false;
 	export let iconPosition: 'right' | 'left' = 'right';
 	export let disabled = false;
@@ -22,6 +23,7 @@
 			: 'shadow-lg hover:shadow-primary-300/25 hover:bg-gradient-primary '
 	}`}
 	{type}
+	data-umami-event={event}
 	disabled={disabled || loading}
 >
 	{#if iconPosition === 'right'}
