@@ -52,11 +52,13 @@ export function refreshToken(c: Cookies, u: User) {
 	createCookie(c, token);
 }
 
-export async function login(c: Cookies, u: User): Promise<never> {
+export async function login(c: Cookies, u: User, next: string|null): Promise<never> {
 	const token = createSignedJwtToken(u);
 	createCookie(c, token);
 	const configs = await getConfigsByUsername(u.username);
-	if (configs.length > 0) {
+	if (next) {
+		throw redirect(302, next);
+	} else if (configs.length > 0) {
 		throw redirect(302, `/${u.username}`);
 	} else {
 		throw redirect(302, '/welcome');
