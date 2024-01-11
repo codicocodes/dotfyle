@@ -19,13 +19,23 @@ export const GithubRepository = z.object({
 });
 
 export const NeovimPluginRepositorySchema = GithubRepository.extend({
-	language: z.literal('Lua', { errorMap: () => ({ message: 'The repository is not written in Lua' }) }),
+	language: z.literal('Lua', {
+		errorMap: () => ({ message: 'The repository is not written in Lua' })
+	}),
 	topics: z
 		.string({ errorMap: () => ({ message: '' }) })
 		.array()
-		.refine((val) => val.some((t) => t === 'neovim-plugin'), {
-			message: "The repository is not tagged as 'neovim-plugin' on GitHub"
-		})
+		.refine(
+			(val) => {
+				const neovimPlugin = val.some((t) => t === 'neovim-plugin');
+				const neovim = val.some((t) => t === 'neovim');
+				const plugin = val.some((t) => t === 'plugin');
+				return neovimPlugin || (neovim && plugin);
+			},
+			{
+				message: "The repository is not tagged as 'neovim-plugin' on GitHub"
+			}
+		)
 });
 
 export function validateRepositoryDataIsNeovimPlugin(data: z.infer<typeof GithubRepository>) {
