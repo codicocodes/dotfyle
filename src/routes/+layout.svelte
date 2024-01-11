@@ -101,6 +101,11 @@
 
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<script
+		async
+		src="https://umami-production-7f33.up.railway.app/script.js"
+		data-website-id="e1c8c45f-d36f-4793-9d07-fb8bdcf458b3"
+	></script>
 </svelte:head>
 
 <SvelteToast />
