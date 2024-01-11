@@ -13,15 +13,15 @@ const content = {
   },
   popular: {
     title: 'Top Neovim Colorschemes',
-    description: 'The most popular Neovim colorschemes ranked by total number of installs across 800+ tracked Neovim configurations on Dotfyle',
+    description: 'The most popular Neovim colorschemes ranked by total number of installs across 1000+ tracked Neovim configurations on Dotfyle',
     ogTitle: `Top Neovim Colorschemes in ${new Date().getFullYear()}`,
-    ogDescription: `List of the most popular Neovim colorschemes by total number of installs across 800+ tracked Neovim configurations on Dotfyle.`,
+    ogDescription: `List of the most popular Neovim colorschemes by total number of installs across 1000+ tracked Neovim configurations on Dotfyle.`,
   },
   trending: {
     title: 'Trending Neovim Colorschemes',
-    description: 'Trending Neovim colorschemes ranked by recent installations across 800+ tracked Neovim configurations on Dotfyle',
+    description: 'Trending Neovim colorschemes ranked by recent installations across 1000+ tracked Neovim configurations on Dotfyle',
     ogTitle: `Trending Neovim Colorschemes in ${new Date().getFullYear()}`,
-    ogDescription: `List of trending Neovim plugins ranked by recent installations across 800+ tracked Neovim configurations on Dotfyle.`,
+    ogDescription: `List of trending Neovim plugins ranked by recent installations across 1000+ tracked Neovim configurations on Dotfyle.`,
   }
 } as const;
 
