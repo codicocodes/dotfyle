@@ -6,11 +6,11 @@
 <form class="w-full flex gap-2 justify-center" method="POST">
 	<div class="flex flex-col">
 		<label class=""> issue number </label>
-		<input autofocus type="number" class="rounded px-2 text-black" name="issue"/>
+		<input autofocus type="number" class="rounded px-2 text-gray" name="issue"/>
 	</div>
 	<div class="flex flex-col">
 		<label class="">days ago</label>
-		<input type="number" class="rounded px-2 text-black" name="days"/>
+		<input type="number" class="rounded px-2 text-gray" name="days"/>
 	</div>
 	<Button text="Create" icon={faPlusCircle} />
 </form>
