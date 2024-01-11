@@ -1,5 +1,5 @@
-  import { toast } from '@zerodevx/svelte-toast'
-import type { Media, User } from "@prisma/client";
+import { toast } from '@zerodevx/svelte-toast';
+import type { Media, User } from '@prisma/client';
 import { PUBLIC_ADMIN_USER_GITHUB_ID, PUBLIC_MAINTENANCE_ENABLED } from '$env/static/public';
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse/lib';
@@ -61,28 +61,27 @@ export function isAdmin(user: User): boolean {
 export async function sanitizeHtml(html: string) {
 	const clean = await unified()
 		.use(rehypeParse)
-    .use(rehypeStringify)
+		.use(rehypeStringify)
 		.use(rehypeSanitize)
 		.process(html);
 	return clean.toString();
 }
 
 export function getMediaType(media: Media): 'image' | 'video' {
-  const {url, type} = media
-  if (type.includes("video")) return "video"
-  if (type.includes("image")) return "image"
-  if(url.endsWith(".mov") || url.endsWith(".mp4")) {
-    return 'video'
-  }
-  return 'image'
+	const { url, type } = media;
+	if (type.includes('video')) return 'video';
+	if (type.includes('image')) return 'image';
+	if (url.endsWith('.mov') || url.endsWith('.mp4')) {
+		return 'video';
+	}
+	return 'image';
 }
 
 export function copyToClipboard(data: string) {
-  navigator.clipboard.writeText(data);
-  toast.push("Copied to clipboard")
+	navigator.clipboard.writeText(data);
+	toast.push('Copied to clipboard');
 }
 
 export function isMaintenanceMode() {
-  return PUBLIC_MAINTENANCE_ENABLED === 'true'
+	return PUBLIC_MAINTENANCE_ENABLED === 'true';
 }
-
