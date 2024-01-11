@@ -4,28 +4,40 @@ import type { ActionData, PageServerLoad, PageServerLoadEvent } from './$types';
 import { z } from 'zod';
 import { sanitizeHtml } from '$lib/utils';
 import { marked } from 'marked';
+import { BASE_URL } from '$lib/server/auth/github/settings';
 
 export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
 	const issueStr = event.params.issue;
-  if (isNaN(Number(issueStr))) {
-    throw error(404)
-  }
-  const issue = parseInt(issueStr, 10)
-	const post = await trpc(event).getTwinByIssue.query({ issue }).catch(() => {
-    throw error(404)
-  })
+	if (isNaN(Number(issueStr))) {
+		throw error(404);
+	}
+	const issue = parseInt(issueStr, 10);
+	const post = await trpc(event)
+		.getTwinByIssue.query({ issue })
+		.catch(() => {
+			throw error(404);
+		});
+	const renderer = new marked.Renderer();
+	const linkRenderer = renderer.link;
+	renderer.link = (href: string, title: string, text: string) => {
+		const localLink = href.startsWith(BASE_URL) || href.startsWith('/');
+		const html = linkRenderer.call(renderer, href, title, text);
+		return localLink
+			? html.replace(/^<a /, `<a target="_blank"`)
+			: html.replace(/^<a /, `<a target="_blank" rel="noreferrer noopener nofollow" `);
+	};
 
-  const cleanHtml = await sanitizeHtml(marked(post.content))
+	const cleanHtml = await sanitizeHtml(marked(post.content, { renderer }));
 
-	return { 
-    post: {
-      ...post,
-      cleanHtml
-    },
-    seo: {
-      title: `This Week in Neovim: ${post.title} | Neovim news`
-    }
-  };
+	return {
+		post: {
+			...post,
+			cleanHtml
+		},
+		seo: {
+			title: `This Week in Neovim: ${post.title} | Neovim news`
+		}
+	};
 };
 
 export const actions = {
@@ -35,6 +47,6 @@ export const actions = {
 		const days = Number(data.get('days'));
 		const input = z.object({ days: z.number(), issue: z.number() }).parse({ days, issue });
 		const post = await trpc(event).generateTwinIssue.query(input);
-    throw redirect(302, `/this-week-in-neovim/${post.issue}/edit`)
+		throw redirect(302, `/this-week-in-neovim/${post.issue}/edit`);
 	}
 };
