@@ -12,7 +12,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
-	class="bg-neutral-800 text-white p-4"
+	class="bg-gray text-white p-4"
 	bind:this={dialog}
 	on:close={() => onClose()}
 	on:click|self={() => dialog.close()}
