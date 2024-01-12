@@ -25,7 +25,7 @@ export function createSignedJwtToken(user: User) {
 export const COOKIE_NAME = 'dotfyle.token';
 
 export function createCookie(cookies: Cookies, token: string, maxAge: number = 60 * 60 * 24) {
-	cookies.delete(COOKIE_NAME);
+	cookies.delete(COOKIE_NAME, { path: '/' });
 	cookies.set(COOKIE_NAME, token, {
 		httpOnly: true,
 		path: '/',
@@ -53,12 +53,12 @@ export function refreshToken(c: Cookies, u: User) {
 	createCookie(c, token);
 }
 
-export async function login(c: Cookies, u: User, next: string|null): Promise<never> {
+export async function login(c: Cookies, u: User, next: string | null): Promise<never> {
 	const token = createSignedJwtToken(u);
 	createCookie(c, token);
 	const configs = await getConfigsByUsername(u.username);
 	if (next) {
-		const url = `${BASE_URL}/${next}`
+		const url = `${BASE_URL}/${next}`;
 		throw redirect(302, url);
 	} else if (configs.length > 0) {
 		throw redirect(302, `/${u.username}`);

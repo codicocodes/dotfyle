@@ -42,6 +42,7 @@
 		close();
 		await fetch('/api/auth', { method: 'DELETE' });
 		await invalidate(() => true);
+		user = null
 	};
 
 	let isOpen = false;
