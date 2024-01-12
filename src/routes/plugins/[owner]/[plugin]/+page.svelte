@@ -219,20 +219,18 @@
 									<Fa icon={faCameraRetro} size="sm" />
 									media
 								</h3>
+								{#if data.user && isAdmin(data.user)}
+									<div class="flex">
+										<Button
+											on:click={async () => {
+												await Promise.all(data.media.map((m) => deleteMedia(m.id)));
+											}}
+											icon={faDeleteLeft}
+											text="Delete all images"
+										/>
+									</div>
+								{/if}
 							</div>
-
-							{#if data.user && isAdmin(data.user)}
-								<div class="flex">
-									<Button
-										on:click={async () => {
-											await Promise.all(data.media.map((m) => deleteMedia(m.id)));
-										}}
-										icon={faDeleteLeft}
-										text="Delete all images"
-									/>
-								</div>
-							{/if}
-
 							<div
 								in:fade
 								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
