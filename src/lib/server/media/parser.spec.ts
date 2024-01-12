@@ -110,5 +110,13 @@ describe('GithubMediaParser.findMediaUrls()', () => {
 		const media = run(html, "CadeMichael", "gotest.nvim", "main");
 		expect(media[0]).toEqual(output);
 	})
+
+	// TODO: Maybe we should support this, maybe we shouldn't?
+	it.skip("matches images hosted in wiki pages", () => {
+		const md = "![Layout GIF](https://github.com/MunifTanjim/nui.nvim/wiki/media/layout.gif)"
+		const output = "https://raw.githubusercontent.com/wiki/MunifTanjim/nui.nvim/media/layout.gif"
+		const media = run(md, "MunifTanjim", "nui.nvim", "main");
+		expect(media[0]).toEqual(output);
+	})
 });
 
