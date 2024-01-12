@@ -53,7 +53,7 @@ export class PluginSyncer {
 		readme = this.mediaParser.replaceInvalidGithubUrls(readme);
 		this.plugin.readme = readme;
 		this.syncHasDotfyleShield(readme);
-    await this.syncMedia(readme);
+		await this.syncMedia(readme);
 	}
 
 	async syncMedia(readme: string) {
@@ -66,8 +66,8 @@ export class PluginSyncer {
 						console.log(`missing Content-Type for ${url}`, {
 							owner: this.plugin.owner,
 							name: this.plugin.name,
-              status: r.status,
-              sttusText: r.statusText,
+							status: r.status,
+							sttusText: r.statusText
 						});
 					}
 					return {
@@ -79,20 +79,18 @@ export class PluginSyncer {
 			})
 		);
 
-
-    // TODO: 1. allow multiple plugins per media url
-    // TODO: 2. Remove stale media
+		// TODO: 1. allow multiple plugins per media url
+		// TODO: 2. Remove stale media
 		await Promise.all([
-			data
-				.map(async (m) => {
-					return await prismaClient.media.upsert({
-						where: {
-							url: m.url
-						},
-						create: m,
-						update: m,
-					});
-				})
+			data.map(async (m) => {
+				return await prismaClient.media.upsert({
+					where: {
+						url: m.url
+					},
+					create: m,
+					update: m
+				});
+			})
 		]);
 	}
 
