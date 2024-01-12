@@ -1,4 +1,5 @@
 import { fetchGitCommits, fetchGithubRepositoryByName, fetchReadme } from '$lib/server/github/api';
+import type { GithubRepository } from '$lib/server/github/schema';
 import { GithubMediaParser } from '$lib/server/media/parser';
 import { upsertBreakingChange } from '$lib/server/prisma/breakingChanges/service';
 import { prismaClient } from '$lib/server/prisma/client';
@@ -19,7 +20,8 @@ export class PluginSyncer {
 		this.mediaParser = new GithubMediaParser();
 	}
 	async sync() {
-		await Promise.all([this.syncStars(), this.syncReadme(), this.syncBreakingChanges()]);
+		const repo = await fetchGithubRepositoryByName(this.token, this.plugin.owner, this.plugin.name);
+		await Promise.all([this.syncStars(repo), this.syncReadme(repo), this.syncBreakingChanges()]);
 		return this.updatePlugin();
 	}
 
@@ -42,22 +44,21 @@ export class PluginSyncer {
 		}
 	}
 
-	async syncStars() {
-		const repo = await fetchGithubRepositoryByName(this.token, this.plugin.owner, this.plugin.name);
+	async syncStars(repo: GithubRepository) {
 		this.plugin.stars = repo.stargazers_count;
 		this.plugin.shortDescription = repo.description ?? this.plugin.shortDescription;
 	}
 
-	async syncReadme() {
+	async syncReadme(repo: GithubRepository) {
 		let readme = await fetchReadme(this.token, this.plugin.owner, this.plugin.name);
 		readme = this.mediaParser.replaceInvalidGithubUrls(readme);
 		this.plugin.readme = readme;
 		this.syncHasDotfyleShield(readme);
-		await this.syncMedia(readme);
+		await this.syncMedia(readme, repo);
 	}
 
-	async syncMedia(readme: string) {
-		const media = this.mediaParser.findMediaUrls(readme, this.plugin.owner, this.plugin.name);
+	async syncMedia(readme: string, repo: GithubRepository) {
+		const media = this.mediaParser.findMediaUrls(readme, this.plugin.owner, this.plugin.name, repo.default_branch);
 		const data = await Promise.all(
 			media.map(async (url) => {
 				return fetch(url).then((r) => {
