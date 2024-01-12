@@ -1,5 +1,14 @@
 export class GithubMediaParser {
-	replaceInvalidGithubUrls(readme: string): string {
+	replaceInvalidGithubUrls(readme: string, owner: string, repo: string): string {
+		const wikiPageRegex = new RegExp(`https://github.com/${owner}/${repo}/wiki/[a-zA-Z0-9./_-]+.(png|jpg|jpeg|mp4|webp|gif)`, "g")
+		const wikiPagesMatches = readme.matchAll(wikiPageRegex);
+		for (const wikiPageMatch of wikiPagesMatches) {
+			const wikiPageLink = wikiPageMatch[0];
+			const validWikiPageLink = wikiPageLink
+				.replace('/wiki/', '/')
+				.replace('github.com', 'raw.githubusercontent.com/wiki');
+			readme = readme.replaceAll(wikiPageLink, validWikiPageLink);
+		}
 		const invalidGithubLinksRegex = /https:\/\/github.com\/[a-zA-Z0-9./_-]+.(png|jpg|jpeg|mp4|webp|gif)/g
 		const invalidGithubLinkMatches = readme.matchAll(invalidGithubLinksRegex);
 		for (const invalidGithubLinkMatch of invalidGithubLinkMatches) {

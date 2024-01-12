@@ -51,7 +51,7 @@ export class PluginSyncer {
 
 	async syncReadme(repo: GithubRepository) {
 		let readme = await fetchReadme(this.token, this.plugin.owner, this.plugin.name);
-		readme = this.mediaParser.replaceInvalidGithubUrls(readme);
+		readme = this.mediaParser.replaceInvalidGithubUrls(readme, this.plugin.owner, this.plugin.name);
 		this.plugin.readme = readme;
 		this.syncHasDotfyleShield(readme);
 		await this.syncMedia(readme, repo);
