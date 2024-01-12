@@ -19,11 +19,11 @@ export class GithubMediaParser {
 
 		const validGithubLinkMatches = readme.matchAll(validGithubLinkRegex);
 
-    const allMedia = []
+		const allMedia = [];
 
 		for (const validGithubLinkMatch of validGithubLinkMatches) {
 			const media = validGithubLinkMatch[0];
-      allMedia.push(media)
+			allMedia.push(media);
 		}
 
 		const githubAssetRegex = new RegExp(
@@ -33,8 +33,8 @@ export class GithubMediaParser {
 
 		for (const validAssetUrlMatches of readme.matchAll(githubAssetRegex)) {
 			const asset = validAssetUrlMatches[0];
-      allMedia.push(asset)
+			allMedia.push(asset);
 		}
-    return allMedia
+		return allMedia;
 	}
 }
