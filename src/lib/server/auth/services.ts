@@ -25,7 +25,7 @@ export function createSignedJwtToken(user: User) {
 export const COOKIE_NAME = 'dotfyle.token';
 
 export function createCookie(cookies: Cookies, token: string, maxAge: number = 60 * 60 * 24) {
-	cookies.delete(COOKIE_NAME);
+	cookies.delete(COOKIE_NAME, { path: '/' });
 	cookies.set(COOKIE_NAME, token, {
 		httpOnly: true,
 		path: '/',
