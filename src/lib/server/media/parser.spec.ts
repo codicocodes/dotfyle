@@ -91,13 +91,6 @@ describe('GithubMediaParser.findMediaUrls()', () => {
 		expect(media[0]).toEqual(output);
 		expect(media.length).toBe(1);
 	})
-
-	it("matches camo link", () => {
-		const url = "https://camo.githubusercontent.com/8a9838bf08b4936eb9df3fa71ea863bb5c5143a9e83b8e54296aae6f91fe60b9/68747470733a2f2f7668732e636861726d2e73682f7668732d357a6a6f4c516f4b4a4b4b314451426c6433525152702e676966"
-		const media = run(url, "username", "reponame", "main");
-		expect(media[0]).toEqual(url);
-	})
-
 	it("matches relative md link starting with .", () => {
 		const md = "![picker](./demo/picker.png)"
 		const output = "https://raw.githubusercontent.com/CadeMichael/gotest.nvim/main/demo/picker.png"

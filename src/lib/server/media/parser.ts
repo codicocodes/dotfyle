@@ -63,14 +63,6 @@ export class GithubMediaParser {
 			allMedia.push(relativeMediaUrl);
 		}
 
-		const validCamoRegex = /https:\/\/camo.githubusercontent.com\/[a-z0-9/]+\/[a-z0-9]+/g;
-
-		const absoluteCamoMatches = readme.matchAll(validCamoRegex);
-
-		for (const camoMatch of absoluteCamoMatches) {
-			allMedia.push(camoMatch[0]);
-		}
-
 		return allMedia;
 	}
 }
