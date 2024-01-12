@@ -67,7 +67,7 @@ export class PluginSyncer {
 							owner: this.plugin.owner,
 							name: this.plugin.name,
 							status: r.status,
-							sttusText: r.statusText
+							statusText: r.statusText
 						});
 					}
 					return {
