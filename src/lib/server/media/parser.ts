@@ -35,27 +35,42 @@ export class GithubMediaParser {
 			allMedia.push(asset);
 		}
 
-		const storedInRepoRelativeMarkdownRegex = /\([/a-zA-Z-_]+.(png|jpg|jpeg|mp4|gif|svg)\)/g;
+		const storedInRepoRelativeMarkdownRegex = /\(.[/a-zA-Z-_]+.(png|jpg|jpeg|mp4|gif|svg)\)/g;
 
 		const relativeMarkdownMatches = readme.matchAll(storedInRepoRelativeMarkdownRegex);
 
 		for (const relativeMatch of relativeMarkdownMatches) {
+			if (relativeMatch[0].startsWith("(./")) {
+				relativeMatch[0] = relativeMatch[0].replace('./', '/')
+			}
 			const relativeMedia = relativeMatch[0].replace('(', '').replace(')', '');
 			const relativeMediaUrl = `https://raw.githubusercontent.com/${user}/${repo}/${branch}${relativeMedia.startsWith('/') ? relativeMedia : '/'.concat(relativeMedia)
 				}`;
 			allMedia.push(relativeMediaUrl);
 		}
 
-		const storedInRepoRelativeHtmlRegex = /<img src=('|")[/a-zA-Z-_]+.(png|jpg|jpeg|mp4|gif|svg)('|")/g;
+		const storedInRepoRelativeHtmlRegex = /<img src=('|")([.][/])?[a-zA-Z-_/]+.(png|jpg|jpeg|mp4|gif|svg)('|")/g;
 
 		const relativeHtmlMatches = readme.matchAll(storedInRepoRelativeHtmlRegex);
 
 		for (const relativeMatch of relativeHtmlMatches) {
-			const relativeMedia = relativeMatch[0].replace('<img src=', '').replaceAll('"', '').replaceAll('\'', '');
+			let relativeMedia = relativeMatch[0].replace('<img src=', '').replaceAll('"', '').replaceAll('\'', '');
+			if (relativeMedia.startsWith("./")) {
+				relativeMedia = relativeMedia.replace('./', '/')
+			}
 			const relativeMediaUrl = `https://raw.githubusercontent.com/${user}/${repo}/${branch}${relativeMedia.startsWith('/') ? relativeMedia : '/'.concat(relativeMedia)
 				}`;
 			allMedia.push(relativeMediaUrl);
 		}
+
+		const validCamoRegex = /https:\/\/camo.githubusercontent.com\/[a-z0-9/]+\/[a-z0-9]+/g;
+
+		const absoluteCamoMatches = readme.matchAll(validCamoRegex);
+
+		for (const camoMatch of absoluteCamoMatches) {
+			allMedia.push(camoMatch[0]);
+		}
+
 		return allMedia;
 	}
 }

@@ -97,5 +97,18 @@ describe('GithubMediaParser.findMediaUrls()', () => {
 		const media = run(url, "username", "reponame", "main");
 		expect(media[0]).toEqual(url);
 	})
+
+	it("matches relative md link starting with .", () => {
+		const md = "![picker](./demo/picker.png)"
+		const output = "https://raw.githubusercontent.com/CadeMichael/gotest.nvim/main/demo/picker.png"
+		const media = run(md, "CadeMichael", "gotest.nvim", "main");
+		expect(media[0]).toEqual(output);
+	})
+	it("matches relative html link starting with .", () => {
+		const html = '<img src="./demo/picker.png" />'
+		const output = "https://raw.githubusercontent.com/CadeMichael/gotest.nvim/main/demo/picker.png"
+		const media = run(html, "CadeMichael", "gotest.nvim", "main");
+		expect(media[0]).toEqual(output);
+	})
 });
 
