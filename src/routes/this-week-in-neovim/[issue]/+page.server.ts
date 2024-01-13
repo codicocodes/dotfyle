@@ -26,6 +26,17 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 			? html.replace(/^<a /, `<a target="_blank"`)
 			: html.replace(/^<a /, `<a target="_blank" rel="noreferrer noopener nofollow" `);
 	};
+	const headingRenderer = renderer.heading;
+	renderer.heading = (text, level, raw, slugger) => {
+		const heading = headingRenderer.call(renderer, text, level, raw, slugger);
+		const id = `user-content-${text
+			.toLowerCase()
+			.replaceAll('/', '')
+			.replaceAll('.', '')
+			.replaceAll(' ', '-')}`;
+		const anchorHeading = `<a href="#${id}">${heading}</a>`;
+		return anchorHeading;
+	};
 
 	const cleanHtml = await sanitizeHtml(marked(post.content, { renderer }));
 
