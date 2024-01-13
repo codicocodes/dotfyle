@@ -15,7 +15,7 @@
 				selected ? '' : 'bg-white/5'
 			}`}
 		>
-			<Fa icon={faCircle} size="xs" class={selected && 'text-primary-400'} />
+			<Fa icon={faCircle} size="xs" class={selected && 'text-main'} />
 			<span class="font-lg truncate text-ellipsis">
 				{name}
 			</span>

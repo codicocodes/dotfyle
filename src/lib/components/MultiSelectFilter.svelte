@@ -42,7 +42,7 @@
 			<CoolTextOnHover>
 				<button
 					in:fly
-					class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-primary-500 font-medium`}
+					class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-main font-medium`}
 					on:click={() => {
 						selected.add(currItem);
 						selected = selected;

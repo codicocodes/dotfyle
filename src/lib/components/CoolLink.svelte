@@ -11,7 +11,7 @@
 <a
 	{href}
 	{target}
-	class={`font-semibold flex items-center gap-1 text-primary-500 hover:underline underline-offset-4 decoration-2 ${
+	class={`font-semibold flex items-center gap-1 text-main hover:underline underline-offset-4 decoration-2 ${
 		href ? 'hover:cursor-pointer' : 'hover:cursor-not-allowed'
 	}`}
 >

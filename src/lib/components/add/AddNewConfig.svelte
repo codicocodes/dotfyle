@@ -70,14 +70,14 @@
 				start={0}
 				stepTerm=""
 				gap="gap-4"
-				badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-primary-300/25"
-				active="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md border border-primary-300/25 bg-white/5 transition-colors truncate text-ellipsis transition-colors"
+				badge="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md bg-white/40 border border-main/25"
+				active="flex items-center gap-2 px-8 py-1 overflow-hidden rounded-md border border-main/25 bg-white/5 transition-colors truncate text-ellipsis transition-colors"
 				on:complete={syncSelectedRepository}
-				buttonBack="bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-primary-300/25"
+				buttonBack="bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-main/25"
 				buttonBackLabel="Back"
-				buttonNext={`flex items-center bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-primary-300/25`}
+				buttonNext={`flex items-center bg-white/50 px-4 py-2 rounded font-bold shadow-xl hover:shadow-main/25`}
 				buttonNextLabel="Next"
-				buttonComplete="bg-primary-500/90 px-4 py-2 rounded font-bold shadow-xl shadow-primary-300/25 hover:bg-gradient-primary"
+				buttonComplete="bg-main/90 px-4 py-2 rounded font-bold shadow-xl shadow-main/25 hover:bg-gradient-primary"
 				buttonCompleteLabel="Run sync"
 			>
 				<Step locked={!$unsyncedConfig.repo}>

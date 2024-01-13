@@ -22,8 +22,8 @@
 >
 	<!-- TODO: move to global search and move to other component-->
 	<div
-		class="flex gap-2 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-2 sm:p-3 rounded-full text-black text-sm font-medium focus:outline-none focus:border-primary-500 shadow-xl focus:shadow-primary-300/25 focus:ring-1 focus:ring-primary-500 bg-white/80 {isfocused
-			? 'shadow-xl shadow-primary-300/25'
+		class="flex gap-2 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-2 sm:p-3 rounded-full text-black text-sm font-medium focus:outline-none focus:border-main shadow-xl focus:shadow-main/25 focus:ring-1 focus:ring-main bg-white/80 {isfocused
+			? 'shadow-xl shadow-main/25'
 			: ''}"
 	>
 		<Fa icon={faSearch} class="ml-1" />

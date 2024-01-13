@@ -24,7 +24,7 @@
 			class={`bg-white/30 text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center ${
 				disabled
 					? 'hover:bg-white/25 hover:cursor-not-allowed'
-					: 'hover:bg-gradient-primary shadow-xl hover:shadow-primary-300/25'
+					: 'hover:bg-gradient-primary shadow-xl hover:shadow-main/25'
 			}`}
 		>
 			<Fa icon={faGithub} />
