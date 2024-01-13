@@ -440,7 +440,7 @@ export async function getNewestNeovimConfigs(): Promise<NeovimConfigWithMetaData
 		orderBy: {
 			createdAt: 'desc'
 		},
-		take: 6
+		take: 4
 	});
 
 	return configs.map(attachMetaData);

@@ -10,13 +10,13 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
                                 sorting: 'new',
                                 categories: [],
                                 page: 1,
-                                take: 6
+                                take: 4
                         }),
                         trendingPlugins: trpc(event).searchPlugins.query({
                                 sorting: 'trending',
                                 categories: [],
                                 page: 1,
-                                take: 6
+                                take: 4
                         })
                 }
         };
