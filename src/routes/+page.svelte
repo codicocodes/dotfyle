@@ -6,10 +6,8 @@
 	import {
 		faArrowDown,
 		faBomb,
-		faChevronCircleRight,
 		faFileCode,
 		faFire,
-		faFlag,
 		faPuzzlePiece,
 		faSearch,
 		faSeedling
@@ -203,30 +201,5 @@
 		{/await}
 	</div>
 
-	<div class="px-4 sm:px-4 flex flex-col">
-		<div class="mb-2 flex justify-between pl-1 tracking-wide">
-			<h3 class="flex items-center gap-1 text-lg font-semibold">
-				<Fa icon={faBomb} size="sm" />
-				breaking changes
-			</h3>
-		</div>
-
-		{#await data.loading.breaking}
-			<BigGridContainer>
-				{#each [null, null, null, null, null, null] as _n, _}
-					<GlossyCard loading>
-						<div class="min-h-[102px]" />
-					</GlossyCard>
-				{/each}
-			</BigGridContainer>
-		{:then breaking}
-			<BigGridContainer>
-				{#each breaking as post, _}
-					{#if post.breakingChange}
-						<PostContainer {post} />
-					{/if}
-				{/each}
-			</BigGridContainer>
-		{/await}
-	</div>
+	
 </div>
