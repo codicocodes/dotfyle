@@ -32,12 +32,12 @@
 	<div class="px-1 flex text-xs font-semibold gap-2 flex-wrap">
 		{title}
 	</div>
-	<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-gray" />
+	<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-accent-bright focus:outline-none" />
 	<div class="flex flex-wrap gap-1 aext-xs mt-2">
 		{#if selected}
 			<CoolTextWithChildren>
 				<button
-					class="flex gap-1 items-center bg-white/30 py-1 px-2 rounded font-semibold"
+					class="flex gap-1 items-center bg-black/30 py-1 px-2 rounded font-semibold"
 					on:click={() => unselectItem()}
 				>
 					<div class="force-white-text">

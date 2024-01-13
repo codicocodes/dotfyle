@@ -12,6 +12,14 @@ export default {
 				white: 'rgb(var(--color-white) / <alpha-value>)',
 				black: 'rgb(var(--color-black) / <alpha-value>)',
 				main: 'rgb(34 197 94)',
+				accent: {
+					muted: 'rgb(var(--color-accent-muted) / <alpha-value>)',
+					bright: 'rgb(var(--color-accent-bright) / <alpha-value>)',
+				},
+				foreground: {
+					muted: 'rgb(var(--color-foreground-muted) / <alpha-value>)',
+					bright: 'rgb(var(--color-foreground-bright) / <alpha-value>)',
+				},
 				base: {
 					50: 'rgb(var(--color-base-50) / <alpha-value>)',
 					100: 'rgb(var(--color-base-100) / <alpha-value>)',
@@ -24,7 +32,7 @@ export default {
 					800: 'rgb(var(--color-base-800) / <alpha-value>)',
 					900: 'rgb(var(--color-base-900) / <alpha-value>)',
 					950: 'rgb(var(--color-base-950) / <alpha-value>)'
-				},
+				}
 			}
 		}
 	},
