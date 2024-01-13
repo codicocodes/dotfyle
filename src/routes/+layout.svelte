@@ -159,7 +159,7 @@
 			<CoolTextWithChildren>
 				<a
 					href="/this-week-in-neovim/{data.latestTwinPost.issue}"
-					class="flex flex-row items-center justify-center bg-white/10 transition-colors shadow-lg p-2 px-5 border-base-500 hover:border-base-200 font-semibold mb-4 text-sm"
+					class="flex flex-row items-center justify-center bg-black/30 transition-colors shadow-lg p-2 px-5 border-base-500 hover:border-base-200 font-semibold mb-4 text-sm"
 				>
 					<span>
 						<Fa icon={faNewspaper} class="force-white-text inline mr-1" />

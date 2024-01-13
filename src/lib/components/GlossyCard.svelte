@@ -5,7 +5,7 @@ export let loading = false;
 	class="
    {loading ? 'animate-pulse' : ''}
     flex overflow-hidden rounded-md
-    bg-white/5 truncate text-ellipsis transition-colors
+    bg-black/30 text-ellipsis transition-colors border-[0.5px] border-accent-muted hover:border-accent-bright
   "
 >
 	<slot />

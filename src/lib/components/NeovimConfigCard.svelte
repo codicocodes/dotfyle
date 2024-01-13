@@ -8,7 +8,6 @@
 	export let root: string;
 	export let avatar: string;
 	export let stars: string;
-	export let pluginManager: string;
 	export let pluginCount: string;
 	export let slug: string;
 	export let loc: number;

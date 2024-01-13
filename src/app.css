@@ -25,12 +25,14 @@
 
 	html {
 		color-scheme: dark;
-		--background-gradient: theme('colors.neutral.900'), theme('colors.slate.900');
+		--background-gradient: theme('colors.stone.950'), theme('colors.slate.900');
+		--gradient-dark: theme('colors.neutral.950'), theme('colors.slate.950');
 		--gradient-primary: theme('colors.cyan.500'), theme('colors.green.500');
 
 		--color-white: 255 255 255;
 		--color-black: 0 0 0;
-		--color-main: theme('colors.green.500');
+		--color-accent-muted: 107 114 128;
+		--color-accent-bright: 243 244 246;
 
 		/* Tailwind gray 950 -> 950  */
 		--color-base-50: 249 250 251;
@@ -47,15 +49,14 @@
 	}
 
 	html.light {
-		#nprogress .bar {
-			@apply bg-main;
-		}
 		color-scheme: light;
 		--background-gradient: theme('colors.neutral.100'), theme('colors.slate.100');
 		--gradient-primary: theme('colors.cyan.600'), theme('colors.green.600');
 
 		--color-white: 0 0 0;
 		--color-black: 255 255 255;
+		--color-accent-muted: 107 114 128;
+		--color-accent-bright: 243 244 246;
 
 		/* Tailwind gray 950 -> 50 */
 		--color-base-950: 249 250 251;

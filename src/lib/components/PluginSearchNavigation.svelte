@@ -20,7 +20,7 @@
 			href={link.url}
 			class="{isOnCurrentUrl(link.url)
 				? 'bg-white text-black'
-				: 'bg-white/10 hover:bg-white text-white hover:text-black'} p-2 rounded-full font-semibold"
+				: 'bg-black/30 border-[1px] border-accent-muted hover:bg-white text-white hover:text-black'} p-2 px-4 rounded-full font-semibold"
 		>
 			{link.label}
 		</a>
