@@ -37,7 +37,7 @@ async function createTwinRssFeed() {
     const description = await sanitizeHtml(html)
 		feed.item({
 			title: post.title,
-			url: `https://dotfyle.com/this-week-in-neovim/${post.issue}`,
+			url: `https://dotfyle.com/this-week-in-neovim/${post.issue}?utm_source=twin-rss`,
 			date: post.publishedAt,
 			description,
 		});
