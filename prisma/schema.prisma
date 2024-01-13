@@ -163,6 +163,7 @@ model Media {
   id             Int           @id @default(autoincrement())
   url            String        @unique
   type           String        @default("")
+  thumbnail      Boolean       @default(false)
   NeovimPlugin   NeovimPlugin? @relation(fields: [neovimPluginId], references: [id])
   neovimPluginId Int?
 }
