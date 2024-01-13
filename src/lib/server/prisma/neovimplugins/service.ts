@@ -130,13 +130,17 @@ const selectConfigCount = {
 	readme: false,
 	addedLastWeek: true,
 	dotfyleShieldAddedAt: true,
-	media: true,
+	media: {
+		orderBy: {
+			thumbnail: 'desc',
+		}
+	},
 	_count: {
 		select: {
 			neovimConfigPlugins: true
 		}
 	}
-};
+} as const;
 
 export async function getAllPlugins() {
 	const nestedPluginData = await prismaClient.neovimPlugin.findMany({
@@ -194,6 +198,8 @@ export async function getPluginsWithMedia(
 		perPage: take
 	})<NestedNeovimPluginWithCount>(prismaClient.neovimPlugin, args, { page });
 
+	await prismaClient.neovimPlugin.findMany({...args})
+
 	const data = nestedPluginData.map(flattenConfigCount);
 
 	return {
@@ -250,6 +256,7 @@ export async function searchPlugins(
 	const { data: nestedPluginData, meta } = await paginator({
 		perPage: take
 	})<NestedNeovimPluginWithCount>(prismaClient.neovimPlugin, args, { page });
+
 
 	const data = nestedPluginData.map(flattenConfigCount);
 

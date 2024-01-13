@@ -12,6 +12,8 @@
 		faDeleteLeft,
 		faRotate,
 		faStar,
+		faToggleOff,
+		faToggleOn,
 		faUsers,
 		faX
 	} from '@fortawesome/free-solid-svg-icons';
@@ -59,6 +61,14 @@
 			id
 		});
 	}
+	async function toggleThumbnail(id: number) {
+		await trpc($page).toggleThumbnail.query({
+			id
+		});
+		if (selectedMedia && selectedMedia.id === id) {
+			selectedMedia.thumbnail = !selectedMedia.thumbnail
+		}
+	}
 </script>
 
 <svelte:head>
@@ -78,7 +88,14 @@
 {#if selectedMedia}
 	<Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
 		{#if data.user && isAdmin(data.user)}
+			<div class="flex gap-2 my-2">
 			<Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
+			<Button
+				on:click={() => toggleThumbnail(selectedMedia.id)}
+				icon={selectedMedia.thumbnail ? faToggleOff : faToggleOn}
+				text="{selectedMedia.thumbnail ? 'Remove as thumbnail' : 'Make into thumbnail'}"
+			/>
+</div>
 		{/if}
 		{#if getMediaType(selectedMedia) === 'video'}
 			<video

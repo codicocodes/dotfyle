@@ -1,5 +1,5 @@
 import type { Media, NeovimPlugin } from '@prisma/client';
-import { z } from "zod";
+import { z } from 'zod';
 
 export const PluginDTO = z.object({
 	type: z.enum(['github']),
@@ -14,20 +14,19 @@ export const PluginDTO = z.object({
 export type PluginDTO = z.infer<typeof PluginDTO>;
 
 export interface NeovimPluginIdentifier {
-  id: number;
-  owner: string;
-  name: string
+	id: number;
+	owner: string;
+	name: string;
 }
 
+export type NestedNeovimPluginWithCount = Omit<NeovimPlugin, 'readme'> & {
+	media: Media[];
+	_count: {
+		neovimConfigPlugins: number;
+	};
+};
 
-export type NestedNeovimPluginWithCount = NeovimPlugin & {
-  media: Media[]
-    _count: {
-        neovimConfigPlugins: number;
-    };
-}
-
-export type NeovimPluginWithCount = NeovimPlugin & {
-  configCount: number
-  media: Media[]
-}
+export type NeovimPluginWithCount = Omit<NeovimPlugin, 'readme'> & {
+	configCount: number;
+	media: Media[];
+};

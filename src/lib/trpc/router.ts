@@ -438,6 +438,21 @@ export const router = t.router({
 		})
 		.query(async ({ input: { id } }) => {
 			await prismaClient.media.delete({ where: { id } });
+		}),
+	toggleThumbnail: t.procedure
+		.use(middlewares.isAuthenticated)
+		.use(middlewares.isAdmin)
+		.input((input: unknown) => {
+			return z
+				.object({
+					id: z.number()
+				})
+				.parse(input);
+		})
+		.query(async ({ input: { id } }) => {
+			const media = await prismaClient.media.findUniqueOrThrow({ where: { id }})
+			const thumbnail = !media.thumbnail
+			await prismaClient.media.update({ where: { id }, data: { thumbnail } });
 		})
 });
 
