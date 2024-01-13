@@ -41,10 +41,7 @@ Hello everyone 👋
 
 ## Contributing
 
-Add your the plugin in either of the following to be featured in This Week in Neovim and Dotfyle: 
-
-- [rockerBOO/awesome-neovim](https://github.com/rockerBOO/awesome-neovim)
-- [SUBMITTED_PLUGINS.md](https://github.com/codicocodes/dotfyle/blob/main/SUBMITTED-PLUGINS.md)
+Add your plugin to Dotfyle through [this form](/neovim/plugins/add?utm_source=twin-web) to be featured in This Week in Neovim
 
 Contribute to the development of Dotfyle:
 - File issues and submit pull requests on [GitHub](https://github.com/codicocodes/dotfyle)
