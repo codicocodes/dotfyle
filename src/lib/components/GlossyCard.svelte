@@ -4,7 +4,7 @@ export let loading = false;
 <div
 	class="
    {loading ? 'animate-pulse' : ''}
-    flex overflow-hidden rounded-md
+    flex overflow-hidden rounded-xl
     bg-black/30 text-ellipsis transition-colors border-[0.5px] border-accent-muted hover:border-accent-bright
   "
 >

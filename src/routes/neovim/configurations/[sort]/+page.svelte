@@ -71,7 +71,7 @@
 								navigate($page, 'page', '1');
 								navigate($page, 'plugins', Array.from(selectedPluginsSet).join(','), true);
 							}}
-							class="bg-base-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
+							class="bg-white text-black px-2 py-1 rounded-full flex gap-2 items-center mt-1"
 						>
 							{plugin}
 							<Fa icon={faCircleXmark} size="sm" />
@@ -90,7 +90,7 @@
 									true
 								);
 							}}
-							class="bg-base-600 px-2 py-0.5 rounded-full flex gap-2 items-center mt-1"
+							class="bg-white text-black px-2 py-1 rounded-full flex gap-2 items-center mt-1"
 						>
 							{server}
 							<Fa icon={faCircleXmark} size="sm" />
