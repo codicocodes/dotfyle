@@ -6,14 +6,8 @@
 	import {
 		faCircleXmark,
 		faFilter,
-		faPuzzlePiece,
-		faSeedling,
-		faStar
 	} from '@fortawesome/free-solid-svg-icons';
-	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
-	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import { navigate } from '$lib/navigate';
-	import Modal from '$lib/components/Modal.svelte';
 	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import { onMount } from 'svelte';
@@ -23,14 +17,6 @@
 	import PluginSearchNavigation from '$lib/components/PluginSearchNavigation.svelte';
 
 	export let data: PageData;
-
-	let showFilter = false;
-
-	const sortingOptions = ['new', 'stars', 'plugins'];
-
-	let rawSort: string = $page.url.searchParams.get('sort') ?? 'new';
-
-	let sorting = sortingOptions.includes(rawSort) ? rawSort : 'new';
 
 	$: selectedPlugins = $page.url.searchParams.get('plugins')?.split(',').filter(Boolean) ?? [];
 
@@ -59,128 +45,6 @@
 	/>
 </svelte:head>
 
-<Modal showModal={showFilter} onClose={() => (showFilter = false)}>
-	<div class="col-span-10 sm:col-span-3 flex flex-col gap-2 my-2">
-		<div class="flex flex-col p-4 w-full gap-2">
-			<div class="flex gap-2 text-sm font-semibold">
-				<button
-					on:click={() => {
-						sorting = 'new';
-						navigate($page, 'sort', sorting, true);
-					}}
-				>
-					{#if sorting === 'new'}
-						<CoolTextWithChildren>
-							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
-							>
-								<div class="flex items-center force-white-text">
-									<Fa icon={faSeedling} />
-								</div>
-								new
-							</div>
-						</CoolTextWithChildren>
-					{:else}
-						<CoolTextOnHover>
-							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
-							>
-								<div class="flex items-center force-white-text">
-									<Fa icon={faSeedling} />
-								</div>
-								new
-							</div>
-						</CoolTextOnHover>
-					{/if}
-				</button>
-				<button
-					on:click={() => {
-						sorting = 'stars';
-						navigate($page, 'page', '1');
-						navigate($page, 'sort', sorting, true);
-					}}
-				>
-					{#if sorting === 'stars'}
-						<CoolTextWithChildren>
-							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
-							>
-								<div class="flex items-center force-white-text">
-									<Fa icon={faStar} />
-								</div>
-								<span>stars</span>
-							</div>
-						</CoolTextWithChildren>
-					{:else}
-						<CoolTextOnHover>
-							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
-							>
-								<div class="flex items-center force-white-text">
-									<Fa icon={faStar} />
-								</div>
-								<span>stars</span>
-							</div>
-						</CoolTextOnHover>
-					{/if}
-				</button>
-				<button
-					on:click={() => {
-						sorting = 'plugins';
-						navigate($page, 'page', '1');
-						navigate($page, 'sort', sorting, true);
-					}}
-				>
-					{#if sorting === 'plugins'}
-						<CoolTextWithChildren>
-							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
-							>
-								<div class="flex items-center force-white-text">
-									<Fa icon={faPuzzlePiece} />
-								</div>
-								plugins
-							</div>
-						</CoolTextWithChildren>
-					{:else}
-						<CoolTextOnHover>
-							<div
-								class="bg-white/30 flex items-center gap-2 w-full cursor-pointer hover:shadow-sm hover:shadow-primary-300/25 px-2 py-1 rounded"
-							>
-								<div class="flex items-center force-white-text">
-									<Fa icon={faPuzzlePiece} />
-								</div>
-								plugins
-							</div>
-						</CoolTextOnHover>
-					{/if}
-				</button>
-			</div>
-		</div>
-
-		<MultiSelectFilter
-			title="plugins"
-			on:updated={({ detail }) => {
-				navigate($page, 'page', '1');
-				navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
-				selectedPluginsSet = new Set(detail.selected);
-			}}
-			items={availablePlugins}
-			selected={selectedPluginsSet}
-		/>
-		<MultiSelectFilter
-			expandAtCount={35}
-			title="language servers"
-			on:updated={({ detail }) => {
-				navigate($page, 'page', '1');
-				navigate($page, 'languageservers', Array.from(detail.selected).join(','), true);
-				selectedLanguageServersSet = new Set(detail.selected);
-			}}
-			items={languageServers}
-			selected={selectedLanguageServersSet}
-		/>
-	</div>
-</Modal>
 <div class="w-full flex flex-col items-center px-4">
 	<div class="flex flex-col max-w-5xl w-full">
 		<div class="flex flex-col mb-2">
