@@ -56,7 +56,7 @@
 		--color-white: 0 0 0;
 		--color-black: 255 255 255;
 		--color-accent-muted: 107 114 128;
-		--color-accent-bright: 243 244 246;
+		--color-accent-bright: 0 0 0;
 
 		/* Tailwind gray 950 -> 50 */
 		--color-base-950: 249 250 251;

@@ -17,7 +17,7 @@
 	on:click
 	class={`${
 		disabled || loading ? 'cursor-not-allowed' : ''
-	} bg-white/30  p-2 py-1 xl:px-2 xl:py-1 rounded flex gap-1 items-center ${
+	} bg-black/30  p-2 py-1 xl:px-2 xl:py-1 rounded-xl border-[1px] border-accent-muted flex gap-1 items-center ${
 		loading
 			? 'hover:cursor-not-allowed hover:bg-white/10'
 			: 'shadow-lg hover:shadow-main/25 hover:bg-gradient-primary '

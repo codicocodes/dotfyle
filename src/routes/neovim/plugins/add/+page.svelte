@@ -85,7 +85,9 @@
 <div class="mt-8 w-full grow">
 	<div class="flex gap-2 p-4">
 		<button
-			class="p-2 rounded {fetchedRepository ? 'bg-white/10' : 'bg-white/40'}"
+			class="p-2 rounded {fetchedRepository
+				? 'bg-black/30'
+				: 'bg-white text-black'} rounded-xl border-[1px] border-accent-muted hover:border-accent-bright"
 			on:click={() => {
 				fetchedRepository = undefined;
 				fullName = '';
@@ -95,7 +97,11 @@
 		>
 			1. Select repository
 		</button>
-		<div class="p-2 rounded {!fetchedRepository ? 'bg-white/10' : 'bg-white/40'}">
+		<div
+			class="p-2 rounded {!fetchedRepository
+				? 'bg-black/30 text-white'
+				: 'bg-white text-black'} rounded-xl border-[1px] border-accent-muted hover:border-accent-bright"
+		>
 			2. Select category
 		</div>
 	</div>
@@ -112,7 +118,7 @@
 						repositoryDoesNotExist = false;
 					}}
 					bind:value={fullName}
-					class="text-gray font-medium rounded p-2 w-full"
+					class="bg-black/30 text-gray font-medium rounded-xl p-2 px-4 w-full focus:outline-none border-[1px] border-accent-muted"
 					placeholder="owner/repository"
 				/>
 				<Button
