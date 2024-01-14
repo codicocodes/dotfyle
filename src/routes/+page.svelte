@@ -64,7 +64,7 @@
 			<div class="flex justify-center mb-12">
 				<Fa icon={faArrowDown} />
 			</div>
-			<div class="w-full flex justify-center items-center gap-2">
+			<div class="w-full flex flex-col sm:flex-row justify-center items-center gap-2">
 				{#if !data.user}
 					<a
 						href="/api/auth/github"
@@ -73,16 +73,10 @@
 						<Button text="Login | Signup" icon={faGithub} />
 					</a>
 				{/if}
-				<a
-					href="/neovim/plugins/trending"
-					class="bg-transparent rounded-full"
-				>
+				<a href="/neovim/plugins/trending" class="bg-transparent rounded-full">
 					<Button text="Search plugins" icon={faSearch} />
 				</a>
-				<a
-					href="/neovim/configurations/top"
-					class="bg-transparent rounded-full"
-				>
+				<a href="/neovim/configurations/top" class="bg-transparent rounded-full">
 					<Button text="Search configurations" icon={faSearch} />
 				</a>
 			</div>
@@ -93,9 +87,9 @@
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg">
 				<Fa icon={faSeedling} size="sm" />
-				newest plugins
+				<span class="hidden sm:inline">newest plugins</span>
 			</h3>
-			<a href="/neovim/plugins/new">
+			<a href="/neovim/plugins/new" class="inline">
 				<Button text="more new plugins" icon={faChevronRight} />
 			</a>
 		</div>
@@ -134,7 +128,7 @@
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg">
 				<Fa icon={faFire} size="sm" />
-				trending plugins
+				<span class="hidden sm:inline">trending plugins</span>
 			</h3>
 			<a href="/neovim/plugins/trending">
 				<Button text="more trending plugins" icon={faChevronRight} />
@@ -175,7 +169,7 @@
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg">
 				<Fa icon={faSeedling} size="sm" />
-				new configurations
+				<span class="hidden sm:inline">more configurations</span>
 			</h3>
 			<a href="/neovim/plugins/new">
 				<Button text="more configurations" icon={faChevronRight} />
