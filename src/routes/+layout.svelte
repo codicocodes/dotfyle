@@ -32,7 +32,6 @@
 	import { browser } from '$app/environment';
 	import { getLatestReadTwinPost, updateLatestReadTwinPost } from '$lib/services/twin';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
-	import { getTheme, setTheme, initColorscheme } from '$lib/theme';
 	import ColorschemeSwitcher from '$lib/components/ColorschemeSwitcher.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
@@ -96,10 +95,6 @@
 		}
 	}
 
-	$: if (browser) {
-		initColorscheme();
-		setTheme(getTheme());
-	}
 </script>
 
 <svelte:head>

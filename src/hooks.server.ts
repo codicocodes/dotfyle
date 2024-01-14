@@ -10,7 +10,7 @@ import { verifyToken } from '$lib/server/auth/services';
 import { NODE_ENV } from '$env/static/private';
 import { prismaClient } from '$lib/server/prisma/client';
 
-console.log("Starting server: ", { NODE_ENV })
+console.log('Starting server: ', { NODE_ENV });
 
 if (NODE_ENV === 'production') {
 	Sentry.init({
@@ -37,6 +37,17 @@ export const onError = (opts: {
 	delete error.stack;
 };
 
+export const setColorscheme: Handle = async ({ event, resolve }) => {
+	const response = await resolve(event, {
+		transformPageChunk: ({html}) => {
+			const colorscheme = event.cookies.get('colorscheme') || 'neovim'
+			const mode = event.cookies.get('mode') || 'dark'
+			return html.replace("%colorscheme%", colorscheme).replace("%mode%", mode)
+		}
+	});
+	return response
+};
+
 export const profilePerformance: Handle = async ({ event, resolve }) => {
 	Sentry.withScope((scope) => {
 		const user = verifyToken(event.cookies);
@@ -50,7 +61,7 @@ export const profilePerformance: Handle = async ({ event, resolve }) => {
 
 	const responseTime = end - start;
 
-	const prefixIcon = responseTime >= 1000 ? '🐢' : '🚀'
+	const prefixIcon = responseTime >= 1000 ? '🐢' : '🚀';
 
 	console.log(`${prefixIcon} ${route} took ${responseTime.toFixed(2)} ms`);
 
@@ -63,4 +74,4 @@ const handleTrpc = createTRPCHandle({
 	onError
 }) satisfies Handle;
 
-export const handle = sequence(Sentry.sentryHandle(), profilePerformance, handleTrpc);
+export const handle = sequence(Sentry.sentryHandle(), profilePerformance, handleTrpc, setColorscheme);
