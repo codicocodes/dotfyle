@@ -1,14 +1,11 @@
 <script lang="ts">
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
-	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import type { PageData } from './$types';
 	import {
 		faArrowDown,
 		faChevronRight,
-		faFileCode,
 		faFire,
-		faPuzzlePiece,
 		faSearch,
 		faSeedling,
 		faStar
@@ -21,6 +18,7 @@
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 	export let data: PageData;
 </script>
@@ -66,29 +64,27 @@
 			<div class="flex justify-center mb-12">
 				<Fa icon={faArrowDown} />
 			</div>
-			<div class="w-full flex justify-center items-center">
+			<div class="w-full flex justify-center items-center gap-2">
 				{#if !data.user}
-					<GithubLoginButton />
-				{:else}
-					<div class="flex flex-col sm:flex-row gap-2">
-						<a
-							href={'/neovim/plugins/trending'}
-							class={`bg-black/30 border-[1px] border-accent-muted hover:border-accent-bright text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-main`}
-						>
-							<Fa icon={faPuzzlePiece} />
-							Search plugins
-							<Fa icon={faSearch} />
-						</a>
-						<a
-							href={'/neovim/configurations/top'}
-							class={`bg-black/30 border-[1px] border-accent-muted hover:border-accent-bright text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-main`}
-						>
-							<Fa icon={faFileCode} />
-							Search configs
-							<Fa icon={faSearch} />
-						</a>
-					</div>
+					<a
+						href="/api/auth/github"
+						class="bg-transparent rounded-full shadow-xl shadow-white/30 hover:shadow-main"
+					>
+						<Button text="Login | Signup" icon={faGithub} />
+					</a>
 				{/if}
+				<a
+					href="/neovim/plugins/trending"
+					class="bg-transparent rounded-full"
+				>
+					<Button text="Search plugins" icon={faSearch} />
+				</a>
+				<a
+					href="/neovim/configurations/top"
+					class="bg-transparent rounded-full"
+				>
+					<Button text="Search configurations" icon={faSearch} />
+				</a>
 			</div>
 		</div>
 	</div>
