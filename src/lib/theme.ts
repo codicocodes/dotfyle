@@ -2,7 +2,7 @@ const themes = ['light', 'dark'] as const;
 export type ThemeName = (typeof themes)[number];
 
 export const setTheme = (theme: ThemeName) => {
-	document.cookie = `mode=${theme}`;
+	document.cookie = `mode=${theme}; SameSite=Strict`;
 	if (theme === 'light') document.documentElement.classList.add('light');
 	else document.documentElement.classList.remove('light');
 };
