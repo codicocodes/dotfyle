@@ -8,7 +8,7 @@
 	export let next: number | null;
 </script>
 
-<div class="flex gap-2 justify-between text-sm font-medium">
+<div class="flex gap-2 justify-between text-lg font-medium">
 	{#if !previous}
 		<div class="" />
 	{/if}
