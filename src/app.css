@@ -105,15 +105,15 @@
 
 	html.tokyonight {
 		color-scheme: 'tokyonight';
-		--color-main: 249 115 22;
+		--color-main: 59 130 246;
 		--color-secondary: 168 85 247;
 		--gradient-primary: theme('colors.purple.500'), theme('colors.blue.500');
 	}
 
 	html.rose-pine {
 		color-scheme: 'rose-pine';
-		--color-main: 234 179 8;
-		--color-secondary: 236 72 153;
+		--color-main: 217 119 6;
+		--color-secondary: 219 39 119;
 		--gradient-primary: theme('colors.pink.600'), theme('colors.amber.600');
 	}
 }
