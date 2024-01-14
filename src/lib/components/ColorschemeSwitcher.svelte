@@ -5,10 +5,11 @@
 	import Modal from './Modal.svelte';
 	import ThemeSwitcher from './ThemeSwitcher.svelte';
 	import { browser } from '$app/environment';
+	import CoolText from './CoolText.svelte';
 
 	let isOpen = false;
 
-	$: colorscheme = browser && getColorscheme()
+	$: colorscheme = browser && getColorscheme();
 
 	function close() {
 		isOpen = false;
@@ -40,6 +41,9 @@
 		isOpen = false;
 	}}
 >
+	<h2 class="text-xl m-4 mb-8">
+		<CoolText text="Select a color scheme for your Dotfyle experience" />
+	</h2>
 	<div class="flex justify-center items-center mb-4 mt-4">
 		<ThemeSwitcher />
 	</div>
@@ -52,7 +56,7 @@
 				on:click={() => {
 					setColorscheme(theme.name);
 					isOpen = false;
-					colorscheme = theme.name
+					colorscheme = theme.name;
 				}}
 			>
 				{#if colorscheme === theme.name}
