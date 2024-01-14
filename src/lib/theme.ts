@@ -2,7 +2,7 @@ const themes = ['light', 'dark'] as const;
 export type ThemeName = (typeof themes)[number];
 
 export const setTheme = (theme: ThemeName) => {
-	document.cookie = `mode=${theme}; SameSite=Strict`;
+	document.cookie = `mode=${theme}; SameSite=Lax`;
 	if (theme === 'light') document.documentElement.classList.add('light');
 	else document.documentElement.classList.remove('light');
 };
@@ -49,7 +49,7 @@ export const setColorscheme = (theme: ColorschemeNames) => {
 	}
 	// Set theme
 	document.documentElement.classList.add(theme);
-	document.cookie = `colorscheme=${theme}; SameSite=Strict;`;
+	document.cookie = `colorscheme=${theme}; SameSite=Lax;`;
 };
 
 export const getColorscheme = () => {
