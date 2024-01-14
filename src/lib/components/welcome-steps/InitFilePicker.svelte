@@ -3,7 +3,6 @@
 	import { unsyncedConfig, type UnsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	import { trpc } from '$lib/trpc/client';
 	import { onMount } from 'svelte';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 	import { slide } from 'svelte/transition';
 	import GridContainer from '../GridContainer.svelte';
 	import RepoPickerItem from '../RepoPickerItem.svelte';
@@ -41,7 +40,7 @@
 
 {#if loading}
 	<div class="flex w-full items-center justify-center gap-2 my-4">
-		<DoubleBounce color="#15be97" size="28" />
+		<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 		<h2 class="text-xl font-medium">Loading init files...</h2>
 	</div>
 {/if}

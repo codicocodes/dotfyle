@@ -15,7 +15,6 @@
 	import type { GithubRepository } from '$lib/server/github/schema';
 	import type { InitFileNames } from '$lib/server/nvim-sync/config/InitFileFinder';
 	import { goto } from '$app/navigation';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 	import { isMaintenanceMode } from '$lib/utils';
 
 	export let repositories: GithubRepository[];
@@ -60,7 +59,7 @@
 {:else}
 	{#if syncing || completed}
 		<div class="flex w-full justify-center">
-			<DoubleBounce color="#15be97" size="42" />
+			<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 		</div>
 	{/if}
 

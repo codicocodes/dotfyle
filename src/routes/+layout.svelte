@@ -23,7 +23,6 @@
 		faUser
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 	import '../app.css';
 	import type { LayoutData } from './$types';
 	import nProgress from 'nprogress';
@@ -34,7 +33,6 @@
 	import { getLatestReadTwinPost, updateLatestReadTwinPost } from '$lib/services/twin';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import { getTheme, setTheme, initColorscheme } from '$lib/theme';
-	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import ColorschemeSwitcher from '$lib/components/ColorschemeSwitcher.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
@@ -242,7 +240,7 @@
 							<button class="px-4 py-2 flex gap-2 items-center" on:click={syncPlugins}>
 								<div class="force-white-text">
 									{#if syncing}
-										<DoubleBounce color="#15be97" size="8" />
+										<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 									{:else}
 										<Fa icon={faSync} class="text-base-100" />
 									{/if}

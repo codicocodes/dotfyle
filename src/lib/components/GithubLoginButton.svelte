@@ -2,7 +2,6 @@
 	import Fa from 'svelte-fa';
 	import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 	import { goto } from '$app/navigation';
 	import { isMaintenanceMode } from '$lib/utils';
 	let loading = false;
@@ -32,7 +31,7 @@
 			Login | Sign up
 
 			{#if loading}
-				<DoubleBounce color="#15be97" size="8" />
+				<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 			{:else}
 				<Fa class="ml-1" size="xs" icon={faArrowUpRightFromSquare} />
 			{/if}

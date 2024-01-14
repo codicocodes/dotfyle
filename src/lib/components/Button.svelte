@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 	export let text: string;
 	export let icon: IconDefinition;
 	export let event: string | undefined = undefined;
@@ -30,7 +29,7 @@
 		{text}
 	{/if}
 	{#if loading}
-		<DoubleBounce color="#15be97" size="8" />
+		<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 	{:else}
 		<Fa class="ml-1" size="xs" {icon} />
 	{/if}

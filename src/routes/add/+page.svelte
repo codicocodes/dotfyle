@@ -6,7 +6,6 @@
 	import type { GithubRepository } from '$lib/server/github/schema';
 	import { trpc } from '$lib/trpc/client';
 	import { onMount } from 'svelte';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 
 	export let data: PageData;
 	const { user } = data;
@@ -37,7 +36,7 @@
 		Add a new Neovim config
 	</h1>
 	{#if loading}
-		<DoubleBounce color="#15be97" size="36" />
+		<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 	{:else if error}
 		{error}
 	{:else}

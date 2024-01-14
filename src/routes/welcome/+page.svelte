@@ -5,7 +5,6 @@
 	import type { GithubRepository } from '$lib/server/github/schema';
 	import { trpc } from '$lib/trpc/client';
 	import { onMount } from 'svelte';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 	import HeroTitle from '$lib/components/HeroTitle.svelte';
 	import CoolText from '$lib/components/CoolText.svelte';
 
@@ -37,7 +36,7 @@
 	</HeroTitle>
 	{#if loading}
 		<div class="flex flex-col gap-2 items-center">
-			<DoubleBounce color="#15be97" size="36" />
+			<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 			<h2 class="text-xl font-light tracking-wide">loading github repositories</h2>
 		</div>
 	{:else if error}

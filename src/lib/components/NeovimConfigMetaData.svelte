@@ -11,7 +11,6 @@
 	} from '@fortawesome/free-solid-svg-icons';
 
 	import Fa from 'svelte-fa';
-	import { DoubleBounce } from 'svelte-loading-spinners';
 	import GlossyCard from './GlossyCard.svelte';
 
 	export let syncing: boolean;
@@ -36,7 +35,7 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
-					<DoubleBounce color="#15be97" size="8" />
+					<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 				{/if}
 				{pluginManager}
 			</span>
@@ -51,7 +50,7 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
-					<DoubleBounce color="#15be97" size="8" />
+					<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 				{/if}
 				{pluginCount}
 			</span>
@@ -90,7 +89,7 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
-					<DoubleBounce color="#15be97" size="8" />
+					<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 				{/if}
 				<span class="flex items-center gap-1">
 					{loc}
@@ -131,7 +130,7 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
-					<DoubleBounce color="#15be97" size="8" />
+					<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
 				{/if}
 				<kbd class="px-2 py-1 border rounded-lg bg-base-600 text-base-100 border-base-500"
 					>{leaderkey}</kbd
