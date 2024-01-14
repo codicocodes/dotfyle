@@ -32,7 +32,11 @@
 	<div class="px-1 flex text-xs font-semibold gap-2 flex-wrap">
 		{title}
 	</div>
-	<input bind:value={filter} placeholder="filter" class="px-2 py-1 rounded text-sm text-accent-bright focus:outline-none" />
+	<input
+		bind:value={filter}
+		placeholder="filter"
+		class="px-2 py-1 rounded text-sm text-accent-bright focus:outline-none"
+	/>
 	<div class="flex flex-wrap gap-1 aext-xs mt-2">
 		{#if selected}
 			<CoolTextWithChildren>
@@ -51,18 +55,16 @@
 			.filter((c) => selected !== c)
 			.filter((c) => c.toLowerCase().includes(filter.toLowerCase()))
 			.slice(0, expanded ? -1 : expandAtCount) as currItem}
-			<CoolTextOnHover>
-				<button
-					in:fly
-					class={`py-1 px-2 cursor-pointer rounded bg-white/30 focus:shadow-main font-medium`}
-					on:click={() => {
-						selected = currItem;
-						sendSelectionUpdated();
-					}}
-				>
-					{currItem}
-				</button>
-			</CoolTextOnHover>
+			<button
+				in:fly
+				class={`py-1 px-2 cursor-pointer rounded bg-white focus:shadow-main font-medium text-black`}
+				on:click={() => {
+					selected = currItem;
+					sendSelectionUpdated();
+				}}
+			>
+				{currItem}
+			</button>
 		{/each}
 
 		{#if !expanded}

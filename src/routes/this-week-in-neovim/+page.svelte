@@ -53,9 +53,9 @@
 		<h2 class="font-semibold text-3xl">Past issues</h2>
 		<div class="flex flex-col gap-4">
 			{#each data.posts as post}
-				<CoolTextOnHover>
-					<GlossyCard>
-						<div class="flex w-full p-4 whitespace-normal">
+				<GlossyCard>
+					<div class="flex w-full p-4 whitespace-normal">
+						<CoolTextOnHover>
 							<a
 								class="flex w-full text-xl font-light justify-between"
 								href="/this-week-in-neovim/{post.issue}"
@@ -70,9 +70,9 @@
 									<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
 								</span>
 							</a>
-						</div>
-					</GlossyCard>
-				</CoolTextOnHover>
+						</CoolTextOnHover>
+					</div></GlossyCard
+				>
 			{/each}
 		</div>
 		<Pagination page={$page} next={data.pagination.next} previous={data.pagination.prev} />

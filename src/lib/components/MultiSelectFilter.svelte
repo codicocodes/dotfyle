@@ -33,25 +33,27 @@
 	<div class="px-1 flex text-xs font-semibold gap-2 flex-wrap">
 		{title}
 	</div>
-	<input bind:value={filter} placeholder="filter" class="bg-black/30 border-[1px] border-accent-muted focus:outline-none px-2 py-1 rounded text-sm text-muted-bright" />
+	<input
+		bind:value={filter}
+		placeholder="filter"
+		class="bg-black/30 border-[1px] border-accent-muted focus:outline-none px-2 py-1 rounded text-sm text-muted-bright"
+	/>
 	<div class="flex flex-wrap gap-1 text-xs mt-2">
 		{#each items
 			.filter((c) => (selected.size > 0 ? !selected.has(c) : true))
 			.filter((c) => c.toLowerCase().includes(filter.toLowerCase()))
 			.slice(0, expanded ? -1 : expandAtCount) as currItem}
-			<CoolTextOnHover>
-				<button
-					in:fly
-					class={`py-1 px-2 cursor-pointer rounded bg-white focus:shadow-main font-medium text-black`}
-					on:click={() => {
-						selected.add(currItem);
-						selected = selected;
-						sendSelectionUpdated();
-					}}
-				>
-					{currItem}
-				</button>
-			</CoolTextOnHover>
+			<button
+				in:fly
+				class={`py-1 px-2 cursor-pointer rounded bg-white focus:shadow-main font-medium text-black`}
+				on:click={() => {
+					selected.add(currItem);
+					selected = selected;
+					sendSelectionUpdated();
+				}}
+			>
+				{currItem}
+			</button>
 		{/each}
 
 		{#if !expanded}
