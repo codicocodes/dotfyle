@@ -11,7 +11,8 @@ export default {
 			colors: {
 				white: 'rgb(var(--color-white) / <alpha-value>)',
 				black: 'rgb(var(--color-black) / <alpha-value>)',
-				main: 'rgb(34 197 94)',
+				main: 'rgb(var(--color-main) / <alpha-value>)',
+				secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
 				accent: {
 					muted: 'rgb(var(--color-accent-muted) / <alpha-value>)',
 					bright: 'rgb(var(--color-accent-bright) / <alpha-value>)',

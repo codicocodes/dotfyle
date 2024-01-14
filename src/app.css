@@ -10,12 +10,26 @@
 	.bg-gradient-primary {
 		background-image: linear-gradient(to right, var(--gradient-primary));
 	}
+
+	.bg-gradient-neovim {
+		background-image: linear-gradient(to right, theme('colors.cyan.600'), theme('colors.green.600'));
+	}
+
+	.bg-gradient-gruvbox {
+		background-image: linear-gradient(to right, theme('colors.red.600'), theme('colors.orange.600'));
+	}
+
+	.bg-gradient-tokyonight {
+		background-image: linear-gradient(to right, theme('colors.purple.600'), theme('colors.blue.600'));
+	}
+	.bg-gradient-rose-pine {
+		background-image: linear-gradient(to right, theme('colors.pink.600'), theme('colors.amber.600'));
+	}
 }
 
 #nprogress .bar {
-	@apply bg-green-500 !important;
+	@apply bg-secondary !important;
 }
-
 
 @layer base {
 	body {
@@ -27,12 +41,14 @@
 		color-scheme: dark;
 		--background-gradient: theme('colors.stone.950'), theme('colors.slate.900');
 		--gradient-dark: theme('colors.neutral.950'), theme('colors.slate.950');
-		--gradient-primary: theme('colors.cyan.500'), theme('colors.green.500');
-
+		/* --gradient-primary: theme('colors.cyan.500'), theme('colors.green.500'); */
+		/* --color-main: 255 0 0; */
+		/* --color-secondary: 6 182 212; */
 		--color-white: 255 255 255;
 		--color-black: 0 0 0;
 		--color-accent-muted: 107 114 128;
 		--color-accent-bright: 243 244 246;
+		--gradient-primary: 255 255 255;
 
 		/* Tailwind gray 950 -> 950  */
 		--color-base-50: 249 250 251;
@@ -50,8 +66,8 @@
 
 	html.light {
 		color-scheme: light;
+		--gradient-primary: 0 0 0;
 		--background-gradient: theme('colors.neutral.100'), theme('colors.slate.100');
-		--gradient-primary: theme('colors.cyan.600'), theme('colors.green.600');
 
 		--color-white: 0 0 0;
 		--color-black: 255 255 255;
@@ -71,4 +87,34 @@
 		--color-base-100: 17 24 39;
 		--color-base-50: 3 7 18;
 	}
+
+	html.neovim {
+		color-scheme: 'neovim';
+		--color-main: 34 197 94;
+		--color-secondary: 6 182 212;
+		--gradient-primary: theme('colors.cyan.500'), theme('colors.green.500');
+	}
+
+
+	html.gruvbox {
+		color-scheme: 'gruvbox';
+		--color-main: 249 115 22;
+		--color-secondary: 238 68 68;
+		--gradient-primary: theme('colors.red.500'), theme('colors.orange.500');
+	}
+
+	html.tokyonight {
+		color-scheme: 'tokyonight';
+		--color-main: 249 115 22;
+		--color-secondary: 168 85 247;
+		--gradient-primary: theme('colors.purple.500'), theme('colors.blue.500');
+	}
+
+	html.rose-pine {
+		color-scheme: 'rose-pine';
+		--color-main: 234 179 8;
+		--color-secondary: 236 72 153;
+		--gradient-primary: theme('colors.pink.600'), theme('colors.amber.600');
+	}
 }
+

@@ -33,8 +33,9 @@
 	import { browser } from '$app/environment';
 	import { getLatestReadTwinPost, updateLatestReadTwinPost } from '$lib/services/twin';
 	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
-	import { getTheme, setTheme } from '$lib/theme';
+	import { getTheme, setTheme, initColorscheme } from '$lib/theme';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
+	import ColorschemeSwitcher from '$lib/components/ColorschemeSwitcher.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
 
@@ -42,7 +43,7 @@
 		close();
 		await fetch('/api/auth', { method: 'DELETE' });
 		await invalidate(() => true);
-		user = null
+		user = null;
 	};
 
 	let isOpen = false;
@@ -97,7 +98,10 @@
 		}
 	}
 
-	$: if (browser) setTheme(getTheme()); // If light theme add light class to <html>
+	$: if (browser) {
+		initColorscheme();
+		setTheme(getTheme());
+	}
 </script>
 
 <svelte:head>
@@ -141,9 +145,6 @@
 	</nav>
 </Modal>
 
-{#if isOpen}
-	<div on:keypress={close} on:click={close} class="absolute h-full w-full bg-white-25 z-10" />
-{/if}
 <div>
 	{#if showTwinPost && data.latestTwinPost}
 		<div
@@ -173,7 +174,7 @@
 		<div class="flex items-center">
 			<div class="flex gap-12">
 				<a href="/" class="flex items-center gap-2 text-2xl tracking-tight font-black">
-					<Fa icon={faTerminal} size="xs" class="text-sm text-cyan-500 bg-transparent" />
+					<Fa icon={faTerminal} size="xs" class="text-sm text-secondary bg-transparent" />
 					<CoolText text="dotfyle" />
 				</a>
 				<div class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg tracking-tight font-medium">
@@ -192,7 +193,7 @@
 			</div>
 		</div>
 		<div class="flex gap-4 text-sm font-semibold items-center">
-			<ThemeSwitcher />
+			<ColorschemeSwitcher />
 			<button on:click={() => (showNavModal = true)} aria-label="Toggle navigation menu">
 				<Fa size="xl" class="block: sm:hidden h-full" icon={faBars} />
 			</button>
