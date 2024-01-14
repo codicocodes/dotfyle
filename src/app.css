@@ -12,18 +12,18 @@
 	}
 
 	.bg-gradient-neovim {
-		background-image: linear-gradient(to right, theme('colors.cyan.600'), theme('colors.green.600'));
+		background-image: linear-gradient(to right, theme('colors.cyan.500'), theme('colors.green.500'));
 	}
 
 	.bg-gradient-gruvbox {
-		background-image: linear-gradient(to right, theme('colors.red.600'), theme('colors.orange.600'));
+		background-image: linear-gradient(to right, theme('colors.red.500'), theme('colors.orange.500'));
 	}
 
 	.bg-gradient-tokyonight {
-		background-image: linear-gradient(to right, theme('colors.purple.600'), theme('colors.blue.600'));
+		background-image: linear-gradient(to right, theme('colors.purple.500'), theme('colors.blue.500'));
 	}
 	.bg-gradient-rose-pine {
-		background-image: linear-gradient(to right, theme('colors.pink.600'), theme('colors.amber.600'));
+		background-image: linear-gradient(to right, theme('colors.pink.500'), theme('colors.amber.500'));
 	}
 }
 
