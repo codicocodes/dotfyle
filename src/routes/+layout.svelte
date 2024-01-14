@@ -175,17 +175,17 @@
 					<Fa icon={faTerminal} size="xs" class="text-sm text-secondary bg-transparent" />
 					<CoolText text="dotfyle" />
 				</a>
-				<div class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg tracking-tight font-medium">
+				<div class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg font-semibold  tracking-normal">
 					<a href="/neovim/plugins/trending">
-						<CoolTextOnHover>Plugins</CoolTextOnHover>
+						<CoolTextOnHover>plugins</CoolTextOnHover>
 					</a>
 
 					<a href="/neovim/configurations/top">
-						<CoolTextOnHover>Configurations</CoolTextOnHover>
+						<CoolTextOnHover>configurations</CoolTextOnHover>
 					</a>
 
 					<a href="/this-week-in-neovim">
-						<CoolTextOnHover>News</CoolTextOnHover>
+						<CoolTextOnHover>news</CoolTextOnHover>
 					</a>
 				</div>
 			</div>
