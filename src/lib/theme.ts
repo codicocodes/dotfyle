@@ -8,8 +8,11 @@ export const setTheme = (theme: ThemeName) => {
 };
 
 export const getTheme = () => {
-	const cookie = document.cookie.split(";").map(c => c.trim().split("=")).find(c => c[0] === 'mode')
-	let theme = cookie?.[1]
+	const cookie = document.cookie
+		.split(';')
+		.map((c) => c.trim().split('='))
+		.find((c) => c[0] === 'mode');
+	let theme = cookie?.[1];
 	if (!theme || !themes.includes(theme[1] as ThemeName))
 		theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 	return theme as ThemeName;
@@ -49,3 +52,14 @@ export const setColorscheme = (theme: ColorschemeNames) => {
 	document.cookie = `colorscheme=${theme}; SameSite=Strict;`;
 };
 
+export const getColorscheme = () => {
+	const cookie = document.cookie
+		.split(';')
+		.map((c) => c.trim().split('='))
+		.find((c) => c[0] === 'colorscheme');
+	let theme = cookie?.[1];
+	if (!theme || !colorschemes.some((t) => t.name === theme)) {
+		theme = 'neovim';
+	}
+	return theme as ColorschemeNames;
+};

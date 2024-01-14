@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { colorschemes, setColorscheme } from '$lib/theme';
-	import { faPalette } from '@fortawesome/free-solid-svg-icons';
+	import { colorschemes, getColorscheme, setColorscheme } from '$lib/theme';
+	import { faCheckCircle, faPalette } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import Modal from './Modal.svelte';
 	import ThemeSwitcher from './ThemeSwitcher.svelte';
+	import { browser } from '$app/environment';
 
 	let isOpen = false;
+
+	$: colorscheme = browser && getColorscheme()
 
 	function close() {
 		isOpen = false;
@@ -49,8 +52,14 @@
 				on:click={() => {
 					setColorscheme(theme.name);
 					isOpen = false;
+					colorscheme = theme.name
 				}}
 			>
+				{#if colorscheme === theme.name}
+					<span class="left-8 absolute">
+						<Fa icon={faCheckCircle} />
+					</span>
+				{/if}
 				{theme.name}
 			</button>
 		{/each}
