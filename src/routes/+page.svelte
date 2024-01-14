@@ -10,7 +10,8 @@
 		faFire,
 		faPuzzlePiece,
 		faSearch,
-		faSeedling
+		faSeedling,
+		faStar
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import CoolText from '$lib/components/CoolText.svelte';
@@ -36,27 +37,33 @@
 <div class="flex flex-col gap-8 my-4">
 	<div class="flex flex-col justify-center items-center">
 		<div class="py-12 sm:py-8 md:py-12 lg:py-14 xl:py-12 2xl:py-28">
+			<div class="flex w-full items-center justify-center">
+				<a
+					href="https://github.com/codicocodes/dotfyle"
+					class="shadow-xl shadow-white/20 hover:shadow-main bg-transparent rounded-full"
+				>
+					<Button icon={faStar} text="Star on GitHub" iconPosition="left" />
+				</a>
+			</div>
+
 			<HeroTitle>
 				Discover and share <CoolText text="Neovim" /> plugins
 			</HeroTitle>
 
-			<div class="flex justify-center items-center my-4 md:my-6 lg:my-8 xl:my-12">
-				<div
-					class="max-w-md px-4 sm:max-w-2xl sm:px-6 md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl"
-				>
-					<h2
-						class="text-center font-semibold tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight"
+			{#if !data.user}
+				<div class="flex justify-center items-center my-4 md:my-6 lg:my-8 xl:my-12">
+					<div
+						class="max-w-md px-4 sm:max-w-2xl sm:px-6 md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl"
 					>
-						{#if !data.user}
+						<h2
+							class="text-center font-light tracking-tight text-white sm:text-lg sm:tracking-tight xl:text-xl xl:tracking-tight"
+						>
 							Signup with GitHub to add your config
-						{:else}
-							Search for Neovim plugins and configurations
-						{/if}
-					</h2>
+						</h2>
+					</div>
 				</div>
-			</div>
-
-			<div class="flex justify-center mb-8">
+			{/if}
+			<div class="flex justify-center mb-12">
 				<Fa icon={faArrowDown} />
 			</div>
 			<div class="w-full flex justify-center items-center">
