@@ -171,7 +171,7 @@
 				<Fa icon={faSeedling} size="sm" />
 				<span class="hidden sm:inline">more configurations</span>
 			</h3>
-			<a href="/neovim/plugins/new">
+			<a href="/neovim/configurations/new">
 				<Button text="more configurations" icon={faChevronRight} />
 			</a>
 		</div>
