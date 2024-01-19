@@ -46,7 +46,7 @@
 			<Accordion>
 				<div slot="title" class="flex gap-2 items-center text-sm max-w-full">
 					<Fa icon={faFilter} size="sm" />
-					Filter
+					Filter by plugin category
 				</div>
 
 				<div slot="description" class="flex text-xs gap-1 flex-wrap">

@@ -3,10 +3,7 @@
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
-	import {
-		faCircleXmark,
-		faFilter,
-	} from '@fortawesome/free-solid-svg-icons';
+	import { faCircleXmark, faFilter } from '@fortawesome/free-solid-svg-icons';
 	import { navigate } from '$lib/navigate';
 	import MultiSelectFilter from '$lib/components/MultiSelectFilter.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
@@ -59,7 +56,7 @@
 			<Accordion>
 				<div slot="title" class="flex gap-2 items-center text-sm max-w-full">
 					<Fa icon={faFilter} size="sm" />
-					Filter
+					Filter by installed plugins and language servers
 				</div>
 
 				<div slot="description" class="flex text-xs gap-1 flex-wrap">
