@@ -249,19 +249,28 @@ export async function syncLanguageServers(id: number, sha: string, languageServe
 	});
 }
 
+export interface PluginInput {
+	id: number;
+	paths: string;
+}
+
 export async function syncConfigPlugins(
 	configId: number,
 	sha: string,
-	pluginIds: number[]
+	matchedPlugins: PluginInput[]
 ): Promise<NeovimConfigWithPlugins> {
-	const connectOrCreate = pluginIds.map((pluginId) => ({
+	const upsert = matchedPlugins.map(({id: pluginId, paths } ) => ({
 		where: {
 			configId_pluginId: {
 				configId,
 				pluginId
 			}
 		},
+		update: {
+			paths,
+		},
 		create: {
+			paths,
 			plugin: {
 				connect: {
 					id: pluginId
@@ -299,11 +308,11 @@ export async function syncConfigPlugins(
 			where: { id: configId },
 			data: {
 				neovimConfigPlugins: {
-					connectOrCreate,
+					upsert,
 					deleteMany: {
 						configId,
 						pluginId: {
-							notIn: pluginIds
+							notIn: matchedPlugins.map(({id}) => id)
 						}
 					}
 				}
@@ -346,7 +355,7 @@ export type ConfigSearchOptions = {
 export async function searchNeovimConfigs({
 	query,
 	plugins,
-  languageServers,
+	languageServers,
 	sorting,
 	page,
 	take
@@ -358,44 +367,44 @@ export async function searchNeovimConfigs({
 			...(query && queries
 				? queries.length > 1
 					? {
-							AND: [
-								{ owner: { contains: queries[0], mode } },
-								{ repo: { contains: queries[1], mode } }
-							]
-					  }
+						AND: [
+							{ owner: { contains: queries[0], mode } },
+							{ repo: { contains: queries[1], mode } }
+						]
+					}
 					: {
-							OR: [{ owner: { contains: query, mode } }, { repo: { contains: query, mode } }]
-					  }
+						OR: [{ owner: { contains: query, mode } }, { repo: { contains: query, mode } }]
+					}
 				: {}),
 			...(plugins && plugins.length > 0
 				? {
-						AND: plugins.map((identifier) => {
-							const [owner, name] = identifier.split('/');
-							return {
-								neovimConfigPlugins: {
-									some: {
-										plugin: {
-											owner,
-											name
-										}
+					AND: plugins.map((identifier) => {
+						const [owner, name] = identifier.split('/');
+						return {
+							neovimConfigPlugins: {
+								some: {
+									plugin: {
+										owner,
+										name
 									}
 								}
-							};
-						})
-				  }
+							}
+						};
+					})
+				}
 				: {}),
 			...(languageServers && languageServers.length > 0
 				? {
-						AND: languageServers.map((languageServerName) => {
-							return {
-								languageServerMappings: {
-									some: {
-                    languageServerName
-									}
+					AND: languageServers.map((languageServerName) => {
+						return {
+							languageServerMappings: {
+								some: {
+									languageServerName
 								}
-							};
-						})
-				  }
+							}
+						};
+					})
+				}
 				: {})
 		},
 		include: {
@@ -490,7 +499,7 @@ export async function getNeovimConfigsWithDotfyleShield() {
 		orderBy: {
 			dotfyleShieldAddedAt: 'desc'
 		},
-    take: 9,
+		take: 9
 	});
 
 	return nestedConfigs.map(attachMetaData);

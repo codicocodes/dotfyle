@@ -1,12 +1,8 @@
-import { fetchFile } from "$lib/server/github/api";
-import type { GithubTree } from "$lib/server/github/schema";
+import { fetchFile } from '$lib/server/github/api';
+import type { GithubNode, GithubTree } from '$lib/server/github/schema';
 
-export interface FileContentTraverser {
-  traverse(): AsyncGenerator<string, void, unknown>
-}
-
-export class GithubFileContentTraverser implements FileContentTraverser {
-	private shaQueue: string[];
+export class GithubFileContentTraverser {
+	private nodeQueue: { sha: string; path: string }[];
 	constructor(
 		private token: string,
 		private owner: string,
@@ -14,22 +10,35 @@ export class GithubFileContentTraverser implements FileContentTraverser {
 		githubRoot: GithubTree,
 		configRoot: string
 	) {
-		this.shaQueue = githubRoot.tree
+		this.nodeQueue = githubRoot.tree
 			.filter((n) => Boolean(n.path))
 			.filter((n) => Boolean(n.sha))
-			.filter((n) => n.type === "blob")
-			.filter((n) => n.path?.startsWith(configRoot ? configRoot.concat("/") : ""))
-			.filter((n) => n.path?.endsWith(".lua") || n.path?.endsWith(".fnl") || n.path?.endsWith(".vim") || n.path?.endsWith(".vimrc"))
-			.map((n) => n.sha) as string[];
+			.filter((n) => n.type === 'blob')
+			.filter((n) => n.path?.startsWith(configRoot ? configRoot.concat('/') : ''))
+			.filter(
+				(n) =>
+					n.path?.endsWith('.lua') ||
+					n.path?.endsWith('.fnl') ||
+					n.path?.endsWith('.vim') ||
+					n.path?.endsWith('.vimrc')
+			)
+			.map(({ sha, path, url }) => ({
+				sha,
+				path,
+				url,
+			})) as { sha: string; path: string }[];
 	}
 
-	async *traverse(): AsyncGenerator<string, void, unknown>  {
-		for await (const sha of this.shaQueue) {
-			yield await this.getContent(sha);
+	async *traverse() {
+		for await (const {path, sha} of this.nodeQueue) {
+			yield {
+				path,
+				content: await this.getContent(sha)
+			};
 		}
 	}
 
-	async getContent(sha: string): Promise<string> {
+	async getContent(sha: string) {
 		const file = await fetchFile(this.token, this.owner, this.repo, sha);
 		const content = Buffer.from(file.content, 'base64').toString();
 		return content;
