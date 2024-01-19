@@ -94,7 +94,6 @@
 			showTwinPost = false;
 		}
 	}
-
 </script>
 
 <svelte:head>
@@ -170,7 +169,9 @@
 					<Fa icon={faTerminal} size="xs" class="text-sm text-secondary bg-transparent" />
 					<CoolText text="dotfyle" />
 				</a>
-				<div class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg font-semibold  tracking-normal">
+				<div
+					class="hidden sm:flex items-center gap-2 sm:gap-4 text-lg font-semibold tracking-normal"
+				>
 					<a href="/neovim/plugins/trending">
 						<CoolTextOnHover>plugins</CoolTextOnHover>
 					</a>
@@ -235,7 +236,7 @@
 							<button class="px-4 py-2 flex gap-2 items-center" on:click={syncPlugins}>
 								<div class="force-white-text">
 									{#if syncing}
-										<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
+										<div class="w-2 h-2 rounded-full bg-main animate-pulse" />
 									{:else}
 										<Fa icon={faSync} class="text-base-100" />
 									{/if}
@@ -357,7 +358,7 @@
 
 					<a
 						href="https://speedtyper.dev"
-						class="flex items-center hover:text-shit gap-2"
+						class="flex items-center hover:text-main gap-2"
 						target="blank"
 					>
 						<div class="flex items-start w-6">
@@ -365,6 +366,15 @@
 						</div>
 						<span class="ml-1">Speedtyper.dev</span>
 					</a>
+					<span class="flex gap-2">
+					<a href="/terms" class="flex items-center hover:text-accent-muted gap-2" target="blank">
+						<span class="ml-1">Terms of Service</span>
+					</a>
+					|
+					<a href="/privacy" class="flex items-center hover:text-accent-muted gap-2" target="blank">
+						<span class="ml-1">Privacy Policy</span>
+					</a>
+					</span>
 				</div>
 			</div>
 		</footer>
