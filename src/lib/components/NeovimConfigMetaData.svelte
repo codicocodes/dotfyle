@@ -46,7 +46,7 @@
 				<div class="w-[20px]">
 					<Fa icon={faPuzzlePiece} />
 				</div>
-				plugins
+				plugins (detected)
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
