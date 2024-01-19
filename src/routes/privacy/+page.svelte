@@ -244,6 +244,6 @@
 		@apply text-xl tracking-wide my-8 leading-8;
 	}
 	a {
-		@apply text-transparent bg-clip-text bg-gradient-primary;
+		@apply hover:text-accent-muted;
 	}
 </style>

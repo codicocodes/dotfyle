@@ -59,6 +59,3 @@
 		</div>
 	</GlossyCard>
 </div>
-
-<style>
-</style>
