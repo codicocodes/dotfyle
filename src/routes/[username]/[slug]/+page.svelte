@@ -131,7 +131,7 @@
 
 	<div class="flex flex-col w-full">
 		<div class="text-xl w-full flex justify-between items-center py-2">
-			<span class="font-semibold">Plugins</span>
+			<span class="font-semibold">Plugins (detected)</span>
 		</div>
 		<div transition:slide class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
 			{#each plugins as plugin}
