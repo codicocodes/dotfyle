@@ -35,27 +35,26 @@ const orderByWeeklyAdded: [
 		name: 'asc';
 	}
 ] = [
-	{
-		addedLastWeek: 'desc'
-	},
-	{
-		neovimConfigPlugins: {
-			_count: 'desc'
+		{
+			addedLastWeek: 'desc'
+		},
+		{
+			neovimConfigPlugins: {
+				_count: 'desc'
+			}
+		},
+		{
+			stars: 'desc'
+		},
+		{
+			name: 'asc'
 		}
-	},
-	{
-		stars: 'desc'
-	},
-	{
-		name: 'asc'
-	}
-];
+	];
 
 const orderByPopularity: [
 	{
-		neovimConfigPlugins: {
-			_count: 'desc';
-		};
+		_count: 'desc';
+		neovimConfigPlugins: {};
 	},
 	{
 		stars: 'desc';
@@ -64,18 +63,18 @@ const orderByPopularity: [
 		name: 'asc';
 	}
 ] = [
-	{
-		neovimConfigPlugins: {
-			_count: 'desc'
+		{
+			neovimConfigPlugins: {
+				_count: 'desc'
+			}
+		},
+		{
+			stars: 'desc'
+		},
+		{
+			name: 'asc'
 		}
-	},
-	{
-		stars: 'desc'
-	},
-	{
-		name: 'asc'
-	}
-];
+	];
 
 const orderByNew: [
 	{
@@ -93,21 +92,21 @@ const orderByNew: [
 		name: 'asc';
 	}
 ] = [
-	{
-		createdAt: 'desc'
-	},
-	{
-		neovimConfigPlugins: {
-			_count: 'desc'
+		{
+			createdAt: 'desc'
+		},
+		{
+			neovimConfigPlugins: {
+				_count: 'desc'
+			}
+		},
+		{
+			stars: 'desc'
+		},
+		{
+			name: 'asc'
 		}
-	},
-	{
-		stars: 'desc'
-	},
-	{
-		name: 'asc'
-	}
-];
+	];
 
 const orderByConfig = {
 	popular: orderByPopularity,
@@ -132,7 +131,7 @@ const selectConfigCount = {
 	dotfyleShieldAddedAt: true,
 	media: {
 		orderBy: {
-			thumbnail: 'desc',
+			thumbnail: 'desc'
 		}
 	},
 	_count: {
@@ -171,25 +170,24 @@ export async function getPluginsWithMedia(
 	category: string,
 	sorting: 'new' | 'popular' | 'trending' = 'trending',
 	page: number,
-	take: number,
+	take: number
 ) {
-
 	const orderBy = orderByConfig[sorting];
 
 	const args = {
 		select: selectConfigCount,
 		where: {
 			category: {
-				equals: category,
+				equals: category
 			},
 			media: {
 				some: {
 					type: {
-						contains: '',
+						contains: ''
 					}
-				},
+				}
 			},
-			...parsePluginQuery(query ?? ""),
+			...parsePluginQuery(query ?? '')
 		},
 		orderBy
 	};
@@ -198,7 +196,7 @@ export async function getPluginsWithMedia(
 		perPage: take
 	})<NestedNeovimPluginWithCount>(prismaClient.neovimPlugin, args, { page });
 
-	await prismaClient.neovimPlugin.findMany({...args})
+	await prismaClient.neovimPlugin.findMany({ ...args });
 
 	const data = nestedPluginData.map(flattenConfigCount);
 
@@ -214,17 +212,17 @@ function parsePluginQuery(query: string) {
 	return {
 		...(query && queries
 			? queries.length > 1
-			? {
-				AND: [
-					{ owner: { contains: queries[0], mode } },
-					{ name: { contains: queries[1], mode } }
-				]
-			}
+				? {
+					AND: [
+						{ owner: { contains: queries[0], mode } },
+						{ name: { contains: queries[1], mode } }
+					]
+				}
 				: {
 					OR: [{ owner: { contains: query, mode } }, { name: { contains: query, mode } }]
 				}
-					: {}),
-	}
+			: {})
+	};
 }
 
 export async function searchPlugins(
@@ -237,12 +235,12 @@ export async function searchPlugins(
 	const where = {
 		...(categories.length > 0
 			? {
-					category: {
-						in: categories
-					}
-			  }
+				category: {
+					in: categories
+				}
+			}
 			: {}),
-			...parsePluginQuery(query ?? ""),
+		...parsePluginQuery(query ?? '')
 	};
 
 	const orderBy = orderByConfig[sorting];
@@ -256,7 +254,6 @@ export async function searchPlugins(
 	const { data: nestedPluginData, meta } = await paginator({
 		perPage: take
 	})<NestedNeovimPluginWithCount>(prismaClient.neovimPlugin, args, { page });
-
 
 	const data = nestedPluginData.map(flattenConfigCount);
 
@@ -316,26 +313,27 @@ export async function getReadme(owner: string, name: string): Promise<string> {
 	return readme;
 }
 
-export async function getPluginsBySlug(
-	username: string,
-	slug: string
-): Promise<NeovimPluginWithCount[]> {
-	const plugins = await prismaClient.neovimPlugin.findMany({
-		select: selectConfigCount,
+export async function getPluginsBySlug(username: string, slug: string) {
+	const configPlugins = await prismaClient.neovimConfigPlugins.findMany({
 		where: {
-			neovimConfigPlugins: {
-				some: {
-					config: {
-						user: {
-							username
-						},
-						slug
-					}
-				}
+			config: {
+				user: {
+					username
+				},
+				slug
+			}
+		},
+		select: {
+			paths: true,
+			plugin: {
+				select: selectConfigCount
 			}
 		}
 	});
-	return plugins.map(flattenConfigCount);
+	return configPlugins.map(({ plugin, ...configPlugin }) => ({
+		...flattenConfigCount(plugin),
+		paths: configPlugin.paths
+	}));
 }
 
 export async function upsertNeovimPlugin(plugin: PluginDTO): Promise<NeovimPlugin> {
@@ -350,7 +348,7 @@ export async function upsertNeovimPlugin(plugin: PluginDTO): Promise<NeovimPlugi
 		create: plugin,
 		update
 	});
-  return savedPlugin
+	return savedPlugin;
 }
 
 export async function upsertManyNeovimPlugins(plugins: PluginDTO[]): Promise<NeovimPlugin[]> {

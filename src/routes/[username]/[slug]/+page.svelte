@@ -147,6 +147,11 @@
 						configCount={plugin.configCount}
 						category={plugin.category}
 						addedLastWeek={plugin.addedLastWeek}
+						links={plugin.paths
+							.split(',')
+							.map(
+								(p) => `https://github.com/${data.config.owner}/${data.config.repo}/blob/-/${p}`
+							)}
 					/>
 				</RepositoryCard>
 			{/each}
