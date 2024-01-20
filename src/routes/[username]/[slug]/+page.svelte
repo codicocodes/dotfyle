@@ -149,6 +149,7 @@
 						addedLastWeek={plugin.addedLastWeek}
 						links={plugin.paths
 							.split(',')
+							.filter(Boolean)
 							.map(
 								(p) => `https://github.com/${data.config.owner}/${data.config.repo}/blob/-/${p}`
 							)}
