@@ -75,10 +75,12 @@
 									<div class="force-white-text">
 										<Fa icon={faExternalLink} class="text-base-100" />
 									</div>
-									{link.replace(
-										/(https:\/\/github.com\/)([a-zA-Z0-9]+)\/[a-zA-Z0-9]+\/blob\/-\//,
-										''
-									)}
+									<span class="whitespace-nowrap">
+										{link.replace(
+											/(https:\/\/github.com\/)([a-zA-Z0-9]+)\/[a-zA-Z0-9]+\/blob\/-\//,
+											''
+										)}
+									</span>
 								</a>
 							</CoolTextOnHover>
 						{/each}
