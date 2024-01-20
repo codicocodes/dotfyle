@@ -59,7 +59,7 @@
 		>
 			{#if isOpen}
 				<div
-					class="absolute left-[-1px] top-10 z-50 bg-accent-muted text-white rounded"
+					class="absolute right-0 top-10 z-50 bg-accent-muted text-white rounded"
 					id="user-menu"
 					on:blur={() => (isOpen = false)}
 				>
@@ -87,8 +87,7 @@
 			{/if}
 			<Fa icon={faAt} />
 			{links.length}
-			{links.length === 1 ? 'mention' : 'mentions'}
-			<Fa icon={isOpen ? faChevronUp : faChevronDown} />
+			<span class="hidden sm:inline"> {links.length === 1 ? 'mention' : 'mentions'} <Fa icon={isOpen ? faChevronUp : faChevronDown} /></span>
 		</button>
 	{/if}
 </div>
