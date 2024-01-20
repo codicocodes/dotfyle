@@ -149,20 +149,6 @@ export const router = t.router({
 				throw new TRPCError({ code: 'NOT_FOUND' });
 			});
 		}),
-	getReadme: t.procedure
-		.input((input: unknown) => {
-			return z
-				.object({
-					owner: z.string(),
-					name: z.string()
-				})
-				.parse(input);
-		})
-		.query(async ({ input: { owner, name } }) => {
-			const markdown = await getReadme(owner, name);
-			const html = marked(markdown);
-			return sanitizeHtml(html);
-		}),
 	getLanguageServersBySlug: t.procedure
 		.input((input: unknown) => {
 			return z

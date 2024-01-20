@@ -17,23 +17,18 @@
 		faUsers,
 		faX
 	} from '@fortawesome/free-solid-svg-icons';
-	import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@rgossiaux/svelte-headlessui';
 	import Fa from 'svelte-fa';
 	import { fade } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import PostContainer from '$lib/components/PostContainer.svelte';
 	import Modal from '$lib/components/Modal.svelte';
-	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import type { Media } from '@prisma/client';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
-	const unSelectedStyles =
-		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary hover:underline';
-	const selectedStyle = 'text-transparent bg-clip-text bg-gradient-primary';
 	export let data: PageData;
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
@@ -45,12 +40,6 @@
 		if (data.plugin.id) {
 			readme = '';
 		}
-	}
-
-	async function fetchReadme() {
-		if (readme) return;
-		const { owner, name } = data.plugin;
-		readme = await trpc($page).getReadme.query({ owner, name });
 	}
 
 	$: firstImage = data.media.filter((m) => getMediaType(m) === 'image')?.[0]?.url;
@@ -218,159 +207,138 @@
 				</a>
 			</div>
 		</div>
-		<TabGroup>
-			<TabList>
-				<div
-					class="w-full py-2 my-2 flex sm:items-start gap-2 sm:gap-8 text-sm sm:text-lg font-semibold text-wide"
-				>
-					<Tab class={({ selected }) => (selected ? selectedStyle : unSelectedStyles)}>Overview</Tab
+		<div class="flex flex-col w-full items-center justify-between gap-8">
+			{#if data.breaking.length > 0}
+				<div class="flex flex-col w-full">
+					<div class="mb-2 flex justify-between pl-1 tracking-wide">
+						<h3 class="flex items-center gap-1 text-lg font-semibold">
+							<Fa icon={faBomb} size="sm" />
+							breaking changes
+						</h3>
+					</div>
+					<div
+						in:fade
+						class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
 					>
-					<Tab
-						disabled={false}
-						on:click={fetchReadme}
-						class={({ selected }) => (selected ? selectedStyle : unSelectedStyles)}>Readme</Tab
-					>
+						{#each data.breaking as post, _}
+							{#if post.breakingChange}
+								<PostContainer {post} />
+							{/if}
+						{/each}
+					</div>
 				</div>
-			</TabList>
-
-			<TabPanels>
-				<TabPanel class="flex flex-col w-full items-center justify-between gap-8">
-					{#if data.breaking.length > 0}
-						<div class="flex flex-col w-full">
-							<div class="mb-2 flex justify-between pl-1 tracking-wide">
-								<h3 class="flex items-center gap-1 text-lg font-semibold">
-									<Fa icon={faBomb} size="sm" />
-									breaking changes
-								</h3>
+			{/if}
+			{#if data.media.length > 0}
+				<div class="flex flex-col w-full">
+					<div class="mb-2 flex justify-between pl-1 tracking-wide">
+						<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
+							<Fa icon={faCameraRetro} size="sm" />
+							media
+						</h3>
+						{#if data.user && isAdmin(data.user)}
+							<div class="flex">
+								<Button
+									on:click={async () => {
+										await Promise.all(data.media.map((m) => deleteMedia(m.id)));
+									}}
+									icon={faDeleteLeft}
+									text="Delete all images"
+								/>
 							</div>
-							<div
-								in:fade
-								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
-							>
-								{#each data.breaking as post, _}
-									{#if post.breakingChange}
-										<PostContainer {post} />
-									{/if}
-								{/each}
-							</div>
-						</div>
-					{/if}
-					{#if data.media.length > 0}
-						<div class="flex flex-col w-full">
-							<div class="mb-2 flex justify-between pl-1 tracking-wide">
-								<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
-									<Fa icon={faCameraRetro} size="sm" />
-									media
-								</h3>
-								{#if data.user && isAdmin(data.user)}
-									<div class="flex">
-										<Button
-											on:click={async () => {
-												await Promise.all(data.media.map((m) => deleteMedia(m.id)));
-											}}
-											icon={faDeleteLeft}
-											text="Delete all images"
-										/>
-									</div>
-								{/if}
-							</div>
-							<div
-								in:fade
-								class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
-							>
-								{#each data.media as media}
-									{#if getMediaType(media) === 'video'}
-										<video
-											autoplay
-											muted
-											playsinline
-											class="rounded hover:cursor-pointer"
-											on:click={() => (selectedMedia = media)}
-											src={media.url}
-										/>
-									{:else}
-										<img
-											class="rounded hover:cursor-pointer"
-											on:click={() => (selectedMedia = media)}
-											alt=""
-											src={media.url}
-										/>
-									{/if}
-								{/each}
-							</div>
-						</div>
-					{/if}
-
-					<div class="flex flex-col w-full">
-						<div class="mb-2 flex justify-between pl-1 tracking-wide">
-							<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
-								neovim configs using {data.plugin.name}
-							</h3>
-							<CoolLink
-								href={`/neovim/configurations/top?plugins=${data.plugin.owner}/${data.plugin.name}`}
-								text="more configs"
-							/>
-						</div>
-
-						{#if data.configs.length > 0}
-							<BigGridContainer>
-								{#each data.configs as conf, _}
-									<div in:fade>
-										<NeovimConfigCard
-											slug={conf.slug}
-											repo={conf.repo}
-											owner={conf.owner}
-											avatar={conf.ownerAvatar}
-											initFile={conf.initFile}
-											root={conf.root}
-											stars={conf.stars.toString()}
-											pluginManager={conf.pluginManager ?? 'unknown'}
-											pluginCount={conf.pluginCount.toString()}
-											loc={conf.linesOfCode}
-										/>
-									</div>
-								{/each}
-							</BigGridContainer>
 						{/if}
 					</div>
-
-					<div class="flex flex-col w-full">
-						<div class="mb-2 flex justify-between pl-1 tracking-wide">
-							<h3 class="flex items-center gap-1 text-lg font-semibold">
-								other neovim {data.plugin.category} plugins
-							</h3>
-							<CoolLink
-								href={`/neovim/plugins/top?categories=${data.plugin.category}`}
-								text="more plugins"
-							/>
-						</div>
-
-						<BigGridContainer>
-							{#each categoryPlugins as plugin, _}
-								<div in:fade>
-									<RepositoryCard
-										name="{plugin.owner}/{plugin.name}"
-										link="/plugins/{plugin.owner}/{plugin.name}"
-										description={plugin.shortDescription}
-										thumbnail={plugin.media?.[0]}
-									>
-										<NeovimPluginMetaData
-											slot="footer"
-											stars={plugin.stars.toString()}
-											configCount={plugin.configCount}
-											category={plugin.category}
-											addedLastWeek={plugin.addedLastWeek}
-										/>
-									</RepositoryCard>
-								</div>
-							{/each}
-						</BigGridContainer>
+					<div
+						in:fade
+						class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
+					>
+						{#each data.media as media}
+							{#if getMediaType(media) === 'video'}
+								<video
+									autoplay
+									muted
+									playsinline
+									class="rounded hover:cursor-pointer"
+									on:click={() => (selectedMedia = media)}
+									src={media.url}
+								/>
+							{:else}
+								<img
+									class="rounded hover:cursor-pointer"
+									on:click={() => (selectedMedia = media)}
+									alt=""
+									src={media.url}
+								/>
+							{/if}
+						{/each}
 					</div>
-				</TabPanel>
-				<TabPanel>
-					<HtmlContent content={readme} />
-				</TabPanel>
-			</TabPanels>
-		</TabGroup>
+				</div>
+			{/if}
+
+			<div class="flex flex-col w-full">
+				<div class="mb-2 flex justify-between pl-1 tracking-wide">
+					<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
+						neovim configs using {data.plugin.name}
+					</h3>
+					<CoolLink
+						href={`/neovim/configurations/top?plugins=${data.plugin.owner}/${data.plugin.name}`}
+						text="more configs"
+					/>
+				</div>
+
+				{#if data.configs.length > 0}
+					<BigGridContainer>
+						{#each data.configs as conf, _}
+							<div in:fade>
+								<NeovimConfigCard
+									slug={conf.slug}
+									repo={conf.repo}
+									owner={conf.owner}
+									avatar={conf.ownerAvatar}
+									initFile={conf.initFile}
+									root={conf.root}
+									stars={conf.stars.toString()}
+									pluginManager={conf.pluginManager ?? 'unknown'}
+									pluginCount={conf.pluginCount.toString()}
+									loc={conf.linesOfCode}
+								/>
+							</div>
+						{/each}
+					</BigGridContainer>
+				{/if}
+			</div>
+
+			<div class="flex flex-col w-full">
+				<div class="mb-2 flex justify-between pl-1 tracking-wide">
+					<h3 class="flex items-center gap-1 text-lg font-semibold">
+						other neovim {data.plugin.category} plugins
+					</h3>
+					<CoolLink
+						href={`/neovim/plugins/top?categories=${data.plugin.category}`}
+						text="more plugins"
+					/>
+				</div>
+
+				<BigGridContainer>
+					{#each categoryPlugins as plugin, _}
+						<div in:fade>
+							<RepositoryCard
+								name="{plugin.owner}/{plugin.name}"
+								link="/plugins/{plugin.owner}/{plugin.name}"
+								description={plugin.shortDescription}
+								thumbnail={plugin.media?.[0]}
+							>
+								<NeovimPluginMetaData
+									slot="footer"
+									stars={plugin.stars.toString()}
+									configCount={plugin.configCount}
+									category={plugin.category}
+									addedLastWeek={plugin.addedLastWeek}
+								/>
+							</RepositoryCard>
+						</div>
+					{/each}
+				</BigGridContainer>
+			</div>
+		</div>
 	</div>
 </div>
