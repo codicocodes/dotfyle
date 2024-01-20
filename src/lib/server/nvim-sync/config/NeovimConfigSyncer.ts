@@ -173,6 +173,8 @@ export class NeovimConfigSyncer {
 					case "'\\<space>'":
 					case '" "':
 					case "' '":
+					case '" ",':
+					case "' ',":
 						return 'Space';
 					case '","':
 					case "','":
