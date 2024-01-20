@@ -4,7 +4,7 @@ import type { PageLoad, PageLoadEvent } from './$types';
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const { owner, plugin: name } = event.params;
-	const [[plugin, categoryPlugins], configs, breaking] = await Promise.all([
+	const [[plugin, categoryPlugins], configs, breaking, ownerUser] = await Promise.all([
 		trpc(event)
 			.getPlugin.query({ owner, name })
 			.then(async (plugin) => {
@@ -13,12 +13,16 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 			}),
 		trpc(event).getConfigsForPlugin.query({ owner, name }),
 		trpc(event).getBreakingCommits.query({ owner, name }),
+		trpc(event).getUserByUsername.query(owner).catch(() => {
+			return null;
+		}),
 	]);
 	return {
 		plugin,
 		configs: configs as unknown as NeovimConfigWithMetaData[],
 		categoryPlugins,
 		breaking,
-		media: plugin.media
+		media: plugin.media,
+		owner: ownerUser,
 	};
 };

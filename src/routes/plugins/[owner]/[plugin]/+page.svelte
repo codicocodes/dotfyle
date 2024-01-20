@@ -30,6 +30,7 @@
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
+	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	const unSelectedStyles =
 		'hover:cursor-pointer hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary hover:underline';
 	const selectedStyle = 'text-transparent bg-clip-text bg-gradient-primary';
@@ -66,7 +67,7 @@
 			id
 		});
 		if (selectedMedia && selectedMedia.id === id) {
-			selectedMedia.thumbnail = !selectedMedia.thumbnail
+			selectedMedia.thumbnail = !selectedMedia.thumbnail;
 		}
 	}
 </script>
@@ -89,13 +90,13 @@
 	<Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
 		{#if data.user && isAdmin(data.user)}
 			<div class="flex gap-2 my-2">
-			<Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
-			<Button
-				on:click={() => toggleThumbnail(selectedMedia.id)}
-				icon={selectedMedia.thumbnail ? faToggleOff : faToggleOn}
-				text="{selectedMedia.thumbnail ? 'Remove as thumbnail' : 'Make into thumbnail'}"
-			/>
-</div>
+				<Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
+				<Button
+					on:click={() => toggleThumbnail(selectedMedia.id)}
+					icon={selectedMedia.thumbnail ? faToggleOff : faToggleOn}
+					text={selectedMedia.thumbnail ? 'Remove as thumbnail' : 'Make into thumbnail'}
+				/>
+			</div>
 		{/if}
 		{#if getMediaType(selectedMedia) === 'video'}
 			<video
@@ -114,11 +115,27 @@
 <div class="w-full flex flex-col items-center h-full my-14 px-4">
 	<div class="flex flex-col max-w-5xl w-full gap-2">
 		<div class="flex flex-col gap-2">
-			<h1 class="flex items-center text-xl sm:text-2xl font-semibold tracking-wide gap-2">
-				{data.plugin.owner}/{data.plugin.name}
-				<a href={data.plugin.link} target="_blank">
-					<Fa icon={faGithub} size="sm" />
-				</a>
+			<h1 class="text-xl flex gap-2 items-center font-semibold">
+				{#if data.owner}
+					<img
+						alt=""
+						class="inline h-8 w-8 rounded-full items-center"
+						height="8"
+						width="8"
+						src={data.owner.avatarUrl}
+					/>
+					<a href="/{data.owner.username}">
+						<CoolTextOnHover>
+							{data.plugin.owner}
+						</CoolTextOnHover>
+					</a>
+				{:else}
+					{data.plugin.owner}
+				{/if}
+				/
+				<span>
+					{data.plugin.name}
+				</span>
 			</h1>
 			<h2 class="flex items-center text-base sm:text-lg font-medium tracking-wide gap-2">
 				{data.plugin.shortDescription}
@@ -171,25 +188,34 @@
 				</div>
 			</div>
 
-			<div class="flex text-base sm:text-base font-semibold tracking-wide gap-4">
-				<span title="GitHub stars" class="py-1 rounded-full flex gap-1 items-center font-semibold">
-					<Fa icon={faStar} />
-					{data.plugin.stars}
-				</span>
-				<span
-					title="Total installs on Dotfyle"
-					class="py-1 rounded-full flex gap-1 items-center font-semibold"
-				>
-					<Fa icon={faUsers} />
-					{data.plugin.configCount}
-				</span>
-				<span
-					title="Installs last week"
-					class="py-1 rounded-full flex gap-1 items-center font-semibold"
-				>
-					<Fa icon={faArrowTrendUp} />
-					{data.plugin.addedLastWeek}
-				</span>
+			<div class="flex text-base sm:text-base font-semibold tracking-wide justify-between">
+				<div class="flex gap-4">
+					<span
+						title="GitHub stars"
+						class="py-1 rounded-full flex gap-1 items-center font-semibold"
+					>
+						<Fa icon={faStar} />
+						{data.plugin.stars}
+					</span>
+					<span
+						title="Total installs on Dotfyle"
+						class="py-1 rounded-full flex gap-1 items-center font-semibold"
+					>
+						<Fa icon={faUsers} />
+						{data.plugin.configCount}
+					</span>
+					<span
+						title="Installs last week"
+						class="py-1 rounded-full flex gap-1 items-center font-semibold"
+					>
+						<Fa icon={faArrowTrendUp} />
+						{data.plugin.addedLastWeek}
+					</span>
+				</div>
+
+				<a href="https://github.com/{data.plugin.owner}/{data.plugin.name}" target="_blank">
+					<Button text="GitHub" icon={faGithub} />
+				</a>
 			</div>
 		</div>
 		<TabGroup>

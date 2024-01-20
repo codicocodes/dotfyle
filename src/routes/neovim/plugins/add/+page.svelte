@@ -168,6 +168,14 @@
 				{#each validationErrors as err}
 					<li>
 						{err}
+						{#if err.includes('neovim-plugin')}
+							<a
+								target="_blank"
+								href={`https://github.com/${fetchedRepository.owner.login}/${fetchedRepository.name}/issues/new?title=Add 'neovim-plugin' as topic to the GitHub repository`}
+								class="text-white hover:text-accent-muted hover:cursor-pointer"
+								>make issue on GitHub</a
+							>
+						{/if}
 					</li>
 				{/each}
 				{#if !selectedCategory}
