@@ -86,8 +86,13 @@
 				</div>
 			{/if}
 			<Fa icon={faAt} />
-			{links.length}
-			<span class="hidden sm:inline"> {links.length === 1 ? 'mention' : 'mentions'} <Fa icon={isOpen ? faChevronUp : faChevronDown} /></span>
+			<span class="flex gap-1">
+				{links.length}
+				<span class="hidden sm:flex items-center gap-1">
+					{links.length === 1 ? 'mention' : 'mentions'}
+					<Fa icon={isOpen ? faChevronUp : faChevronDown} />
+				</span>
+			</span>
 		</button>
 	{/if}
 </div>
