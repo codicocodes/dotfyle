@@ -13,7 +13,7 @@
 		faStar,
 		faToggleOff,
 		faToggleOn,
-		faUsers,
+		faUsers
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { fade } from 'svelte/transition';
@@ -124,10 +124,6 @@
 					{data.plugin.name}
 				</span>
 			</h1>
-			<h2 class="flex items-center text-base sm:text-lg tracking-wide gap-2 mb-4">
-				{data.plugin.shortDescription}
-			</h2>
-
 			<div class="flex text-base sm:text-base font-semibold tracking-wide justify-between">
 				<div class="flex gap-4">
 					<span
@@ -169,6 +165,12 @@
 				>
 					{data.plugin.source}
 				</span>
+			</div>
+
+			<div class="bg-black/30 p-4 rounded-lg border-[1px] border-accent-muted my-4">
+				<h2 class="flex items-center text-base sm:text-lg tracking-wide gap-2">
+					{data.plugin.shortDescription}
+				</h2>
 			</div>
 		</div>
 		<div class="flex flex-col w-full items-center justify-between gap-8">
