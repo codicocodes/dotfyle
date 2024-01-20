@@ -245,6 +245,7 @@
 						<div class="flex w-full gap-2">
 							{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
 								<button
+									data-umami-event="Plugin Badge - Change style"
 									on:click={() => (style = currStyle)}
 									class={`flex items-center text-sm sm:text-xs text-black px-2 py-1 rounded-full ${
 										currStyle === style ? 'bg-accent-muted' : 'bg-white'
@@ -255,6 +256,7 @@
 							{/each}
 
 							<button
+								data-umami-event="Plugin Badge - Copy markdown"
 								class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded-full bg-white border-[1px] border-accent-muted hover:border-main"
 								on:click|stopPropagation={() => copyToClipboard(badgesHtml)}
 							>
