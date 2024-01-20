@@ -3,19 +3,17 @@
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import { trpc } from '$lib/trpc/client';
-	import { getMediaType, hasBeenOneDay, humanizeAbsolute, isAdmin } from '$lib/utils';
+	import { getMediaType, isAdmin } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faArrowTrendUp,
 		faBomb,
 		faCameraRetro,
 		faDeleteLeft,
-		faRotate,
 		faStar,
 		faToggleOff,
 		faToggleOn,
 		faUsers,
-		faX
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { fade } from 'svelte/transition';
@@ -102,7 +100,7 @@
 	</Modal>
 {/if}
 <div class="w-full flex flex-col items-center h-full my-14 px-4">
-	<div class="flex flex-col max-w-5xl w-full gap-2">
+	<div class="flex flex-col max-w-5xl w-full gap-4">
 		<div class="flex flex-col gap-2">
 			<h1 class="text-xl flex gap-2 items-center font-semibold">
 				{#if data.owner}
@@ -126,56 +124,9 @@
 					{data.plugin.name}
 				</span>
 			</h1>
-			<h2 class="flex items-center text-base sm:text-lg font-medium tracking-wide gap-2">
+			<h2 class="flex items-center text-base sm:text-lg tracking-wide gap-2 mb-4">
 				{data.plugin.shortDescription}
 			</h2>
-			<div class="flex flex-col sm:flex-row w-full items-center gap-4">
-				<span
-					class="items-center text-base sm:text-sm font-semibold tracking-wide gap-2 bg-white/40 px-2 py-1 rounded"
-				>
-					{data.plugin.category}
-				</span>
-				<span
-					class="items-center text-base sm:text-sm font-semibold tracking-wide gap-2 bg-white/40 px-2 py-1 rounded"
-				>
-					{data.plugin.source}
-				</span>
-			</div>
-
-			<div class="flex flex-col w-full gap-2">
-				<div class="flex w-full justify-between">
-					{#if data.plugin.lastSyncedAt}
-						<span class="text-sm tracking-wide font-light">
-							last synced {humanizeAbsolute(new Date(data.plugin.lastSyncedAt))}
-						</span>
-					{:else}
-						<span class="flex items-center gap-2 text-lg tracking-wide font-light">
-							<div class="text-red-500">
-								<Fa icon={faX} size="sm" />
-							</div>
-
-							never synced
-						</span>
-					{/if}
-					{#if data.user && (data.plugin.lastSyncedAt ? hasBeenOneDay(data.plugin.lastSyncedAt) || isAdmin(data.user) : true)}
-						<div class="flex items-center gap-1">
-							<Button
-								on:click={async () => {
-									syncingPlugin = true;
-									data.plugin = await trpc($page).syncPlugin.query({
-										owner: data.plugin.owner,
-										name: data.plugin.name
-									});
-									syncingPlugin = false;
-								}}
-								text="sync"
-								icon={faRotate}
-								loading={syncingPlugin}
-							/>
-						</div>
-					{/if}
-				</div>
-			</div>
 
 			<div class="flex text-base sm:text-base font-semibold tracking-wide justify-between">
 				<div class="flex gap-4">
@@ -206,14 +157,27 @@
 					<Button text="GitHub" icon={faGithub} />
 				</a>
 			</div>
+
+			<div class="flex flex-row w-full items-center gap-4 whitespace-nowrap flex-wrap">
+				<span
+					class="items-center text-sm sm:text-xs font-medium tracking-wide gap-2 bg-white text-black px-2 py-1 rounded-full"
+				>
+					{data.plugin.category}
+				</span>
+				<span
+					class="items-center text-sm sm:text-xs font-medium tracking-wide gap-2 bg-white text-black px-2 py-1 rounded-full"
+				>
+					{data.plugin.source}
+				</span>
+			</div>
 		</div>
 		<div class="flex flex-col w-full items-center justify-between gap-8">
 			{#if data.breaking.length > 0}
 				<div class="flex flex-col w-full">
 					<div class="mb-2 flex justify-between pl-1 tracking-wide">
-						<h3 class="flex items-center gap-1 text-lg font-semibold">
+						<h3 class="flex items-center gap-1 text-lg">
 							<Fa icon={faBomb} size="sm" />
-							breaking changes
+							Breaking changes in {data.plugin.name}
 						</h3>
 					</div>
 					<div
@@ -231,21 +195,10 @@
 			{#if data.media.length > 0}
 				<div class="flex flex-col w-full">
 					<div class="mb-2 flex justify-between pl-1 tracking-wide">
-						<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
+						<h3 class="flex items-center gap-1 text-lg">
 							<Fa icon={faCameraRetro} size="sm" />
 							media
 						</h3>
-						{#if data.user && isAdmin(data.user)}
-							<div class="flex">
-								<Button
-									on:click={async () => {
-										await Promise.all(data.media.map((m) => deleteMedia(m.id)));
-									}}
-									icon={faDeleteLeft}
-									text="Delete all images"
-								/>
-							</div>
-						{/if}
 					</div>
 					<div
 						in:fade
@@ -274,18 +227,18 @@
 				</div>
 			{/if}
 
-			<div class="flex flex-col w-full">
-				<div class="mb-2 flex justify-between pl-1 tracking-wide">
-					<h3 class="flex items-center gap-1 text-lg font-semibold lowercase">
-						neovim configs using {data.plugin.name}
-					</h3>
-					<CoolLink
-						href={`/neovim/configurations/top?plugins=${data.plugin.owner}/${data.plugin.name}`}
-						text="more configs"
-					/>
-				</div>
+			{#if data.configs.length > 0}
+				<div class="flex flex-col w-full">
+					<div class="mb-2 flex justify-between pl-1 tracking-wide">
+						<h3 class="flex items-center gap-1 text-lg">
+							Neovim configurations using {data.plugin.name}
+						</h3>
+						<CoolLink
+							href={`/neovim/configurations/top?plugins=${data.plugin.owner}/${data.plugin.name}`}
+							text="more configs"
+						/>
+					</div>
 
-				{#if data.configs.length > 0}
 					<BigGridContainer>
 						{#each data.configs as conf, _}
 							<div in:fade>
@@ -304,41 +257,43 @@
 							</div>
 						{/each}
 					</BigGridContainer>
-				{/if}
-			</div>
-
-			<div class="flex flex-col w-full">
-				<div class="mb-2 flex justify-between pl-1 tracking-wide">
-					<h3 class="flex items-center gap-1 text-lg font-semibold">
-						other neovim {data.plugin.category} plugins
-					</h3>
-					<CoolLink
-						href={`/neovim/plugins/top?categories=${data.plugin.category}`}
-						text="more plugins"
-					/>
 				</div>
+			{/if}
 
-				<BigGridContainer>
-					{#each categoryPlugins as plugin, _}
-						<div in:fade>
-							<RepositoryCard
-								name="{plugin.owner}/{plugin.name}"
-								link="/plugins/{plugin.owner}/{plugin.name}"
-								description={plugin.shortDescription}
-								thumbnail={plugin.media?.[0]}
-							>
-								<NeovimPluginMetaData
-									slot="footer"
-									stars={plugin.stars.toString()}
-									configCount={plugin.configCount}
-									category={plugin.category}
-									addedLastWeek={plugin.addedLastWeek}
-								/>
-							</RepositoryCard>
-						</div>
-					{/each}
-				</BigGridContainer>
-			</div>
+			{#if categoryPlugins.length > 0}
+				<div class="flex flex-col w-full">
+					<div class="mb-2 flex justify-between pl-1 tracking-wide">
+						<h3 class="flex items-center gap-1 text-lg">
+							Other Neovim {data.plugin.category} plugins
+						</h3>
+						<CoolLink
+							href={`/neovim/plugins/top?categories=${data.plugin.category}`}
+							text="more plugins"
+						/>
+					</div>
+
+					<BigGridContainer>
+						{#each categoryPlugins as plugin, _}
+							<div in:fade>
+								<RepositoryCard
+									name="{plugin.owner}/{plugin.name}"
+									link="/plugins/{plugin.owner}/{plugin.name}"
+									description={plugin.shortDescription}
+									thumbnail={plugin.media?.[0]}
+								>
+									<NeovimPluginMetaData
+										slot="footer"
+										stars={plugin.stars.toString()}
+										configCount={plugin.configCount}
+										category={plugin.category}
+										addedLastWeek={plugin.addedLastWeek}
+									/>
+								</RepositoryCard>
+							</div>
+						{/each}
+					</BigGridContainer>
+				</div>
+			{/if}
 		</div>
 	</div>
 </div>
