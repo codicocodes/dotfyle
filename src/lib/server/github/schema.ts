@@ -27,7 +27,8 @@ export const GithubTree = z.object({
 export type GithubTree = z.infer<typeof GithubTree>;
 
 export const GithubBlob = z.object({
-	content: z.string()
+	url: z.string(),
+	content: z.string(),
 });
 
 export type GithubBlob= z.infer<typeof GithubBlob>;

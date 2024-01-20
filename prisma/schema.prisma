@@ -115,6 +115,7 @@ model NeovimConfigPlugins {
   createdAt DateTime          @default(now())
   sync      NeovimConfigSync? @relation(fields: [sha, configId], references: [sha, configId], onDelete: Cascade)
   sha       String?
+  paths     String            @default("")
 
   @@id([configId, pluginId])
 }

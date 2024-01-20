@@ -18,7 +18,7 @@ import { findKnownLanguageServers } from './LanguageServerFinder';
 import { findPluginManager } from './NeovimPluginFinder';
 
 export class NeovimConfigSyncer {
-	foundPlugins: Set<number> = new Set();
+	foundPlugins: Record<number, string[]> = {};
 	treeTraverser: GithubFileContentTraverser;
 	syncedPluginManager = false;
 	leaderkey = 'unknown';
@@ -54,9 +54,9 @@ export class NeovimConfigSyncer {
 	}
 
 	async fileSyncer() {
-		for await (const content of this.treeTraverser.traverse()) {
+		for await (const { content, path } of this.treeTraverser.traverse()) {
 			await this.syncPluginManager(content);
-			this.findPlugins(content);
+			this.findPlugins(path, content);
 			this.syncLeaderKey(content);
 			this.findLanguageServers(content);
 			this.locCounter(content);
@@ -66,7 +66,11 @@ export class NeovimConfigSyncer {
 			saveLeaderkey(this.config.id, this.leaderkey),
 			saveLoc(this.config.id, this.loc),
 			syncLanguageServers(this.config.id, this.tree.sha, this.languageServers).then(() => {
-				return syncConfigPlugins(this.config.id, this.tree.sha, [...this.foundPlugins]);
+				const matchedPlugins = Object.entries(this.foundPlugins).map(([id, paths]) => ({
+					id: Number(id),
+					paths: paths.join(",")
+				}));
+				return syncConfigPlugins(this.config.id, this.tree.sha, matchedPlugins);
 			})
 		]);
 
@@ -85,12 +89,19 @@ export class NeovimConfigSyncer {
 		}
 	}
 
-	findPlugins(content: string) {
+	findPlugins(path: string, content: string) {
+		const url = `${path}#L{LINENUMBER}`;
 		for (const plugin of this.trackedPlugins) {
 			const { owner, name } = plugin;
 			const fullName = `${owner}/${name}`;
 			if (content.includes(fullName)) {
-				this.foundPlugins.add(plugin.id);
+				for (const [index, line] of content.split('\n').entries())
+					if (line.includes(fullName)) {
+						if (!this.foundPlugins[plugin.id]) {
+							this.foundPlugins[plugin.id] = [];
+						}
+						this.foundPlugins[plugin.id].push(url.replace('{LINENUMBER}', String(index + 1)));
+					}
 			}
 		}
 	}
@@ -189,7 +200,7 @@ export async function getNeovimConfigSyncer(
 }
 
 export class NeovimConfigSyncerFactory {
-	constructor(private trackedPlugins: NeovimPluginIdentifier[]) {}
+	constructor(private trackedPlugins: NeovimPluginIdentifier[]) { }
 	async create(token: string, config: NeovimConfig) {
 		const tree = await fetchRepoFileTree(token, config.owner, config.repo, config.branch);
 		return new NeovimConfigSyncer(token, tree, config, this.trackedPlugins);
