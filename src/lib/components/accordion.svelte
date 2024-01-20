@@ -3,7 +3,6 @@
 	import Fa from 'svelte-fa';
 	import GlossyCard from './GlossyCard.svelte';
 	import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-	import { slide } from 'svelte/transition';
 	export let open = false;
 	const id = nanoid();
 </script>

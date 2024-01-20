@@ -3,12 +3,13 @@
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import { trpc } from '$lib/trpc/client';
-	import { getMediaType, isAdmin } from '$lib/utils';
+	import { copyToClipboard, getMediaType, isAdmin } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faArrowTrendUp,
 		faBomb,
 		faCameraRetro,
+		faCopy,
 		faDeleteLeft,
 		faStar,
 		faToggleOff,
@@ -27,18 +28,17 @@
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
+	import { markdown } from 'svelte-highlight/languages';
+	import { Highlight } from 'svelte-highlight';
+	import { BRAND } from 'zod';
+	import Accordion from '$lib/components/accordion.svelte';
 	export let data: PageData;
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
-	let syncingPlugin = false;
 
-	let readme = '';
+	let style = 'flat';
 
-	$: {
-		if (data.plugin.id) {
-			readme = '';
-		}
-	}
+	$: badgesHtml = `<a href="https://dotfyle.com/plugins/${data.plugin.owner}/${data.plugin.name}">\n\t<img src="https://dotfyle.com/plugins/${data.plugin.owner}/${data.plugin.name}/shield?style=${style}" />\n</a>`;
 
 	$: firstImage = data.media.filter((m) => getMediaType(m) === 'image')?.[0]?.url;
 
@@ -174,6 +174,49 @@
 			</div>
 		</div>
 		<div class="flex flex-col w-full items-center justify-between gap-8">
+			<div class="flex w-full flex-col gap-2">
+				<Accordion>
+					<div slot="title" class="flex w-full justify-between items-center gap-1 mr-4">
+						<h3 class="flex text-lg flex-grow">GitHub Badge</h3>
+
+						<div class="flex gap-2 items-center">
+							<img
+								alt="plugin usage"
+								class="w-full h-full"
+								src="/plugins/{data.plugin.owner}/{data.plugin.name}/shield?style={style}"
+							/>
+						</div>
+					</div>
+					<div slot="content" class="flex flex-col m-4 gap-2">
+						<div class="flex w-full gap-2">
+							{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
+								<button
+									on:click={() => (style = currStyle)}
+									class={`flex items-center text-sm sm:text-xs text-black px-2 py-1 rounded-full ${
+										currStyle === style ? 'bg-accent-muted' : 'bg-white'
+									}`}
+								>
+									{currStyle}
+								</button>
+							{/each}
+
+							<button
+								class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded-full bg-white border-[1px] border-accent-muted hover:border-main"
+								on:click|stopPropagation={() => copyToClipboard(badgesHtml)}
+							>
+								<Fa icon={faCopy} />
+
+								Copy</button
+							>
+						</div>
+						<Highlight
+							class="bg-accent-muted p-4 rounded-lg text-sm tracking-wide rounded"
+							code={badgesHtml}
+							language={markdown}
+						/>
+					</div>
+				</Accordion>
+			</div>
 			{#if data.breaking.length > 0}
 				<div class="flex flex-col w-full">
 					<div class="mb-2 flex justify-between pl-1 tracking-wide">
