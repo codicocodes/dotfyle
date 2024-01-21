@@ -39,8 +39,8 @@ export function createCookie(cookies: Cookies, token: string, maxAge: number = 6
 export function verifyToken(cookies: Cookies): User | null {
 	const cookie = cookies.get(COOKIE_NAME);
 	if (!cookie) return null;
-	const jwtData = jwt.verify(cookie, getJwtAccessSecret());
 	try {
+		const jwtData = jwt.verify(cookie, getJwtAccessSecret());
 		return UserSchema.parse(jwtData);
 	} catch (err) {
 		console.error({ err });
