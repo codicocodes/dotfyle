@@ -8,6 +8,7 @@
 		faChevronRight,
 		faFire,
 		faNewspaper,
+		faPlus,
 		faRss,
 		faSearch,
 		faSeedling,
@@ -173,9 +174,18 @@
 				<Fa icon={faSeedling} size="sm" />
 				<span class="hidden sm:inline">new configurations</span>
 			</h3>
-			<a href="/neovim/configurations/new">
-				<Button text="configurations" icon={faChevronRight} />
-			</a>
+			<div class="flex gap-1">
+				<a
+					href="/add"
+					class="flex items-center justify-center w-8 h-8 text-white rounded-full flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
+					title="Add your configuration"
+				>
+					<Fa class="inline" size="xs" icon={faPlus} />
+				</a>
+				<a href="/neovim/configurations/new">
+					<Button text="configurations" icon={faChevronRight} />
+				</a>
+			</div>
 		</div>
 
 		{#await data.loading.configs}
