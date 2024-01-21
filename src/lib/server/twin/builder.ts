@@ -85,7 +85,7 @@ class PluginContentFetcher implements ContentFetcher {
 
 export class TwinPostBuilder {
 	template = './twin/template.md';
-	contentFetchers: ContentFetcher[] = [new PluginContentFetcher(), new CoreCommitContentFetcher()];
+	contentFetchers: ContentFetcher[] = [new CoreCommitContentFetcher(), new PluginContentFetcher()];
 
 	async validate(issue: number) {
 		const twinIssue = await prismaClient.twinPost.findUnique({
