@@ -2,7 +2,7 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import 'nprogress/nprogress.css';
 	import '@fontsource-variable/inter';
-	import { afterNavigate, invalidate } from '$app/navigation';
+	import { afterNavigate, invalidateAll } from '$app/navigation';
 	import { navigating } from '$app/stores';
 	import CoolText from '$lib/components/CoolText.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
@@ -42,9 +42,9 @@
 
 	const logout = async () => {
 		close();
-		await fetch('/api/auth', { method: 'DELETE' });
-		await invalidate(() => true);
-		$session.user = null;
+		await fetch('/api/auth', { method: 'DELETE', cache: "no-cache", });
+		await invalidateAll();
+		$session.user = null
 	};
 
 	let isOpen = false;
