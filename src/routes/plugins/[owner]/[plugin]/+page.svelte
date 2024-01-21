@@ -3,7 +3,7 @@
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 	import { trpc } from '$lib/trpc/client';
-	import { copyToClipboard, getMediaType, isAdmin } from '$lib/utils';
+	import { copyToClipboard, getMediaType, humanizeRelative, isAdmin } from '$lib/utils';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faArrowTrendUp,
@@ -12,6 +12,7 @@
 		faCopy,
 		faDeleteLeft,
 		faStar,
+		faSync,
 		faToggleOff,
 		faToggleOn,
 		faUsers
@@ -147,6 +148,15 @@
 						<Fa icon={faArrowTrendUp} />
 						{data.plugin.addedLastWeek}
 					</span>
+
+					{#if data.plugin.lastSyncedAt}
+						<span class="flex items-center gap-1" title="Time since last synced on Dotfyle">
+							<Fa size="xs" icon={faSync} />
+							{humanizeRelative(
+								new Date().getTime() - new Date(data.plugin.lastSyncedAt).getTime()
+							)}
+						</span>
+					{/if}
 				</div>
 
 				<a href="https://github.com/{data.plugin.owner}/{data.plugin.name}" target="_blank">

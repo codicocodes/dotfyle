@@ -7,7 +7,7 @@
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
-	import { faChevronCircleRight, faStar } from '@fortawesome/free-solid-svg-icons';
+	import { faChevronCircleRight, faStar, faSync } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { Highlight } from 'svelte-highlight';
 	import { bash } from 'svelte-highlight/languages';
@@ -17,6 +17,7 @@
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 	import Accordion from '$lib/components/accordion.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
+	import { humanizeRelative } from '$lib/utils';
 
 	export let data: PageData;
 	$: ({ config, plugins, languageServers } = data);
@@ -55,9 +56,15 @@
 		</a>
 	</h1>
 	<div class="flex gap-1 items-center justify-between font-semibold">
-		<div class="flex items-center gap-1">
-			<Fa size="xs" icon={faStar} />
-			{config.stars}
+		<div class="flex items-center gap-4">
+			<span class="flex items-center gap-1" title="Number of GitHub stars">
+				<Fa size="xs" icon={faStar} />
+				{config.stars}
+			</span>
+			<span class="flex items-center gap-1" title="Time since last synced on Dotfyle">
+				<Fa size="xs" icon={faSync} />
+				{humanizeRelative(new Date().getTime() - new Date(config.lastSyncedAt).getTime())}</span
+			>
 		</div>
 
 		<a href="https://github.com/{config.owner}/{config.repo}" target="_blank">
