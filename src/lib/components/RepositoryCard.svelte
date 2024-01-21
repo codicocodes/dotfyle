@@ -32,7 +32,7 @@
 							{name}
 						</span>
 					</div>
-					<span class="text-xs font-medium tracking-wide md:text-sm whitespace-normal">
+					<span class="text-xs tracking-wide md:text-sm whitespace-normal">
 						{description}
 					</span>
 				</div>

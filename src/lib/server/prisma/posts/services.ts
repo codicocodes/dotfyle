@@ -54,12 +54,12 @@ export async function getTwinByIssue(issue: number): Promise<
 > {
 	const [total, data] = await Promise.all([
 		prismaClient.twinPost.count({
-      where: {
-        publishedAt: {
-          not: null
-        }
-      }
-    }),
+			where: {
+				publishedAt: {
+					not: null
+				}
+			}
+		}),
 		prismaClient.twinPost.findUniqueOrThrow({
 			where: {
 				issue
@@ -72,8 +72,7 @@ export async function getTwinByIssue(issue: number): Promise<
 	};
 }
 
-export async function getTwinPosts(page: number) {
-	const perPage = 10;
+export async function getTwinPosts(page: number, perPage = 10) {
 	const args = {
 		select: {
 			createdAt: true,

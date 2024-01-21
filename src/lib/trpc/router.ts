@@ -58,7 +58,6 @@ import {
 	getTwinPosts
 } from '$lib/server/prisma/posts/services';
 import { getMediaForPlugin } from '$lib/server/prisma/media/service';
-import { marked } from 'marked';
 import { validateRepositoryDataIsNeovimPlugin } from '$lib/validation';
 import { PluginDTO } from '$lib/server/prisma/neovimplugins/schema';
 import { prismaClient } from '$lib/server/prisma/client';
@@ -334,10 +333,10 @@ export const router = t.router({
 
 	getTwinPosts: t.procedure
 		.input((input: unknown) => {
-			return z.object({ page: z.number() }).parse(input);
+			return z.object({ page: z.number(), perPage: z.number().max(10).optional() }).parse(input);
 		})
-		.query(async ({ input: { page } }) => {
-			return getTwinPosts(page);
+		.query(async ({ input: { page, perPage } }) => {
+			return getTwinPosts(page, perPage);
 		}),
 
 	getTwinByIssue: t.procedure

@@ -4,8 +4,11 @@
 	import type { PageData } from './$types';
 	import {
 		faArrowDown,
+		faCalendar,
+		faCalendarDay,
 		faChevronRight,
 		faFire,
+		faNewspaper,
 		faRss,
 		faSearch,
 		faSeedling,
@@ -214,5 +217,49 @@
 				{/each}
 			</BigGridContainer>
 		{/await}
+	</div>
+
+	<div class="px-4 sm:px-4 flex flex-col">
+		<div class="mb-2 flex justify-between pl-1 tracking-wide">
+			<h3 class="flex items-center gap-1 text-lg">
+				<Fa icon={faNewspaper} size="sm" />
+				<span class="hidden sm:inline">This Week in Neovim</span>
+			</h3>
+			<div class="flex gap-1">
+				<button
+					title="An RSS feed to consume This Week in Neovim"
+					class="flex items-center justify-center w-8 h-8 text-white rounded-full flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
+					on:click={() => copyToClipboard('https://dotfyle.com/this-week-in-neovim/rss.xml')}
+				>
+					<Fa class="inline" size="xs" icon={faRss} />
+				</button>
+				<a href="/neovim/configurations/new">
+					<Button text="news" icon={faChevronRight} />
+				</a>
+			</div>
+		</div>
+
+		<BigGridContainer>
+			{#each data.loading.twinPosts as issue, _}
+				<RepositoryCard
+					name=""
+					link="/this-week-in-neovim/{issue.issue}"
+					description={issue.title}
+					disableMinHeight
+				>
+					<div slot="footer" class="flex gap-4 my-2 text-sm items-center">
+						<div class="flex gap-2 items-center justify-center">
+							<Fa icon={faNewspaper} />
+							Issue #{issue.issue}
+						</div>
+
+						<div class="flex gap-2 items-center justify-center">
+							<Fa icon={faCalendarDay} />
+							{new Date(issue.createdAt).toLocaleDateString()}
+						</div>
+					</div>
+				</RepositoryCard>
+			{/each}
+		</BigGridContainer>
 	</div>
 </div>
