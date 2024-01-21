@@ -31,7 +31,6 @@
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import { markdown } from 'svelte-highlight/languages';
 	import { Highlight } from 'svelte-highlight';
-	import { BRAND } from 'zod';
 	import Accordion from '$lib/components/accordion.svelte';
 	export let data: PageData;
 

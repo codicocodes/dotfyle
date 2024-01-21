@@ -23,7 +23,6 @@
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import '../app.css';
-	import type { LayoutData } from './$types';
 	import nProgress from 'nprogress';
 	import { onMount } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
@@ -31,7 +30,6 @@
 	import { session, refetch } from '$lib/stores/session';
 	import { page } from '$app/stores';
 	import { trpc } from '$lib/trpc/client';
-	export let data: LayoutData;
 
 	afterNavigate(async () => {
 		// Add your error handling...

@@ -4,7 +4,6 @@
 	import type { PageData } from './$types';
 	import {
 		faArrowDown,
-		faCalendar,
 		faCalendarDay,
 		faChevronRight,
 		faFire,
@@ -24,6 +23,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { copyToClipboard } from '$lib/utils';
+	import { session } from '$lib/stores/session';
 
 	export let data: PageData;
 </script>
@@ -53,7 +53,7 @@
 				Discover and share <CoolText text="Neovim" /> plugins
 			</HeroTitle>
 
-			{#if !data.user}
+			{#if !$session}
 				<div class="flex justify-center items-center my-4 md:my-6 lg:my-8 xl:my-12">
 					<div
 						class="max-w-md px-4 sm:max-w-2xl sm:px-6 md:max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-7xl"
