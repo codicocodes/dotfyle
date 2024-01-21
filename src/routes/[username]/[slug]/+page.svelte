@@ -83,7 +83,7 @@
 		leaderkey={config.leaderkey}
 		loc={config.linesOfCode}
 	/>
-	{#if $session?.id === config.userId}
+	{#if $session.user?.id === config.userId}
 		<CoolTextWithChildren>
 			<GlossyCard>
 				<div class="flex flex-col w-full gap-2">

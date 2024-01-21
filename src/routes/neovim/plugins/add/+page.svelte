@@ -194,7 +194,7 @@
 			selected={selectedCategory}
 		/>
 		<Button
-			disabled={isAdmin($session)
+			disabled={isAdmin($session.user)
 				? !selectedCategory
 				: !selectedCategory || validationErrors.length !== 0}
 			text="Save Plugin"

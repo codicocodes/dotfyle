@@ -76,7 +76,7 @@
 
 {#if selectedMedia}
 	<Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
-		{#if $session && isAdmin($session)}
+		{#if $session.user && isAdmin($session.user)}
 			<div class="flex gap-2 my-2">
 				<Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
 				<Button

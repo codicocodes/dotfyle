@@ -57,7 +57,7 @@
 				<Fa icon={faArrowDown} />
 			</div>
 			<div class="w-full flex flex-col sm:flex-row justify-center items-center gap-2">
-				{#if !$session}
+				{#if !$session.user}
 					<a
 						href="/api/auth/github"
 						class="bg-transparent rounded-full shadow-xl shadow-white/30 hover:shadow-main"

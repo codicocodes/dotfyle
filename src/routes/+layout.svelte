@@ -36,14 +36,15 @@
 		if (!$refetch) return;
 		$refetch = false;
 		const user = await trpc($page).getUser.query();
-		$session = user;
+		$session.user = user;
+		$session.loading = false
 	});
 
 	const logout = async () => {
 		close();
 		await fetch('/api/auth', { method: 'DELETE' });
 		await invalidate(() => true);
-		$session = null;
+		$session.user = null;
 	};
 
 	let isOpen = false;
@@ -153,7 +154,7 @@
 			<button on:click={() => (showNavModal = true)} aria-label="Toggle navigation menu">
 				<Fa size="xl" class="block: sm:hidden h-full" icon={faBars} />
 			</button>
-			{#if $session}
+			{#if $session.user}
 				<a
 					href="/neovim/plugins/add"
 					class="border-[0.5px] border-base-400 bg-black/30 p-2 rounded"
@@ -170,13 +171,13 @@
 				>
 					<div class="flex items-center gap-2 text-lg">
 						<span class="hidden sm:inline">
-							{$session.username}
+							{$session.user.username}
 						</span>
 						<img
 							alt="User's avatar"
 							height="10"
 							width="10"
-							src={$session.avatarUrl}
+							src={$session.user.avatarUrl}
 							class="w-10 h-10 rounded-full"
 						/>
 					</div>
@@ -193,7 +194,7 @@
 		<div class="absolute right-0 w-40 mt-2 mr-6 z-50" id="user-menu">
 			<GlossyCard>
 				<div class="flex flex-col w-full h-full bg-base-900 sm:bg-transparent">
-					{#if $session && isAdmin($session)}
+					{#if $session.user && isAdmin($session.user)}
 						<CoolTextOnHover>
 							<button class="px-4 py-2 flex gap-2 items-center" on:click={syncPlugins}>
 								<div class="force-white-text">
@@ -210,7 +211,7 @@
 					<CoolTextOnHover>
 						<a
 							on:click={close}
-							href={`/${$session.username}`}
+							href={`/${$session.user.username}`}
 							class="px-4 py-2 flex gap-2 items-center"
 						>
 							<div class="force-white-text">
