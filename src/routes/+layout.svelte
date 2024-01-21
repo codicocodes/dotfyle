@@ -14,7 +14,6 @@
 	import {
 		faBars,
 		faKeyboard,
-		faNewspaper,
 		faPlus,
 		faRss,
 		faSignOut,
@@ -28,10 +27,6 @@
 	import nProgress from 'nprogress';
 	import { onMount } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
-	import { fly } from 'svelte/transition';
-	import { browser } from '$app/environment';
-	import { getLatestReadTwinPost, updateLatestReadTwinPost } from '$lib/services/twin';
-	import CoolTextWithChildren from '$lib/components/CoolTextWithChildren.svelte';
 	import ColorschemeSwitcher from '$lib/components/ColorschemeSwitcher.svelte';
 	export let data: LayoutData;
 	$: ({ user } = data);
@@ -77,23 +72,6 @@
 
 	let showNavModal = false;
 
-	let showTwinPost = false;
-
-	$: {
-		if (browser && data.latestTwinPost) {
-			const url = `/this-week-in-neovim/${data.latestTwinPost.issue}`;
-			const notOnCurrentTwinIssue = !window.location.toString().includes(url);
-			const read = getLatestReadTwinPost();
-			showTwinPost = notOnCurrentTwinIssue && (!read || read < data.latestTwinPost.issue);
-		}
-	}
-
-	function setReadTwinPost() {
-		if (data.latestTwinPost) {
-			updateLatestReadTwinPost(data.latestTwinPost.issue);
-			showTwinPost = false;
-		}
-	}
 </script>
 
 <svelte:head>
@@ -158,9 +136,6 @@
 
 					<a class="flex gap-2 items-center" href="/this-week-in-neovim">
 						<CoolTextOnHover>news</CoolTextOnHover>
-						{#if showTwinPost}
-							<div class="w-2 h-2 bg-secondary rounded-full animate-pulse" />
-						{/if}
 					</a>
 				</div>
 			</div>
