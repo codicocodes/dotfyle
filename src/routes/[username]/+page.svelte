@@ -45,7 +45,7 @@
 				<span class="flex justify-center text-sm tracking-wide font-light">
 					Joined {humanizeAbsolute(new Date(data.profile.createdAt))}
 				</span>
-				{#if data.me && data.me.id === data.profile.id}
+				{#if data.user && data.user.id === data.profile.id}
 					<div class="flex items-center justify-center">
 						<a class="text-sm font-semibold tracking-wide" href="/add">
 							<Button text="add config" icon={faPlus} loading={false} />
