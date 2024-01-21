@@ -106,6 +106,15 @@ export async function getConfigBySlug(
 ): Promise<NeovimConfigWithMetaData> {
 	const config = await prismaClient.neovimConfig.findFirstOrThrow({
 		include: {
+			syncs: {
+				orderBy: {
+					syncedAt: 'desc',
+				},
+				take: 1,
+				select: {
+					sha: true,
+				}
+			},
 			user: {
 				select: {
 					avatarUrl: true
@@ -463,7 +472,8 @@ function attachMetaData({
 	return {
 		...config,
 		ownerAvatar: user.avatarUrl,
-		pluginCount: _count.neovimConfigPlugins
+		pluginCount: _count.neovimConfigPlugins,
+		sha: config.syncs ? config.syncs[0].sha : null,
 	};
 }
 

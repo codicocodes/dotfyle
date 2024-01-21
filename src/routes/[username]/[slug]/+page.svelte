@@ -151,7 +151,10 @@
 							.split(',')
 							.filter(Boolean)
 							.map(
-								(p) => `https://github.com/${data.config.owner}/${data.config.repo}/blob/-/${p}`
+								(p) =>
+									`https://github.com/${data.config.owner}/${data.config.repo}/blob/${
+										data.config.sha || '-'
+									}/${p}`
 							)}
 					/>
 				</RepositoryCard>

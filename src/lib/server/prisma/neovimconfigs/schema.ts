@@ -5,7 +5,7 @@ export const CreateNeovimConfigDTO = z.object({
 	githubId: z.number(),
 	stars: z.number(),
 	owner: z.string(),
-  slug: z.string(),
+	slug: z.string(),
 	repo: z.string(),
 	root: z.string(),
 	branch: z.string(),
@@ -16,37 +16,40 @@ export const CreateNeovimConfigDTO = z.object({
 export type CreateNeovimConfigDTO = z.infer<typeof CreateNeovimConfigDTO>;
 
 export type NestedNeovimConfigWithPlugins = NeovimConfig & {
-    neovimConfigPlugins: (NeovimConfigPlugins & {
-        plugin: NeovimPlugin;
-    })[];
-}
+	neovimConfigPlugins: (NeovimConfigPlugins & {
+		plugin: NeovimPlugin;
+	})[];
+};
 
 export type NestedNeovimConfigWithMetaData = NeovimConfig & {
-  user: {
-    avatarUrl: string;
-  };
-  _count: {
-    neovimConfigPlugins: number;
-  };
-}
+	syncs?: { sha: string }[];
+	user: {
+		avatarUrl: string;
+	};
+	_count: {
+		neovimConfigPlugins: number;
+	};
+};
 export type NestedNeovimConfigWithToken = NeovimConfig & {
-    user: {
-        githubToken: {
-            accessToken: string;
-        } | undefined;
-    };
-}
+	user: {
+		githubToken:
+		| {
+			accessToken: string;
+		}
+		| undefined;
+	};
+};
 
 export interface NeovimConfigWithToken extends NeovimConfig {
-  _token: string;
+	_token: string;
 }
 
 export interface NeovimConfigWithPlugins extends NeovimConfig {
-  plugins: NeovimPlugin[];
+	plugins: NeovimPlugin[];
 }
 
-
 export interface NeovimConfigWithMetaData extends NeovimConfig {
-  ownerAvatar: string;
-  pluginCount: number;
+	ownerAvatar: string;
+	pluginCount: number;
+	sha: string | null
 }
