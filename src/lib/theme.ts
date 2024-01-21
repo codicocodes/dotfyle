@@ -3,8 +3,10 @@ export type ThemeName = (typeof themes)[number];
 
 export const setTheme = (theme: ThemeName) => {
 	document.cookie = `mode=${theme}; SameSite=Lax; Path=/`;
-	if (theme === 'light') document.documentElement.classList.add('light');
-	else document.documentElement.classList.remove('light');
+	const remove = theme === 'light' ? 'dark' : 'light'
+	const add = theme === 'light' ? 'light' : 'dark'
+	document.documentElement.classList.add(add);
+	document.documentElement.classList.remove(remove);
 };
 
 export const getTheme = () => {
@@ -13,7 +15,7 @@ export const getTheme = () => {
 		.map((c) => c.trim().split('='))
 		.find((c) => c[0] === 'mode');
 	let theme = cookie?.[1];
-	if (!theme || !themes.includes(theme[1] as ThemeName))
+	if (!theme || !themes.includes(theme as ThemeName))
 		theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 	return theme as ThemeName;
 };

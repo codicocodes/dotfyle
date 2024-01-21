@@ -30,16 +30,17 @@
 	import { session, refetch } from '$lib/stores/session';
 	import { page } from '$app/stores';
 	import { trpc } from '$lib/trpc/client';
-	import { getColorscheme, setColorscheme } from '$lib/theme';
+	import { getColorscheme, getTheme, setColorscheme, setTheme } from '$lib/theme';
 
 	afterNavigate(async () => {
+		setTheme(getTheme())
+		setColorscheme(getColorscheme())
 		// Add your error handling...
 		if (!$refetch) return;
 		$refetch = false;
 		const user = await trpc($page).getUser.query();
 		$session.user = user;
 		$session.loading = false
-		setColorscheme(getColorscheme())
 	});
 
 	const logout = async () => {
