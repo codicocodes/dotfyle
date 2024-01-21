@@ -138,30 +138,6 @@
 </Modal>
 
 <div>
-	{#if showTwinPost && data.latestTwinPost}
-		<div
-			in:fly
-			on:mousedown={(e) => {
-				if (e.button === 1) {
-					setReadTwinPost();
-				}
-			}}
-			on:keydown={setReadTwinPost}
-			on:click={setReadTwinPost}
-		>
-			<CoolTextWithChildren>
-				<a
-					href="/this-week-in-neovim/{data.latestTwinPost.issue}"
-					class="flex flex-row items-center justify-center bg-black/30 transition-colors shadow-lg p-2 px-5 border-base-500 hover:border-base-200 font-semibold mb-4 text-sm"
-				>
-					<span>
-						<Fa icon={faNewspaper} class="force-white-text inline mr-1" />
-						{data.latestTwinPost?.title}
-					</span>
-				</a>
-			</CoolTextWithChildren>
-		</div>
-	{/if}
 	<header class="flex items-center justify-between px-8 gap-4 mt-2">
 		<div class="flex items-center">
 			<div class="flex gap-12">
@@ -180,8 +156,11 @@
 						<CoolTextOnHover>configurations</CoolTextOnHover>
 					</a>
 
-					<a href="/this-week-in-neovim">
+					<a class="flex gap-2 items-center" href="/this-week-in-neovim">
 						<CoolTextOnHover>news</CoolTextOnHover>
+						{#if showTwinPost}
+							<div class="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+						{/if}
 					</a>
 				</div>
 			</div>
@@ -287,7 +266,7 @@
 						<span>New Neovim Plugins</span>
 					</a>
 
-					<br/>
+					<br />
 
 					<a href="/neovim/colorscheme/trending" class="flex items-center hover:text-white gap-2">
 						<span>Trending Neovim Colorschemes</span>
@@ -299,7 +278,7 @@
 						<span>New Neovim Colorschemes</span>
 					</a>
 
-					<br/>
+					<br />
 
 					<a href="/neovim/configurations/top" class="flex items-center hover:text-white gap-2">
 						<span>Awesome Neovim Configurations</span>
@@ -372,13 +351,17 @@
 						<span class="ml-1">Speedtyper.dev</span>
 					</a>
 					<span class="flex gap-2">
-					<a href="/terms" class="flex items-center hover:text-accent-muted gap-2" target="blank">
-						<span class="ml-1">Terms of Service</span>
-					</a>
-					|
-					<a href="/privacy" class="flex items-center hover:text-accent-muted gap-2" target="blank">
-						<span class="ml-1">Privacy Policy</span>
-					</a>
+						<a href="/terms" class="flex items-center hover:text-accent-muted gap-2" target="blank">
+							<span class="ml-1">Terms of Service</span>
+						</a>
+						|
+						<a
+							href="/privacy"
+							class="flex items-center hover:text-accent-muted gap-2"
+							target="blank"
+						>
+							<span class="ml-1">Privacy Policy</span>
+						</a>
 					</span>
 				</div>
 			</div>
