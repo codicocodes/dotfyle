@@ -8,6 +8,8 @@
 	import CoolText from '$lib/components/CoolText.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
+	import { copyToClipboard } from '$lib/utils';
+	import Button from '$lib/components/Button.svelte';
 
 	export let data: PageData;
 </script>
@@ -42,14 +44,26 @@
 
 			💚 Thank you for everything you've done for the community!
 		</p>
-		<p class="text-xl font-light my-4 items-center gap-2 inline">
-			<Fa class="inline mr-2" size="xs" icon={faRss} />
-			An rss feed to consume TWiN can be found
-			<a href="/this-week-in-neovim/rss.xml" target="_blank">
-				<CoolText text="here." />
-			</a>
-		</p>
 
+		<div class="flex gap-2">
+			<button
+				title="An RSS feed to consume This Week in Neovim"
+				class="px-4 py-1 text-white rounded-full flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
+				on:click={() => copyToClipboard('https://dotfyle.com/this-week-in-neovim/rss.xml')}
+			>
+				<Fa class="inline mr-2" size="xs" icon={faRss} />
+				This Week in Neovim
+			</button>
+
+			<button
+				title="An RSS feed to consume new Neovim plugins on Dotfyle"
+				class="px-4 py-1 text-white rounded-full flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
+				on:click={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml')}
+			>
+				<Fa class="inline mr-2" size="xs" icon={faRss} />
+				New Plugins
+			</button>
+		</div>
 		<h2 class="font-semibold text-3xl">Past issues</h2>
 		<div class="flex flex-col gap-4">
 			{#each data.posts as post}

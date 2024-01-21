@@ -6,6 +6,7 @@
 		faArrowDown,
 		faChevronRight,
 		faFire,
+		faRss,
 		faSearch,
 		faSeedling,
 		faStar
@@ -19,6 +20,7 @@
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
+	import { copyToClipboard } from '$lib/utils';
 
 	export let data: PageData;
 </script>
@@ -89,9 +91,19 @@
 				<Fa icon={faSeedling} size="sm" />
 				<span class="hidden sm:inline">newest plugins</span>
 			</h3>
-			<a href="/neovim/plugins/new" class="inline">
-				<Button text="more new plugins" icon={faChevronRight} />
-			</a>
+
+			<div class="flex gap-1">
+				<button
+					title="An RSS feed to consume new Neovim plugins on Dotfyle"
+					class="flex items-center justify-center w-8 h-8 text-white rounded-full flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
+					on:click={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml')}
+				>
+					<Fa class="inline" size="xs" icon={faRss} />
+				</button>
+				<a href="/neovim/plugins/new" class="inline">
+					<Button text="new plugins" icon={faChevronRight} />
+				</a>
+			</div>
 		</div>
 
 		{#await data.loading.newPlugins}
