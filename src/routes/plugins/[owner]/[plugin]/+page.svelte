@@ -33,6 +33,7 @@
 	import { Highlight } from 'svelte-highlight';
 	import Accordion from '$lib/components/accordion.svelte';
 	import { session } from '$lib/stores/session';
+	import ActionButton from '$lib/components/ActionButton.svelte';
 	export let data: PageData;
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
@@ -103,28 +104,31 @@
 <div class="w-full flex flex-col items-center h-full my-14 px-4">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
 		<div class="flex flex-col gap-2">
-			<h1 class="text-xl flex gap-2 items-center font-semibold">
-				{#if data.owner}
-					<img
-						alt=""
-						class="inline h-8 w-8 rounded-full items-center"
-						height="8"
-						width="8"
-						src={data.owner.avatarUrl}
-					/>
-					<a href="/{data.owner.username}">
-						<CoolTextOnHover>
-							{data.plugin.owner}
-						</CoolTextOnHover>
-					</a>
-				{:else}
-					{data.plugin.owner}
-				{/if}
-				/
-				<span>
-					{data.plugin.name}
-				</span>
-			</h1>
+			<div class="flex justify-between items-center">
+				<h1 class="text-xl flex gap-2 items-center font-semibold">
+					{#if data.owner}
+						<img
+							alt=""
+							class="inline h-8 w-8 rounded-full items-center"
+							height="8"
+							width="8"
+							src={data.owner.avatarUrl}
+						/>
+						<a href="/{data.owner.username}">
+							<CoolTextOnHover>
+								{data.plugin.owner}
+							</CoolTextOnHover>
+						</a>
+					{:else}
+						{data.plugin.owner}
+					{/if}
+					/
+					<span>
+						{data.plugin.name}
+					</span>
+				</h1>
+				<ActionButton />
+			</div>
 			<div class="flex text-base sm:text-base font-semibold tracking-wide justify-between">
 				<div class="flex gap-4">
 					<span
@@ -177,11 +181,14 @@
 				</span>
 			</div>
 
-			<div class="bg-black/30 p-4 rounded-lg border-[1px] border-accent-muted my-4">
-				<h2 class="flex items-center text-base sm:text-lg tracking-wide gap-2">
+			<div class="p-0 rounded-lg my-4">
+				<span class="flex items-center text-base sm:text-lg tracking-wide gap-2">
 					{data.plugin.shortDescription}
-				</h2>
+				</span>
 			</div>
+
+			<textarea class="rounded" bind:value={generatedDescription}>
+			</textarea>
 		</div>
 		<div class="flex flex-col w-full items-center justify-between gap-8">
 			{#if data.breaking.length > 0}
