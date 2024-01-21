@@ -89,7 +89,7 @@
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg">
 				<Fa icon={faSeedling} size="sm" />
-				<span class="hidden sm:inline">newest plugins</span>
+				<span class="hidden sm:inline">new plugins</span>
 			</h3>
 
 			<div class="flex gap-1">
@@ -143,7 +143,7 @@
 				<span class="hidden sm:inline">trending plugins</span>
 			</h3>
 			<a href="/neovim/plugins/trending">
-				<Button text="more trending plugins" icon={faChevronRight} />
+				<Button text="trending plugins" icon={faChevronRight} />
 			</a>
 		</div>
 
@@ -181,10 +181,10 @@
 		<div class="mb-2 flex justify-between pl-1 tracking-wide">
 			<h3 class="flex items-center gap-1 text-lg">
 				<Fa icon={faSeedling} size="sm" />
-				<span class="hidden sm:inline">more configurations</span>
+				<span class="hidden sm:inline">new configurations</span>
 			</h3>
 			<a href="/neovim/configurations/new">
-				<Button text="more configurations" icon={faChevronRight} />
+				<Button text="configurations" icon={faChevronRight} />
 			</a>
 		</div>
 

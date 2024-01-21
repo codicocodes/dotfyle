@@ -287,6 +287,8 @@
 						<span>New Neovim Plugins</span>
 					</a>
 
+					<br/>
+
 					<a href="/neovim/colorscheme/trending" class="flex items-center hover:text-white gap-2">
 						<span>Trending Neovim Colorschemes</span>
 					</a>
@@ -296,6 +298,9 @@
 					<a href="/neovim/colorscheme/new" class="flex items-center hover:text-white gap-2">
 						<span>New Neovim Colorschemes</span>
 					</a>
+
+					<br/>
+
 					<a href="/neovim/configurations/top" class="flex items-center hover:text-white gap-2">
 						<span>Awesome Neovim Configurations</span>
 					</a>
