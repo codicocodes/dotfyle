@@ -39,13 +39,13 @@ export const onError = (opts: {
 
 export const setColorscheme: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event, {
-		transformPageChunk: ({html}) => {
-			const colorscheme = event.cookies.get('colorscheme') || 'neovim'
-			const mode = event.cookies.get('mode') || 'dark'
-			return html.replace("%colorscheme%", colorscheme).replace("%mode%", mode)
+		transformPageChunk: ({ html }) => {
+			const colorscheme = event.cookies.get('colorscheme') || 'neovim';
+			const mode = event.cookies.get('mode') || 'dark';
+			return html.replace('%colorscheme%', colorscheme).replace('%mode%', mode);
 		}
 	});
-	return response
+	return response;
 };
 
 export const profilePerformance: Handle = async ({ event, resolve }) => {
@@ -55,6 +55,8 @@ export const profilePerformance: Handle = async ({ event, resolve }) => {
 	});
 	const route = event.url.pathname;
 
+	const qs = event.url.search;
+
 	const start = performance.now();
 	const response = await resolve(event);
 	const end = performance.now();
@@ -63,7 +65,9 @@ export const profilePerformance: Handle = async ({ event, resolve }) => {
 
 	const prefixIcon = responseTime >= 1000 ? '🐢' : '🚀';
 
-	console.log(`${prefixIcon} ${route} took ${responseTime.toFixed(2)} ms`);
+	console.log(
+		`${prefixIcon} ${route}${route.includes('/trpc/') ? '' : qs} took ${responseTime.toFixed(2)} ms`
+	);
 
 	return response;
 };
@@ -74,4 +78,10 @@ const handleTrpc = createTRPCHandle({
 	onError
 }) satisfies Handle;
 
-export const handle = sequence(Sentry.sentryHandle(), profilePerformance, handleTrpc, setColorscheme);
+export const handle = sequence(
+	Sentry.sentryHandle(),
+	profilePerformance,
+	handleTrpc,
+	setColorscheme
+);
+
