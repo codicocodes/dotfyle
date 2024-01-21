@@ -30,6 +30,7 @@
 	import { session, refetch } from '$lib/stores/session';
 	import { page } from '$app/stores';
 	import { trpc } from '$lib/trpc/client';
+	import { getColorscheme, setColorscheme } from '$lib/theme';
 
 	afterNavigate(async () => {
 		// Add your error handling...
@@ -38,6 +39,7 @@
 		const user = await trpc($page).getUser.query();
 		$session.user = user;
 		$session.loading = false
+		setColorscheme(getColorscheme())
 	});
 
 	const logout = async () => {
