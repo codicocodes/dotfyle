@@ -32,6 +32,7 @@
 	import { markdown } from 'svelte-highlight/languages';
 	import { Highlight } from 'svelte-highlight';
 	import Accordion from '$lib/components/accordion.svelte';
+	import { session } from '$lib/stores/session';
 	export let data: PageData;
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
@@ -75,7 +76,7 @@
 
 {#if selectedMedia}
 	<Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
-		{#if data.user && isAdmin(data.user)}
+		{#if $session && isAdmin($session)}
 			<div class="flex gap-2 my-2">
 				<Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
 				<Button

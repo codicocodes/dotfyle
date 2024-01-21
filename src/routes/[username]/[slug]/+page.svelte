@@ -18,6 +18,7 @@
 	import Accordion from '$lib/components/accordion.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import { humanizeRelative } from '$lib/utils';
+	import { session } from '$lib/stores/session';
 
 	export let data: PageData;
 	$: ({ config, plugins, languageServers } = data);
@@ -82,7 +83,7 @@
 		leaderkey={config.leaderkey}
 		loc={config.linesOfCode}
 	/>
-	{#if data.user?.id === config.userId}
+	{#if $session?.id === config.userId}
 		<CoolTextWithChildren>
 			<GlossyCard>
 				<div class="flex flex-col w-full gap-2">

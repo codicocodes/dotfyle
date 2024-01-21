@@ -11,6 +11,7 @@
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import SingleSelectFilter from '$lib/components/SingleSelectFilter.svelte';
 	import { isAdmin } from '$lib/utils';
+	import { session } from '$lib/stores/session';
 	import type { PageData } from './types';
 
 	export let data: PageData;
@@ -193,7 +194,7 @@
 			selected={selectedCategory}
 		/>
 		<Button
-			disabled={isAdmin(data.user)
+			disabled={isAdmin($session)
 				? !selectedCategory
 				: !selectedCategory || validationErrors.length !== 0}
 			text="Save Plugin"
