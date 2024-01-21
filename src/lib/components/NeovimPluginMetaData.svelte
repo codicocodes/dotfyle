@@ -77,7 +77,7 @@
 									</div>
 									<span class="whitespace-nowrap">
 										{link.replace(
-											/(https:\/\/github.com\/)([a-zA-Z0-9]+)\/[a-zA-Z0-9]+\/blob\/-\//,
+											/(https:\/\/github.com\/)([a-zA-Z0-9]+)\/[a-zA-Z0-9]+\/blob\/([a-zA-Z0-9-]+)\//,
 											''
 										)}
 									</span>
