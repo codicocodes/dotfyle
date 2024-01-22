@@ -10,10 +10,10 @@
 	let clean = '';
 	let preview = false;
 
-  async function openPreview() {
-    clean = await sanitizeHtml(marked(data.post.content))
-    preview = true
-  }
+	async function openPreview() {
+		clean = await sanitizeHtml(marked(data.post.content));
+		preview = true;
+	}
 </script>
 
 <Modal showModal={preview} onClose={() => (preview = false)}>
