@@ -473,7 +473,7 @@ function attachMetaData({
 		...config,
 		ownerAvatar: user.avatarUrl,
 		pluginCount: _count.neovimConfigPlugins,
-		sha: config.syncs ? config.syncs[0].sha : null,
+		sha: config.syncs?.[0]?.sha ?? null,
 	};
 }
 
