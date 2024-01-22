@@ -25,12 +25,11 @@ import {
 	getPluginsBySlug,
 	getPluginsWithDotfyleShield,
 	getPopularPlugins,
-	getReadme,
 	searchPlugins,
 	upsertNeovimPlugin
 } from '$lib/server/prisma/neovimplugins/service';
 import { getPluginSyncer, PluginSyncer } from '$lib/server/sync/plugins/sync';
-import { sanitizeHtml, hasBeenOneDay, isAdmin } from '$lib/utils';
+import { hasBeenOneDay, isAdmin } from '$lib/utils';
 import {
 	generateTwinIssue,
 	updateTwinIssue,

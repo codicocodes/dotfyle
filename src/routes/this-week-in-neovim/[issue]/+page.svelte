@@ -6,12 +6,12 @@
 	import ShareContainer from '$lib/components/ShareContainer.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { updateLatestReadTwinPost } from '$lib/services/twin';
-	import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+	import { faCalendarDay, faChevronLeft, faChevronRight, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 	import type { PageData } from './$types';
+	import Fa from 'svelte-fa';
 	export let data: PageData;
 	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
 	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
-	$: tweetUrl = `https://twitter.com/intent/tweet?url=${url}&text=${tweetText}&via=codicocodes`;
 	$: {
 		if (browser) {
 			updateLatestReadTwinPost(data.post.issue);
@@ -35,11 +35,18 @@
 </h1>
 
 {#if data.post.publishedAt}
-	<h5 class="flex justify-center">
+	<div class="flex gap-4 mx-2 items-center">
+	<h5 class="flex items-center gap-2">
+		<Fa icon={faNewspaper} />
+		<span>Issue #{data.post.issue}
+	</h5>
+	<h5 class="flex items-center gap-1">
+		<Fa icon={faCalendarDay} />
 		<time class="font-light p-2" itemprop="datePublished" datetime={data.post.publishedAt}>
 			{new Date(data.post.publishedAt).toLocaleDateString()}
 		</time>
 	</h5>
+</div>
 {/if}
 
 <div class="flex w-full justify-center">
