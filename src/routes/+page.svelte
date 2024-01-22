@@ -44,7 +44,7 @@
 			<div class="flex w-full items-center justify-center">
 				<a
 					href="https://github.com/codicocodes/dotfyle"
-					class="shadow-xl shadow-white/20 hover:shadow-main bg-transparent rounded-full"
+					class="shadow-xl shadow-white/20 hover:shadow-main bg-transparent rounded-full transition-all"
 				>
 					<Button icon={faStar} text="Star on GitHub" iconPosition="left" />
 				</a>

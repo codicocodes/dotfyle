@@ -16,7 +16,7 @@
 	on:click
 	class={`${
 		disabled || loading ? 'cursor-not-allowed' : ''
-	} border-[1px] border-accent-muted bg-black/30  p-2 py-1 xl:px-4 xl:py-1 rounded-full border-[1px] border-accent-muted flex gap-1 items-center ${
+	} border-[1px] transition-all border-accent-muted bg-black/30  p-2 py-1 xl:px-4 xl:py-1 rounded-full border-[1px] border-accent-muted flex gap-1 items-center ${
 		loading ? 'hover:cursor-not-allowed hover:bg-white/10' : 'hover:border-secondary'
 	}`}
 	{type}

@@ -20,7 +20,7 @@
 	>
 		<a
 			href={disabled ? null : '/api/auth/github'}
-			class={`bg-black/30 border-[1px] border-accent-muted hover:border-accent-bright text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-main ${
+			class={`bg-black/30 border-[1px] transition-all border-accent-muted hover:border-accent-bright text-sm font-semibold p-4 py-2 xl:px-6 xl:py-2 rounded-full flex gap-4 items-center hover:bg-gradient-main ${
 				disabled
 					? 'hover:bg-white/5 hover:cursor-not-allowed'
 					: 'hover:bg-gradient-primary shadow-xl hover:shadow-main/25'
