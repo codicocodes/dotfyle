@@ -187,11 +187,11 @@
 				</button>
 			{:else if $session.loading}
 				<div class="sm:flex items-center gap-2">
-					<div class="w-28 h-4 bg-white animate-pulse rounded"></div>
+					<div class="hidden sm:block w-28 h-4 bg-white animate-pulse rounded"></div>
 					<div class="w-10 h-10 bg-white animate-pulse rounded-full"></div>
 				</div>
 			{:else}
-				<div class="hidden sm:flex">
+				<div class="hidden sm:flex h-10">
 					<GithubLoginButton />
 				</div>
 			{/if}
