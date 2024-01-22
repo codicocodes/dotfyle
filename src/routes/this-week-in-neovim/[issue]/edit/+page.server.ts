@@ -1,6 +1,34 @@
+import { verifyToken } from '$lib/server/auth/services';
 import { trpc } from '$lib/trpc/client';
+import { isAdmin } from '$lib/utils';
 import { error, redirect } from '@sveltejs/kit';
-import type { Action } from './$types';
+import type { Action, PageServerLoad, PageServerLoadEvent } from './$types';
+
+export const load: PageServerLoad = async (event: PageServerLoadEvent) => {
+	const user = verifyToken(event.cookies);
+	const issueStr = event.params.issue;
+
+	if (!user) {
+		throw redirect(302, `/api/auth/github?next=this-week-in-neovim/${issueStr}/edit`);
+	}
+
+	if (!isAdmin(user)) {
+		throw redirect(302, '/?error=permission_denied');
+	}
+
+	if (isNaN(Number(issueStr))) {
+		throw error(404);
+	}
+	const issue = parseInt(issueStr, 10);
+	const post = await trpc(event)
+		.getTwinByIssue.query({ issue })
+		.catch(() => {
+			throw error(404);
+		});
+	return {
+		post
+	};
+};
 
 export const actions: Action = {
 	update: async (event: any) => {
@@ -28,7 +56,6 @@ export const actions: Action = {
 		const post = await trpc(event).publishTwinIssue.query({
 			issue
 		});
-		console.log('test');
 		throw redirect(302, `/this-week-in-neovim/${post.issue}`);
 	}
 };

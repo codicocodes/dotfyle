@@ -33,6 +33,7 @@
 	import { getColorscheme, getTheme, setColorscheme, setTheme } from '$lib/theme';
 
 	afterNavigate(async () => {
+		console.log("NAVIGATED")
 		setTheme(getTheme())
 		setColorscheme(getColorscheme())
 		// Add your error handling...
