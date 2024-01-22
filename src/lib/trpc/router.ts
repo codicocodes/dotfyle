@@ -182,7 +182,8 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { username, slug } }) => {
-			return getConfigBySlug(username, slug).catch(() => {
+			return getConfigBySlug(username, slug).catch((e) => {
+				console.log(e)
 				throw new TRPCError({
 					message: 'config not found',
 					code: 'NOT_FOUND'
