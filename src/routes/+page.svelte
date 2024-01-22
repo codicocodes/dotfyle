@@ -230,7 +230,7 @@
 				>
 					<Fa class="inline" size="xs" icon={faRss} />
 				</button>
-				<a href="/neovim/configurations/new">
+				<a href="/this-week-in-neovim">
 					<Button text="news" icon={faChevronRight} />
 				</a>
 			</div>
