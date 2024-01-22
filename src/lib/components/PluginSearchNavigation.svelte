@@ -14,7 +14,7 @@
 	}
 </script>
 
-<div class="w-full flex gap-2 mt-2 text-sm">
+<div class="w-full flex gap-2 text-sm">
 	{#each links as link}
 		<a
 			href={link.url}

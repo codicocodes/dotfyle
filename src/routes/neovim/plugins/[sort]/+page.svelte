@@ -8,10 +8,12 @@
 	import { navigate } from '$lib/navigate';
 	import Accordion from '$lib/components/accordion.svelte';
 	import Fa from 'svelte-fa';
-	import { faCircleXmark, faFilter } from '@fortawesome/free-solid-svg-icons';
+	import { faCircleXmark, faFilter, faRss } from '@fortawesome/free-solid-svg-icons';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import SearchHeader from '$lib/components/SearchHeader.svelte';
 	import PluginSearchNavigation from '$lib/components/PluginSearchNavigation.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import { copyToClipboard } from '$lib/utils';
 
 	export let data: PageData;
 
@@ -39,7 +41,14 @@
 				navigation={data.navigation}
 				placeholder="Search {data.pagination.total} plugins"
 			/>
-			<PluginSearchNavigation />
+			<div class="flex w-full justify-between items-center mt-2">
+				<PluginSearchNavigation />
+				<Button
+					title="An RSS feed to consume new Neovim plugins on Dotfyle"
+					iconPosition="left"
+					on:click={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml', "Plugin RSS Feed url copied to clipboard")}
+					on:click text="plugins" icon={faRss} />
+			</div>
 		</div>
 
 		<div class="mb-4">
