@@ -9,7 +9,6 @@
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import { copyToClipboard } from '$lib/utils';
-	import Button from '$lib/components/Button.svelte';
 
 	export let data: PageData;
 </script>
@@ -27,8 +26,8 @@
 <div class="w-full flex flex-col items-center px-4">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
 		<p class="flex text-xl font-light my-4">
-			This Week In Neovim is a weekly newsletter with updates from the Neovim ecosystem, including
-			new plugins and breaking changes.
+			This Week in Neovim is a weekly newsletter with updates from the Neovim ecosystem, including
+			Neovim core and the plugin community.
 		</p>
 
 		<p class="text-xl font-light my-4 inline">
