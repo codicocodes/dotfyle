@@ -22,6 +22,8 @@
 
 	export let data: PageData;
 	$: ({ config, plugins, languageServers } = data);
+	$: pluginManager = plugins?.find(p => p.category === 'plugin-manager')?.name ?? "unknown"
+
 </script>
 
 <svelte:head>
@@ -74,7 +76,7 @@
 	</div>
 	<NeovimConfigMetaData
 		syncing={false}
-		pluginManager={config.pluginManager ?? 'unknown'}
+		pluginManager={pluginManager}
 		pluginCount={config.pluginCount?.toString()}
 		root={config.root}
 		initFile={config.initFile}
