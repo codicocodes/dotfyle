@@ -148,6 +148,14 @@ export async function getAllPlugins() {
 	return nestedPluginData.map(flattenConfigCount);
 }
 
+export async function getUnsyncedPlugins() {
+	const nestedPluginData = await prismaClient.neovimPlugin.findMany({
+		where: { lastSyncedAt: null },
+		select: selectConfigCount
+	});
+	return nestedPluginData.map(flattenConfigCount);
+}
+
 export async function getPluginsWithDotfyleShield() {
 	const nestedPluginData = await prismaClient.neovimPlugin.findMany({
 		where: {
