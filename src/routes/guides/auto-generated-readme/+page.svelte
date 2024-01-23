@@ -101,7 +101,6 @@
 						initFile={config.initFile}
 						root={config.root}
 						stars={config.stars.toString()}
-						pluginManager={config.pluginManager ?? 'unknown'}
 						pluginCount={config.pluginCount.toString()}
 						loc={config.linesOfCode}
 					/>

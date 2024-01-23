@@ -12,7 +12,6 @@
 	initFile={$unsyncedConfig.initFile ?? 'unknown'}
 	root={$unsyncedConfig.root ?? 'unknown'}
 	stars={$unsyncedConfig.stars?.toString() ?? 'unknown'}
-	pluginManager={$unsyncedConfig.pluginManager ?? 'unknown'}
 	pluginCount={$unsyncedConfig.plugins?.length.toString() ?? 'unknown'}
 	loc={0}
 />

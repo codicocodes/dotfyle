@@ -12,7 +12,7 @@
 </h3>
 <NeovimConfigMetaData
 	{syncing}
-	pluginManager={$unsyncedConfig.pluginManager ?? 'unknown'}
+	pluginManager={'unknown'}
 	pluginCount={$unsyncedConfig.plugins ? $unsyncedConfig.plugins.length.toString() : 'unknown'}
 	root={$unsyncedConfig.root !== undefined
 		? $unsyncedConfig.root

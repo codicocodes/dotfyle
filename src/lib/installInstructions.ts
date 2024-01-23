@@ -7,6 +7,7 @@ export function getInstallCommand(config: NeovimConfig) {
     packer: `NVIM_APPNAME=${configPath}/${config.root} nvim --headless +"PackerSync" +qa`
   };
   const cloneCommand = `git clone git@github.com:${config.owner}/${config.repo} ~/.config/${config.owner}/${config.repo}`
+  // TODO: fix pluginManager usage
   return [cloneCommand, installCommands[config.pluginManager?.toLowerCase() ?? ""]].join("\n").trim()
 }
 

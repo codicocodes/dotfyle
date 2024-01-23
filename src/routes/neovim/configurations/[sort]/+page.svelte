@@ -131,7 +131,6 @@
 						initFile={item.initFile}
 						root={item.root}
 						stars={item.stars.toString()}
-						pluginManager={item.pluginManager ?? 'unknown'}
 						pluginCount={item.pluginCount.toString()}
 						loc={item.linesOfCode}
 					/>

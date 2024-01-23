@@ -207,7 +207,6 @@
 						initFile={conf.initFile}
 						root={conf.root}
 						stars={conf.stars.toString()}
-						pluginManager={conf.pluginManager ?? 'unknown'}
 						pluginCount={conf.pluginCount.toString()}
 						loc={conf.linesOfCode}
 					/>
