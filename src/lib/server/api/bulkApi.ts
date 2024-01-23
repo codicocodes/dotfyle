@@ -22,12 +22,12 @@ export class AsyncApiManager {
 
 	handleTaskError(e: any) {
 		if (e instanceof Error) {
-			console.log(`Failed task`, e.message);
+			console.log(`Failed task`, e.message, e);
 		}
 		if (e.status === 403) {
 			this.isRateLimited = true;
 			const reset = e.response.headers['x-ratelimit-reset'];
-			console.log('Rate limit rill reset at UTC: ', new Date(reset * 1000));
+			console.log('Rate limit will reset at UTC: ', new Date(reset * 1000));
 		}
 	}
 
