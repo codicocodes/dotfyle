@@ -9,8 +9,11 @@
 		faArrowTrendUp,
 		faBomb,
 		faCameraRetro,
+		faClose,
 		faCopy,
 		faDeleteLeft,
+		faEdit,
+		faSave,
 		faStar,
 		faSync,
 		faToggleOff,
@@ -33,6 +36,7 @@
 	import { Highlight } from 'svelte-highlight';
 	import Accordion from '$lib/components/accordion.svelte';
 	import { session } from '$lib/stores/session';
+	import ActionButton from '$lib/components/ActionButton.svelte';
 	export let data: PageData;
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
@@ -58,6 +62,29 @@
 			selectedMedia.thumbnail = !selectedMedia.thumbnail;
 		}
 	}
+
+	let editingDescription = false;
+
+	let description = data.plugin.description;
+
+	async function saveDescription() {
+		await trpc($page).savePluginDescription.query({
+			id: data.plugin.id,
+			description
+		});
+		data.plugin.description = description;
+	}
+
+	let generating = false;
+
+	async function generateDescription() {
+		generating = true;
+		let generated = await trpc($page).generatePluginDescription.query({
+			id: data.plugin.id
+		});
+		description = generated || 'failed generating';
+		generating = false;
+	}
 </script>
 
 <svelte:head>
@@ -69,7 +96,7 @@
 		title="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin
 			.name} | Alternatives to {data.plugin.name}"
 		url="https://dotfyle.com/plugins/{data.plugin.owner}/{data.plugin.name}"
-		description={data.plugin.shortDescription}
+		description={data.plugin.description || data.plugin.shortDescription}
 		image={firstImage}
 	/>
 </svelte:head>
@@ -103,28 +130,42 @@
 <div class="w-full flex flex-col items-center h-full my-14 px-4">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
 		<div class="flex flex-col gap-2">
-			<h1 class="text-xl flex gap-2 items-center font-semibold">
-				{#if data.owner}
-					<img
-						alt=""
-						class="inline h-8 w-8 rounded-full items-center"
-						height="8"
-						width="8"
-						src={data.owner.avatarUrl}
-					/>
-					<a href="/{data.owner.username}">
-						<CoolTextOnHover>
-							{data.plugin.owner}
-						</CoolTextOnHover>
-					</a>
-				{:else}
-					{data.plugin.owner}
+			<div class="flex justify-between items-center">
+				<h1 class="text-xl flex gap-2 items-center font-semibold">
+					{#if data.owner}
+						<img
+							alt=""
+							class="inline h-8 w-8 rounded-full items-center"
+							height="8"
+							width="8"
+							src={data.owner.avatarUrl}
+						/>
+						<a href="/{data.owner.username}">
+							<CoolTextOnHover>
+								{data.plugin.owner}
+							</CoolTextOnHover>
+						</a>
+					{:else}
+						{data.plugin.owner}
+					{/if}
+					/
+					<span>
+						{data.plugin.name}
+					</span>
+				</h1>
+				{#if $session.user && isAdmin($session.user)}
+					<ActionButton>
+						<div slot="actions" class="flex w-52">
+							<button
+								on:click={() => (editingDescription = true)}
+								class="px-4 py-2 flex w-full gap-2 items-center justify-between"
+							>
+								<Fa icon={faEdit} /> Edit description
+							</button>
+						</div>
+					</ActionButton>
 				{/if}
-				/
-				<span>
-					{data.plugin.name}
-				</span>
-			</h1>
+			</div>
 			<div class="flex text-base sm:text-base font-semibold tracking-wide justify-between">
 				<div class="flex gap-4">
 					<span
@@ -177,11 +218,29 @@
 				</span>
 			</div>
 
-			<div class="bg-black/30 p-4 rounded-lg border-[1px] border-accent-muted my-4">
-				<h2 class="flex items-center text-base sm:text-lg tracking-wide gap-2">
+			<div class="flex flex-col my-4 gap-4">
+				<span class="flex items-center text-lg sm:text-xl tracking-wide gap-2">
 					{data.plugin.shortDescription}
-				</h2>
+				</span>
+				<span class="flex items-center text-base sm:text-lg tracking-wide gap-2 leading-8">
+					{data.plugin.description}
+				</span>
 			</div>
+			{#if editingDescription}
+				<div class="flex flex-col w-full gap-4">
+					<textarea class="w-full rounded p-4" bind:value={description} />
+					<div class="flex items-center w-full justify-end gap-2">
+						<Button icon={faClose} text="Close" on:click={() => (editingDescription = false)} />
+						<Button
+							icon={faSync}
+							text="Generate"
+							on:click={generateDescription}
+							loading={generating}
+						/>
+						<Button icon={faSave} text="Save" on:click={saveDescription} />
+					</div>
+				</div>
+			{/if}
 		</div>
 		<div class="flex flex-col w-full items-center justify-between gap-8">
 			{#if data.breaking.length > 0}
@@ -238,51 +297,6 @@
 					</div>
 				</div>
 			{/if}
-			<div class="flex w-full flex-col gap-2">
-				<Accordion>
-					<div slot="title" class="flex w-full justify-between items-center gap-1 mr-4">
-						<h3 class="flex text-lg flex-grow">GitHub Badge</h3>
-
-						<div class="flex gap-2 items-center">
-							<img
-								alt="plugin usage"
-								class="w-full h-full"
-								src="/plugins/{data.plugin.owner}/{data.plugin.name}/shield?style={style}"
-							/>
-						</div>
-					</div>
-					<div slot="content" class="flex flex-col m-4 gap-2">
-						<div class="flex w-full gap-2">
-							{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
-								<button
-									data-umami-event="Plugin Badge - Change style"
-									on:click={() => (style = currStyle)}
-									class={`flex items-center text-sm sm:text-xs text-black px-2 py-1 rounded-full ${
-										currStyle === style ? 'bg-accent-muted' : 'bg-white'
-									}`}
-								>
-									{currStyle}
-								</button>
-							{/each}
-
-							<button
-								data-umami-event="Plugin Badge - Copy markdown"
-								class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded-full bg-white border-[1px] border-accent-muted hover:border-main"
-								on:click|stopPropagation={() => copyToClipboard(badgesHtml)}
-							>
-								<Fa icon={faCopy} />
-
-								Copy</button
-							>
-						</div>
-						<Highlight
-							class="bg-white/10 p-4 rounded-lg text-sm tracking-wide rounded"
-							code={badgesHtml}
-							language={markdown}
-						/>
-					</div>
-				</Accordion>
-			</div>
 
 			{#if data.configs.length > 0}
 				<div class="flex flex-col w-full">
@@ -352,4 +366,49 @@
 			{/if}
 		</div>
 	</div>
+			<div class="flex w-full flex-col gap-2 my-4">
+				<Accordion>
+					<div slot="title" class="flex w-full justify-between items-center gap-1 mr-4">
+						<h3 class="flex text-lg flex-grow">Plugin usage badge</h3>
+
+						<div class="flex gap-2 items-center">
+							<img
+								alt="plugin usage"
+								class="w-full h-full"
+								src="/plugins/{data.plugin.owner}/{data.plugin.name}/shield?style={style}"
+							/>
+						</div>
+					</div>
+					<div slot="content" class="flex flex-col m-4 gap-2">
+						<div class="flex w-full gap-1">
+							{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
+								<button
+									data-umami-event="Plugin Badge - Change style"
+									on:click={() => (style = currStyle)}
+									class={`flex items-center text-sm sm:text-xs text-black px-4 py-1 rounded ${
+										currStyle === style ? 'bg-accent-muted' : 'bg-white'
+									}`}
+								>
+									{currStyle}
+								</button>
+							{/each}
+
+							<button
+								data-umami-event="Plugin Badge - Copy markdown"
+								class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded bg-white border-[1px] border-accent-muted hover:border-main"
+								on:click|stopPropagation={() => copyToClipboard(badgesHtml)}
+							>
+								<Fa icon={faCopy} />
+
+								Copy</button
+							>
+						</div>
+						<Highlight
+							class="bg-white/10 p-4 rounded-lg text-sm tracking-wide rounded"
+							code={badgesHtml}
+							language={markdown}
+						/>
+					</div>
+				</Accordion>
+			</div>
 </div>

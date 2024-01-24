@@ -70,6 +70,7 @@ model NeovimPlugin {
   source               String
   category             String
   link                 String
+  description          String    @default("")
   shortDescription     String
   createdAt            DateTime  @default(now())
   readme               String    @default("")

@@ -122,6 +122,7 @@ const selectConfigCount = {
 	source: true,
 	category: true,
 	link: true,
+	description: true,
 	shortDescription: true,
 	createdAt: true,
 	lastSyncedAt: true,
