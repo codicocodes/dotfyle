@@ -9,8 +9,11 @@
 		faArrowTrendUp,
 		faBomb,
 		faCameraRetro,
+		faClose,
 		faCopy,
 		faDeleteLeft,
+		faEdit,
+		faSave,
 		faStar,
 		faSync,
 		faToggleOff,
@@ -59,6 +62,29 @@
 			selectedMedia.thumbnail = !selectedMedia.thumbnail;
 		}
 	}
+
+	let editingDescription = false;
+
+	let description = data.plugin.description;
+
+	async function saveDescription() {
+		await trpc($page).savePluginDescription.query({
+			id: data.plugin.id,
+			description
+		});
+		data.plugin.description = description;
+	}
+
+	let generating = false;
+
+	async function generateDescription() {
+		generating = true;
+		let generated = await trpc($page).generatePluginDescription.query({
+			id: data.plugin.id
+		});
+		description = generated || 'failed generating';
+		generating = false;
+	}
 </script>
 
 <svelte:head>
@@ -70,7 +96,7 @@
 		title="{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin
 			.name} | Alternatives to {data.plugin.name}"
 		url="https://dotfyle.com/plugins/{data.plugin.owner}/{data.plugin.name}"
-		description={data.plugin.shortDescription}
+		description={data.plugin.description || data.plugin.shortDescription}
 		image={firstImage}
 	/>
 </svelte:head>
@@ -127,7 +153,18 @@
 						{data.plugin.name}
 					</span>
 				</h1>
-				<ActionButton />
+				{#if $session.user && isAdmin($session.user)}
+					<ActionButton>
+						<div slot="actions" class="flex w-52">
+							<button
+								on:click={() => (editingDescription = true)}
+								class="px-4 py-2 flex w-full gap-2 items-center justify-between"
+							>
+								<Fa icon={faEdit} /> Edit description
+							</button>
+						</div>
+					</ActionButton>
+				{/if}
 			</div>
 			<div class="flex text-base sm:text-base font-semibold tracking-wide justify-between">
 				<div class="flex gap-4">
@@ -181,14 +218,29 @@
 				</span>
 			</div>
 
-			<div class="p-0 rounded-lg my-4">
-				<span class="flex items-center text-base sm:text-lg tracking-wide gap-2">
+			<div class="flex flex-col my-4 gap-4">
+				<span class="flex items-center text-lg sm:text-xl tracking-wide gap-2">
 					{data.plugin.shortDescription}
 				</span>
+				<span class="flex items-center text-base sm:text-lg tracking-wide gap-2 leading-8">
+					{data.plugin.description}
+				</span>
 			</div>
-
-			<textarea class="rounded" bind:value={generatedDescription}>
-			</textarea>
+			{#if editingDescription}
+				<div class="flex flex-col w-full gap-4">
+					<textarea class="w-full rounded p-4" bind:value={description} />
+					<div class="flex items-center w-full justify-end gap-2">
+						<Button icon={faClose} text="Close" on:click={() => (editingDescription = false)} />
+						<Button
+							icon={faSync}
+							text="Generate"
+							on:click={generateDescription}
+							loading={generating}
+						/>
+						<Button icon={faSave} text="Save" on:click={saveDescription} />
+					</div>
+				</div>
+			{/if}
 		</div>
 		<div class="flex flex-col w-full items-center justify-between gap-8">
 			{#if data.breaking.length > 0}

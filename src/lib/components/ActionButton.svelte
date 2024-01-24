@@ -10,8 +10,8 @@
 >
 	<Fa icon={faEllipsisVertical} />
 	{#if isOpen}
-		<div class="absolute top-10 right-0 z-50 bg-white text-black p-6 rounded-lg">
-			<button class="flex gap-1 items-center"><Fa icon={faSync} />Sync </button>
+		<div class="absolute top-10 right-0 z-50 bg-white text-black rounded-lg">
+			<slot name="actions" />
 		</div>
 	{/if}
 </button>

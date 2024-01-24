@@ -463,6 +463,23 @@ export const router = t.router({
 			}
 			const description = await generatePluginDescription(plugin.name, plugin.readme);
 			return description;
+		}),
+	savePluginDescription: t.procedure
+		.use(middlewares.isAuthenticated)
+		.use(middlewares.isAdmin)
+		.input((input: unknown) => {
+			return z
+				.object({
+					id: z.number(),
+					description: z.string()
+				})
+				.parse(input);
+		})
+		.query(async ({ input: { id, description } }) => {
+			await prismaClient.neovimPlugin.update({
+				where: { id },
+				data: { description }
+			});
 		})
 });
 
