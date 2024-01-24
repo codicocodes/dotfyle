@@ -60,7 +60,7 @@ import { getMediaForPlugin } from '$lib/server/prisma/media/service';
 import { validateRepositoryDataIsNeovimPlugin } from '$lib/validation';
 import { PluginDTO } from '$lib/server/prisma/neovimplugins/schema';
 import { prismaClient } from '$lib/server/prisma/client';
-import { generatePluginDescription } from '$lib/server/openai/api';
+import { generateInstallInstructions, generatePluginDescription } from '$lib/server/openai/api';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -479,6 +479,85 @@ export const router = t.router({
 			await prismaClient.neovimPlugin.update({
 				where: { id },
 				data: { description }
+			});
+		}),
+	generateInstallInstructions: t.procedure
+		.use(middlewares.isAuthenticated)
+		.use(middlewares.isAdmin)
+		.input((input: unknown) => {
+			return z
+				.object({
+					id: z.number(),
+					pluginManager: z.string()
+				})
+				.parse(input);
+		})
+		.query(async ({ input: { id, pluginManager } }) => {
+			const plugin = await prismaClient.neovimPlugin.findUniqueOrThrow({
+				where: { id },
+				select: { readme: true, owner: true, name: true }
+			});
+			if (!plugin.readme) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: 'Plugin does not have readme'
+				});
+			}
+			const instructions = await generateInstallInstructions(
+				plugin.owner,
+				plugin.name,
+				plugin.readme,
+				pluginManager,
+			);
+			return instructions;
+		}),
+	saveInstallInstructions: t.procedure
+		.use(middlewares.isAuthenticated)
+		.use(middlewares.isAdmin)
+		.input((input: unknown) => {
+			return z
+				.object({
+					id: z.number(),
+					pluginManager: z.string(),
+					instructions: z.string()
+				})
+				.parse(input);
+		})
+		.query(async ({ input: { id, instructions, pluginManager } }) => {
+			await prismaClient.neovimPluginInstallInstructions.upsert({
+				where: {
+					pluginId_pluginManager: {
+						pluginId: id,
+						pluginManager
+					}
+				},
+				create: {
+					pluginId: id,
+					pluginManager,
+					instructions
+				},
+				update: {
+					instructions
+				}
+			});
+		}),
+	getInstallInstructions: t.procedure
+		.input((input: unknown) => {
+			return z
+				.object({
+					owner: z.string(),
+					name: z.string()
+				})
+				.parse(input);
+		})
+		.query(async ({ input: {owner, name} }) => {
+			return await prismaClient.neovimPluginInstallInstructions.findMany({
+				where: {
+					plugin: {
+						owner,
+						name,
+					}
+				},
 			});
 		})
 });

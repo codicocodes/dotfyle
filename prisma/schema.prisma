@@ -86,7 +86,18 @@ model NeovimPlugin {
 
   media Media[]
 
+  installInstructions NeovimPluginInstallInstructions[]
+
   @@unique([owner, name])
+}
+
+model NeovimPluginInstallInstructions {
+  id            Int          @id @default(autoincrement())
+  plugin        NeovimPlugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  pluginId      Int
+  pluginManager String
+  instructions  String
+  @@unique([pluginId, pluginManager])
 }
 
 model LanguageServer {

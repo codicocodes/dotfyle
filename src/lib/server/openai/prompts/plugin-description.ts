@@ -35,7 +35,7 @@ export const getPluginDescriptionPrompts = (pluginName: string, readme: string) 
     {
       role: 'assistant',
       content:
-        `Do not mention: \`${pluginName}\``
+        `Start the sentence with: \`${pluginName}\``
     },
     {
       role: 'user',

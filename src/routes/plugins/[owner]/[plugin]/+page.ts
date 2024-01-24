@@ -4,7 +4,7 @@ import type { PageLoad, PageLoadEvent } from './$types';
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const { owner, plugin: name } = event.params;
-	const [[plugin, categoryPlugins], configs, breaking, ownerUser] = await Promise.all([
+	const [[plugin, categoryPlugins], configs, breaking, ownerUser, installInstructions] = await Promise.all([
 		trpc(event)
 			.getPlugin.query({ owner, name })
 			.then(async (plugin) => {
@@ -16,6 +16,7 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 		trpc(event).getUserByUsername.query(owner).catch(() => {
 			return null;
 		}),
+		trpc(event).getInstallInstructions.query({ owner, name }),
 	]);
 	return {
 		plugin,
@@ -24,5 +25,6 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 		breaking,
 		media: plugin.media,
 		owner: ownerUser,
+		installInstructions: Object.fromEntries(installInstructions.map(i => [i.pluginManager, i]))
 	};
 };

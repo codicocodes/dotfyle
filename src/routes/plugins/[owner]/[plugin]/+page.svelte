@@ -9,11 +9,9 @@
 		faArrowTrendUp,
 		faBomb,
 		faCameraRetro,
-		faClose,
 		faCopy,
 		faDeleteLeft,
 		faEdit,
-		faSave,
 		faStar,
 		faSync,
 		faToggleOff,
@@ -32,11 +30,13 @@
 	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
-	import { markdown } from 'svelte-highlight/languages';
+	import { lua, markdown } from 'svelte-highlight/languages';
 	import { Highlight } from 'svelte-highlight';
 	import Accordion from '$lib/components/accordion.svelte';
 	import { session } from '$lib/stores/session';
 	import ActionButton from '$lib/components/ActionButton.svelte';
+	import { githubDark } from 'svelte-highlight/styles';
+	import TextGeneration from '$lib/components/TextGeneration.svelte';
 	export let data: PageData;
 
 	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
@@ -65,6 +65,8 @@
 
 	let editingDescription = false;
 
+	let editingInstallInstructions = false;
+
 	let description = data.plugin.description;
 
 	async function saveDescription() {
@@ -75,19 +77,72 @@
 		data.plugin.description = description;
 	}
 
-	let generating = false;
+	async function generateInstallInstructions() {
+		let generated = await trpc($page).generateInstallInstructions.query({
+			id: data.plugin.id,
+			pluginManager
+		});
+		instructions = generated || 'failed generating';
+	}
+	async function saveInstallInstructions() {
+		await trpc($page).saveInstallInstructions.query({
+			id: data.plugin.id,
+			instructions,
+			pluginManager
+		});
+	}
 
 	async function generateDescription() {
-		generating = true;
 		let generated = await trpc($page).generatePluginDescription.query({
 			id: data.plugin.id
 		});
 		description = generated || 'failed generating';
-		generating = false;
 	}
+
+	let pluginManager = 'lazy.nvim';
+	let instructions = data.installInstructions?.[pluginManager]?.instructions ?? '';
 </script>
 
+<Modal
+	showModal={editingDescription}
+	onClose={() => {
+		editingDescription = false;
+	}}
+>
+	<div class="my-4 w-[800px] h-[400px]">
+		<TextGeneration bind:text={description} save={saveDescription} generate={generateDescription} />
+	</div>
+</Modal>
+
+<Modal
+	showModal={editingInstallInstructions}
+	onClose={() => {
+		editingInstallInstructions = false;
+	}}
+>
+	<div class="my-4 w-[800px] h-[400px]">
+		<div class="flex gap-1 my-2">
+			{#each ['lazy.nvim', 'packer.nvim'] as currPM}
+				<button
+					on:click={() => (pluginManager = currPM)}
+					class={`flex items-center text-sm sm:text-xs text-black px-4 py-1 rounded ${
+						pluginManager === currPM ? 'bg-accent-muted' : 'bg-white'
+					}`}
+				>
+					{currPM}
+				</button>
+			{/each}
+		</div>
+		<TextGeneration
+			bind:text={instructions}
+			save={saveInstallInstructions}
+			generate={generateInstallInstructions}
+		/>
+	</div>
+</Modal>
+
 <svelte:head>
+	{@html githubDark}
 	<title>
 		{data.plugin.owner}/{data.plugin.name} - Neovim plugin | Developers using {data.plugin.name} | Alternatives
 		to {data.plugin.name}
@@ -155,12 +210,18 @@
 				</h1>
 				{#if $session.user && isAdmin($session.user)}
 					<ActionButton>
-						<div slot="actions" class="flex w-52">
+						<div slot="actions" class="flex w-52 flex-col">
 							<button
 								on:click={() => (editingDescription = true)}
 								class="px-4 py-2 flex w-full gap-2 items-center justify-between"
 							>
-								<Fa icon={faEdit} /> Edit description
+								<Fa icon={faEdit} /> Description
+							</button>
+							<button
+								on:click={() => (editingInstallInstructions = true)}
+								class="px-4 py-2 flex w-full gap-2 items-center justify-between"
+							>
+								<Fa icon={faEdit} /> Install instructions
 							</button>
 						</div>
 					</ActionButton>
@@ -226,21 +287,6 @@
 					{data.plugin.description}
 				</span>
 			</div>
-			{#if editingDescription}
-				<div class="flex flex-col w-full gap-4">
-					<textarea class="w-full rounded p-4" bind:value={description} />
-					<div class="flex items-center w-full justify-end gap-2">
-						<Button icon={faClose} text="Close" on:click={() => (editingDescription = false)} />
-						<Button
-							icon={faSync}
-							text="Generate"
-							on:click={generateDescription}
-							loading={generating}
-						/>
-						<Button icon={faSave} text="Save" on:click={saveDescription} />
-					</div>
-				</div>
-			{/if}
 		</div>
 		<div class="flex flex-col w-full items-center justify-between gap-8">
 			{#if data.breaking.length > 0}
@@ -295,6 +341,29 @@
 							{/if}
 						{/each}
 					</div>
+				</div>
+			{/if}
+			{#if Object.keys(data.installInstructions).length > 0}
+				<div class="flex flex-col w-full">
+					<div class="mb-2 flex justify-between pl-1 tracking-wide">
+						<h3 class="flex items-center gap-1 text-lg">Install instructions</h3>
+					</div>
+					<div class="flex w-full gap-2">
+						{#each Object.keys(data.installInstructions).sort() as currPM}
+							<button
+								on:click={() => {
+									pluginManager = currPM;
+									instructions = data.installInstructions[currPM].instructions;
+								}}
+								class={`flex items-center text-sm sm:text-xs text-black px-4 py-1 rounded ${
+									pluginManager === currPM ? 'bg-accent-muted' : 'bg-white'
+								}`}
+							>
+								{currPM}
+							</button>
+						{/each}
+					</div>
+					<Highlight class="rounded" language={lua} code={instructions} />
 				</div>
 			{/if}
 
@@ -366,49 +435,45 @@
 			{/if}
 		</div>
 	</div>
-			<div class="flex w-full flex-col gap-2 my-4">
-				<Accordion>
-					<div slot="title" class="flex w-full justify-between items-center gap-1 mr-4">
-						<h3 class="flex text-lg flex-grow">Plugin usage badge</h3>
+	<div class="flex w-full flex-col gap-2 my-4">
+		<Accordion>
+			<div slot="title" class="flex w-full justify-between items-center gap-1 mr-4">
+				<h3 class="flex text-lg flex-grow">Plugin usage badge</h3>
 
-						<div class="flex gap-2 items-center">
-							<img
-								alt="plugin usage"
-								class="w-full h-full"
-								src="/plugins/{data.plugin.owner}/{data.plugin.name}/shield?style={style}"
-							/>
-						</div>
-					</div>
-					<div slot="content" class="flex flex-col m-4 gap-2">
-						<div class="flex w-full gap-1">
-							{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
-								<button
-									data-umami-event="Plugin Badge - Change style"
-									on:click={() => (style = currStyle)}
-									class={`flex items-center text-sm sm:text-xs text-black px-4 py-1 rounded ${
-										currStyle === style ? 'bg-accent-muted' : 'bg-white'
-									}`}
-								>
-									{currStyle}
-								</button>
-							{/each}
-
-							<button
-								data-umami-event="Plugin Badge - Copy markdown"
-								class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded bg-white border-[1px] border-accent-muted hover:border-main"
-								on:click|stopPropagation={() => copyToClipboard(badgesHtml)}
-							>
-								<Fa icon={faCopy} />
-
-								Copy</button
-							>
-						</div>
-						<Highlight
-							class="bg-white/10 p-4 rounded-lg text-sm tracking-wide rounded"
-							code={badgesHtml}
-							language={markdown}
-						/>
-					</div>
-				</Accordion>
+				<div class="flex gap-2 items-center">
+					<img
+						alt="plugin usage"
+						class="w-full h-full"
+						src="/plugins/{data.plugin.owner}/{data.plugin.name}/shield?style={style}"
+					/>
+				</div>
 			</div>
+			<div slot="content" class="flex flex-col m-4 gap-2">
+				<div class="flex w-full gap-1">
+					{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
+						<button
+							data-umami-event="Plugin Badge - Change style"
+							on:click={() => (style = currStyle)}
+							class={`flex items-center text-sm sm:text-xs text-black px-4 py-1 rounded ${
+								currStyle === style ? 'bg-accent-muted' : 'bg-white'
+							}`}
+						>
+							{currStyle}
+						</button>
+					{/each}
+
+					<button
+						data-umami-event="Plugin Badge - Copy markdown"
+						class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded bg-white border-[1px] border-accent-muted hover:border-main"
+						on:click|stopPropagation={() => copyToClipboard(badgesHtml)}
+					>
+						<Fa icon={faCopy} />
+
+						Copy</button
+					>
+				</div>
+				<Highlight class="text-sm tracking-wide rounded" code={badgesHtml} language={markdown} />
+			</div>
+		</Accordion>
+	</div>
 </div>
