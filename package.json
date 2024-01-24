@@ -69,6 +69,7 @@
 		"delay": "^5.0.0",
 		"jsonwebtoken": "^9.0.2",
 		"nanoid": "^5.0.4",
+		"openai": "^4.25.0",
 		"p-limit": "github:sindresorhus/p-limit",
 		"rss": "^1.2.2",
 		"svelte-fa": "^3.0.4",

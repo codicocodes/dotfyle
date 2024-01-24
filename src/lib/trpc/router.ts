@@ -60,6 +60,7 @@ import { getMediaForPlugin } from '$lib/server/prisma/media/service';
 import { validateRepositoryDataIsNeovimPlugin } from '$lib/validation';
 import { PluginDTO } from '$lib/server/prisma/neovimplugins/schema';
 import { prismaClient } from '$lib/server/prisma/client';
+import { generatePluginDescription } from '$lib/server/openai/api';
 
 export const router = t.router({
 	syncPlugin: t.procedure
@@ -182,7 +183,7 @@ export const router = t.router({
 		})
 		.query(async ({ input: { username, slug } }) => {
 			return getConfigBySlug(username, slug).catch((e) => {
-				console.log(e)
+				console.log(e);
 				throw new TRPCError({
 					message: 'config not found',
 					code: 'NOT_FOUND'
@@ -435,9 +436,27 @@ export const router = t.router({
 				.parse(input);
 		})
 		.query(async ({ input: { id } }) => {
-			const media = await prismaClient.media.findUniqueOrThrow({ where: { id }})
-			const thumbnail = !media.thumbnail
+			const media = await prismaClient.media.findUniqueOrThrow({ where: { id } });
+			const thumbnail = !media.thumbnail;
 			await prismaClient.media.update({ where: { id }, data: { thumbnail } });
+		}),
+	generatePluginDescription: t.procedure
+		.use(middlewares.isAuthenticated)
+		.use(middlewares.isAdmin)
+		.input((input: unknown) => {
+			return z
+				.object({
+					id: z.number()
+				})
+				.parse(input);
+		})
+		.query(async ({ input: { id } }) => {
+			const plugin = await prismaClient.neovimPlugin.findUniqueOrThrow({
+				where: { id },
+				select: { readme: true, name: true }
+			});
+			const description = await generatePluginDescription(plugin.name, plugin.readme);
+			return description;
 		})
 });
 
