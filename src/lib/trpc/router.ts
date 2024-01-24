@@ -455,6 +455,12 @@ export const router = t.router({
 				where: { id },
 				select: { readme: true, name: true }
 			});
+			if (!plugin.readme) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: 'Plugin does not have readme'
+				});
+			}
 			const description = await generatePluginDescription(plugin.name, plugin.readme);
 			return description;
 		})

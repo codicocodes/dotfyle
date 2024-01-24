@@ -9,7 +9,6 @@ const model = 'gpt-3.5-turbo';
 export const generatePluginDescription = async (name: string, readme: string) => {
   const messages = getPluginDescriptionPrompts(name, readme);
   const r = await openai.chat.completions.create({ messages, model });
-  console.log(r)
   return r.choices[0].message.content;
 };
 
