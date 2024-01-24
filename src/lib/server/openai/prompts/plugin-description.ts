@@ -4,12 +4,13 @@ export const getPluginDescriptionPrompts = (pluginName: string, readme: string) 
   return [
     {
       role: 'assistant',
-      content: 'You are a helpful assistant specialized in Neovim plugins.'
+      content:
+        'Your task is to summarize a Neovim plugin based on the Readme.'
     },
     {
       role: 'assistant',
       content:
-        'Your task is to summarize the purpose of a Neovim plugin based on the Readme'
+        `-- README BELOW -- \n${readme.substring(0, 10000)}`
     },
     {
       role: 'assistant',
@@ -19,27 +20,22 @@ export const getPluginDescriptionPrompts = (pluginName: string, readme: string) 
     {
       role: 'assistant',
       content:
-        'Do not use adjectives in the summary. Be objective about the purpose of the plugin.'
+        'Do not use adjectives in the summary. Be objective about the plugin.'
     },
     {
       role: 'assistant',
       content:
-        'Do not mention: `plugin`'
+        'Do not mention: `plugin`.'
     },
     {
       role: 'assistant',
       content:
-        'Do not mention: `neovim`'
+        'Do not mention: `neovim`.'
     },
     {
       role: 'assistant',
       content:
         `Do not mention: \`${pluginName}\``
-    },
-    {
-      role: 'assistant',
-      content:
-        `-- README BELOW -- \n${readme.substring(0, 10000)}`
     },
     {
       role: 'user',
