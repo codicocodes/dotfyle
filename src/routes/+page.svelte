@@ -4,15 +4,18 @@
 	import type { PageData } from './$types';
 	import {
 		faArrowDown,
+		faArrowTrendUp,
 		faCalendarDay,
 		faChevronRight,
 		faFire,
 		faNewspaper,
 		faPlus,
+		faPuzzlePiece,
 		faRss,
 		faSearch,
 		faSeedling,
-		faStar
+		faStar,
+		faUserGroup
 	} from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import CoolText from '$lib/components/CoolText.svelte';
@@ -54,7 +57,31 @@
 				Discover and share <CoolText text="Neovim" /> plugins
 			</HeroTitle>
 
-			<div class="flex justify-center mb-12">
+			<div class="w-full flex flex-col sm:flex-row justify-center items-center gap-4 text-sm font-semibold">
+				<div
+					class="bg-transparent rounded transition-all border-[1px] border-accent-muted flex items-center hover:border-secondary gap-2"
+				>
+					<Fa class="pl-2" icon={faPuzzlePiece} size="sm" />
+					plugins
+					<span class="bg-gradient-primary px-2 py-1 font-semibold">{data.loading.stats.plugins}</span>
+				</div>
+				<div
+					class="bg-transparent rounded transition-all border-[1px] border-accent-muted flex items-center hover:border-secondary gap-2"
+				>
+					<Fa class="pl-2" icon={faUserGroup} size="sm" />
+					developers
+					<span class="bg-gradient-primary px-2 py-1 font-semibold">{data.loading.stats.users}</span>
+				</div>
+				<div
+					class="bg-transparent rounded transition-all border-[1px] border-accent-muted flex items-center hover:border-secondary gap-2"
+				>
+					<Fa class="pl-2" icon={faArrowTrendUp} size="sm" />
+					plugin installations
+					<span class="bg-gradient-primary px-2 py-1 font-semibold">{data.loading.stats.installs}</span>
+				</div>
+			</div>
+
+			<div class="flex justify-center my-12">
 				<Fa icon={faArrowDown} />
 			</div>
 			<div class="w-full flex flex-col sm:flex-row justify-center items-center gap-2">

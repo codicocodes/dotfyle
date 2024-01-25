@@ -3,7 +3,7 @@ import type { PageLoad, PageLoadEvent } from './$types';
 import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
-	const [configs, newPlugins, trendingPlugins, twinPosts] = await Promise.all([
+	const [configs, newPlugins, trendingPlugins, twinPosts, stats] = await Promise.all([
 		trpc(event).getNewestConfigs.query() as unknown as NeovimConfigWithMetaData[],
 		trpc(event).searchPlugins.query({
 			sorting: 'new',
@@ -20,14 +20,16 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 		trpc(event).getTwinPosts.query({
 			page: 1,
 			perPage: 4
-		})
+		}),
+		trpc(event).getDotfyleStatisitics.query(),
 	]);
 	return {
 		loading: {
 			configs,
 			newPlugins,
 			trendingPlugins,
-			twinPosts: twinPosts.data
+			twinPosts: twinPosts.data,
+			stats
 		}
 	};
 };
