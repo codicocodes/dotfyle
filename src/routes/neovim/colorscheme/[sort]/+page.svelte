@@ -37,7 +37,9 @@
 				navigation={data.navigation}
 				placeholder="Search {data.pagination.total} colorschemes"
 			/>
-			<PluginSearchNavigation />
+				<div class="flex overflow-x-scroll">
+					<PluginSearchNavigation />
+				</div>
 		</div>
 
 		<div class="grid grid-cols-10 sm:gap-4 max-w-5xl text-xl">

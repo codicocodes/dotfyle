@@ -51,7 +51,9 @@
 					navigation={data.navigation}
 					placeholder="Search {data.pagination.total} configurations"
 				/>
+				<div class="flex overflow-x-scroll">
 				<PluginSearchNavigation />
+				</div>
 			</div>
 			<Accordion>
 				<div slot="title" class="flex gap-2 items-center text-sm max-w-full">
