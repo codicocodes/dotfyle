@@ -244,21 +244,21 @@
 				<div class="flex gap-4">
 					<span
 						title="GitHub stars"
-						class="py-1 rounded-full flex gap-1 items-center font-semibold"
+						class="py-1 flex gap-1 items-center font-semibold"
 					>
 						<Fa icon={faStar} />
 						{data.plugin.stars}
 					</span>
 					<span
 						title="Total installs on Dotfyle"
-						class="py-1 rounded-full flex gap-1 items-center font-semibold"
+						class="py-1 flex gap-1 items-center font-semibold"
 					>
 						<Fa icon={faUsers} />
 						{data.plugin.configCount}
 					</span>
 					<span
 						title="Installs last week"
-						class="py-1 rounded-full flex gap-1 items-center font-semibold"
+						class="py-1 flex gap-1 items-center font-semibold"
 					>
 						<Fa icon={faArrowTrendUp} />
 						{data.plugin.addedLastWeek}
@@ -281,12 +281,12 @@
 
 			<div class="flex flex-row w-full items-center gap-4 whitespace-nowrap flex-wrap">
 				<span
-					class="items-center text-sm sm:text-xs font-medium tracking-wide gap-2 bg-white text-black px-2 py-1 rounded-full"
+					class="items-center text-sm sm:text-xs font-medium tracking-wide gap-2 bg-white text-black px-2 py-1 rounded"
 				>
 					{data.plugin.category}
 				</span>
 				<span
-					class="items-center text-sm sm:text-xs font-medium tracking-wide gap-2 bg-white text-black px-2 py-1 rounded-full"
+					class="items-center text-sm sm:text-xs font-medium tracking-wide gap-2 bg-white text-black px-2 py-1 rounded"
 				>
 					{data.plugin.source}
 				</span>
@@ -430,7 +430,7 @@
 				<div class="flex flex-col w-full">
 					<div class="mb-2 flex justify-between pl-1 tracking-wide">
 						<h2 class="flex items-center gap-1 text-2xl font-semibold my-2">
-							Other {data.plugin.category} plugins
+							Other <span class="px-2 py-0 bg-white text-black rounded">{data.plugin.category}</span> plugins
 						</h2>
 						<CoolLink
 							href={`/neovim/plugins/top?categories=${data.plugin.category}`}
