@@ -22,9 +22,6 @@
 
 ## Language Servers`;
 
-	const badgesHtml = `<a href="https://dotfyle.com/{username}/{slug}"><img src="https://dotfyle.com/{owner}/{slug}/badges/plugins?style={style}" /></a>
-<a href="https://dotfyle.com/{username}/{slug}"><img src="https://dotfyle.com/{username}/{slug}/badges/leaderkey?style={style}" /></a>
-<a href="https://dotfyle.com/{username}/{slug}"><img src="https://dotfyle.com/{username}/{slug}/badges/plugin-manager?style={style}" /></a>`;
 </script>
 
 <svelte:head>
