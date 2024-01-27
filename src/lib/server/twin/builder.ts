@@ -53,6 +53,7 @@ class PluginContentFetcher implements ContentFetcher {
 			);
 			post = post.replaceAll('{category}', plugin.category);
 			post = post.replaceAll('{description}', plugin.shortDescription);
+			post = post.replaceAll('{summary}', plugin.description);
 			post = post.replaceAll('{githubUrl}', `https://github.com/${plugin.owner}/${plugin.name}`);
 			post = post.replaceAll('{dotfyleUrl}', `/plugins/${plugin.owner}/${plugin.name}?utm_source=twin-web`);
 			content.push(post);

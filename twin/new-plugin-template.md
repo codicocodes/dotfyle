@@ -4,6 +4,8 @@
 
 > {description}
 
+{summary}
+
 - [GitHub]({githubUrl})
 - [Dotfyle]({dotfyleUrl})
 - [Reddit]()
