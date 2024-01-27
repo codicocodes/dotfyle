@@ -12,6 +12,7 @@
 		faCopy,
 		faDeleteLeft,
 		faEdit,
+		faInfoCircle,
 		faStar,
 		faSync,
 		faToggleOff,
@@ -359,6 +360,11 @@
 							Install instructions
 						</h2>
 					</div>
+						<div
+							class="flex items-center gap-2 p-2 text-sm px-4 w-full whitespace-normal bg-black/30 rounded mb-4 italic border-l-[6px] border-blue-400"
+						>
+							<Fa icon={faInfoCircle} />Dotfyle does not endorse any plugins. Install at your own risk.
+						</div>
 					<div class="flex w-full gap-2">
 						{#each Object.keys(data.installInstructions).sort() as currPM}
 							<button
