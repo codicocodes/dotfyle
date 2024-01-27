@@ -374,7 +374,17 @@
 							</button>
 						{/each}
 					</div>
-					<Highlight class="rounded" language={lua} code={instructions} />
+					<div class="relative">
+						<Highlight class="rounded" language={lua} code={instructions} />
+						<button
+							class="absolute right-4 top-4 border-[1px] border-transparent hover:border-accent-muted p-2 rounded"
+							on:click={() => {
+								copyToClipboard(instructions);
+							}}
+						>
+							<Fa icon={faCopy} />
+						</button>
+					</div>
 				</div>
 			{/if}
 
