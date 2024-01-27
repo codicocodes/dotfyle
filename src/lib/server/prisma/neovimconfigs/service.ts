@@ -509,7 +509,7 @@ export async function getNeovimConfigsWithDotfyleShield() {
 		orderBy: {
 			dotfyleShieldAddedAt: 'desc'
 		},
-		take: 9
+		take: 6
 	});
 
 	return nestedConfigs.map(attachMetaData);

@@ -168,7 +168,7 @@ export async function getPluginsWithDotfyleShield() {
 		orderBy: {
 			dotfyleShieldAddedAt: 'desc'
 		},
-		take: 9
+		take: 6
 	});
 
 	return nestedPluginData.map(flattenConfigCount);
