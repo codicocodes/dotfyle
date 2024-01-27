@@ -16,7 +16,7 @@
 
 	export let data: PageData;
 
-	$: ogThumbnail = data.plugins.flatMap((p) => p.media).find((m) => getMediaType(m) === 'image');
+	$: ogThumbnail = data.plugins?.flatMap((p) => p.media).find((m) => getMediaType(m) === 'image');
 </script>
 
 <svelte:head>
