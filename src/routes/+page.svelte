@@ -28,6 +28,7 @@
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { copyToClipboard } from '$lib/utils';
 	import { session } from '$lib/stores/session';
+	import { blur } from 'svelte/transition';
 
 	export let data: PageData;
 </script>
@@ -85,15 +86,18 @@
 				<Fa icon={faArrowDown} />
 			</div>
 			<div class="w-full flex flex-col sm:flex-row justify-center items-center gap-2">
-				{#if !$session.user}
+				{#if !$session.loading && !$session.user}
 					<a
+					transition:blur
 						href="/api/auth/github"
 						class="bg-transparent rounded-full shadow-xl shadow-white/30 hover:shadow-main"
 					>
 						<Button text="Login | Signup" icon={faGithub} />
 					</a>
 				{/if}
-				<a href="/neovim/plugins/trending" class="bg-transparent rounded-full">
+				<a
+
+				href="/neovim/plugins/trending" class="bg-transparent rounded-full">
 					<Button text="Search plugins" icon={faSearch} />
 				</a>
 				<a href="/neovim/configurations/top" class="bg-transparent rounded-full">
