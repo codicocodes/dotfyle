@@ -322,10 +322,10 @@
 			{#if data.media.length > 0}
 				<div class="flex flex-col w-full">
 					<div class="mb-2 flex justify-between pl-1 tracking-wide">
-						<h3 class="flex items-center gap-1 text-lg">
+						<h2 class="flex items-center gap-1 text-2xl font-semibold my-2">
 							<Fa icon={faCameraRetro} size="sm" />
-							media
-						</h3>
+							Media
+						</h2>
 					</div>
 					<div
 						in:fade
