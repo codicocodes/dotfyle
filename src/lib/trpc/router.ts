@@ -24,6 +24,7 @@ import {
 	getPluginsByCategory,
 	getPluginsBySlug,
 	getPluginsWithDotfyleShield,
+	getPluginsWithMedia,
 	getPopularPlugins,
 	searchPlugins,
 	upsertNeovimPlugin
@@ -116,6 +117,28 @@ export const router = t.router({
 			const plugins = await searchPlugins(
 				input.query,
 				input.categories,
+				input.sorting,
+				input.page,
+				input.take
+			);
+			return plugins;
+		}),
+	searchPluginsWithMedia: t.procedure
+		.input((input: unknown) => {
+			return z
+				.object({
+					query: z.string().optional(),
+					category: z.string(),
+					sorting: z.enum(['new', 'popular', 'trending']),
+					page: z.number().default(1),
+					take: z.number().max(25).default(10)
+				})
+				.parse(input);
+		})
+		.query(async ({ input }) => {
+			const plugins = await getPluginsWithMedia(
+				input.query || '',
+				input.category,
 				input.sorting,
 				input.page,
 				input.take
