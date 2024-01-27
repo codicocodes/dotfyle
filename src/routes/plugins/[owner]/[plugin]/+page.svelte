@@ -185,8 +185,8 @@
 <div class="w-full flex flex-col items-center h-full my-14 px-4">
 	<div class="flex flex-col max-w-5xl w-full gap-4">
 		<div class="flex flex-col gap-2">
-			<div class="flex justify-between items-center">
-				<h1 class="text-xl flex gap-2 items-center font-semibold">
+			<div class="flex justify-between items-center flex-wrap">
+				<div class="text-lg sm:text-xl flex gap-2 items-center flex-wrap">
 					{#if data.owner}
 						<img
 							alt=""
@@ -195,19 +195,20 @@
 							width="8"
 							src={data.owner.avatarUrl}
 						/>
-						<a href="/{data.owner.username}">
+						<a href="/{data.owner.username}" class="inline whitespace-nowrap">
 							<CoolTextOnHover>
 								{data.plugin.owner}
 							</CoolTextOnHover>
 						</a>
 					{:else}
-						{data.plugin.owner}
+						<span class="whitespace-nowrap">{data.plugin.owner}</span>
 					{/if}
 					/
-					<span>
+					<span class="whitespace-nowrap">
 						{data.plugin.name}
 					</span>
-				</h1>
+				</div>
+
 				{#if $session.user && isAdmin($session.user)}
 					<ActionButton>
 						<div slot="actions" class="flex w-52 flex-col">
@@ -227,7 +228,18 @@
 					</ActionButton>
 				{/if}
 			</div>
-			<div class="flex text-base sm:text-base font-semibold tracking-wide justify-between">
+
+			<h1 class="text-3xl sm:text-5xl flex gap-2 items-center font-semibold">
+				{data.plugin.name}
+			</h1>
+
+			<span class="flex items-center text-lg sm:text-xl tracking-wide gap-2 mt-2">
+				{data.plugin.shortDescription}
+			</span>
+			<hr class="my-4" />
+			<div
+				class="flex text-base sm:text-base font-semibold tracking-wide justify-between flex-wrap"
+			>
 				<div class="flex gap-4">
 					<span
 						title="GitHub stars"
@@ -280,10 +292,7 @@
 			</div>
 
 			<div class="flex flex-col my-4 gap-4">
-				<span class="flex items-center text-lg sm:text-xl tracking-wide gap-2">
-					{data.plugin.shortDescription}
-				</span>
-				<span class="flex items-center text-base sm:text-lg tracking-wide gap-2 leading-8">
+				<span class="sm:text-lg tracking-wide">
 					{data.plugin.description}
 				</span>
 			</div>
@@ -345,8 +354,10 @@
 			{/if}
 			{#if Object.keys(data.installInstructions).length > 0}
 				<div class="flex flex-col w-full">
-					<div class="mb-2 flex justify-between pl-1 tracking-wide">
-						<h3 class="flex items-center gap-1 text-lg">Install instructions</h3>
+					<div class="mb-2 flex justify-between tracking-wide">
+						<h2 class="flex items-center gap-1 text-2xl font-semibold my-2">
+							Install instructions
+						</h2>
 					</div>
 					<div class="flex w-full gap-2">
 						{#each Object.keys(data.installInstructions).sort() as currPM}
@@ -370,9 +381,9 @@
 			{#if data.configs.length > 0}
 				<div class="flex flex-col w-full">
 					<div class="mb-2 flex justify-between pl-1 tracking-wide">
-						<h3 class="flex items-center gap-1 text-lg">
-							Neovim configurations using {data.plugin.name}
-						</h3>
+						<h2 class="flex items-center gap-1 text-2xl font-semibold my-2">
+							Developers using {data.plugin.name}
+						</h2>
 						<CoolLink
 							href={`/neovim/configurations/top?plugins=${data.plugin.owner}/${data.plugin.name}`}
 							text="more configs"
@@ -402,9 +413,9 @@
 			{#if categoryPlugins.length > 0}
 				<div class="flex flex-col w-full">
 					<div class="mb-2 flex justify-between pl-1 tracking-wide">
-						<h3 class="flex items-center gap-1 text-lg">
-							Other Neovim {data.plugin.category} plugins
-						</h3>
+						<h2 class="flex items-center gap-1 text-2xl font-semibold my-2">
+							Other {data.plugin.category} plugins
+						</h2>
 						<CoolLink
 							href={`/neovim/plugins/top?categories=${data.plugin.category}`}
 							text="more plugins"
