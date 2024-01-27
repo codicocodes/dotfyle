@@ -8,7 +8,7 @@ async function createTwinRssFeed() {
 	const feed = new RSS({
 		title: 'This Week in Neovim',
 		description:
-			'A weekly newsletter with updates from the Neovim ecosystem, including Neovim core and the plugin community.',
+			'A weekly newsletter with updates from the Neovim ecosystem, including Neovim core and the plugin community. New plugins RSS: https://dotfyle.com/neovim/plugins/rss.xml',
 		site_url: 'https://dotfyle.com/this-week-in-neovim',
 		feed_url: 'https://dotfyle.com/this-week-in-neovim/rss'
 	});
