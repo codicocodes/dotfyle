@@ -34,7 +34,7 @@
 		}
 		syncing = true;
 		const syncedConfig = await trpc($page)
-			.createNeovimConfig.query({
+			.createNeovimConfig.mutate({
 				repo: $unsyncedConfig.repo,
 				initFile: $unsyncedConfig.initFile as InitFileNames,
 				root: $unsyncedConfig.root,

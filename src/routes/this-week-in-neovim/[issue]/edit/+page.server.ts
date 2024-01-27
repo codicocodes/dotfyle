@@ -40,7 +40,7 @@ export const actions: Action = {
 		const data = await event.request.formData();
 		const content = data.get('content');
 		const title = data.get('title');
-		const post = await trpc(event).updateTwinIssue.query({
+		const post = await trpc(event).updateTwinIssue.mutate({
 			content,
 			title,
 			issue
@@ -53,7 +53,7 @@ export const actions: Action = {
 			throw error(404);
 		}
 		const issue = parseInt(issueStr, 10);
-		const post = await trpc(event).publishTwinIssue.query({
+		const post = await trpc(event).publishTwinIssue.mutate({
 			issue
 		});
 		throw redirect(302, `/this-week-in-neovim/${post.issue}`);

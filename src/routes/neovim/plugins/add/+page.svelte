@@ -73,7 +73,7 @@
 	function savePlugin() {
 		if (owner && name && selectedCategory) {
 			trpc($page)
-				.createNeovimPlugin.query({ owner, name, category: selectedCategory })
+				.createNeovimPlugin.mutate({ owner, name, category: selectedCategory })
 				.then((plugin) => {
 					reset();
 					goto(`/plugins/${plugin.owner}/${plugin.name}`);

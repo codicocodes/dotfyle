@@ -11,7 +11,7 @@ export const actions: Action = {
 		const input = z
 			.object({ days: z.number(), issue: z.number() })
 			.parse({ days, issue });
-		const post = await trpc(event).generateTwinIssue.query(input);
+		const post = await trpc(event).generateTwinIssue.mutate(input);
 		throw redirect(302, `/this-week-in-neovim/${post.issue}/edit`);
 	}
 };

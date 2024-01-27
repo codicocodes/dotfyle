@@ -74,7 +74,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { owner, name }, ctx }) => {
+		.mutation(async ({ input: { owner, name }, ctx }) => {
 			const user = ctx.getAuthenticatedUser();
 			const syncer = await getPluginSyncer(user, owner, name);
 			return syncer.sync();
@@ -319,7 +319,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ ctx, input }) => {
+		.mutation(async ({ ctx, input }) => {
 			const user = ctx.getAuthenticatedUser();
 			const token = await getGithubToken(user.id);
 			const tree = await fetchRepoFileTree(token, user.username, input.repo, input.branch);
@@ -413,7 +413,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { owner, name, category }, ctx }) => {
+		.mutation(async ({ input: { owner, name, category }, ctx }) => {
 			const token = await getGithubToken(ctx.user!.id);
 			const repository = await fetchGithubRepositoryByName(token, owner, name);
 			if (!isAdmin(ctx!.user)) {
@@ -445,7 +445,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { id } }) => {
+		.mutation(async ({ input: { id } }) => {
 			await prismaClient.media.delete({ where: { id } });
 		}),
 	toggleThumbnail: t.procedure
@@ -458,7 +458,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { id } }) => {
+		.mutation(async ({ input: { id } }) => {
 			const media = await prismaClient.media.findUniqueOrThrow({ where: { id } });
 			const thumbnail = !media.thumbnail;
 			await prismaClient.media.update({ where: { id }, data: { thumbnail } });
@@ -473,7 +473,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { id } }) => {
+		.mutation(async ({ input: { id } }) => {
 			const plugin = await prismaClient.neovimPlugin.findUniqueOrThrow({
 				where: { id },
 				select: { readme: true, name: true }
@@ -498,7 +498,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { id, description } }) => {
+		.mutation(async ({ input: { id, description } }) => {
 			await prismaClient.neovimPlugin.update({
 				where: { id },
 				data: { description }
@@ -515,7 +515,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { id, pluginManager } }) => {
+		.mutation(async ({ input: { id, pluginManager } }) => {
 			const plugin = await prismaClient.neovimPlugin.findUniqueOrThrow({
 				where: { id },
 				select: { readme: true, owner: true, name: true }
@@ -546,7 +546,7 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: { id, instructions, pluginManager } }) => {
+		.mutation(async ({ input: { id, instructions, pluginManager } }) => {
 			await prismaClient.neovimPluginInstallInstructions.upsert({
 				where: {
 					pluginId_pluginManager: {

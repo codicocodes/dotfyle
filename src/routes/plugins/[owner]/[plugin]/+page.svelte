@@ -50,12 +50,12 @@
 	let selectedMedia: Media | undefined;
 
 	async function deleteMedia(id: number) {
-		await trpc($page).deleteMedia.query({
+		await trpc($page).deleteMedia.mutate({
 			id
 		});
 	}
 	async function toggleThumbnail(id: number) {
-		await trpc($page).toggleThumbnail.query({
+		await trpc($page).toggleThumbnail.mutate({
 			id
 		});
 		if (selectedMedia && selectedMedia.id === id) {
@@ -70,7 +70,7 @@
 	let description = data.plugin.description;
 
 	async function saveDescription() {
-		await trpc($page).savePluginDescription.query({
+		await trpc($page).savePluginDescription.mutate({
 			id: data.plugin.id,
 			description
 		});
@@ -78,14 +78,14 @@
 	}
 
 	async function generateInstallInstructions() {
-		let generated = await trpc($page).generateInstallInstructions.query({
+		let generated = await trpc($page).generateInstallInstructions.mutate({
 			id: data.plugin.id,
 			pluginManager
 		});
 		instructions = generated || 'failed generating';
 	}
 	async function saveInstallInstructions() {
-		await trpc($page).saveInstallInstructions.query({
+		await trpc($page).saveInstallInstructions.mutate({
 			id: data.plugin.id,
 			instructions,
 			pluginManager
@@ -93,7 +93,7 @@
 	}
 
 	async function generateDescription() {
-		let generated = await trpc($page).generatePluginDescription.query({
+		let generated = await trpc($page).generatePluginDescription.mutate({
 			id: data.plugin.id
 		});
 		description = generated || 'failed generating';

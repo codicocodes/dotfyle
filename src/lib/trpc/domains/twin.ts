@@ -10,7 +10,7 @@ export const generateTwinIssue = t.procedure
 	.input((input: unknown) => {
 		return z.object({ issue: z.number(), days: z.number().optional().default(7) }).parse(input);
 	})
-	.query(async ({ input: { issue, days } }) => {
+	.mutation(async ({ input: { issue, days } }) => {
 		const twinBuilder = new TwinPostBuilder();
 		await twinBuilder.validate(issue);
 		return await twinBuilder.run(issue, days);
@@ -21,7 +21,7 @@ export const updateTwinIssue = t.procedure
 	.input((input: unknown) => {
 		return z.object({ issue: z.number(), title: z.string(), content: z.string() }).parse(input);
 	})
-	.query(async ({ input: { issue, title, content } }) => {
+	.mutation(async ({ input: { issue, title, content } }) => {
 		return await prismaClient.twinPost.update({
 			where: { issue },
 			data: {
@@ -36,7 +36,7 @@ export const publishTwinIssue = t.procedure
 	.input((input: unknown) => {
 		return z.object({ issue: z.number() }).parse(input);
 	})
-	.query(async ({ input: { issue } }) => {
+	.mutation(async ({ input: { issue } }) => {
 		return await prismaClient.twinPost
 			.update({
 				where: { issue },
