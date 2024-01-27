@@ -77,7 +77,7 @@
 
 				<span class="whitespace-normal"
 					>These plugins added the Dotfyle usage badge to their GitHub Readme. Add the badge to your
-					plugins readme to get on the list. The list updates once a day.</span
+					plugins readme to get on the list. The list updates once a week.</span
 				>
 			</div>
 		</GlossyCard>
