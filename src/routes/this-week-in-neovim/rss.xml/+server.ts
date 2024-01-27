@@ -4,13 +4,6 @@ import { prismaClient } from '$lib/server/prisma/client';
 import { marked } from 'marked';
 import { sanitizeHtml } from '$lib/utils';
 
-// @TODO: Move caching to redis
-let cachedFeed: string | undefined;
-
-export async function rebuildCachedTwinFeed() {
-	cachedFeed = await createTwinRssFeed();
-}
-
 async function createTwinRssFeed() {
 	const feed = new RSS({
 		title: 'This Week in Neovim',
@@ -49,10 +42,8 @@ async function createTwinRssFeed() {
 }
 
 export const GET: RequestHandler = async () => {
-	if (!cachedFeed) {
-		cachedFeed = await createTwinRssFeed();
-	}
-	return new Response(cachedFeed, {
+	const feed = await createTwinRssFeed();
+	return new Response(feed, {
 		headers: {
 			'Cache-Control': `public, max-age=0, s-maxage=${60 * 60 * 24}`, // seconds
 			'Content-Type': 'application/rss+xml'

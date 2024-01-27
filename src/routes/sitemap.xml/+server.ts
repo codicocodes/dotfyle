@@ -4,8 +4,6 @@ import type { RequestHandler } from '@sveltejs/kit';
 
 const website = 'https://dotfyle.com';
 
-let sitemap: string | undefined;
-
 const createSitemap = (
 	twinIssues: number[],
 	plugins: string[],
@@ -157,14 +155,12 @@ const getNeovimConfigs = async () => {
 };
 
 export const GET: RequestHandler = async () => {
-	if (!sitemap) {
-		const [issues, plugins, configs] = await Promise.all([
-			getTwinIssues(),
-			getPluginPages(),
-			getNeovimConfigs()
-		]);
-		sitemap = createSitemap(issues, plugins, configs);
-	}
+	const [issues, plugins, configs] = await Promise.all([
+		getTwinIssues(),
+		getPluginPages(),
+		getNeovimConfigs()
+	]);
+	const sitemap = createSitemap(issues, plugins, configs);
 	return new Response(sitemap, {
 		headers: {
 			'Cache-Control': `public, max-age=0, s-maxage=${60 * 60 * 24}`, // seconds

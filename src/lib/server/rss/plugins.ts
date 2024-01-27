@@ -4,24 +4,7 @@ import { marked } from 'marked';
 import { getMediaType, sanitizeHtml } from '$lib/utils';
 import fs from 'fs';
 
-// @TODO: Move caching to redis
-export let cachedFeed: string | undefined;
-
-// @TODO: Call when adding new plugin
-// Not necessary right now since we restart server once an hour
-export async function rebuildCachedPluginFeed() {
-	cachedFeed = await createPluginsRssFeed();
-	return cachedFeed;
-}
-
-export async function getCachedPluginFeed() {
-	if (!cachedFeed) {
-		cachedFeed = await createPluginsRssFeed();
-	}
-	return cachedFeed;
-}
-
-async function createPluginsRssFeed() {
+export async function createPluginsRssFeed() {
 	const feed = new RSS({
 		title: 'New Neovim Plugins',
 		description: 'The newest Neovim plugins on Dotfyle',
