@@ -18,7 +18,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.profile.username} - Neovim configugurations | Authored Neovim plugins</title>
+	<title>{data.profile.username} - Neovim configurations | Authored Neovim plugins</title>
 	<OpenGraph
 		title={data.profile.username}
 		url="https://dotfyle.com/{data.profile.username}"
