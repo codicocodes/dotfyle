@@ -50,14 +50,3 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 		}
 	};
 };
-
-export const actions = {
-	default: async (event: ActionData) => {
-		const data = await event.request.formData();
-		const issue = Number(data.get('issue'));
-		const days = Number(data.get('days'));
-		const input = z.object({ days: z.number(), issue: z.number() }).parse({ days, issue });
-		const post = await trpc(event).generateTwinIssue.mutate(input);
-		throw redirect(302, `/this-week-in-neovim/${post.issue}/edit`);
-	}
-};
