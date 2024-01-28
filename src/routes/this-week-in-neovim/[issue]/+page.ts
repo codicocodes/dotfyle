@@ -5,7 +5,6 @@ import { sanitizeHtml } from '$lib/utils';
 import { marked } from 'marked';
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
-	console.log("LOAD")
 	const issueStr = event.params.issue;
 	if (isNaN(Number(issueStr))) {
 		throw error(404);
