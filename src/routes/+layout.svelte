@@ -33,21 +33,25 @@
 	import { getColorscheme, getTheme, setColorscheme, setTheme } from '$lib/theme';
 
 	afterNavigate(async () => {
-		setTheme(getTheme())
-		setColorscheme(getColorscheme())
+		setTheme(getTheme());
+		setColorscheme(getColorscheme());
 		// Add your error handling...
 		if (!$refetch) return;
 		$refetch = false;
-		const user = await trpc($page).getUser.query();
+		const user = await trpc($page).getUser.query(undefined, {
+			context: {
+				skipBatch: true
+			}
+		});
 		$session.user = user;
-		$session.loading = false
+		$session.loading = false;
 	});
 
 	const logout = async () => {
 		close();
-		await fetch('/api/auth', { method: 'DELETE', cache: "no-cache", });
+		await fetch('/api/auth', { method: 'DELETE', cache: 'no-cache' });
 		await invalidateAll();
-		$session.user = null
+		$session.user = null;
 	};
 
 	let isOpen = false;
@@ -83,7 +87,6 @@
 	});
 
 	let showNavModal = false;
-
 </script>
 
 <svelte:head>
@@ -187,8 +190,8 @@
 				</button>
 			{:else if $session.loading}
 				<div class="sm:flex items-center gap-2">
-					<div class="hidden sm:block w-28 h-4 bg-white animate-pulse rounded"></div>
-					<div class="w-10 h-10 bg-white animate-pulse rounded-full"></div>
+					<div class="hidden sm:block w-28 h-4 bg-white animate-pulse rounded" />
+					<div class="w-10 h-10 bg-white animate-pulse rounded-full" />
 				</div>
 			{:else}
 				<div class="hidden sm:flex h-10">
