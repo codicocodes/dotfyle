@@ -7,8 +7,7 @@ import type { PageLoad, PageLoadEvent } from './$types';
 export const load: PageLoad = async function load(event: PageLoadEvent) {
 	const username = event.params.username;
 	const slug = event.params.slug;
-	const [me, config, plugins, languageServers] = await Promise.all([
-		trpc(event).getUser.query(),
+	const [config, plugins, languageServers] = await Promise.all([
 		trpc(event).getConfigBySlug.query({
 			username,
 			slug
@@ -26,7 +25,6 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 	});
 
 	return {
-		me,
 		config,
 		plugins,
 		languageServers
