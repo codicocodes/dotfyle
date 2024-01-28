@@ -1,12 +1,11 @@
 import { trpc } from '$lib/trpc/client';
-import { error, redirect } from '@sveltejs/kit';
-import type { ActionData, PageServerLoad, PageServerLoadEvent } from './$types';
-import { z } from 'zod';
+import { error } from '@sveltejs/kit';
+import type { PageLoad, PageLoadEvent } from './$types';
 import { sanitizeHtml } from '$lib/utils';
 import { marked } from 'marked';
-import { BASE_URL } from '$lib/server/auth/github/settings';
 
-export const load: PageServerLoad = async function load(event: PageServerLoadEvent) {
+export const load: PageLoad = async function load(event: PageLoadEvent) {
+	console.log("LOAD")
 	const issueStr = event.params.issue;
 	if (isNaN(Number(issueStr))) {
 		throw error(404);
@@ -20,7 +19,7 @@ export const load: PageServerLoad = async function load(event: PageServerLoadEve
 	const renderer = new marked.Renderer();
 	const linkRenderer = renderer.link;
 	renderer.link = (href: string, title: string, text: string) => {
-		const localLink = href.startsWith(BASE_URL) || href.startsWith('/');
+		const localLink = href.startsWith('https://dotfyle.com') || href.startsWith('/');
 		const html = linkRenderer.call(renderer, href, title, text);
 		return localLink
 			? html.replace(/^<a /, `<a target="_blank"`)

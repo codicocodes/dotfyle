@@ -52,7 +52,7 @@
 					placeholder="Search {data.pagination.total} configurations"
 				/>
 				<div class="flex overflow-x-scroll">
-				<PluginSearchNavigation />
+					<PluginSearchNavigation />
 				</div>
 			</div>
 			<Accordion>
