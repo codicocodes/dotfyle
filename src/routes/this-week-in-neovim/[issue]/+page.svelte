@@ -6,7 +6,12 @@
 	import ShareContainer from '$lib/components/ShareContainer.svelte';
 	import SmallTitle from '$lib/components/SmallTitle.svelte';
 	import { updateLatestReadTwinPost } from '$lib/services/twin';
-	import { faCalendarDay, faChevronLeft, faChevronRight, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+	import {
+		faCalendarDay,
+		faChevronLeft,
+		faChevronRight,
+		faNewspaper
+	} from '@fortawesome/free-solid-svg-icons';
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
 	export let data: PageData;
@@ -36,17 +41,17 @@
 
 {#if data.post.publishedAt}
 	<div class="flex gap-4 mx-2 items-center">
-	<h5 class="flex items-center gap-2">
-		<Fa icon={faNewspaper} />
-		<span>Issue #{data.post.issue}
-	</h5>
-	<h5 class="flex items-center gap-1">
-		<Fa icon={faCalendarDay} />
-		<time class="font-light p-2" itemprop="datePublished" datetime={data.post.publishedAt}>
-			{new Date(data.post.publishedAt).toLocaleDateString()}
-		</time>
-	</h5>
-</div>
+		<h5 class="flex items-center gap-2">
+			<Fa icon={faNewspaper} />
+			<span>Issue #{data.post.issue} </span>
+		</h5>
+		<h5 class="flex items-center gap-1">
+			<Fa icon={faCalendarDay} />
+			<time class="font-light p-2" itemprop="datePublished" datetime={data.post.publishedAt}>
+				{new Date(data.post.publishedAt).toLocaleDateString()}
+			</time>
+		</h5>
+	</div>
 {/if}
 
 <div class="flex w-full justify-center">
@@ -76,15 +81,16 @@
 <HtmlContent content={data.post.cleanHtml} />
 
 {#if data.post.license === 'CC-BY-SA'}
-	<a
-		href="https://github.com/phaazon/this-week-in-neovim-contents/blob/master/LICENSE"
-		target="_blank"
-	>
-		<img
-			height="10"
-			width="10"
-			alt="CC-BY-SA"
-			src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg"
-		/>
-	</a>
+	<div class="flex w-full items-center justify-center">
+		<a
+			href="https://github.com/phaazon/this-week-in-neovim-contents/blob/master/LICENSE"
+			target="_blank"
+		>
+			<img
+				class="px-2"
+				alt="CC-BY-SA"
+				src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg"
+			/>
+		</a>
+	</div>
 {/if}
