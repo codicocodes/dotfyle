@@ -111,7 +111,7 @@ model LanguageServer {
 model NeovimConfigToLanguageServer {
   languageServer     LanguageServer    @relation(fields: [languageServerName], references: [name], onDelete: Cascade)
   languageServerName String
-  config             NeovimConfig      @relation(fields: [configId], references: [id])
+  config             NeovimConfig      @relation(fields: [configId], references: [id], onDelete: Cascade)
   configId           Int
   sync               NeovimConfigSync? @relation(fields: [configId, sha], references: [configId, sha])
   sha                String
