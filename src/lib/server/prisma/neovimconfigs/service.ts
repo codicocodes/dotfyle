@@ -1,4 +1,9 @@
-import type { NeovimConfig, NeovimPluginManager, WhereType } from '@prisma/client';
+import {
+	Prisma,
+	type NeovimConfig,
+	type NeovimPluginManager,
+	type WhereType
+} from '@prisma/client';
 import { prismaClient } from '../client';
 import { paginator } from '../pagination';
 import type {
@@ -157,22 +162,8 @@ export async function getConfigsByUserID(id: number): Promise<NeovimConfigWithMe
 	return getConfigs(where);
 }
 
-export async function updateConfigUsername(
-	userId: number,
-	owner: string
-) {
-	 await prismaClient.neovimConfig.updateMany({
-		where: {
-			user: {
-				id: userId
-			}
-		},
-		data: { owner },
-	});
-}
-
-export async function deleteConfigsWithStaleOwner(userId: number, owner: string) {
-	await prismaClient.neovimConfig.deleteMany({
+export async function fixStaleUsernames(userId: number, owner: string) {
+	const staleConfigs = await prismaClient.neovimConfig.findMany({
 		where: {
 			user: {
 				id: userId
@@ -180,8 +171,28 @@ export async function deleteConfigsWithStaleOwner(userId: number, owner: string)
 			NOT: {
 				owner
 			}
-		},
-	})
+		}
+	});
+	for (const config of staleConfigs) {
+		await prismaClient.neovimConfig
+			.update({
+				where: {
+					id: config.id
+				},
+				data: { owner }
+			})
+			.catch(async (e) => {
+				if (e instanceof Prisma.PrismaClientKnownRequestError) {
+					if (e.code === 'P2002') {
+						await prismaClient.neovimConfig.delete({
+							where: {
+								id: config.id
+							}
+						});
+					}
+				}
+			});
+	}
 }
 
 export async function getConfigs(
