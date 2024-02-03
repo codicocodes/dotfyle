@@ -1,4 +1,4 @@
-import type { NeovimConfig, NeovimPluginManager } from '@prisma/client';
+import type { NeovimConfig, NeovimPluginManager, WhereType } from '@prisma/client';
 import { prismaClient } from '../client';
 import { paginator } from '../pagination';
 import type {
@@ -108,11 +108,11 @@ export async function getConfigBySlug(
 		include: {
 			syncs: {
 				orderBy: {
-					syncedAt: 'desc',
+					syncedAt: 'desc'
 				},
 				take: 1,
 				select: {
-					sha: true,
+					sha: true
 				}
 			},
 			user: {
@@ -148,6 +148,45 @@ export async function getConfigBySlug(
 }
 
 export async function getConfigsByUsername(username: string): Promise<NeovimConfigWithMetaData[]> {
+	const where = { user: { username } };
+	return getConfigs(where);
+}
+
+export async function getConfigsByUserID(id: number): Promise<NeovimConfigWithMetaData[]> {
+	const where = { user: { id } };
+	return getConfigs(where);
+}
+
+export async function updateConfigUsername(
+	userId: number,
+	owner: string
+) {
+	 await prismaClient.neovimConfig.updateMany({
+		where: {
+			user: {
+				id: userId
+			}
+		},
+		data: { owner },
+	});
+}
+
+export async function deleteConfigsWithStaleOwner(userId: number, owner: string) {
+	await prismaClient.neovimConfig.deleteMany({
+		where: {
+			user: {
+				id: userId
+			},
+			NOT: {
+				owner
+			}
+		},
+	})
+}
+
+export async function getConfigs(
+	where: WhereType<NeovimConfig>
+): Promise<NeovimConfigWithMetaData[]> {
 	const configs = await prismaClient.neovimConfig.findMany({
 		include: {
 			user: { select: { avatarUrl: true } },
@@ -157,11 +196,12 @@ export async function getConfigsByUsername(username: string): Promise<NeovimConf
 				}
 			}
 		},
-		where: { user: { username } },
+		where,
 		orderBy: [{ stars: 'desc' }, { repo: 'asc' }, { root: 'asc' }]
 	});
 	return configs.map(attachMetaData);
 }
+
 export async function upsertNeovimConfig(
 	userId: number,
 	config: CreateNeovimConfigDTO
@@ -268,7 +308,7 @@ export async function syncConfigPlugins(
 	sha: string,
 	matchedPlugins: PluginInput[]
 ): Promise<NeovimConfigWithPlugins> {
-	const upsert = matchedPlugins.map(({id: pluginId, paths } ) => ({
+	const upsert = matchedPlugins.map(({ id: pluginId, paths }) => ({
 		where: {
 			configId_pluginId: {
 				configId,
@@ -276,7 +316,7 @@ export async function syncConfigPlugins(
 			}
 		},
 		update: {
-			paths,
+			paths
 		},
 		create: {
 			paths,
@@ -321,7 +361,7 @@ export async function syncConfigPlugins(
 					deleteMany: {
 						configId,
 						pluginId: {
-							notIn: matchedPlugins.map(({id}) => id)
+							notIn: matchedPlugins.map(({ id }) => id)
 						}
 					}
 				}
@@ -473,7 +513,7 @@ function attachMetaData({
 		...config,
 		ownerAvatar: user.avatarUrl,
 		pluginCount: _count.neovimConfigPlugins,
-		sha: config.syncs?.[0]?.sha ?? null,
+		sha: config.syncs?.[0]?.sha ?? null
 	};
 }
 

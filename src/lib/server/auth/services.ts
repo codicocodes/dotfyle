@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { JwtSecretError } from './errors';
 import { redirect, type Cookies } from '@sveltejs/kit';
 import { UserSchema } from '$lib/server/prisma/users/schema';
-import { getConfigsByUsername } from '../prisma/neovimconfigs/service';
+import { getConfigsByUserID, getConfigsByUsername } from '../prisma/neovimconfigs/service';
 import { BASE_URL } from './github/settings';
 
 export function getJwtAccessSecret(): string {
@@ -56,7 +56,7 @@ export function refreshToken(c: Cookies, u: User) {
 export async function login(c: Cookies, u: User, next: string | null): Promise<never> {
 	const token = createSignedJwtToken(u);
 	createCookie(c, token);
-	const configs = await getConfigsByUsername(u.username);
+	const configs = await getConfigsByUserID(u.id);
 	if (next) {
 		const url = `${BASE_URL}/${next}`;
 		throw redirect(302, url);
