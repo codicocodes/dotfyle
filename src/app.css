@@ -28,7 +28,7 @@
 }
 
 #nprogress .bar {
-	@apply bg-secondary !important;
+	@apply bg-secondary;
 }
 
 @layer base {
