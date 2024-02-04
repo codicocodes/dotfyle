@@ -41,7 +41,7 @@
 				navigation={data.navigation}
 				placeholder="Search {data.pagination.total} plugins"
 			/>
-			<div class="flex w-full justify-between items-center mt-2 gap-2 overflow-scroll overflow-x-scroll">
+			<div class="flex w-full justify-between items-center mt-2 gap-2 overflow-x-auto">
 				<PluginSearchNavigation />
 				<Button
 					iconPosition="left"
