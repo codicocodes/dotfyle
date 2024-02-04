@@ -44,10 +44,9 @@
 			<div class="flex w-full justify-between items-center mt-2 gap-2 overflow-scroll overflow-x-scroll">
 				<PluginSearchNavigation />
 				<Button
-					title="An RSS feed to consume new Neovim plugins on Dotfyle"
 					iconPosition="left"
 					on:click={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml', "Plugin RSS Feed url copied to clipboard")}
-					on:click text="plugins" icon={faRss} />
+					text="plugins" icon={faRss} />
 			</div>
 		</div>
 
