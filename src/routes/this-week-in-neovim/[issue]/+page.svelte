@@ -27,7 +27,7 @@
 	afterNavigate(() => {
 		const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
 		iframe?.contentWindow?.postMessage(
-			{ giscus: { setConfig: { term: data.post.title } } },
+			{ giscus: { setConfig: { term: window.location.pathname } } },
 			'https://giscus.app'
 		);
 	});
@@ -51,7 +51,7 @@
 		data-repo-id="R_kgDOJKADOg"
 		data-category="This Week in Neovim"
 		data-category-id="DIC_kwDOJKADOs4CdHVi"
-		data-mapping="title"
+		data-mapping="pathname"
 		data-strict="0"
 		data-reactions-enabled="1"
 		data-emit-metadata="0"
