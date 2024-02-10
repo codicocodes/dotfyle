@@ -36,10 +36,10 @@ Finally, create the database:
 CREATE DATABASE dotfyle_dev;
 ```
 
-Once done, modify your `.env` file and update your `DATABASE_URL`:
+Once done, modify your `.env` file and update your `DATABASE_PRIVATE_URL`:
 
 ```
-DATABASE_URL=postgresql://<username>:<password>@localhost:5432/dotfyle_dev
+DATABASE_PRIVATE_URL=postgresql://<username>:<password>@localhost:5432/dotfyle_dev
 ```
 
 ### 4. Create a new GitHub OAuth Application
