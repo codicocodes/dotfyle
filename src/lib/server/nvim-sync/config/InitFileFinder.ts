@@ -4,8 +4,8 @@ import { TRPCError } from '@trpc/server';
 export enum InitFileNames {
 	initLua = 'init.lua',
 	initVim = 'init.vim',
-  initFnl = 'init.fnl',
-	vimRC = '.vimrc',
+	initFnl = 'init.fnl',
+	vimRC = '.vimrc'
 }
 
 export interface InitFile {
@@ -16,22 +16,22 @@ export interface InitFile {
 
 export class InitFileFinder {
 	excluded = ['ginit.vim'];
-  // @TODO: fix maybe later
-  // fail this
-  // init.lua
-  //    /codico
-  //        /lua
-  //            init.lua
-  //
-  // allow this
-  //    /astro-nvim
-  //        /lua
-  //            init.lua
+	// @TODO: fix maybe later
+	// fail this
+	// init.lua
+	//    /codico
+	//        /lua
+	//            init.lua
+	//
+	// allow this
+	//    /astro-nvim
+	//        /lua
+	//            init.lua
 
 	findAllInitFile(root: GithubTree): InitFile[] {
 		const { tree } = root;
 		const initLuas = this._findInitFiles(tree, InitFileNames.initLua);
-    const initFnl = this._findInitFiles(tree, InitFileNames.initFnl);
+		const initFnl = this._findInitFiles(tree, InitFileNames.initFnl);
 		const initVims = this._findInitFiles(tree, InitFileNames.initVim);
 		const vimRCs = this._findInitFiles(tree, InitFileNames.vimRC);
 		const paths = [...initLuas, ...initFnl, ...initVims, ...vimRCs];

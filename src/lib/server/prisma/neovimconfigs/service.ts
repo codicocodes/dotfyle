@@ -228,14 +228,6 @@ export async function upsertNeovimConfig(
 	return user;
 }
 
-export async function updatePluginManager(
-	id: number,
-	pluginManager: NeovimPluginManager
-): Promise<NeovimConfig> {
-	const config = await prismaClient.neovimConfig.update({ where: { id }, data: { pluginManager } });
-	return config;
-}
-
 export async function getConfigWithPlugins(id: number): Promise<NeovimConfigWithPlugins> {
 	const config = await prismaClient.neovimConfig.findUniqueOrThrow({
 		where: {

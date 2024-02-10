@@ -5,17 +5,15 @@ import {
 	syncConfigPlugins,
 	saveLeaderkey,
 	syncLanguageServers,
-	updatePluginManager,
 	getConfigWithPlugins,
 	saveLoc
 } from '$lib/server/prisma/neovimconfigs/service';
 import type { NeovimPluginIdentifier } from '$lib/server/prisma/neovimplugins/schema';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
 import { getGithubToken } from '$lib/server/prisma/users/service';
-import { NeovimPluginManager, type NeovimConfig, type User } from '@prisma/client';
+import type { NeovimConfig, User } from '@prisma/client';
 import { GithubFileContentTraverser } from './FileContentTraverser';
 import { findKnownLanguageServers } from './LanguageServerFinder';
-import { findPluginManager } from './NeovimPluginFinder';
 
 export class NeovimConfigSyncer {
 	foundPlugins: Record<number, string[]> = {};
@@ -40,12 +38,6 @@ export class NeovimConfigSyncer {
 	}
 
 	async treeSync(): Promise<NeovimConfigWithPlugins> {
-		const pluginManager = findPluginManager(this.tree, this.config);
-		if (pluginManager) {
-			this.config = await updatePluginManager(this.config.id, pluginManager);
-			this.syncedPluginManager = true;
-			// TODO: simple plugin finder to identify untracked plugins?
-		}
 		return await this.fileSyncer();
 	}
 
@@ -55,7 +47,6 @@ export class NeovimConfigSyncer {
 
 	async fileSyncer() {
 		for await (const { content, path } of this.treeTraverser.traverse()) {
-			await this.syncPluginManager(content);
 			this.findPlugins(path, content);
 			this.syncLeaderKey(content);
 			this.findLanguageServers(content);
@@ -68,7 +59,7 @@ export class NeovimConfigSyncer {
 			syncLanguageServers(this.config.id, this.tree.sha, this.languageServers).then(() => {
 				const matchedPlugins = Object.entries(this.foundPlugins).map(([id, paths]) => ({
 					id: Number(id),
-					paths: paths.join(",")
+					paths: paths.join(',')
 				}));
 				return syncConfigPlugins(this.config.id, this.tree.sha, matchedPlugins);
 			})
@@ -90,7 +81,7 @@ export class NeovimConfigSyncer {
 	}
 
 	findPlugins(path: string, content: string) {
-		content = content.replaceAll("\\/", "/"); // dotfyle.json has escaped forwardslashes
+		content = content.replaceAll('\\/', '/'); // dotfyle.json has escaped forwardslashes
 		const url = `${path}#L{LINENUMBER}`;
 		for (const plugin of this.trackedPlugins) {
 			const { owner, name } = plugin;
@@ -105,47 +96,6 @@ export class NeovimConfigSyncer {
 					}
 			}
 		}
-	}
-
-	async syncPluginManager(content: string) {
-		if (this.syncedPluginManager) {
-			return;
-		}
-
-		if (this.usesPacker(content)) {
-			this.config = await updatePluginManager(this.config.id, NeovimPluginManager.Packer);
-			this.syncedPluginManager = true;
-			return;
-		}
-
-		if (this.usesLazy(content)) {
-			this.config = await updatePluginManager(this.config.id, NeovimPluginManager.Lazy);
-			this.syncedPluginManager = true;
-			return;
-		}
-	}
-
-	usesLazy(content: string): boolean {
-		const identifiers = ['https://github.com/folke/lazy.nvim', 'folke/lazy.nvim'];
-		for (const literal of identifiers) {
-			if (content.includes(literal)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	usesPacker(content: string): boolean {
-		const packerIdentifiers = [
-			'https://github.com/wbthomason/packer.nvim',
-			'wbthomason/packer.nvim'
-		];
-		for (const literal of packerIdentifiers) {
-			if (content.includes(literal)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	findLeaderKey(content: string): string | undefined {
@@ -203,7 +153,7 @@ export async function getNeovimConfigSyncer(
 }
 
 export class NeovimConfigSyncerFactory {
-	constructor(private trackedPlugins: NeovimPluginIdentifier[]) { }
+	constructor(private trackedPlugins: NeovimPluginIdentifier[]) {}
 	async create(token: string, config: NeovimConfig) {
 		const tree = await fetchRepoFileTree(token, config.owner, config.repo, config.branch);
 		return new NeovimConfigSyncer(token, tree, config, this.trackedPlugins);
