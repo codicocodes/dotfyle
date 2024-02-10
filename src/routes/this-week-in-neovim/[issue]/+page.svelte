@@ -14,6 +14,7 @@
 	} from '@fortawesome/free-solid-svg-icons';
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
+	import { afterNavigate } from '$app/navigation';
 	export let data: PageData;
 	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
 	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
@@ -22,6 +23,14 @@
 			updateLatestReadTwinPost(data.post.issue);
 		}
 	}
+
+	afterNavigate(() => {
+		const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+		iframe?.contentWindow?.postMessage(
+			{ giscus: { setConfig: { term: data.post.title } } },
+			'https://giscus.app'
+		);
+	});
 </script>
 
 <svelte:head>
@@ -34,6 +43,26 @@
 		image="/twin.png"
 	/>
 </svelte:head>
+
+<head>
+	<script
+		src="https://giscus.app/client.js"
+		data-repo="codicocodes/dotfyle"
+		data-repo-id="R_kgDOJKADOg"
+		data-category="This Week in Neovim"
+		data-category-id="DIC_kwDOJKADOs4CdHVi"
+		data-mapping="title"
+		data-strict="0"
+		data-reactions-enabled="1"
+		data-emit-metadata="0"
+		data-input-position="bottom"
+		data-theme="preferred_color_scheme"
+		data-lang="en"
+		crossorigin="anonymous"
+		async
+	>
+	</script>
+</head>
 
 <h1 class="p-2">
 	<SmallTitle title={data.post.title} />
@@ -94,3 +123,4 @@
 		</a>
 	</div>
 {/if}
+<div class="giscus" />

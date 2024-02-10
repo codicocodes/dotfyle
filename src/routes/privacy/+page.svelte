@@ -90,6 +90,22 @@
 	information about cookie management with specific web browsers, it can be found at the browsers'
 	respective websites.
 </p>
+<ul>
+	<li>
+		<a
+			href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+			target="_blank"
+			rel="noreferrer noopener nofollow">GitHub</a
+		>
+	</li>
+	<li>
+		<a
+			target="_blank"
+			rel="noreferrer noopener nofollow"
+			href="https://github.com/giscus/giscus/blob/main/PRIVACY-POLICY.md">Giscus</a
+		>
+	</li>
+</ul>
 
 <h2>Links to other sites</h2>
 <p>
@@ -245,5 +261,9 @@
 	}
 	a {
 		@apply hover:text-accent-muted;
+	}
+	li {
+		list-style-type: disc;
+		@apply ml-4;
 	}
 </style>
