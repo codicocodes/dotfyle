@@ -90,6 +90,7 @@ export class NeovimConfigSyncer {
 	}
 
 	findPlugins(path: string, content: string) {
+		content = content.replaceAll("\\/", "/"); // dotfyle.json has escaped forwardslashes
 		const url = `${path}#L{LINENUMBER}`;
 		for (const plugin of this.trackedPlugins) {
 			const { owner, name } = plugin;
