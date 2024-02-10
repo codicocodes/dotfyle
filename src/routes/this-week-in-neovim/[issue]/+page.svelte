@@ -76,10 +76,16 @@
 		</h5>
 		<h5 class="flex items-center gap-1">
 			<Fa icon={faCalendarDay} />
-			<time class="font-light p-2" itemprop="datePublished" datetime={data.post.publishedAt}>
+			<time class="p-2" itemprop="datePublished" datetime={data.post.publishedAt}>
 				{new Date(data.post.publishedAt).toLocaleDateString()}
 			</time>
 		</h5>
+		{#if !data.post.license}
+			<a rel="author" href="/codicocodes" class="flex gap-2 items-center">
+				<img src="https://avatars.githubusercontent.com/u/76068197" class="w-6 h-6 rounded-full" />
+				codico
+			</a>
+		{/if}
 	</div>
 {/if}
 
