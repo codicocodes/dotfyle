@@ -419,6 +419,10 @@
 									stars={conf.stars.toString()}
 									pluginCount={conf.pluginCount.toString()}
 									loc={conf.linesOfCode}
+									links={conf.paths?.map(
+										(path) =>
+										`https://github.com/${conf.owner}/${conf.repo}/blob/${conf.sha ?? '-'}/${path}`
+									)}
 								/>
 							</div>
 						{/each}

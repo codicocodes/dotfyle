@@ -1,8 +1,4 @@
-import {
-	Prisma,
-	type NeovimConfig,
-	type WhereType,
-} from '@prisma/client';
+import { Prisma, type NeovimConfig, type WhereType } from '@prisma/client';
 import { prismaClient } from '../client';
 import { paginator } from '../pagination';
 import type {
@@ -75,6 +71,17 @@ export async function getConfigsForPlugin(
 			_count: {
 				select: {
 					neovimConfigPlugins: true
+				}
+			},
+			neovimConfigPlugins: {
+				select: {
+					paths: true
+				},
+				where: {
+					plugin: {
+						owner,
+						name
+					}
 				}
 			}
 		},
@@ -536,7 +543,7 @@ function attachMetaData({
 		ownerAvatar: user.avatarUrl,
 		pluginCount: _count.neovimConfigPlugins,
 		sha: config.syncs?.[0]?.sha ?? null,
-		paths: config.neovimConfigPlugins?.flatMap(p => p.paths.split(",")),
+		paths: config.neovimConfigPlugins?.flatMap((p) => p.paths.split(','))
 	};
 }
 
