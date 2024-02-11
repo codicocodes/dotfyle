@@ -5,7 +5,6 @@
 		faChevronDown,
 		faChevronUp,
 		faExternalLink,
-		faSearch,
 		faStar,
 		faUsers
 	} from '@fortawesome/free-solid-svg-icons';
