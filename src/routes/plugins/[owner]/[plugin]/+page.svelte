@@ -457,6 +457,7 @@
 										configCount={plugin.configCount}
 										category={plugin.category}
 										addedLastWeek={plugin.addedLastWeek}
+										name="{plugin.owner}/{plugin.name}"
 									/>
 								</RepositoryCard>
 							</div>

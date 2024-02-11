@@ -5,6 +5,7 @@
 		faChevronDown,
 		faChevronUp,
 		faExternalLink,
+		faSearch,
 		faStar,
 		faUsers
 	} from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +18,7 @@
 	export let category: string;
 	export let addedLastWeek: number;
 	export let links: string[] = [];
+	export let name: string;
 
 	let isOpen = false;
 
@@ -31,13 +33,15 @@
 			<Fa icon={faStar} />
 			{stars}
 		</span>
-		<span
-			title="Total installs on Dotfyle"
-			class="py-1 rounded-full flex gap-1 items-center font-semibold"
-		>
-			<Fa icon={faUsers} />
-			{configCount}
-		</span>
+		{#if configCount === 0}
+			<span
+				title="Total installs on Dotfyle"
+				class="py-1 rounded-full flex gap-1 items-center font-semibold"
+			>
+				<Fa icon={faUsers} />
+				{configCount}
+			</span>
+		{/if}
 		<span
 			title="Installs last week"
 			class="py-1 rounded-full flex gap-1 items-center font-semibold"
@@ -49,6 +53,14 @@
 			{category}
 		</span>
 	</div>
+	{#if configCount > 0}
+		<a
+			class="relative px-2 rounded-full text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
+			href="/neovim/configurations/top?plugins={name}">
+			<Fa icon={faUsers} />
+			{configCount} configs 
+		</a>
+	{/if}
 	{#if links.length > 0}
 		<button
 			class="relative px-2 rounded-full text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"

@@ -157,6 +157,7 @@
 						configCount={plugin.configCount}
 						category={plugin.category}
 						addedLastWeek={plugin.addedLastWeek}
+						name="{plugin.owner}/{plugin.name}"
 						links={plugin.paths
 							.split(',')
 							.filter(Boolean)
