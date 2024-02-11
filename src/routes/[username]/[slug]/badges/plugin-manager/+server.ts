@@ -1,4 +1,4 @@
-import { getConfigBySlug } from '$lib/server/prisma/neovimconfigs/service';
+import { prismaClient } from '$lib/server/prisma/client';
 import type { RequestEvent, RequestHandler } from './$types';
 
 const BASE_URL =
@@ -7,12 +7,26 @@ const BASE_URL =
 export const GET: RequestHandler = async function(event: RequestEvent) {
 	const { username, slug } = event.params;
 	const style = event.url.searchParams.get('style') ?? 'flat';
-	const neovimConfig = await getConfigBySlug(username, slug);
+	const pluginManagerInstallation = await prismaClient.neovimConfigPlugins.findFirst({
+		where: {
+			config: {
+				user: { username },
+				slug
+			},
+			plugin: { category: 'plugin-manager' }
+		},
+		select: {
+			plugin: {
+				select: {
+					name: true
+				}
+			}
+		}
+	});
 	const url = BASE_URL.replaceAll('{repo-owner}', username)
 		.replaceAll('{repo-slug}', slug)
 		.replaceAll('{label}', `plugin manager`)
-		// TODO: Fix pluginManager usage
-		.replaceAll('{value}', neovimConfig.pluginManager ?? 'unknown')
+		.replaceAll('{value}', pluginManagerInstallation?.plugin?.name ?? 'unknown')
 		.replaceAll('{style}', style);
 	const res = await fetch(url).then((r) => r.text());
 	event.setHeaders({
