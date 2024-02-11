@@ -15,7 +15,7 @@
 	} from '@fortawesome/free-solid-svg-icons';
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
-	import { afterNavigate } from '$app/navigation';
+	import Comments from '$lib/components/Comments.svelte';
 	export let data: PageData;
 	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
 	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
@@ -24,14 +24,6 @@
 			updateLatestReadTwinPost(data.post.issue);
 		}
 	}
-
-	afterNavigate(() => {
-		const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
-		iframe?.contentWindow?.postMessage(
-			{ giscus: { setConfig: { term: window.location.pathname } } },
-			'https://giscus.app'
-		);
-	});
 </script>
 
 <svelte:head>
@@ -44,26 +36,6 @@
 		image="/twin.png"
 	/>
 </svelte:head>
-
-<head>
-	<script
-		src="https://giscus.app/client.js"
-		data-repo="codicocodes/dotfyle"
-		data-repo-id="R_kgDOJKADOg"
-		data-category="This Week in Neovim"
-		data-category-id="DIC_kwDOJKADOs4CdHVi"
-		data-mapping="pathname"
-		data-strict="0"
-		data-reactions-enabled="1"
-		data-emit-metadata="0"
-		data-input-position="bottom"
-		data-theme="preferred_color_scheme"
-		data-lang="en"
-		crossorigin="anonymous"
-		async
-	>
-	</script>
-</head>
 
 <h1 class="p-2">
 	<SmallTitle title={data.post.title} />
@@ -87,10 +59,10 @@
 				codico
 			</a>
 		{/if}
-			<a href="#comments" class="flex gap-2 items-center">
+		<a href="#comments" class="flex gap-2 items-center">
 			<Fa icon={faComments} />
-				comments
-			</a>
+			comments
+		</a>
 	</div>
 {/if}
 
@@ -134,4 +106,5 @@
 		</a>
 	</div>
 {/if}
-<div id="comments" class="giscus" />
+
+<Comments />
