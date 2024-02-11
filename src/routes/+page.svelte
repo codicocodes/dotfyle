@@ -71,7 +71,7 @@
 					class="shadow-xl shadow-white/20 hover:shadow-main bg-transparent rounded-full transition-all"
 				>
 					<button
-						class='transition-all border-accent-muted bg-black/30  p-3 py-1 xl:px-4 xl:py-1 rounded-full border-[1px] flex items-center hover:border-secondary font-semibold text-lg gap-2'
+						class='transition-all border-accent-muted bg-black/30 p-4 py-1 xl:px-6 xl:py-1 rounded-full border-[1px] flex items-center hover:border-secondary font-semibold text-lg gap-2'
 					>
 						<Fa class="ml-1" size="xs" icon={faStar} />
 						Star
