@@ -58,6 +58,16 @@
 				<img src="https://avatars.githubusercontent.com/u/76068197" class="w-6 h-6 rounded-full" />
 				codico
 			</a>
+		{:else}
+			<a
+				rel="author"
+				href="https://github.com/phaazon"
+				target="_blank"
+				class="flex gap-2 items-center"
+			>
+				<img src="https://avatars.githubusercontent.com/u/506592" class="w-6 h-6 rounded-full" />
+				phaazon
+			</a>
 		{/if}
 		<a href="#comments" class="flex gap-2 items-center">
 			<Fa icon={faComments} />
