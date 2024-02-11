@@ -1,5 +1,6 @@
 {
 	"origins": [
-		"https://dotfyle.com"
+		"https://dotfyle.com",
+		"http://localhost:5173"
 	]
 }
