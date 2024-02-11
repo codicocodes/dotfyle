@@ -42,7 +42,7 @@
 </h1>
 
 {#if data.post.publishedAt}
-	<div class="flex gap-4 mx-2 items-center">
+	<div class="flex gap-2 mx-2 items-center w-full overflow-x-auto flex-wrap">
 		<h5 class="flex items-center gap-2">
 			<Fa icon={faNewspaper} />
 			<span>Issue #{data.post.issue} </span>
