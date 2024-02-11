@@ -20,7 +20,7 @@
 <div class="flex items-center gap-2">
 	<button
 		title="Copy url"
-		class="block p-4 bg-black/30 rounded-full border-[1px] border-accent-muted hover:border-accent-bright"
+		class="block p-3 bg-black/30 rounded-full border-[1px] border-accent-muted hover:border-accent-bright"
 		on:click={() => copyToClipboard(copyUrl)}
 	>
 		<Fa size="xs" icon={faCopy} />
@@ -29,12 +29,12 @@
 		title="Share on Twitter"
 		href={tweetUrl}
 		target="blank"
-		class="block p-4 bg-black/30 rounded-full border-[1px] border-accent-muted hover:border-accent-bright"
+		class="block p-3 bg-black/30 rounded-full border-[1px] border-accent-muted hover:border-accent-bright"
 	>
 		<Fa size="xs" icon={faTwitter} />
 	</a>
 	<a
-		class="block p-4 bg-black/30 rounded-full border-[1px] border-accent-muted hover:border-accent-bright"
+		class="block p-3 bg-black/30 rounded-full border-[1px] border-accent-muted hover:border-accent-bright"
 		href="mailto:?subject={emailSubject}&amp;body={emailBody}: {emailUrl}"
 		title="Share by Email"
 	>
