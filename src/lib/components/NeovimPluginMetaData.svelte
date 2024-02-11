@@ -53,12 +53,13 @@
 			{category}
 		</span>
 	</div>
+	<div class="flex flex-grow justify-end gap-2">
 	{#if configCount > 0}
 		<a
 			class="relative px-2 rounded-full text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
 			href="/neovim/configurations/top?plugins={name}">
 			<Fa icon={faUsers} />
-			{configCount} configs 
+			{configCount} <span class="hidden sm:inline">configs </span>
 		</a>
 	{/if}
 	{#if links.length > 0}
@@ -109,4 +110,5 @@
 			</span>
 		</button>
 	{/if}
+</div>
 </div>
