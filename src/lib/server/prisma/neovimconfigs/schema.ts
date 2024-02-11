@@ -29,6 +29,9 @@ export type NestedNeovimConfigWithMetaData = NeovimConfig & {
 	_count: {
 		neovimConfigPlugins: number;
 	};
+	neovimConfigPlugins?: {
+		paths: string;
+	}[];
 };
 export type NestedNeovimConfigWithToken = NeovimConfig & {
 	user: {
@@ -51,5 +54,6 @@ export interface NeovimConfigWithPlugins extends NeovimConfig {
 export interface NeovimConfigWithMetaData extends NeovimConfig {
 	ownerAvatar: string;
 	pluginCount: number;
-	sha: string | null
+	sha: string | null;
+	paths: string[] | undefined
 }

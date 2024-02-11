@@ -1,8 +1,7 @@
 import {
 	Prisma,
 	type NeovimConfig,
-	type NeovimPluginManager,
-	type WhereType
+	type WhereType,
 } from '@prisma/client';
 import { prismaClient } from '../client';
 import { paginator } from '../pagination';
@@ -469,15 +468,35 @@ export async function searchNeovimConfigs({
 				select: {
 					neovimConfigPlugins: true
 				}
-			}
+			},
+			...(plugins && plugins.length > 0
+				? {
+					neovimConfigPlugins: {
+						select: {
+							paths: true
+						},
+						where: {
+							OR: plugins.map((p) => {
+								const [owner, name] = p.split('/');
+								return {
+									plugin: {
+										owner,
+										name
+									}
+								};
+							})
+						}
+					}
+				}
+				: {})
 		},
 		orderBy: sortings[sorting]
 	};
-
 	const { data: nestedConfigData, meta } = await paginator({
 		perPage: take
 	})<NestedNeovimConfigWithMetaData>(prismaClient.neovimConfig, args, { page });
 	const data = nestedConfigData.map(attachMetaData);
+	// TODO: fix conversion of type, we loose neovimConfigPlugins during mapping
 	return {
 		data,
 		meta
@@ -516,7 +535,8 @@ function attachMetaData({
 		...config,
 		ownerAvatar: user.avatarUrl,
 		pluginCount: _count.neovimConfigPlugins,
-		sha: config.syncs?.[0]?.sha ?? null
+		sha: config.syncs?.[0]?.sha ?? null,
+		paths: config.neovimConfigPlugins?.flatMap(p => p.paths.split(",")),
 	};
 }
 

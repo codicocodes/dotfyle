@@ -135,6 +135,10 @@
 						stars={item.stars.toString()}
 						pluginCount={item.pluginCount.toString()}
 						loc={item.linesOfCode}
+						links={item.paths?.map(
+							(path) =>
+								`https://github.com/${item.owner}/${item.repo}/blob/${item.sha ?? '-'}/${path}`
+						)}
 					/>
 				</li>
 			{/each}
