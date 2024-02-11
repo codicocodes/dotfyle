@@ -6,7 +6,6 @@ Dotfyle is a community site for Neovim users to discover plugins and share dotfi
 
 [This Week in Neovim](https://dotfyle.com/this-week-in-neovim) can be found on Dotfyle, a weekly newsletter about news from Neovim core and the plugin ecosystem.
 
-
 ## Contributing
 
 Contributions are welcome and much appreciated! Read [CONTRIBUTING.md](./CONTRIBUTING.md) on how to setup a local development environment.

@@ -1,6 +1,6 @@
-import type { NeovimConfigSync } from "@prisma/client";
+import type { NeovimConfigSync } from '@prisma/client';
 
 export type FormattedNeovimConfigSync = NeovimConfigSync & {
-  syncedLanguageServers: string[]
-  syncedPlugins: string[]
-}
+	syncedLanguageServers: string[];
+	syncedPlugins: string[];
+};

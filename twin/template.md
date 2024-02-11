@@ -15,7 +15,6 @@ Hello everyone 👋
 
 {neovim-core-commits-section}
 
-
 ## Neovim Plugin Community
 
 > Neovim is full of active plugins. This section is about the community and what is going on.
@@ -44,5 +43,6 @@ Hello everyone 👋
 Add your plugin to Dotfyle through [this form](/neovim/plugins/add?utm_source=twin-web) to be featured in This Week in Neovim
 
 Contribute to the development of Dotfyle:
+
 - File issues and submit pull requests on [GitHub](https://github.com/codicocodes/dotfyle)
 - Discuss ideas on [Discord](https://discord.gg/AMbnnN5eep)

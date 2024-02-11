@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { GithubRepository as GHRepository } from "$lib/validation"
+import { GithubRepository as GHRepository } from '$lib/validation';
 
-export const GithubRepository = GHRepository
+export const GithubRepository = GHRepository;
 
 export type GithubRepository = z.infer<typeof GithubRepository>;
 
@@ -28,7 +28,7 @@ export type GithubTree = z.infer<typeof GithubTree>;
 
 export const GithubBlob = z.object({
 	url: z.string(),
-	content: z.string(),
+	content: z.string()
 });
 
-export type GithubBlob= z.infer<typeof GithubBlob>;
+export type GithubBlob = z.infer<typeof GithubBlob>;

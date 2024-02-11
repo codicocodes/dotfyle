@@ -34,7 +34,7 @@ export async function getAdminGithubToken() {
 			}
 		}
 	});
-  return token.accessToken
+	return token.accessToken;
 }
 
 export async function getGithubToken(userId: number) {

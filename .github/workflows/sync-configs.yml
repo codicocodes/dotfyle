@@ -1,4 +1,4 @@
-name: "sync-configs"
+name: 'sync-configs'
 on:
   schedule:
     - cron: '0 3 * * *'

@@ -50,7 +50,7 @@ export async function syncReadme(token: string, config: NeovimConfig) {
 				id: config.id
 			},
 			data: {
-				dotfyleShieldAddedAt: null,
+				dotfyleShieldAddedAt: null
 			}
 		});
 	}

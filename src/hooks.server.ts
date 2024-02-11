@@ -65,9 +65,7 @@ export const profilePerformance: Handle = async ({ event, resolve }) => {
 
 	const prefixIcon = responseTime >= 1000 ? '🐢' : '🚀';
 
-	console.log(
-		`${prefixIcon} ${route}${qs} took ${responseTime.toFixed(2)} ms`
-	);
+	console.log(`${prefixIcon} ${route}${qs} took ${responseTime.toFixed(2)} ms`);
 
 	return response;
 };
@@ -84,4 +82,3 @@ export const handle = sequence(
 	handleTrpc,
 	setColorscheme
 );
-

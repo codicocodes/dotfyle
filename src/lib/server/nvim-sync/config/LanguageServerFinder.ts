@@ -1,12 +1,12 @@
-export function *findKnownLanguageServers(content: string) {
-  for (const ls of KNOWN_LANGUAGE_SERVERS) {
-    if(content.indexOf(`"${ls}"`) >= 0) {
-      yield ls
-    }
-    if(content.indexOf(`'${ls}'`) >= 0) {
-      yield ls
-    }
-  }
+export function* findKnownLanguageServers(content: string) {
+	for (const ls of KNOWN_LANGUAGE_SERVERS) {
+		if (content.indexOf(`"${ls}"`) >= 0) {
+			yield ls;
+		}
+		if (content.indexOf(`'${ls}'`) >= 0) {
+			yield ls;
+		}
+	}
 }
 
 export const KNOWN_LANGUAGE_SERVERS = [

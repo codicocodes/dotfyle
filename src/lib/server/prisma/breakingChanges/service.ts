@@ -14,12 +14,12 @@ export async function upsertBreakingChange(
 			externalUrl
 		},
 		update: {
-      post: {
-        update: {
-          type,
-        }
-      }
-    },
+			post: {
+				update: {
+					type
+				}
+			}
+		},
 		create: {
 			sha,
 			externalUrl,

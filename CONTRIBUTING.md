@@ -19,6 +19,7 @@ If it's your first time installing postgres, you will have to create a new user 
 If you already have a user, then you can just skip to making a new database. First, enter the psql command mode:
 
 For Linux/MacOS:
+
 ```
 sudo -u postgres psql
 ```
@@ -85,7 +86,7 @@ Modify your `.env` file and update the `PUBLIC_ADMIN_USER_GITHUB_ID` with the id
 PUBLIC_ADMIN_USER_GITHUB_ID=<your-github-user-id>
 ```
 
-You can find your github user id in the github api 
+You can find your github user id in the github api
 
 ```
 curl https://api.github.com/users/<username>
@@ -118,7 +119,6 @@ pnpm run dev
 [prisma-postgres-install]: https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database
 [new-oauth]: https://github.com/settings/applications/new
 
-
 ### Sync data
 
 Once the server is running you can seed and sync data
@@ -136,6 +136,7 @@ This scrapes popular plugins from `https://github.com/rockerBOO/awesome-neovim#r
 2. Navigate to [http://localhost:5173/api/sync/plugins](http://localhost:5173/api/sync/plugins)
 
 This syncs data for all plugins using your github token:
+
 - Syncs repo data
 - Syncs README.md
 - Detects breaking changes in recent commits

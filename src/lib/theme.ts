@@ -3,8 +3,8 @@ export type ThemeName = (typeof themes)[number];
 
 export const setTheme = (theme: ThemeName) => {
 	document.cookie = `mode=${theme}; SameSite=Lax; Path=/`;
-	const remove = theme === 'light' ? 'dark' : 'light'
-	const add = theme === 'light' ? 'light' : 'dark'
+	const remove = theme === 'light' ? 'dark' : 'light';
+	const add = theme === 'light' ? 'light' : 'dark';
 	document.documentElement.classList.add(add);
 	document.documentElement.classList.remove(remove);
 };

@@ -12,18 +12,34 @@
 	}
 
 	.bg-gradient-neovim {
-		background-image: linear-gradient(to right, theme('colors.cyan.500'), theme('colors.green.500'));
+		background-image: linear-gradient(
+			to right,
+			theme('colors.cyan.500'),
+			theme('colors.green.500')
+		);
 	}
 
 	.bg-gradient-gruvbox {
-		background-image: linear-gradient(to right, theme('colors.red.500'), theme('colors.orange.500'));
+		background-image: linear-gradient(
+			to right,
+			theme('colors.red.500'),
+			theme('colors.orange.500')
+		);
 	}
 
 	.bg-gradient-tokyonight {
-		background-image: linear-gradient(to right, theme('colors.purple.500'), theme('colors.blue.500'));
+		background-image: linear-gradient(
+			to right,
+			theme('colors.purple.500'),
+			theme('colors.blue.500')
+		);
 	}
 	.bg-gradient-rose-pine {
-		background-image: linear-gradient(to right, theme('colors.pink.500'), theme('colors.amber.500'));
+		background-image: linear-gradient(
+			to right,
+			theme('colors.pink.500'),
+			theme('colors.amber.500')
+		);
 	}
 }
 
@@ -33,7 +49,9 @@
 
 @layer base {
 	body {
-		transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+		transition:
+			background-color 0.4s ease-in-out,
+			color 0.4s ease-in-out;
 		background-image: linear-gradient(to right, var(--background-gradient));
 	}
 
@@ -95,7 +113,6 @@
 		--gradient-primary: theme('colors.cyan.500'), theme('colors.green.500');
 	}
 
-
 	html.gruvbox {
 		color-scheme: 'gruvbox';
 		--color-main: 249 115 22;
@@ -117,4 +134,3 @@
 		--gradient-primary: theme('colors.pink.600'), theme('colors.amber.600');
 	}
 }
-

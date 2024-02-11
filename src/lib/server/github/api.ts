@@ -82,4 +82,3 @@ export const fetchReadme = async (token: string, owner: string, repo: string): P
 	const content = Buffer.from(readme.content, 'base64').toString();
 	return content;
 };
-

@@ -1,11 +1,13 @@
 # Plugin
 
 ## AI
+
 - martineausimon/nvim-bard
 
 ## Plugin Manager
 
 ## LSP
+
 - nvimdev/guard.nvim
 - MaximilianLloyd/tw-values.nvim
 
@@ -66,6 +68,7 @@
 - echasnovski/mini.hipatterns
 
 ## Colorscheme
+
 - xero/miasma.nvim
 - antonk52/lake.nvim
 - xiantang/darcula-dark.nvim
@@ -121,9 +124,11 @@
 ## Terminal Integration
 
 ## Debugging
+
 - jonboh/nvim-dap-rr
 
 ## Quickfix
+
 - gabrielpoca/replacer.nvim
 
 ## Test

@@ -425,44 +425,44 @@ export async function searchNeovimConfigs({
 			...(query && queries
 				? queries.length > 1
 					? {
-						AND: [
-							{ owner: { contains: queries[0], mode } },
-							{ repo: { contains: queries[1], mode } }
-						]
-					}
+							AND: [
+								{ owner: { contains: queries[0], mode } },
+								{ repo: { contains: queries[1], mode } }
+							]
+						}
 					: {
-						OR: [{ owner: { contains: query, mode } }, { repo: { contains: query, mode } }]
-					}
+							OR: [{ owner: { contains: query, mode } }, { repo: { contains: query, mode } }]
+						}
 				: {}),
 			...(plugins && plugins.length > 0
 				? {
-					AND: plugins.map((identifier) => {
-						const [owner, name] = identifier.split('/');
-						return {
-							neovimConfigPlugins: {
-								some: {
-									plugin: {
-										owner,
-										name
+						AND: plugins.map((identifier) => {
+							const [owner, name] = identifier.split('/');
+							return {
+								neovimConfigPlugins: {
+									some: {
+										plugin: {
+											owner,
+											name
+										}
 									}
 								}
-							}
-						};
-					})
-				}
+							};
+						})
+					}
 				: {}),
 			...(languageServers && languageServers.length > 0
 				? {
-					AND: languageServers.map((languageServerName) => {
-						return {
-							languageServerMappings: {
-								some: {
-									languageServerName
+						AND: languageServers.map((languageServerName) => {
+							return {
+								languageServerMappings: {
+									some: {
+										languageServerName
+									}
 								}
-							}
-						};
-					})
-				}
+							};
+						})
+					}
 				: {})
 		},
 		include: {
@@ -478,23 +478,23 @@ export async function searchNeovimConfigs({
 			},
 			...(plugins && plugins.length > 0
 				? {
-					neovimConfigPlugins: {
-						select: {
-							paths: true
-						},
-						where: {
-							OR: plugins.map((p) => {
-								const [owner, name] = p.split('/');
-								return {
-									plugin: {
-										owner,
-										name
-									}
-								};
-							})
+						neovimConfigPlugins: {
+							select: {
+								paths: true
+							},
+							where: {
+								OR: plugins.map((p) => {
+									const [owner, name] = p.split('/');
+									return {
+										plugin: {
+											owner,
+											name
+										}
+									};
+								})
+							}
 						}
 					}
-				}
 				: {})
 		},
 		orderBy: sortings[sorting]

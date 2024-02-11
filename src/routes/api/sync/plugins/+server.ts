@@ -4,7 +4,6 @@ import { getAdminGithubToken } from '$lib/server/prisma/users/service';
 import { PluginSyncer } from '$lib/server/sync/plugins/sync';
 import type { RequestHandler } from '@sveltejs/kit';
 
-
 const getSyncTasks = async () => {
 	const [token, plugins] = await Promise.all([getAdminGithubToken(), getAllPlugins()]);
 	return plugins.map((plugin) => async () => {
@@ -13,4 +12,4 @@ const getSyncTasks = async () => {
 	});
 };
 
-export const GET: RequestHandler = createAsyncTaskApi(getSyncTasks)
+export const GET: RequestHandler = createAsyncTaskApi(getSyncTasks);

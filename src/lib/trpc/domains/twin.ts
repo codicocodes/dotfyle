@@ -36,13 +36,12 @@ export const publishTwinIssue = t.procedure
 		return z.object({ issue: z.number() }).parse(input);
 	})
 	.mutation(async ({ input: { issue } }) => {
-		return await prismaClient.twinPost
-			.update({
-				where: { issue },
-				data: {
-					publishedAt: new Date()
-				}
-			})
+		return await prismaClient.twinPost.update({
+			where: { issue },
+			data: {
+				publishedAt: new Date()
+			}
+		});
 	});
 
 export const getLatestTwinIssue = t.procedure.query(async () => {

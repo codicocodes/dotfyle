@@ -1,4 +1,4 @@
-name: "sync-plugins"
+name: 'sync-plugins'
 on:
   schedule:
     - cron: '0 2 * * 0'

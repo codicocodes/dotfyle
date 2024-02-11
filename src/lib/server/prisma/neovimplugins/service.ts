@@ -35,21 +35,21 @@ const orderByWeeklyAdded: [
 		name: 'asc';
 	}
 ] = [
-		{
-			addedLastWeek: 'desc'
-		},
-		{
-			neovimConfigPlugins: {
-				_count: 'desc'
-			}
-		},
-		{
-			stars: 'desc'
-		},
-		{
-			name: 'asc'
+	{
+		addedLastWeek: 'desc'
+	},
+	{
+		neovimConfigPlugins: {
+			_count: 'desc'
 		}
-	];
+	},
+	{
+		stars: 'desc'
+	},
+	{
+		name: 'asc'
+	}
+];
 
 const orderByPopularity: [
 	{
@@ -63,18 +63,18 @@ const orderByPopularity: [
 		name: 'asc';
 	}
 ] = [
-		{
-			neovimConfigPlugins: {
-				_count: 'desc'
-			}
-		},
-		{
-			stars: 'desc'
-		},
-		{
-			name: 'asc'
+	{
+		neovimConfigPlugins: {
+			_count: 'desc'
 		}
-	];
+	},
+	{
+		stars: 'desc'
+	},
+	{
+		name: 'asc'
+	}
+];
 
 const orderByNew: [
 	{
@@ -92,21 +92,21 @@ const orderByNew: [
 		name: 'asc';
 	}
 ] = [
-		{
-			createdAt: 'desc'
-		},
-		{
-			neovimConfigPlugins: {
-				_count: 'desc'
-			}
-		},
-		{
-			stars: 'desc'
-		},
-		{
-			name: 'asc'
+	{
+		createdAt: 'desc'
+	},
+	{
+		neovimConfigPlugins: {
+			_count: 'desc'
 		}
-	];
+	},
+	{
+		stars: 'desc'
+	},
+	{
+		name: 'asc'
+	}
+];
 
 const orderByConfig = {
 	popular: orderByPopularity,
@@ -222,14 +222,14 @@ function parsePluginQuery(query: string) {
 		...(query && queries
 			? queries.length > 1
 				? {
-					AND: [
-						{ owner: { contains: queries[0], mode } },
-						{ name: { contains: queries[1], mode } }
-					]
-				}
+						AND: [
+							{ owner: { contains: queries[0], mode } },
+							{ name: { contains: queries[1], mode } }
+						]
+					}
 				: {
-					OR: [{ owner: { contains: query, mode } }, { name: { contains: query, mode } }]
-				}
+						OR: [{ owner: { contains: query, mode } }, { name: { contains: query, mode } }]
+					}
 			: {})
 	};
 }
@@ -244,10 +244,10 @@ export async function searchPlugins(
 	const where = {
 		...(categories.length > 0
 			? {
-				category: {
-					in: categories
+					category: {
+						in: categories
+					}
 				}
-			}
 			: {}),
 		...parsePluginQuery(query ?? '')
 	};

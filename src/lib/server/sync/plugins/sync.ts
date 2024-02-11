@@ -14,7 +14,10 @@ export class PluginSyncer {
 	plugin: NeovimPlugin;
 	configCount: number;
 	mediaParser: GithubMediaParser;
-	constructor(private token: string, { configCount, media, ...plugin }: NeovimPluginWithCount) {
+	constructor(
+		private token: string,
+		{ configCount, media, ...plugin }: NeovimPluginWithCount
+	) {
 		this.plugin = plugin;
 		this.configCount = configCount;
 		this.mediaParser = new GithubMediaParser();
@@ -58,7 +61,12 @@ export class PluginSyncer {
 	}
 
 	async syncMedia(readme: string, repo: GithubRepository) {
-		const media = this.mediaParser.findMediaUrls(readme, this.plugin.owner, this.plugin.name, repo.default_branch);
+		const media = this.mediaParser.findMediaUrls(
+			readme,
+			this.plugin.owner,
+			this.plugin.name,
+			repo.default_branch
+		);
 		const data = await Promise.all(
 			media.map(async (url) => {
 				return fetch(url).then((r) => {

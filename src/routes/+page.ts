@@ -21,7 +21,7 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
 			page: 1,
 			perPage: 4
 		}),
-		trpc(event).getDotfyleStatisitics.query(),
+		trpc(event).getDotfyleStatisitics.query()
 	]);
 	return {
 		loading: {

@@ -21,17 +21,17 @@ export class GithubFileContentTraverser {
 					n.path?.endsWith('.fnl') ||
 					n.path?.endsWith('.vim') ||
 					n.path?.endsWith('.vimrc') ||
-					n.path?.endsWith("dotfyle.json")
+					n.path?.endsWith('dotfyle.json')
 			)
 			.map(({ sha, path, url }) => ({
 				sha,
 				path,
-				url,
+				url
 			})) as { sha: string; path: string }[];
 	}
 
 	async *traverse() {
-		for await (const {path, sha} of this.nodeQueue) {
+		for await (const { path, sha } of this.nodeQueue) {
 			yield {
 				path,
 				content: await this.getContent(sha)

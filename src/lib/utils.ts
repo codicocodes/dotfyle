@@ -77,7 +77,7 @@ export function getMediaType(media: Media): 'image' | 'video' {
 	return 'image';
 }
 
-export function copyToClipboard(data: string, message="Copied to clipboard") {
+export function copyToClipboard(data: string, message = 'Copied to clipboard') {
 	navigator.clipboard.writeText(data);
 	toast.push(message);
 }

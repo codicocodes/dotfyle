@@ -11,7 +11,7 @@ export function getTrackedPlugins() {
 			.map(parseCategory)
 			.filter(isTrackedCategory)
 			.map(({ category, item }) => {
-				const plugin = item.replaceAll("`", "");
+				const plugin = item.replaceAll('`', '');
 				const shortDescription = '';
 				const link = `https://github.com/${plugin}`;
 				const [owner, name] = plugin.split('/');
@@ -66,12 +66,12 @@ function parsePluginFullName(item: string): string {
 	switch (name) {
 		// incorrectly entered plugin name in rockerBOO/awesome-neovim
 		case 'niuiic/dap-utils':
-			name = 'niuiic/dap-utils.nvim'
+			name = 'niuiic/dap-utils.nvim';
 			break;
 		default:
 			break;
 	}
-	return name
+	return name;
 }
 
 export function parsePlugin({ category, item }: RawPlugin): PluginDTO {

@@ -530,7 +530,7 @@ export const router = t.router({
 				plugin.owner,
 				plugin.name,
 				plugin.readme,
-				pluginManager,
+				pluginManager
 			);
 			return instructions;
 		}),
@@ -573,27 +573,27 @@ export const router = t.router({
 				})
 				.parse(input);
 		})
-		.query(async ({ input: {owner, name} }) => {
+		.query(async ({ input: { owner, name } }) => {
 			return await prismaClient.neovimPluginInstallInstructions.findMany({
 				where: {
 					plugin: {
 						owner,
-						name,
+						name
 					}
-				},
+				}
 			});
 		}),
 
 	getDotfyleStatisitics: t.procedure.query(async () => {
-		const installsP = prismaClient.neovimConfigPlugins.count()
-		const usersP = prismaClient.user.count()
-		const pluginsP = prismaClient.neovimPlugin.count()
-		const [installs, users, plugins] = await Promise.all([installsP, usersP, pluginsP])
+		const installsP = prismaClient.neovimConfigPlugins.count();
+		const usersP = prismaClient.user.count();
+		const pluginsP = prismaClient.neovimPlugin.count();
+		const [installs, users, plugins] = await Promise.all([installsP, usersP, pluginsP]);
 		return {
 			installs,
 			users,
-			plugins,
-		}
+			plugins
+		};
 	})
 });
 

@@ -1,6 +1,10 @@
 import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
-import { getAllPlugins, getUnsyncedPlugins, upsertManyNeovimPlugins } from '$lib/server/prisma/neovimplugins/service';
+import {
+	getAllPlugins,
+	getUnsyncedPlugins,
+	upsertManyNeovimPlugins
+} from '$lib/server/prisma/neovimplugins/service';
 import { getAdminGithubToken } from '$lib/server/prisma/users/service';
 import { scrapeRockerBooAwesomeNeovim, getTrackedPlugins } from '$lib/server/seeder/plugins';
 import { PluginSyncer } from '$lib/server/sync/plugins/sync';
@@ -14,11 +18,10 @@ const getSyncTasks = async () => {
 	});
 };
 
-
-export const GET: RequestHandler = async function(event: RequestEvent) {
-	new AdminRequestValidator(event).validate()
+export const GET: RequestHandler = async function (event: RequestEvent) {
+	new AdminRequestValidator(event).validate();
 	await upsertManyNeovimPlugins(getTrackedPlugins());
 	const plugins = await scrapeRockerBooAwesomeNeovim();
 	await upsertManyNeovimPlugins(plugins);
-	return createAsyncTaskApi(getSyncTasks)(event)
+	return createAsyncTaskApi(getSyncTasks)(event);
 };

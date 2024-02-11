@@ -1,7 +1,10 @@
-import { prismaClient } from "../client";
-import type { FormattedNeovimConfigSync } from "./schema";
+import { prismaClient } from '../client';
+import type { FormattedNeovimConfigSync } from './schema';
 
-export async function getNeovimConfigSyncs(username: string, slug: string): Promise<FormattedNeovimConfigSync[]> {
+export async function getNeovimConfigSyncs(
+	username: string,
+	slug: string
+): Promise<FormattedNeovimConfigSync[]> {
 	const syncs = await prismaClient.neovimConfigSync.findMany({
 		include: {
 			syncedPlugins: {

@@ -1,4 +1,4 @@
-name: "seed-plugins"
+name: 'seed-plugins'
 on:
   schedule:
     - cron: '0 1 * * *'

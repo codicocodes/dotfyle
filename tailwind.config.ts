@@ -15,11 +15,11 @@ export default {
 				secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
 				accent: {
 					muted: 'rgb(var(--color-accent-muted) / <alpha-value>)',
-					bright: 'rgb(var(--color-accent-bright) / <alpha-value>)',
+					bright: 'rgb(var(--color-accent-bright) / <alpha-value>)'
 				},
 				foreground: {
 					muted: 'rgb(var(--color-foreground-muted) / <alpha-value>)',
-					bright: 'rgb(var(--color-foreground-bright) / <alpha-value>)',
+					bright: 'rgb(var(--color-foreground-bright) / <alpha-value>)'
 				},
 				base: {
 					50: 'rgb(var(--color-base-50) / <alpha-value>)',

@@ -1,4 +1,4 @@
-name: "sync-trending-plugins"
+name: 'sync-trending-plugins'
 on:
   schedule:
     - cron: '0 5 * * *'
