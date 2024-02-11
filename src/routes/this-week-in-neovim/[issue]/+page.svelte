@@ -10,6 +10,7 @@
 		faCalendarDay,
 		faChevronLeft,
 		faChevronRight,
+		faComments,
 		faNewspaper
 	} from '@fortawesome/free-solid-svg-icons';
 	import type { PageData } from './$types';
@@ -86,6 +87,10 @@
 				codico
 			</a>
 		{/if}
+			<a href="#comments" class="flex gap-2 items-center">
+			<Fa icon={faComments} />
+				comments
+			</a>
 	</div>
 {/if}
 
@@ -129,4 +134,4 @@
 		</a>
 	</div>
 {/if}
-<div class="giscus" />
+<div id="comments" class="giscus" />
