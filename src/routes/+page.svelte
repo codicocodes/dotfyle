@@ -317,7 +317,7 @@
 
 						<div class="flex gap-2 items-center justify-center">
 							<Fa icon={faCalendarDay} />
-							{new Date(issue.createdAt).toLocaleDateString()}
+							{new Date(issue.publishedAt).toLocaleDateString()}
 						</div>
 					</div>
 				</RepositoryCard>

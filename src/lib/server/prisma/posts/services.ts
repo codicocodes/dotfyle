@@ -75,7 +75,8 @@ export async function getTwinByIssue(issue: number): Promise<
 export async function getTwinPosts(page: number, perPage = 10) {
 	const args = {
 		select: {
-			createdAt: true,
+			publishedAt: true,
+			createdAt: true, // Deprecated
 			title: true,
 			issue: true,
 			content: false
