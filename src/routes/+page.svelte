@@ -38,7 +38,7 @@
 
 	onMount(() => {
 		const rateLimitReset = localStorage.getItem('GITHUB_RATELIMIT_RESET');
-		const cachedStars = parseInt(localStorage.getItem('DOTFYLE_GITHUB_STARS') ?? "0", 10)
+		const cachedStars = parseInt(localStorage.getItem('DOTFYLE_GITHUB_STARS') ?? '0', 10);
 		if (!rateLimitReset || !cachedStars || new Date() > new Date(rateLimitReset)) {
 			fetch('https://api.github.com/repos/codicocodes/dotfyle').then(async (res) => {
 				const rateLimitResetSeconds = res.headers.get('x-ratelimit-reset') as string;
@@ -49,7 +49,7 @@
 				localStorage.setItem('GITHUB_RATELIMIT_RESET', resetDate.toISOString());
 			});
 		} else {
-			stars = cachedStars
+			stars = cachedStars;
 		}
 	});
 </script>
@@ -72,7 +72,7 @@
 					class="shadow-xl shadow-white/20 hover:shadow-main bg-transparent rounded-full transition-all"
 				>
 					<button
-						class='transition-all border-accent-muted bg-black/30 p-4 py-1 xl:px-6 xl:py-1 rounded-full border-[1px] flex items-center hover:border-secondary font-semibold text-lg gap-2'
+						class="transition-all border-accent-muted bg-black/30 p-4 py-1 xl:px-6 xl:py-1 rounded-full border-[1px] flex items-center hover:border-secondary font-semibold text-lg gap-2"
 					>
 						<Fa class="ml-1" size="xs" icon={faStar} />
 						Star
@@ -325,7 +325,7 @@
 			{/each}
 		</BigGridContainer>
 		<div class="my-4">
-		<EmailSubscribe />
+			<EmailSubscribe />
 		</div>
 	</div>
 </div>
