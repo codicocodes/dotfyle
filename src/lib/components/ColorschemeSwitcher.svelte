@@ -51,7 +51,6 @@
 		{#each colorschemes as theme}
 			<button
 				class="flex w-full sm:min-w-80 py-2 px-4 items-center justify-center bg-black/30 rounded-lg text-black {theme.bg} border-[2px] border-accent-muted hover:border-accent-bright"
-				data-umami-event-theme={theme.name}
 				on:click={() => {
 					setColorscheme(theme.name);
 					isOpen = false;
