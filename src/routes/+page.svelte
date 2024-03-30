@@ -323,5 +323,8 @@
 				</RepositoryCard>
 			{/each}
 		</BigGridContainer>
+		<div class="my-4">
+			<EmailSubscribe />
+		</div>
 	</div>
 </div>
