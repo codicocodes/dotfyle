@@ -16,6 +16,7 @@
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
 	import Comments from '$lib/components/Comments.svelte';
+	import EmailSubscribe from '$lib/components/EmailSubscribe.svelte';
 	export let data: PageData;
 	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
 	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
@@ -76,28 +77,8 @@
 	</div>
 {/if}
 
-<div class="flex w-full justify-center">
-	<ShareContainer
-		{url}
-		{tweetText}
-		emailSubject="Checkout This Week in Neovim {data.post.issue}"
-		emailBody="Check out {data.post.title.replaceAll('#', '')}"
-	/>
-</div>
-
-<div class="flex justify-between p-2">
-	{#if data.post.issue > 1}
-		<a href="/this-week-in-neovim/{data.post.issue - 1}">
-			<Button iconPosition="left" text="Previous" icon={faChevronLeft} />
-		</a>
-	{:else}
-		<div />
-	{/if}
-	{#if data.post.issue < data.post.total}
-		<a href="/this-week-in-neovim/{data.post.issue + 1}">
-			<Button text="Next" icon={faChevronRight} />
-		</a>
-	{/if}
+<div class="my-4">
+	<EmailSubscribe />
 </div>
 
 <HtmlContent content={data.post.cleanHtml} />
@@ -116,5 +97,30 @@
 		</a>
 	</div>
 {/if}
+
+<div class="flex justify-between p-2">
+	{#if data.post.issue > 1}
+		<a href="/this-week-in-neovim/{data.post.issue - 1}">
+			<Button iconPosition="left" text="Previous" icon={faChevronLeft} />
+		</a>
+	{:else}
+		<div />
+	{/if}
+	{#if data.post.issue < data.post.total}
+		<a href="/this-week-in-neovim/{data.post.issue + 1}">
+			<Button text="Next" icon={faChevronRight} />
+		</a>
+	{/if}
+</div>
+
+
+<div class="flex my-4 w-full justify-center">
+	<ShareContainer
+		{url}
+		{tweetText}
+		emailSubject="Checkout This Week in Neovim {data.post.issue}"
+		emailBody="Check out {data.post.title.replaceAll('#', '')}"
+	/>
+</div>
 
 <Comments />

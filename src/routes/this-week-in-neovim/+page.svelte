@@ -5,10 +5,10 @@
 	import CoolTextOnHover from '$lib/components/CoolTextOnHover.svelte';
 	import Fa from 'svelte-fa';
 	import { faChevronCircleRight, faRss } from '@fortawesome/free-solid-svg-icons';
-	import CoolText from '$lib/components/CoolText.svelte';
 	import GlossyCard from '$lib/components/GlossyCard.svelte';
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import { copyToClipboard } from '$lib/utils';
+	import EmailSubscribe from '$lib/components/EmailSubscribe.svelte';
 
 	export let data: PageData;
 </script>
@@ -29,20 +29,7 @@
 			This Week in Neovim is a weekly newsletter with updates from the Neovim ecosystem, including
 			Neovim core and the plugin community.
 		</p>
-
-		<p class="text-xl font-light my-4 inline">
-			TWiN was created by
-			<a href="https://github.com/phaazon" target="_blank">
-				<CoolText text="phaazon" />
-			</a>
-			who has decided to
-
-			<a href="/this-week-in-neovim/46#update-twin">
-				<CoolText text="move away from the project" />
-			</a>
-
-			💚 Thank you for everything you've done for the community!
-		</p>
+		<EmailSubscribe />
 
 		<div class="flex gap-2">
 			<button
@@ -73,7 +60,9 @@
 								class="flex w-full text-xl font-light justify-between"
 								href="/this-week-in-neovim/{post.issue}"
 							>
-								<span class="min-w-[150px]">{new Date(post.publishedAt).toLocaleDateString()} </span>
+								<span class="min-w-[150px]"
+									>{new Date(post.publishedAt).toLocaleDateString()}
+								</span>
 								<span class="hidden sm:flex gap-4 items-center text-right">
 									{post.title}
 									<Fa size="xs" class="force-white-text" icon={faChevronCircleRight} />
