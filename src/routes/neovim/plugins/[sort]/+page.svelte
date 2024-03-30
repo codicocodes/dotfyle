@@ -45,8 +45,14 @@
 				<PluginSearchNavigation />
 				<Button
 					iconPosition="left"
-					on:click={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml', "Plugin RSS Feed url copied to clipboard")}
-					text="plugins" icon={faRss} />
+					on:click={() =>
+						copyToClipboard(
+							'https://dotfyle.com/neovim/plugins/rss.xml',
+							'Plugin RSS Feed url copied to clipboard'
+						)}
+					text="plugins"
+					icon={faRss}
+				/>
 			</div>
 		</div>
 
