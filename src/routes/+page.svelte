@@ -30,6 +30,7 @@
 	import { session } from '$lib/stores/session';
 	import { blur, slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import EmailSubscribe from '$lib/components/EmailSubscribe.svelte';
 
 	export let data: PageData;
 
@@ -324,7 +325,7 @@
 			{/each}
 		</BigGridContainer>
 		<div class="my-4">
-			<EmailSubscribe />
+		<EmailSubscribe />
 		</div>
 	</div>
 </div>
