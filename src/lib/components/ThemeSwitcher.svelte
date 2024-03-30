@@ -11,7 +11,7 @@
 	aria-label={isLightMode ? 'Switch to dark mode' : 'Switch to light mode'}
 	title={isLightMode ? 'Switch to dark mode' : 'Switch to light mode'}
 	type="button"
-	class="flex gap-4 w-full bg-black/30 p-4 rounded-xl justify-center items-center border-[1px] border-accent-muted hover:border-accent-bright"
+	class="flex gap-4 w-full bg-black/30 p-4 rounded-lg justify-center items-center border-[1px] border-accent-muted hover:border-accent-bright"
 	on:click={() => {
 		isLightMode = !isLightMode;
 		setTheme(isLightMode ? 'light' : 'dark');

@@ -88,7 +88,7 @@
 		<button
 			class="p-2 rounded {fetchedRepository
 				? 'bg-black/30'
-				: 'bg-white text-black'} rounded-xl border-[1px] border-accent-muted hover:border-accent-bright"
+				: 'bg-white text-black'} rounded-lg border-[1px] border-accent-muted hover:border-accent-bright"
 			on:click={() => {
 				fetchedRepository = undefined;
 				fullName = '';
@@ -101,7 +101,7 @@
 		<div
 			class="p-2 rounded {!fetchedRepository
 				? 'bg-black/30 text-white'
-				: 'bg-white text-black'} rounded-xl border-[1px] border-accent-muted hover:border-accent-bright"
+				: 'bg-white text-black'} rounded-lg border-[1px] border-accent-muted hover:border-accent-bright"
 		>
 			2. Select category
 		</div>
@@ -119,7 +119,7 @@
 						repositoryDoesNotExist = false;
 					}}
 					bind:value={fullName}
-					class="bg-black/30 text-gray font-medium rounded-xl p-2 px-4 w-full focus:outline-none border-[1px] border-accent-muted"
+					class="bg-black/30 text-gray font-medium rounded-lg p-2 px-4 w-full focus:outline-none border-[1px] border-accent-muted"
 					placeholder="owner/repository"
 				/>
 				<Button

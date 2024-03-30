@@ -55,7 +55,7 @@
 	<div class="flex flex-grow justify-end gap-2">
 		{#if configCount > 0}
 			<a
-				class="relative px-2 rounded-full text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
+				class="relative px-2 rounded-lg text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
 				href="/neovim/configurations/top?plugins={name}"
 			>
 				<Fa icon={faUsers} />
@@ -64,7 +64,7 @@
 		{/if}
 		{#if links.length > 0}
 			<button
-				class="relative px-2 rounded-full text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
+				class="relative px-2 rounded-lg text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
 				on:click|stopPropagation={handleSeeLinks}
 				on:click|stopPropagation
 				data-umami-event="Plugin Mention - Open"

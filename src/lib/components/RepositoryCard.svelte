@@ -12,7 +12,7 @@
 <div
 	class="{!link
 		? 'pointer-events-none'
-		: ''} h-full flex flex-col justify-between rounded-xl bg-black/30 transition-all shadow-lg p-2 px-5 border-[0.5px] border-accent-muted hover:border-accent-bright"
+		: ''} h-full flex flex-col justify-between rounded-lg bg-black/30 transition-all shadow-lg p-2 px-5 border-[0.5px] border-accent-muted hover:border-accent-bright"
 >
 	<div class="flex flex-col gap-1 text-sm">
 		<a

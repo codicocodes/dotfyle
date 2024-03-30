@@ -69,7 +69,7 @@
 		</div>
 		{#if links && links.length > 0}
 			<button
-				class="relative px-2 rounded-full text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
+				class="relative px-2 rounded-lg text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
 				on:click|stopPropagation={handleSeeLinks}
 				on:click|stopPropagation
 				data-umami-event="Plugin Search Mention - Open"

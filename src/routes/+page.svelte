@@ -150,7 +150,7 @@
 			<div class="flex gap-1">
 				<button
 					title="An RSS feed to consume new Neovim plugins on Dotfyle"
-					class="flex items-center justify-center w-8 h-8 text-white rounded-full flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
+					class="flex items-center justify-center w-8 h-8 text-white rounded-lg flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
 					on:click={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml')}
 				>
 					<Fa class="inline" size="xs" icon={faRss} />
@@ -243,7 +243,7 @@
 			<div class="flex gap-1">
 				<a
 					href="/add"
-					class="flex items-center justify-center w-8 h-8 text-white rounded-full flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
+					class="flex items-center justify-center w-8 h-8 text-white rounded-lg flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
 					title="Add your configuration"
 				>
 					<Fa class="inline" size="xs" icon={faPlus} />
@@ -290,7 +290,7 @@
 			<div class="flex gap-1">
 				<button
 					title="An RSS feed to consume This Week in Neovim"
-					class="flex items-center justify-center w-8 h-8 text-white rounded-full flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
+					class="flex items-center justify-center w-8 h-8 text-white rounded-lg flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
 					on:click={() => copyToClipboard('https://dotfyle.com/this-week-in-neovim/rss.xml')}
 				>
 					<Fa class="inline" size="xs" icon={faRss} />

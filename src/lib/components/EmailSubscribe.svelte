@@ -40,7 +40,7 @@
 		</div>
 		<div class="mx-2">
 			<button
-				class="flex justify-between transition-all border-accent-muted bg-black/30 py-2 px-4 rounded-xl border-[1px] flex items-center hover:border-secondary font-semibold text-lg gap-2"
+				class="flex justify-between transition-all border-accent-muted bg-black/30 py-2 px-4 rounded-lg border-[1px] flex items-center hover:border-secondary font-semibold text-lg gap-2"
 			>
 				Subscribe
 			</button>

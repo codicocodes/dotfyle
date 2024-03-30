@@ -5,9 +5,10 @@
 	import CoolTextWithChildren from './CoolTextWithChildren.svelte';
 	import MediumHeroTitle from './MediumHeroTitle.svelte';
 	import Search from './Search.svelte';
+	import TwinLink from './TwinLink.svelte';
 	interface Post {
-		title: string
-		description: string
+		title: string;
+		description: string;
 	}
 
 	export let content: Post;
@@ -20,11 +21,14 @@
 	<MediumHeroTitle>
 		<CoolText text={content.title} />
 	</MediumHeroTitle>
-	<p class="text-lg text-center w-full sm:w-3/4 md:w-2/3 xl:w-1/2">
+	<p class="text-lg text-center w-full sm:w-3/4 md:w-2/3 xl:w-1/2 min-h-24">
 		{content.description}
 	</p>
 </div>
-<Search {placeholder} />
+<div class="flex flex-col gap-4 my-4">
+	<Search {placeholder} />
+	<TwinLink />
+</div>
 <div class="flex flex-col w-full items-center mt-4 gap-4">
 	<div class="flex gap-6 font-medium text-lg">
 		{#each navigation as nav}

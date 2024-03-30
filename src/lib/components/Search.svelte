@@ -14,7 +14,7 @@
 
 <form
 	action=""
-	class="grow flex justify-center items-center mt-6 mb-4 gap-2"
+	class="grow flex justify-center items-center gap-2"
 	on:change
 	on:submit|preventDefault={() => {
 		navigate($page, 'page', '1');
@@ -23,7 +23,7 @@
 >
 	<!-- TODO: move to global search and move to other component-->
 	<div
-		class="flex gap-2 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-2 sm:p-3 rounded-full text-black text-sm font-medium focus:outline-none focus:border-main shadow-xl focus:shadow-main/25 focus:ring-1 focus:ring-main bg-white {isfocused
+		class="flex gap-2 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-2 sm:p-3 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-main shadow-xl focus:shadow-main/25 focus:ring-1 focus:ring-main bg-white {isfocused
 			? 'shadow-xl shadow-main/25'
 			: ''}"
 	>

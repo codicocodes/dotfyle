@@ -21,7 +21,7 @@ const getSorting = (event: PageLoadEvent) => {
 const content = {
 	top: {
 		title: 'Popular Neovim Configurations',
-		description: 'The most popular Neovim configurations on Dotfyle',
+		description: 'The most popular Neovim configurations on Dotfyle ranked by GitHub stars',
 		ogTitle: 'Popular Neovim Configurations',
 		ogDescription: `List of the most popular Neovim configurations in ${new Date().getFullYear()}.`
 	},
