@@ -22,6 +22,7 @@
 		class="w-full flex md:flex-row flex-col gap-2 md:gap-0 md:items-center items-start justify-center"
 		action="https://app.convertkit.com/forms/6395805/subscriptions"
 		method="POST"
+		target="_blank"
 	>
 		<div
 			class="flex gap-2 w-full sm:w-3/4 md:w-2/3 xl:w-1/2 items-center p-2 sm:p-3 rounded-lg text-black text-sm font-medium focus:outline-none focus:border-main shadow-xl focus:shadow-main/25 focus:ring-1 focus:ring-main bg-white {isfocused
