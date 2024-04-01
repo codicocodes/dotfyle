@@ -12,7 +12,7 @@
 	class="flex flex-col md:flex-row items-center border border-accent-muted hover:border-accent-bright rounded-lg transition duration-200 p-6 gap-4"
 >
 	<div>
-		<h3 class="flex gap-2 items-center text-2xl font-kai mb-4 text-black font-bold">
+		<h3 class="flex gap-2 items-center text-2xl font-kai mb-4 text-whitwhite-bold">
 			<Fa icon={faEnvelope} />
 			{title}
 		</h3>
