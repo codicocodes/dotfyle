@@ -37,17 +37,6 @@ export const onError = (opts: {
 	delete error.stack;
 };
 
-export const setColorscheme: Handle = async ({ event, resolve }) => {
-	const response = await resolve(event, {
-		transformPageChunk: ({ html }) => {
-			const colorscheme = event.cookies.get('colorscheme') || 'neovim';
-			const mode = event.cookies.get('mode') || 'dark';
-			return html.replace('%colorscheme%', colorscheme).replace('%mode%', mode);
-		}
-	});
-	return response;
-};
-
 export const profilePerformance: Handle = async ({ event, resolve }) => {
 	Sentry.withScope((scope) => {
 		const user = verifyToken(event.cookies);
@@ -80,5 +69,4 @@ export const handle = sequence(
 	Sentry.sentryHandle(),
 	profilePerformance,
 	handleTrpc,
-	setColorscheme
 );
