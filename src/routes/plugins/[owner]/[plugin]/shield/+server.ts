@@ -2,7 +2,7 @@ import { getPlugin } from '$lib/server/prisma/neovimplugins/service';
 import type { RequestEvent, RequestHandler } from './$types';
 
 const BASE_URL =
-	'https://img.shields.io/badge/{plugin-usage}-{color}?logo=neovim&label=configs%20using%20{repo-name}&labelColor={label_color}&link=https://dotfyle.com/plugins/{repo-owner}/{repo-name}&style={style}';
+	'https://img.shields.io/badge/{plugin-usage}-{color}?logo=neovim&label=configs%20using%20{repo-name}&labelColor={labelColor}&link=https://dotfyle.com/plugins/{repo-owner}/{repo-name}&style={style}';
 
 export const GET: RequestHandler = async function (event: RequestEvent) {
 	const { owner, plugin: plugin } = event.params;
@@ -10,7 +10,7 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 
 	// Add color support + sanitize input
 	const color = event.url.searchParams.get('color').replaceAll(/[^0-9a-z]/i, '') ?? '22c55e';
-	const label_color = event.url.searchParams.get('label_color').replaceAll(/[^0-9a-z]/i, '') ?? '1e40af';
+	const label_color = event.url.searchParams.get('labelColor').replaceAll(/[^0-9a-z]/i, '') ?? '1e40af';
 
 	const neovimPlugin = await getPlugin(owner, plugin);
 	const usage = neovimPlugin.configCount;
@@ -18,7 +18,7 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
 		.replaceAll('{repo-name}', plugin)
 		.replaceAll('{plugin-usage}', usage.toString())
 		.replaceAll('{color}', color)
-		.replaceAll('{label_color}', label_color)
+		.replaceAll('{labelColor}', label_color)
 		.replaceAll('{style}', style);
 	const res = await fetch(url).then((r) => r.text());
 	event.setHeaders({
