@@ -6,6 +6,8 @@
 
 ## Plugin Manager
 
+- echasnovski/mini.deps
+
 ## LSP
 
 - nvimdev/guard.nvim
@@ -55,6 +57,8 @@
 ## Fuzzy Finder
 
 - echasnovski/mini.fuzzy
+- echasnovski/mini.pick
+- echasnovski/mini.extra
 - Marskey/telescope-sg
 
 ## File Explorer
@@ -62,6 +66,8 @@
 - echasnovski/mini.files
 
 ## Project
+
+- echasnovski/mini.visits
 
 ## Color
 
@@ -114,6 +120,8 @@
 
 - echasnovski/mini.nvim
 - echasnovski/mini.animate
+- echasnovski/mini.notify
+- echasnovski/mini.misc
 - MisanthropicBit/decipher.nvim
 - GCBallesteros/NotebookNavigator.nvim
 - subnut/nvim-ghost.nvim
@@ -148,6 +156,8 @@
 
 ## Git
 
+- echasnovski/mini.diff
+- echasnovski/mini-git
 - NeogitOrg/neogit
 
 ## GitHub
