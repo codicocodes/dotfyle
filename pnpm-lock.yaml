@@ -52,7 +52,7 @@ dependencies:
     version: 3.0.4
   trpc-sveltekit:
     specifier: ^3.5.22
-    version: 3.5.22(@sveltejs/adapter-node@1.3.1)(@trpc/client@10.45.0)(@trpc/server@10.45.0)(ws@8.16.0)
+    version: 3.5.22(@sveltejs/adapter-node@1.3.1)(@trpc/client@10.45.0)(@trpc/server@10.45.0)(ws@8.17.1)
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -5272,7 +5272,7 @@ packages:
     resolution: {integrity: sha512-AqTiAOLcj85xS7vQ8QkAV41hPDIJ71XJB4RCUrzo/1GM2CQwhkJGaf9Hgr7BOugMRpgGUrqRg/DrBDl4H40+8g==}
     dev: true
 
-  /trpc-sveltekit@3.5.22(@sveltejs/adapter-node@1.3.1)(@trpc/client@10.45.0)(@trpc/server@10.45.0)(ws@8.16.0):
+  /trpc-sveltekit@3.5.22(@sveltejs/adapter-node@1.3.1)(@trpc/client@10.45.0)(@trpc/server@10.45.0)(ws@8.17.1):
     resolution: {integrity: sha512-qFgtor6rGt+dOvLIvrk2325F/AVQ6tv/ZUzZ4PNuyUSFFYbendt/WlunrFgDDdR4vq6RWzLsh6mowcGyi++i4A==}
     peerDependencies:
       '@sveltejs/adapter-node': '>=1.2'
@@ -5283,7 +5283,7 @@ packages:
       '@sveltejs/adapter-node': 1.3.1(@sveltejs/kit@1.30.3)
       '@trpc/client': 10.45.0(@trpc/server@10.45.0)
       '@trpc/server': 10.45.0
-      ws: 8.16.0
+      ws: 8.17.1
     dev: false
 
   /ts-interface-checker@0.1.13:
@@ -5683,8 +5683,8 @@ packages:
       signal-exit: 3.0.7
     dev: true
 
-  /ws@8.16.0:
-    resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}
+  /ws@8.17.1:
+    resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
