@@ -74,9 +74,6 @@ class PluginContentFetcher implements ContentFetcher {
 				createdAt: {
 					gte: daysAgo(days)
 				},
-				stars: {
-					lt: 200
-				}
 			},
 			orderBy: {
 				neovimConfigPlugins: {
