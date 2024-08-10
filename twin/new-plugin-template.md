@@ -8,6 +8,6 @@
 
 - [GitHub]({githubUrl})
 - [Dotfyle]({dotfyleUrl})
-- [Reddit]()
+- [Reddit](https://www.reddit.com/r/neovim/search/?q={fullname})
 
 ---
