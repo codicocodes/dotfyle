@@ -1,5 +1,9 @@
 #### {fullname}
 
+<!---
+Star count: {starcount}
+-->
+
 ![]({image})
 
 > {description}
