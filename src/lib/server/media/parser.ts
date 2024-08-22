@@ -27,7 +27,7 @@ export class GithubMediaParser {
 
 	findMediaUrls(readme: string, user: string, repo: string, branch: string): string[] {
 		const validGithubLinkRegex =
-			/https:\/\/(raw|user-images).githubusercontent.com\/[a-zA-Z0-9/]+\/[a-zA-Z0-9/\-._]+.(png|jpg|jpeg|mp4|gif)/g;
+			/https:\/\/(raw|user-images).githubusercontent.com\/[a-zA-Z0-9/]+\/[a-zA-Z0-9/._%+-]+.(png|jpg|jpeg|mp4|gif)/g;
 
 		const validGithubLinkMatches = readme.matchAll(validGithubLinkRegex);
 
@@ -39,7 +39,7 @@ export class GithubMediaParser {
 		}
 
 		const githubAssetRegex = new RegExp(
-			`https://github.com/${user}/${repo}/assets/[0-9]+/[a-zA-Z0-9-]+`,
+			`https://github.com/${user}/${repo}/assets/[0-9]+/[a-zA-Z0-9./_-]+`,
 			'g'
 		);
 
@@ -48,7 +48,7 @@ export class GithubMediaParser {
 			allMedia.push(asset);
 		}
 
-		const storedInRepoRelativeMarkdownRegex = /\(.[/a-zA-Z-_]+.(png|jpg|jpeg|mp4|gif|svg)\)/g;
+		const storedInRepoRelativeMarkdownRegex = /\(.[/a-zA-Z0-9._%+-]+.(png|jpg|jpeg|mp4|gif|svg)\)/g;
 
 		const relativeMarkdownMatches = readme.matchAll(storedInRepoRelativeMarkdownRegex);
 
@@ -64,7 +64,7 @@ export class GithubMediaParser {
 		}
 
 		const storedInRepoRelativeHtmlRegex =
-			/<img src=('|")([.][/])?[a-zA-Z-_/]+.(png|jpg|jpeg|mp4|gif|svg)('|")/g;
+			/<img src=['"](\.\/)?[/a-zA-Z._%+-]+.(png|jpg|jpeg|mp4|gif|svg)['"]/g;
 
 		const relativeHtmlMatches = readme.matchAll(storedInRepoRelativeHtmlRegex);
 
