@@ -49,6 +49,8 @@ model NeovimConfig {
 
   linesOfCode Int @default(0)
 
+  markedForDeletion Boolean @default(false)
+
   neovimConfigPlugins    NeovimConfigPlugins[]
   languageServerMappings NeovimConfigToLanguageServer[]
   syncs                  NeovimConfigSync[]

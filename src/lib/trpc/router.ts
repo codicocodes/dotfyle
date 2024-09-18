@@ -14,7 +14,8 @@ import {
   getConfigsForPlugin,
   getNeovimConfigsWithDotfyleShield,
   getNewestNeovimConfigs,
-  searchNeovimConfigs
+  searchNeovimConfigs,
+  toggleConfigMarkedForDeletion,
 } from '$lib/server/prisma/neovimconfigs/service';
 import {
   getAllNeovimPluginNames,
@@ -78,6 +79,17 @@ export const router = t.router({
       const user = ctx.getAuthenticatedUser();
       const syncer = await getPluginSyncer(user, owner, name);
       return syncer.sync();
+    }),
+  toggleConfigMarkForDeletion: t.procedure
+    .use(middlewares.isAuthenticated)
+    .input((input: unknown) => {
+      return z.object({
+        id: z.number()
+      }).parse(input);
+    })
+    .mutation(async ({ input: { id }, ctx }) => {
+      const user = ctx.getAuthenticatedUser();
+      return await toggleConfigMarkedForDeletion(id, user.username);
     }),
   getPluginsByCategory: t.procedure
     .input((input: unknown) => {

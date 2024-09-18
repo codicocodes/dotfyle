@@ -111,6 +111,26 @@ export async function getConfigsForPlugin(
   return configs.map(attachMetaData);
 }
 
+export async function toggleConfigMarkedForDeletion(id: number, username: string) {
+  const existing = await getConfigs({ user: { username }, id });
+  if (existing.length === 0) {
+    // This means the user doesn't have any such config.
+    return;
+  }
+  console.log(existing[0]);
+  const conf = existing[0]
+  return await prismaClient.neovimConfig.update({
+    where: {
+      id,
+    },
+    data: {
+      markedForDeletion: !conf.markedForDeletion
+    }
+  });
+}
+
+
+
 export async function getConfigBySlug(
   owner: string,
   slug: string
