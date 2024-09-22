@@ -1,6 +1,6 @@
 import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
 import { NeovimConfigSyncerFactory } from '$lib/server/nvim-sync/config/NeovimConfigSyncer';
-import { deleteNeovimConfig, syncExistingRepoInfo, syncReadme } from '$lib/server/nvim-sync/config/syncRepoInfo';
+import { syncExistingRepoInfo, syncReadme } from '$lib/server/nvim-sync/config/syncRepoInfo';
 import { getConfigsWithToken } from '$lib/server/prisma/neovimconfigs/service';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
 import type { RequestHandler } from '@sveltejs/kit';
