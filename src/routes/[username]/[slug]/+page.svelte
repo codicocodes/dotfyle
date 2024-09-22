@@ -21,13 +21,15 @@
 	import { session } from '$lib/stores/session';
 	import { trpc } from '$lib/trpc/client';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	$: ({ config, plugins, languageServers } = data);
 	$: pluginManager = plugins?.find((p) => p.category === 'plugin-manager')?.name ?? 'unknown';
 
-	async function toggleMarkForDeletion() {
-		await trpc($page).toggleConfigMarkForDeletion.mutate({ id: config.id });
+	async function deleteConfig() {
+		await trpc($page).deleteConfig.mutate({ id: config.id });
+		goto(`/${config.owner}`);
 	}
 </script>
 
@@ -76,11 +78,7 @@
 		</div>
 		<div class="flex gap-1 items-center justify-between font-semibold">
 			{#if $session.user?.id === config.userId}
-				<Button
-					text={config.markedForDeletion ? 'Do not Delete' : 'Mark for Deletion'}
-					icon={faTrash}
-					on:click={toggleMarkForDeletion}
-				/>
+				<Button text="Delete" icon={faTrash} on:click={deleteConfig} />
 			{/if}
 			<a href="https://github.com/{config.owner}/{config.repo}" target="_blank">
 				<Button text="GitHub" icon={faGithub} />

@@ -49,14 +49,13 @@ model NeovimConfig {
 
   linesOfCode Int @default(0)
 
-  markedForDeletion Boolean @default(false)
-
   neovimConfigPlugins    NeovimConfigPlugins[]
   languageServerMappings NeovimConfigToLanguageServer[]
   syncs                  NeovimConfigSync[]
 
   @@unique([owner, repo, root])
   @@unique([owner, slug])
+  @@unique([id, userId])
 }
 
 enum NeovimPluginManager {
@@ -99,6 +98,7 @@ model NeovimPluginInstallInstructions {
   pluginId      Int
   pluginManager String
   instructions  String
+
   @@unique([pluginId, pluginManager])
 }
 
