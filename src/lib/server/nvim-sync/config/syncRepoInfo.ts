@@ -62,21 +62,13 @@ export async function syncExistingRepoInfo(token: string, config: NeovimConfig) 
   return upsertNeovimConfig(config.userId, upsertDTO);
 }
 
-export async function deleteNeovimConfig(config: NeovimConfig) {
+export async function deleteNeovimConfig(id: number, userId: number) {
   return await prismaClient.neovimConfig.delete({
     where: {
-      id: config.id
-    }
-  });
-}
-
-export async function markForDeletion(config: NeovimConfig) {
-  return await prismaClient.neovimConfig.update({
-    where: {
-      id: config.id
-    },
-    data: {
-      markedForDeletion: true
+      id_userId: {
+        id,
+        userId
+      }
     }
   });
 }

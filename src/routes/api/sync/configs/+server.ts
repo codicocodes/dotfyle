@@ -10,11 +10,6 @@ const getConfigSyncTasks = async () => {
   const configs = await getConfigsWithToken();
   const syncFactory = new NeovimConfigSyncerFactory(trackedPlugins);
   return configs.map(({ _token, ...config }) => {
-    if (config.markedForDeletion) {
-      return async () => {
-        await deleteNeovimConfig(config);
-      };
-    }
     return async () => {
       await Promise.all([
         syncExistingRepoInfo(_token, config),

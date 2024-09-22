@@ -15,7 +15,6 @@ import {
   getNeovimConfigsWithDotfyleShield,
   getNewestNeovimConfigs,
   searchNeovimConfigs,
-  toggleConfigMarkedForDeletion,
 } from '$lib/server/prisma/neovimconfigs/service';
 import {
   getAllNeovimPluginNames,
@@ -41,6 +40,7 @@ import {
 
 import { TRPCError } from '@trpc/server';
 import {
+  deleteNeovimConfig,
   syncExistingRepoInfo,
   syncInitialRepoInfo,
   syncReadme,
@@ -80,7 +80,7 @@ export const router = t.router({
       const syncer = await getPluginSyncer(user, owner, name);
       return syncer.sync();
     }),
-  toggleConfigMarkForDeletion: t.procedure
+  deleteConfig: t.procedure
     .use(middlewares.isAuthenticated)
     .input((input: unknown) => {
       return z.object({
@@ -89,7 +89,7 @@ export const router = t.router({
     })
     .mutation(async ({ input: { id }, ctx }) => {
       const user = ctx.getAuthenticatedUser();
-      return await toggleConfigMarkedForDeletion(id, user.username);
+      return await deleteNeovimConfig(id, user.id)
     }),
   getPluginsByCategory: t.procedure
     .input((input: unknown) => {
