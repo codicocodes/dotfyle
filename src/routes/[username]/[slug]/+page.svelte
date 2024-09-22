@@ -7,7 +7,7 @@
 	import OpenGraph from '$lib/components/OpenGraph.svelte';
 	import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
-	import { faChevronCircleRight, faStar, faSync } from '@fortawesome/free-solid-svg-icons';
+	import { faChevronCircleRight, faStar, faSync, faTrash } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { Highlight } from 'svelte-highlight';
 	import { bash } from 'svelte-highlight/languages';
@@ -19,11 +19,18 @@
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import { humanizeRelative } from '$lib/utils';
 	import { session } from '$lib/stores/session';
+	import { trpc } from '$lib/trpc/client';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	$: ({ config, plugins, languageServers } = data);
-	$: pluginManager = plugins?.find(p => p.category === 'plugin-manager')?.name ?? "unknown"
+	$: pluginManager = plugins?.find((p) => p.category === 'plugin-manager')?.name ?? 'unknown';
 
+	async function deleteConfig() {
+		await trpc($page).deleteConfig.mutate({ id: config.id });
+		goto(`/${config.owner}`);
+	}
 </script>
 
 <svelte:head>
@@ -69,14 +76,18 @@
 				{humanizeRelative(new Date().getTime() - new Date(config.lastSyncedAt).getTime())}</span
 			>
 		</div>
-
-		<a href="https://github.com/{config.owner}/{config.repo}" target="_blank">
-			<Button text="GitHub" icon={faGithub} />
-		</a>
+		<div class="flex gap-1 items-center justify-between font-semibold">
+			{#if $session.user?.id === config.userId}
+				<Button text="Delete" icon={faTrash} on:click={deleteConfig} />
+			{/if}
+			<a href="https://github.com/{config.owner}/{config.repo}" target="_blank">
+				<Button text="GitHub" icon={faGithub} />
+			</a>
+		</div>
 	</div>
 	<NeovimConfigMetaData
 		syncing={false}
-		pluginManager={pluginManager}
+		{pluginManager}
 		pluginCount={config.pluginCount?.toString()}
 		root={config.root}
 		initFile={config.initFile}

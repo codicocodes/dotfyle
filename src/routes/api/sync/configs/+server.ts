@@ -6,18 +6,18 @@ import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/servic
 import type { RequestHandler } from '@sveltejs/kit';
 
 const getConfigSyncTasks = async () => {
-	const trackedPlugins = await getAllNeovimPluginNames();
-	const configs = await getConfigsWithToken();
-	const syncFactory = new NeovimConfigSyncerFactory(trackedPlugins);
-	return configs.map(({ _token, ...config }) => {
-		return async () => {
-			await Promise.all([
-				syncExistingRepoInfo(_token, config),
-				syncReadme(_token, config),
-				syncFactory.create(_token, config).then((syncer) => syncer.treeSync())
-			]);
-		};
-	});
+  const trackedPlugins = await getAllNeovimPluginNames();
+  const configs = await getConfigsWithToken();
+  const syncFactory = new NeovimConfigSyncerFactory(trackedPlugins);
+  return configs.map(({ _token, ...config }) => {
+    return async () => {
+      await Promise.all([
+        syncExistingRepoInfo(_token, config),
+        syncReadme(_token, config),
+        syncFactory.create(_token, config).then((syncer) => syncer.treeSync())
+      ]);
+    };
+  });
 };
 
 export const GET: RequestHandler = createAsyncTaskApi(getConfigSyncTasks);
