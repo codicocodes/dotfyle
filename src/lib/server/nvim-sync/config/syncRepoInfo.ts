@@ -62,16 +62,6 @@ export async function syncExistingRepoInfo(token: string, config: NeovimConfig) 
   return upsertNeovimConfig(config.userId, upsertDTO);
 }
 
-export async function deleteNeovimConfig(id: number, userId: number) {
-  return await prismaClient.neovimConfig.delete({
-    where: {
-      id_userId: {
-        id,
-        userId
-      }
-    }
-  });
-}
 
 export function validateConfigPath(root: GithubTree, path: string): undefined {
   for (const node of root.tree) {

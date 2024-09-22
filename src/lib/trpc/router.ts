@@ -9,6 +9,7 @@ import {
 import { getGithubToken, getUserByUsername } from '$lib/server/prisma/users/service';
 import { fetchGithubRepositoryByName, fetchRepoFileTree } from '$lib/server/github/api';
 import {
+  deleteNeovimConfig,
   getConfigBySlug,
   getConfigsByUsername,
   getConfigsForPlugin,
@@ -40,7 +41,6 @@ import {
 
 import { TRPCError } from '@trpc/server';
 import {
-  deleteNeovimConfig,
   syncExistingRepoInfo,
   syncInitialRepoInfo,
   syncReadme,
