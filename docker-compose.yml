@@ -1,20 +1,22 @@
-# Use postgres/example user/password credentials
-version: '3.1'
+# create a docker image with mysql and a default password of admin
+version: "3"
+
+name: dotfyle 
 
 services:
   db:
-    image: postgres
+    image: bitnami/postgresql:latest
+    container_name: dotfyle-db
     restart: always
-
+    environment:
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: postgres 
+      POSTGRESQL_DATABASE: dotfyle_dev 
+    # create a volume for the docker container_name
+    volumes:
+      - dotfyle-data:/bitnami/postgres/data
     ports:
       - 5432:5432
-
-    environment:
-      POSTGRES_USERNAME: postgres
-      POSTGRES_PASSWORD: postgres
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+volumes:
+  dotfyle-data:
+    driver: local

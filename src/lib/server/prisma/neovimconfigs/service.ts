@@ -140,7 +140,7 @@ export async function getConfigBySlug(
 		where: {
 			slug,
 			user: {
-				username: owner
+				username: { equals: owner, mode: "insensitive" }
 			}
 		},
 		orderBy: [
@@ -159,7 +159,11 @@ export async function getConfigBySlug(
 }
 
 export async function getConfigsByUsername(username: string): Promise<NeovimConfigWithMetaData[]> {
-	const where = { user: { username } };
+	const where =  { 
+    user: {
+		  username: { equals: username, mode: "insensitive" }
+		}
+  }
 	return getConfigs(where);
 }
 

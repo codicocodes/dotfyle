@@ -43,10 +43,14 @@ export async function getGithubToken(userId: number) {
 }
 
 export async function getUserByUsername(username: string): Promise<User> {
-	const user = await prismaClient.user.findUniqueOrThrow({
+	const user = await prismaClient.user.findFirstOrThrow({
 		where: {
-			username
+      username:{
+        equals: username,
+        mode: "insensitive"
+      }
 		}
 	});
+
 	return user;
 }
