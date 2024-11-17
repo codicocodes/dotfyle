@@ -51,7 +51,7 @@ class PluginContentFetcher implements ContentFetcher {
 				'{image}',
 				plugin.media.filter((m) => getMediaType(m) === 'image')[0]?.url ?? ''
 			);
-			post = post.replaceAll('{starcount}', plugin.stars.toString())
+			post = post.replaceAll('{starcount}', plugin.stars.toString());
 			post = post.replaceAll('{category}', plugin.category);
 			post = post.replaceAll('{description}', plugin.shortDescription);
 			post = post.replaceAll('{summary}', plugin.description);
@@ -73,7 +73,7 @@ class PluginContentFetcher implements ContentFetcher {
 			where: {
 				createdAt: {
 					gte: daysAgo(days)
-				},
+				}
 			},
 			orderBy: {
 				neovimConfigPlugins: {

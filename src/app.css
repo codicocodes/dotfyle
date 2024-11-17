@@ -49,9 +49,7 @@
 
 @layer base {
 	body {
-		transition:
-			background-color 0.4s ease-in-out,
-			color 0.4s ease-in-out;
+		transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
 		background-image: linear-gradient(to right, var(--background-gradient));
 	}
 

@@ -65,8 +65,4 @@ const handleTrpc = createTRPCHandle({
 	onError
 }) satisfies Handle;
 
-export const handle = sequence(
-	Sentry.sentryHandle(),
-	profilePerformance,
-	handleTrpc,
-);
+export const handle = sequence(Sentry.sentryHandle(), profilePerformance, handleTrpc);

@@ -429,10 +429,10 @@ export async function searchNeovimConfigs({
 								{ owner: { contains: queries[0], mode } },
 								{ repo: { contains: queries[1], mode } }
 							]
-						}
+					  }
 					: {
 							OR: [{ owner: { contains: query, mode } }, { repo: { contains: query, mode } }]
-						}
+					  }
 				: {}),
 			...(plugins && plugins.length > 0
 				? {
@@ -449,7 +449,7 @@ export async function searchNeovimConfigs({
 								}
 							};
 						})
-					}
+				  }
 				: {}),
 			...(languageServers && languageServers.length > 0
 				? {
@@ -462,7 +462,7 @@ export async function searchNeovimConfigs({
 								}
 							};
 						})
-					}
+				  }
 				: {})
 		},
 		include: {
@@ -494,7 +494,7 @@ export async function searchNeovimConfigs({
 								})
 							}
 						}
-					}
+				  }
 				: {})
 		},
 		orderBy: sortings[sorting]

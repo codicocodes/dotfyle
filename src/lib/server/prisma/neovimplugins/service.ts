@@ -226,10 +226,10 @@ function parsePluginQuery(query: string) {
 							{ owner: { contains: queries[0], mode } },
 							{ name: { contains: queries[1], mode } }
 						]
-					}
+				  }
 				: {
 						OR: [{ owner: { contains: query, mode } }, { name: { contains: query, mode } }]
-					}
+				  }
 			: {})
 	};
 }
@@ -247,7 +247,7 @@ export async function searchPlugins(
 					category: {
 						in: categories
 					}
-				}
+			  }
 			: {}),
 		...parsePluginQuery(query ?? '')
 	};

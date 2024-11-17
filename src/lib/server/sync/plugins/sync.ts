@@ -14,10 +14,7 @@ export class PluginSyncer {
 	plugin: NeovimPlugin;
 	configCount: number;
 	mediaParser: GithubMediaParser;
-	constructor(
-		private token: string,
-		{ configCount, media, ...plugin }: NeovimPluginWithCount
-	) {
+	constructor(private token: string, { configCount, media, ...plugin }: NeovimPluginWithCount) {
 		this.plugin = plugin;
 		this.configCount = configCount;
 		this.mediaParser = new GithubMediaParser();
