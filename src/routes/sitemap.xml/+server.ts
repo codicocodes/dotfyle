@@ -5,9 +5,9 @@ import type { RequestHandler } from '@sveltejs/kit';
 const website = 'https://dotfyle.com';
 
 const createSitemap = (
-	twinIssues: number[],
-	plugins: string[],
-	configs: string[]
+  twinIssues: number[],
+  plugins: string[],
+  configs: string[]
 ) => `<?xml version="1.0" encoding="UTF-8" ?>
 <urlset
 xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
@@ -83,88 +83,88 @@ xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
   <priority>0.9</priority>
 </url>
 ${plugins
-	.map(
-		(plugin) => `
+  .map(
+    (plugin) => `
          <url>
          <loc>${website}/${plugin}</loc>
          <changefreq>daily</changefreq>
          <priority>0.7</priority>
          </url>
          `
-	)
-	.join('')}
+  )
+  .join('')}
 ${twinIssues
-	.map(
-		(issue) => `
+  .map(
+    (issue) => `
          <url>
          <loc>${website}/this-week-in-neovim/${issue}</loc>
          <changefreq>weekly</changefreq>
          <priority>0.5</priority>
          </url>
          `
-	)
-	.join('')}
+  )
+  .join('')}
 ${configs
-	.map(
-		(config) => `
+  .map(
+    (config) => `
          <url>
          <loc>${website}/${config}</loc>
          <changefreq>daily</changefreq>
          <priority>0.7</priority>
          </url>
          `
-	)
-	.join('')}
+  )
+  .join('')}
       </urlset>`;
 
 const getTwinIssues = async () => {
-	const posts = await prismaClient.twinPost.findMany({
-		where: {
-			publishedAt: {
-				not: null
-			}
-		},
-		select: {
-			issue: true
-		},
-		orderBy: {
-			issue: 'desc'
-		}
-	});
-	return posts.map(({ issue }) => issue);
+  const posts = await prismaClient.twinPost.findMany({
+    where: {
+      publishedAt: {
+        not: null
+      }
+    },
+    select: {
+      issue: true
+    },
+    orderBy: {
+      issue: 'desc'
+    }
+  });
+  return posts.map(({ issue }) => issue);
 };
 
 const getPluginPages = async () => {
-	const identifiers = await getAllNeovimPluginNames();
-	return identifiers.map(({ owner, name }) => `plugins/${owner}/${name}`);
+  const identifiers = await getAllNeovimPluginNames();
+  return identifiers.map(({ owner, name }) => `plugins/${owner}/${name}`);
 };
 
 const getNeovimConfigs = async () => {
-	const configs = await prismaClient.neovimConfig.findMany({
-		select: {
-			owner: true,
-			slug: true
-		},
-		where: {
-			stars: {
-				gt: 10
-			}
-		}
-	});
-	return configs.flatMap(({ owner, slug }) => [`${owner}/${slug}`, owner]);
+  const configs = await prismaClient.neovimConfig.findMany({
+    select: {
+      owner: true,
+      slug: true
+    },
+    where: {
+      stars: {
+        gt: 10
+      }
+    }
+  });
+  return configs.flatMap(({ owner, slug }) => [`${owner}/${slug}`, owner]);
 };
 
 export const GET: RequestHandler = async () => {
-	const [issues, plugins, configs] = await Promise.all([
-		getTwinIssues(),
-		getPluginPages(),
-		getNeovimConfigs()
-	]);
-	const sitemap = createSitemap(issues, plugins, configs);
-	return new Response(sitemap, {
-		headers: {
-			'Cache-Control': `public, max-age=0, s-maxage=${60 * 60 * 24}`, // seconds
-			'Content-Type': 'application/rss+xml'
-		}
-	});
+  const [issues, plugins, configs] = await Promise.all([
+    getTwinIssues(),
+    getPluginPages(),
+    getNeovimConfigs()
+  ]);
+  const sitemap = createSitemap(issues, plugins, configs);
+  return new Response(sitemap, {
+    headers: {
+      'Cache-Control': `public, max-age=0, s-maxage=${60 * 60 * 24}`, // seconds
+      'Content-Type': 'application/rss+xml'
+    }
+  });
 };

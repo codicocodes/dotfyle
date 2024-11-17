@@ -5,11 +5,11 @@ import { PluginSyncer } from '$lib/server/sync/plugins/sync';
 import type { RequestHandler } from '@sveltejs/kit';
 
 const getSyncTasks = async () => {
-	const [token, plugins] = await Promise.all([getAdminGithubToken(), getAllPlugins()]);
-	return plugins.map((plugin) => async () => {
-		const syncer = new PluginSyncer(token, plugin);
-		await syncer.sync();
-	});
+  const [token, plugins] = await Promise.all([getAdminGithubToken(), getAllPlugins()]);
+  return plugins.map((plugin) => async () => {
+    const syncer = new PluginSyncer(token, plugin);
+    await syncer.sync();
+  });
 };
 
 export const GET: RequestHandler = createAsyncTaskApi(getSyncTasks);

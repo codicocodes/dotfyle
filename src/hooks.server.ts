@@ -13,56 +13,56 @@ import { prismaClient } from '$lib/server/prisma/client';
 console.log('Starting server: ', { NODE_ENV });
 
 if (NODE_ENV === 'production') {
-	Sentry.init({
-		dsn: env.SENTRY_DSN,
-		tracesSampleRate: 0.01,
-		environment: NODE_ENV,
-		integrations: [new Sentry.Integrations.Prisma({ client: prismaClient })]
-	});
+  Sentry.init({
+    dsn: env.SENTRY_DSN,
+    tracesSampleRate: 0.01,
+    environment: NODE_ENV,
+    integrations: [new Sentry.Integrations.Prisma({ client: prismaClient })]
+  });
 }
 
 export const onError = (opts: {
-	ctx?: inferRouterContext<Router>;
-	error: TRPCError;
-	path: string;
-	input: unknown;
-	req: RequestInit;
-	type: ProcedureType | 'unknown';
+  ctx?: inferRouterContext<Router>;
+  error: TRPCError;
+  path: string;
+  input: unknown;
+  req: RequestInit;
+  type: ProcedureType | 'unknown';
 }) => {
-	const { error } = opts;
-	if (error.code === 'INTERNAL_SERVER_ERROR') {
-		console.log(error);
-		error.message = 'Something went wrong';
-	}
-	delete error.stack;
+  const { error } = opts;
+  if (error.code === 'INTERNAL_SERVER_ERROR') {
+    console.log(error);
+    error.message = 'Something went wrong';
+  }
+  delete error.stack;
 };
 
 export const profilePerformance: Handle = async ({ event, resolve }) => {
-	Sentry.withScope((scope) => {
-		const user = verifyToken(event.cookies);
-		scope.setUser({ id: user?.id ?? 'Anonymous' });
-	});
-	const route = event.url.pathname;
+  Sentry.withScope((scope) => {
+    const user = verifyToken(event.cookies);
+    scope.setUser({ id: user?.id ?? 'Anonymous' });
+  });
+  const route = event.url.pathname;
 
-	const qs = event.url.search;
+  const qs = event.url.search;
 
-	const start = performance.now();
-	const response = await resolve(event);
-	const end = performance.now();
+  const start = performance.now();
+  const response = await resolve(event);
+  const end = performance.now();
 
-	const responseTime = end - start;
+  const responseTime = end - start;
 
-	const prefixIcon = responseTime >= 1000 ? '🐢' : '🚀';
+  const prefixIcon = responseTime >= 1000 ? '🐢' : '🚀';
 
-	console.log(`${prefixIcon} ${route}${qs} took ${responseTime.toFixed(2)} ms`);
+  console.log(`${prefixIcon} ${route}${qs} took ${responseTime.toFixed(2)} ms`);
 
-	return response;
+  return response;
 };
 
 const handleTrpc = createTRPCHandle({
-	router,
-	createContext,
-	onError
+  router,
+  createContext,
+  onError
 }) satisfies Handle;
 
 export const handle = sequence(Sentry.sentryHandle(), profilePerformance, handleTrpc);

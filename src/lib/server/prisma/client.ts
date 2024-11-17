@@ -4,13 +4,13 @@ import Prisma from '@prisma/client';
 const { PrismaClient } = Prisma;
 
 export const prismaClient = new PrismaClient({
-	datasources: {
-		db: {
-			url: DATABASE_PRIVATE_URL
-		}
-	}
+  datasources: {
+    db: {
+      url: DATABASE_PRIVATE_URL
+    }
+  }
 });
 
 prismaClient.$on('beforeExit', async () => {
-	console.log('beforeExit hook');
+  console.log('beforeExit hook');
 });

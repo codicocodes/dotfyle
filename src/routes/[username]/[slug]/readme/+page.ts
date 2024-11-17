@@ -9,101 +9,101 @@ import { trpc } from '$lib/trpc/client';
 import { getInstallCommand, getRunCommand } from '$lib/installInstructions';
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
-	const username = event.params.username;
-	const slug = event.params.slug;
-	const [config, plugins, languageServers] = await Promise.all([
-		trpc(event).getConfigBySlug.query({
-			username,
-			slug
-		}) as unknown as NeovimConfigWithMetaData,
-		trpc(event).getPluginsBySlug.query({
-			username,
-			slug
-		}) as unknown as NeovimPluginWithCount[],
-		trpc(event).getLanguageServersBySlug.query({
-			username,
-			slug
-		}) as unknown as LanguageServer[]
-	]).catch(() => {
-		throw error(404);
-	});
+  const username = event.params.username;
+  const slug = event.params.slug;
+  const [config, plugins, languageServers] = await Promise.all([
+    trpc(event).getConfigBySlug.query({
+      username,
+      slug
+    }) as unknown as NeovimConfigWithMetaData,
+    trpc(event).getPluginsBySlug.query({
+      username,
+      slug
+    }) as unknown as NeovimPluginWithCount[],
+    trpc(event).getLanguageServersBySlug.query({
+      username,
+      slug
+    }) as unknown as LanguageServer[]
+  ]).catch(() => {
+    throw error(404);
+  });
 
-	let readme = `# ${config.repo}/${config.root}\n\n`;
+  let readme = `# ${config.repo}/${config.root}\n\n`;
 
-	const configPath = `${config.owner}/${config.slug}`;
+  const configPath = `${config.owner}/${config.slug}`;
 
-	const badges = ['plugins', 'leaderkey', 'plugin-manager']
-		.map((api) => {
-			return `<a href="https://dotfyle.com/${configPath}"><img src="https://dotfyle.com/${configPath}/badges/${api}?style=flat" /></a>`;
-		})
-		.join('\n')
-		.concat('\n');
+  const badges = ['plugins', 'leaderkey', 'plugin-manager']
+    .map((api) => {
+      return `<a href="https://dotfyle.com/${configPath}"><img src="https://dotfyle.com/${configPath}/badges/${api}?style=flat" /></a>`;
+    })
+    .join('\n')
+    .concat('\n');
 
-	const badgeContainer = `${badges}\n\n`;
+  const badgeContainer = `${badges}\n\n`;
 
-	let installInstructions =
-		'## Install Instructions\n\n > Install requires Neovim 0.9+. Always review the code before installing a configuration.\n\n';
-	installInstructions = installInstructions.concat(
-		'Clone the repository and install the plugins:\n\n'
-	);
+  let installInstructions =
+    '## Install Instructions\n\n > Install requires Neovim 0.9+. Always review the code before installing a configuration.\n\n';
+  installInstructions = installInstructions.concat(
+    'Clone the repository and install the plugins:\n\n'
+  );
 
-	installInstructions = installInstructions.concat(`\`\`\`sh
+  installInstructions = installInstructions.concat(`\`\`\`sh
 ${getInstallCommand(config)}
 \`\`\`\n\n`);
 
-	installInstructions = installInstructions.concat('Open Neovim with this config:\n\n');
+  installInstructions = installInstructions.concat('Open Neovim with this config:\n\n');
 
-	installInstructions = installInstructions.concat(`\`\`\`sh
+  installInstructions = installInstructions.concat(`\`\`\`sh
 ${getRunCommand(config)}
 \`\`\`\n\n`);
 
-	let pluginSection = '## Plugins\n\n';
+  let pluginSection = '## Plugins\n\n';
 
-	const pluginByCategory: Record<string, string[]> = {};
+  const pluginByCategory: Record<string, string[]> = {};
 
-	for (const plugin of plugins) {
-		pluginByCategory[plugin.category] = [];
-	}
+  for (const plugin of plugins) {
+    pluginByCategory[plugin.category] = [];
+  }
 
-	for (const plugin of plugins) {
-		const path = `${plugin.owner}/${plugin.name}`;
-		pluginByCategory[plugin.category].push(path);
-	}
+  for (const plugin of plugins) {
+    const path = `${plugin.owner}/${plugin.name}`;
+    pluginByCategory[plugin.category].push(path);
+  }
 
-	for (const [category, plugins] of Object.entries(pluginByCategory).sort(
-		([categoryA], [categoryB]) => (categoryA > categoryB ? 1 : -1)
-	)) {
-		let categoryPlugin = `### ${category}\n\n`;
+  for (const [category, plugins] of Object.entries(pluginByCategory).sort(
+    ([categoryA], [categoryB]) => (categoryA > categoryB ? 1 : -1)
+  )) {
+    let categoryPlugin = `### ${category}\n\n`;
 
-		for (const plugin of plugins) {
-			categoryPlugin = categoryPlugin.concat(
-				`+ [${plugin}](https://dotfyle.com/plugins/${plugin})\n`
-			);
-		}
-		pluginSection = pluginSection.concat(categoryPlugin);
-	}
+    for (const plugin of plugins) {
+      categoryPlugin = categoryPlugin.concat(
+        `+ [${plugin}](https://dotfyle.com/plugins/${plugin})\n`
+      );
+    }
+    pluginSection = pluginSection.concat(categoryPlugin);
+  }
 
-	let languageServerSection = '## Language Servers\n\n';
+  let languageServerSection = '## Language Servers\n\n';
 
-	for (const ls of languageServers.map((ls) => ls.name).sort()) {
-		languageServerSection = languageServerSection.concat(`+ ${ls}\n`);
-	}
+  for (const ls of languageServers.map((ls) => ls.name).sort()) {
+    languageServerSection = languageServerSection.concat(`+ ${ls}\n`);
+  }
 
-	const outro = `\n\n This readme was generated by [Dotfyle](https://dotfyle.com)`;
+  const outro = `\n\n This readme was generated by [Dotfyle](https://dotfyle.com)`;
 
-	readme = readme
-		.concat(badgeContainer)
-		.concat(installInstructions)
-		.concat(pluginSection)
-		.concat(languageServerSection)
-		.concat(outro)
-		.trim();
+  readme = readme
+    .concat(badgeContainer)
+    .concat(installInstructions)
+    .concat(pluginSection)
+    .concat(languageServerSection)
+    .concat(outro)
+    .trim();
 
-	const html = sanitizeHtml(marked(readme));
+  const html = sanitizeHtml(marked(readme));
 
-	return {
-		config,
-		readme,
-		html
-	};
+  return {
+    config,
+    readme,
+    html
+  };
 };

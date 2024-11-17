@@ -6,34 +6,34 @@ import { INTERNAL_API_TOKEN } from '$env/static/private';
 import type { User } from '@prisma/client';
 
 export class AdminRequestValidator {
-	event: RequestEvent;
-	constructor(event: RequestEvent) {
-		this.event = event;
-	}
+  event: RequestEvent;
+  constructor(event: RequestEvent) {
+    this.event = event;
+  }
 
-	validate() {
-		if (this.isInternalAPI()) {
-			return;
-		}
-		const user = verifyToken(this.event.cookies);
-		this.validateAdmin(user);
-	}
+  validate() {
+    if (this.isInternalAPI()) {
+      return;
+    }
+    const user = verifyToken(this.event.cookies);
+    this.validateAdmin(user);
+  }
 
-	isInternalAPI(): boolean {
-		if (!INTERNAL_API_TOKEN) {
-			return false;
-		}
-		return this.event.request.headers.get('Authorization') === INTERNAL_API_TOKEN;
-	}
+  isInternalAPI(): boolean {
+    if (!INTERNAL_API_TOKEN) {
+      return false;
+    }
+    return this.event.request.headers.get('Authorization') === INTERNAL_API_TOKEN;
+  }
 
-	validateAdmin(user: User | null) {
-		if (!user) {
-			throw error(401, 'unauthorized');
-		}
-		if (NODE_ENV === 'production') {
-			if (!isAdmin(user)) {
-				throw error(403, 'forbidden');
-			}
-		}
-	}
+  validateAdmin(user: User | null) {
+    if (!user) {
+      throw error(401, 'unauthorized');
+    }
+    if (NODE_ENV === 'production') {
+      if (!isAdmin(user)) {
+        throw error(403, 'forbidden');
+      }
+    }
+  }
 }
