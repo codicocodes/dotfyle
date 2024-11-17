@@ -9,12 +9,13 @@ import {
 import { getGithubToken, getUserByUsername } from '$lib/server/prisma/users/service';
 import { fetchGithubRepositoryByName, fetchRepoFileTree } from '$lib/server/github/api';
 import {
+  deleteNeovimConfig,
   getConfigBySlug,
   getConfigsByUsername,
   getConfigsForPlugin,
   getNeovimConfigsWithDotfyleShield,
   getNewestNeovimConfigs,
-  searchNeovimConfigs
+  searchNeovimConfigs,
 } from '$lib/server/prisma/neovimconfigs/service';
 import {
   getAllNeovimPluginNames,
@@ -78,6 +79,17 @@ export const router = t.router({
       const user = ctx.getAuthenticatedUser();
       const syncer = await getPluginSyncer(user, owner, name);
       return syncer.sync();
+    }),
+  deleteConfig: t.procedure
+    .use(middlewares.isAuthenticated)
+    .input((input: unknown) => {
+      return z.object({
+        id: z.number()
+      }).parse(input);
+    })
+    .mutation(async ({ input: { id }, ctx }) => {
+      const user = ctx.getAuthenticatedUser();
+      return await deleteNeovimConfig(id, user.id)
     }),
   getPluginsByCategory: t.procedure
     .input((input: unknown) => {

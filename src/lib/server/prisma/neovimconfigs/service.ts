@@ -111,6 +111,7 @@ export async function getConfigsForPlugin(
   return configs.map(attachMetaData);
 }
 
+
 export async function getConfigBySlug(
   owner: string,
   slug: string
@@ -156,6 +157,17 @@ export async function getConfigBySlug(
     ]
   });
   return attachMetaData(config);
+}
+
+export async function deleteNeovimConfig(id: number, userId: number) {
+  return await prismaClient.neovimConfig.delete({
+    where: {
+      id_userId: {
+        id,
+        userId
+      }
+    }
+  });
 }
 
 export async function getConfigsByUsername(username: string): Promise<NeovimConfigWithMetaData[]> {
