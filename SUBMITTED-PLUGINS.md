@@ -66,6 +66,7 @@
 ## Color
 
 - echasnovski/mini.hipatterns
+- TaDaa/vimade
 
 ## Colorscheme
 
