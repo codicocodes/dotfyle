@@ -1,4 +1,5 @@
-# create a docker image with mysql and a default password of admin
+# create a docker image with postgres using bitnami image
+# this makes it easier to get started as it will create the database for you and keep it persisted
 version: "3"
 
 name: dotfyle 
