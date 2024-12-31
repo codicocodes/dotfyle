@@ -3,6 +3,7 @@
 ## AI
 
 - martineausimon/nvim-bard
+- aaronik/gptmodels.nvim
 
 ## Plugin Manager
 
@@ -157,6 +158,7 @@
 - echasnovski/mini.jump
 - echasnovski/mini.jump2d
 - echasnovski/mini.bracketed
+- aaronik/treewalker.nvim
 
 ## Keybinding
 
