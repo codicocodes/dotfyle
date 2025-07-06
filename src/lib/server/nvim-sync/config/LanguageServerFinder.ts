@@ -179,6 +179,7 @@ export const KNOWN_LANGUAGE_SERVERS = [
   'rome',
   'ruby_ls',
   'ruff_lsp',
+  'ruff',
   'rust_analyzer',
   'salt_ls',
   'scheme_langserver',
