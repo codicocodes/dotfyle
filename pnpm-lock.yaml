@@ -2647,6 +2647,11 @@ packages:
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
 
+  rollup@3.30.0:
+    resolution: {integrity: sha512-kQvGasUgN+AlWGliFn2POSajRQEsULVYFGTvOZmK06d7vCD+YhZztt70kGk3qaeAXeWYL5eO7zx+rAubBc55eA==}
+    engines: {node: '>=14.18.0', npm: '>=8.0.0'}
+    hasBin: true
+
   rss@1.2.2:
     resolution: {integrity: sha512-xUhRTgslHeCBeHAqaWSbOYTydN2f0tAzNXvzh3stjz7QDhQMzdgHf3pfgNIngeytQflrFPfy6axHilTETr6gDg==}
 
@@ -6000,6 +6005,10 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
+  rollup@3.30.0:
+    optionalDependencies:
+      fsevents: 2.3.3
+
   rss@1.2.2:
     dependencies:
       mime-types: 2.1.13
@@ -6402,7 +6411,7 @@ snapshots:
     dependencies:
       esbuild: 0.18.20
       postcss: 8.5.4
-      rollup: 3.29.5
+      rollup: 3.30.0
     optionalDependencies:
       '@types/node': 22.15.24
       fsevents: 2.3.3
