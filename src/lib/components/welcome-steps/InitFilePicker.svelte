@@ -58,7 +58,7 @@
 				<button
 					on:click={() => selectInitFile(file)}
 					on:keypress={() => selectInitFile(file)}
-					in:slide
+					in:slide|global
 				>
 					<RepoPickerItem name={file.path} selected={isSelectedFile(file, $unsyncedConfig)} />
 				</button>

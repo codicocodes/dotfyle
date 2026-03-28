@@ -30,7 +30,7 @@
 </svelte:head>
 
 <div class="flex flex-col justify-center items-center">
-	<h1 out:fade class="my-12 md:my-20 text-2xl font-semibold tracking-tight">
+	<h1 out:fade|global class="my-12 md:my-20 text-2xl font-semibold tracking-tight">
 		Add a new Neovim config
 	</h1>
 	{#if $session.loading || loading}

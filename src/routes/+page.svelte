@@ -77,7 +77,7 @@
 						<Fa class="ml-1" size="xs" icon={faStar} />
 						Star
 						{#if stars}
-							<span transition:slide={{ axis: 'x', duration: 400 }}>{stars}</span>
+							<span transition:slide|global={{ axis: 'x', duration: 400 }}>{stars}</span>
 						{/if}
 					</button>
 				</a>
@@ -124,7 +124,7 @@
 			<div class="w-full flex flex-col sm:flex-row justify-center items-center gap-2">
 				{#if !$session.loading && !$session.user}
 					<a
-						transition:blur
+						transition:blur|global
 						href="/api/auth/github"
 						class="bg-transparent rounded-full shadow-xl shadow-white/30 hover:shadow-main"
 					>

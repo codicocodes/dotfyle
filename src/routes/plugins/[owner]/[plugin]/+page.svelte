@@ -308,7 +308,7 @@
 						</h3>
 					</div>
 					<div
-						in:fade
+						in:fade|global
 						class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
 					>
 						{#each data.breaking as post, _}
@@ -328,7 +328,7 @@
 						</h2>
 					</div>
 					<div
-						in:fade
+						in:fade|global
 						class="space-y-4 sm:grid sm:grid-flow-row auto-rows-max sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 sm:space-y-0 md:grid-cols-3 lg:gap-x-8 sm:space-x-0"
 					>
 						{#each data.media as media}
@@ -408,7 +408,7 @@
 
 					<BigGridContainer>
 						{#each data.configs as conf, _}
-							<div in:fade>
+							<div in:fade|global>
 								<NeovimConfigCard
 									slug={conf.slug}
 									repo={conf.repo}
@@ -444,7 +444,7 @@
 
 					<BigGridContainer>
 						{#each categoryPlugins as plugin, _}
-							<div in:fade>
+							<div in:fade|global>
 								<RepositoryCard
 									name="{plugin.owner}/{plugin.name}"
 									link="/plugins/{plugin.owner}/{plugin.name}"

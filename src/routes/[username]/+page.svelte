@@ -31,7 +31,7 @@
 	<div class="h-full grid grid-cols-10 gap-4 my-14 mx-8 max-w-5xl">
 		<div class="col-span-10 sm:col-span-3">
 			<!-- profile area -->
-			<div in:fade class="flex sm:flex-col items-center justify-center gap-2 w-auto">
+			<div in:fade|global class="flex sm:flex-col items-center justify-center gap-2 w-auto">
 				<div class="flex sm:flex-col gap-2 items-center">
 					<Avatar src={data.profile.avatarUrl} width="w-16 sm:72 md:48 xl:w-56" />
 					<span class="flex text-xl font-medium items-center justify-center gap-2">
@@ -58,12 +58,12 @@
 		<div class="col-span-10 sm:col-span-7 w-full">
 			<!-- user configs -->
 			<div class="flex flex-col gap-1">
-				<h3 in:fade class="flex items-center gap-1 text-xl font-semibold mb-2">
+				<h3 in:fade|global class="flex items-center gap-1 text-xl font-semibold mb-2">
 					Neovim configurations
 				</h3>
 				<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
 					{#each data.configs as conf, _}
-						<div in:fade>
+						<div in:fade|global>
 							<NeovimConfigCard
 								slug={conf.slug}
 								repo={conf.repo}
@@ -82,7 +82,7 @@
 				{#if data.plugins.length > 0}
 					<div class="flex flex-col gap-1 mt-4">
 						<!-- authored plugins -->
-						<h3 in:fade class="flex items-center gap-1 text-xl font-semibold">
+						<h3 in:fade|global class="flex items-center gap-1 text-xl font-semibold">
 							Authored Neovim plugins
 						</h3>
 						<p class="text-lg font-light">
@@ -92,7 +92,7 @@
 						</p>
 						<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
 							{#each data.plugins as plugin, _}
-								<div in:fade>
+								<div in:fade|global>
 									<RepositoryCard
 										name="{plugin.owner}/{plugin.name}"
 										link="/plugins/{plugin.owner}/{plugin.name}"

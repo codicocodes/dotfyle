@@ -43,7 +43,7 @@
 							<button
 								on:click={() => selectConfigRepo(repo)}
 								on:keypress={() => selectConfigRepo(repo)}
-								in:slide
+								in:slide|global
 							>
 								<RepoPickerItem name={repo.name} selected={$unsyncedConfig.repo === repo.name} />
 							</button>
@@ -66,7 +66,7 @@
 							<button
 								on:click={() => selectConfigRepo(repo)}
 								on:keypress={() => selectConfigRepo(repo)}
-								in:slide
+								in:slide|global
 							>
 								<RepoPickerItem name={repo.name} selected={$unsyncedConfig.repo === repo.name} />
 							</button>

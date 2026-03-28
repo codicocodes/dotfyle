@@ -88,7 +88,7 @@
 						</h2>
 					</div>
 
-					<div in:fade>
+					<div in:fade|global>
 						<RepoPicker repositoriesInput={repositories} />
 					</div>
 				</Step>
@@ -100,7 +100,7 @@
 						<Fa icon={faFileCode} size="sm" /> confirm the configs root init file
 					</h2>
 					{#if $unsyncedConfig.repo}
-						<div in:fade>
+						<div in:fade|global>
 							<InitFilePicker />
 						</div>
 					{/if}
@@ -112,7 +112,7 @@
 					>
 						<Fa icon={faRotate} size="sm" /> Sync your config with GitHub
 					</h2>
-					<div in:fade class="flex w-full items-center justify-center">
+					<div in:fade|global class="flex w-full items-center justify-center">
 						<div class="flex flex-col w-full max-w-5xl gap-2 mx-0 md:mx-12 my-2">
 							<UnsyncedNeovimConfigCard avatar={user.avatarUrl} />
 							<UnsyncedNeovimConfigMetaData {syncing} />

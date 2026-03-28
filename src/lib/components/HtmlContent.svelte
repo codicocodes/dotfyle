@@ -3,7 +3,7 @@
 	export let content: string;
 </script>
 
-<div in:fade id="markdown-post-container" class="p-2">
+<div in:fade|global id="markdown-post-container" class="p-2">
 	{@html content}
 </div>
 

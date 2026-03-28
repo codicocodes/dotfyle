@@ -56,7 +56,7 @@
 			.filter((c) => c.toLowerCase().includes(filter.toLowerCase()))
 			.slice(0, expanded ? -1 : expandAtCount) as currItem}
 			<button
-				in:fly
+				in:fly|global
 				class={`py-1 px-2 cursor-pointer rounded bg-white focus:shadow-main font-medium text-black`}
 				on:click={() => {
 					selected = currItem;
