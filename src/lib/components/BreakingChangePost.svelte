@@ -7,7 +7,11 @@
 	import CoolText from './CoolText.svelte';
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 
-	export let post: JsonBreakingChangePost;
+	interface Props {
+		post: JsonBreakingChangePost;
+	}
+
+	let { post }: Props = $props();
 
 	const date = new Date(post.createdAt);
 	const url = `/plugins/${post.breakingChange.plugin.owner}/${post.breakingChange.plugin.name}`;

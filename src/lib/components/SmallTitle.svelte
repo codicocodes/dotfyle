@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CoolText from './CoolText.svelte';
-	export let title: string;
+	interface Props {
+		title: string;
+	}
+
+	let { title }: Props = $props();
 </script>
 
 <h1

@@ -1,25 +1,41 @@
 <script lang="ts">
+	import { run, self, createBubbler, stopPropagation } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { faCheck } from '@fortawesome/free-solid-svg-icons';
 	import Button from './Button.svelte';
 
-	export let showModal: boolean;
-	export let onClose: () => void;
+	interface Props {
+		showModal: boolean;
+		onClose: () => void;
+		header?: import('svelte').Snippet;
+		children?: import('svelte').Snippet;
+	}
 
-	let dialog: HTMLDialogElement;
+	let {
+		showModal,
+		onClose,
+		header,
+		children
+	}: Props = $props();
 
-	$: if (dialog && showModal) dialog.showModal();
+	let dialog: HTMLDialogElement = $state();
+
+	run(() => {
+		if (dialog && showModal) dialog.showModal();
+	});
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <dialog
 	class="bg-gray text-white p-4"
 	bind:this={dialog}
-	on:close={() => onClose()}
-	on:click|self={() => dialog.close()}
+	onclose={() => onClose()}
+	onclick={self(() => dialog.close())}
 >
-	<div on:click|stopPropagation>
-		<slot name="header" />
-		<slot />
+	<div onclick={stopPropagation(bubble('click'))}>
+		{@render header?.()}
+		{@render children?.()}
 		<div class="flex w-full justify-center">
 			<Button icon={faCheck} text="Done" loading={false} on:click={() => dialog.close()} />
 		</div>

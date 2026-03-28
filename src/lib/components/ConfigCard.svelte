@@ -2,12 +2,23 @@
 	import Fa from 'svelte-fa';
 	import { faChevronCircleRight, faStar } from '@fortawesome/free-solid-svg-icons';
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
-	export let avatar: string;
-	export let owner: string;
-	export let repo: string;
-	export let stars: string;
-	export let tools: string[];
-	export let screenshot: string;
+	interface Props {
+		avatar: string;
+		owner: string;
+		repo: string;
+		stars: string;
+		tools: string[];
+		screenshot: string;
+	}
+
+	let {
+		avatar,
+		owner,
+		repo,
+		stars,
+		tools,
+		screenshot
+	}: Props = $props();
 </script>
 
 <div class="flex bg-white/10 px-4 py-3 rounded my-4">

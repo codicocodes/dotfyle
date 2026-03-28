@@ -3,9 +3,13 @@
 	import Fa from 'svelte-fa';
 	import CoolText from './CoolText.svelte';
 
-	export let text: string;
-	export let href: string | undefined;
-	export let target: string | undefined = '';
+	interface Props {
+		text: string;
+		href: string | undefined;
+		target?: string | undefined;
+	}
+
+	let { text, href, target = '' }: Props = $props();
 </script>
 
 <a

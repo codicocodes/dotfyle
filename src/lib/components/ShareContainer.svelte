@@ -3,10 +3,19 @@
 	import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 	import { faCopy, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	export let url: string;
-	export let tweetText: string;
-	export let emailSubject: string;
-	export let emailBody: string;
+	interface Props {
+		url: string;
+		tweetText: string;
+		emailSubject: string;
+		emailBody: string;
+	}
+
+	let {
+		url,
+		tweetText,
+		emailSubject,
+		emailBody
+	}: Props = $props();
 
 	const utmPrefix = url.includes('?') ? '&' : '?';
 
@@ -14,14 +23,14 @@
 	const emailUrl = url + utmPrefix + 'utm_source=share-email';
 	const copyUrl = url + utmPrefix + 'utm_source=share-copy';
 
-	$: tweetUrl = `https://twitter.com/intent/tweet?url=${twitterUrl}&text=${tweetText}&via=codicocodes&`;
+	let tweetUrl = $derived(`https://twitter.com/intent/tweet?url=${twitterUrl}&text=${tweetText}&via=codicocodes&`);
 </script>
 
 <div class="flex items-center gap-2">
 	<button
 		title="Copy url"
 		class="block p-3 bg-black/30 rounded-full border-[1px] border-accent-muted hover:border-accent-bright"
-		on:click={() => copyToClipboard(copyUrl)}
+		onclick={() => copyToClipboard(copyUrl)}
 	>
 		<Fa size="xs" icon={faCopy} />
 	</button>

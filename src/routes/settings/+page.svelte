@@ -5,10 +5,10 @@
 	import { session } from '$lib/stores/session';
 	import DeleteAccountModal from '$lib/components/DeleteAccountModal.svelte';
 
-	export let data;
+	let { data } = $props();
 
-	let showDeleteModal = false;
-	let deleteError = '';
+	let showDeleteModal = $state(false);
+	let deleteError = $state('');
 
 	async function handleDeleteConfirmed() {
 		deleteError = '';
@@ -39,7 +39,7 @@
 			{/if}
 			<button
 				class="border border-red-500/60 hover:border-red-400 bg-black/30 px-4 py-2 rounded-lg text-sm self-start transition-all text-red-400"
-				on:click={() => (showDeleteModal = true)}
+				onclick={() => (showDeleteModal = true)}
 			>
 				Delete account
 			</button>

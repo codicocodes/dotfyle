@@ -13,15 +13,29 @@
 	import Fa from 'svelte-fa';
 	import GlossyCard from './GlossyCard.svelte';
 
-	export let syncing: boolean;
-	export let pluginManager: string;
-	export let pluginCount: string;
-	export let root: string;
-	export let initFile: string;
-	export let isMonorepo: string;
-	export let isFork: string;
-	export let leaderkey: string;
-	export let loc: number;
+	interface Props {
+		syncing: boolean;
+		pluginManager: string;
+		pluginCount: string;
+		root: string;
+		initFile: string;
+		isMonorepo: string;
+		isFork: string;
+		leaderkey: string;
+		loc: number;
+	}
+
+	let {
+		syncing,
+		pluginManager,
+		pluginCount,
+		root,
+		initFile,
+		isMonorepo,
+		isFork,
+		leaderkey,
+		loc
+	}: Props = $props();
 </script>
 
 <GlossyCard>
@@ -35,7 +49,7 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
-					<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
+					<div class="w-2 h-2 rounded-full bg-main animate-pulse"></div>
 				{/if}
 				{pluginManager}
 			</span>
@@ -50,7 +64,7 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
-					<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
+					<div class="w-2 h-2 rounded-full bg-main animate-pulse"></div>
 				{/if}
 				{pluginCount}
 			</span>
@@ -89,7 +103,7 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
-					<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
+					<div class="w-2 h-2 rounded-full bg-main animate-pulse"></div>
 				{/if}
 				<span class="flex items-center gap-1">
 					{loc}
@@ -130,7 +144,7 @@
 			</span>
 			<span class="flex items-center gap-1">
 				{#if syncing}
-					<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
+					<div class="w-2 h-2 rounded-full bg-main animate-pulse"></div>
 				{/if}
 				<kbd class="px-2 py-1 border rounded-lg bg-base-600 text-base-100 border-base-500"
 					>{leaderkey}</kbd

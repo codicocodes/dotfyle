@@ -4,14 +4,14 @@
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import { goto } from '$app/navigation';
 	import { isMaintenanceMode } from '$lib/utils';
-	let loading = false;
-	$: disabled = loading || isMaintenanceMode();
+	let loading = $state(false);
+	let disabled = $derived(loading || isMaintenanceMode());
 </script>
 
 <form>
 	<button
 		{disabled}
-		on:click={() => {
+		onclick={() => {
 			if (!disabled) {
 				goto('/api/auth/github');
 			}
@@ -31,7 +31,7 @@
 			Login | Sign up
 
 			{#if loading}
-				<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
+				<div class="w-2 h-2 rounded-full bg-main animate-pulse"></div>
 			{:else}
 				<Fa class="ml-1" size="xs" icon={faArrowUpRightFromSquare} />
 			{/if}

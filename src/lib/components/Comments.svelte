@@ -29,4 +29,4 @@
 	></script>
 </head>
 
-<div id="comments" class="giscus" />
+<div id="comments" class="giscus"></div>

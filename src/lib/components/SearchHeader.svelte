@@ -11,9 +11,13 @@
 		description: string;
 	}
 
-	export let content: Post;
-	export let placeholder: string;
-	export let navigation: any[];
+	interface Props {
+		content: Post;
+		placeholder: string;
+		navigation: any[];
+	}
+
+	let { content, placeholder, navigation }: Props = $props();
 </script>
 
 <div class="flex flex-col w-full items-center gap-4">
@@ -47,5 +51,5 @@
 			{/if}
 		{/each}
 	</div>
-	<div class="w-full bg-white h-[0.05rem]" />
+	<div class="w-full bg-white h-[0.05rem]"></div>
 </div>

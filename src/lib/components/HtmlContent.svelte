@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	export let content: string;
+	interface Props {
+		content: string;
+	}
+
+	let { content }: Props = $props();
 </script>
 
 <div in:fade|global id="markdown-post-container" class="p-2">

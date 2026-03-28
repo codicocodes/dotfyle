@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	const links = [
 		{ label: 'Discover', url: '/neovim/plugins/trending' },
 		{ label: 'Colorschemes', url: '/neovim/colorscheme/trending' },
@@ -10,7 +10,7 @@
 		const paths = relativeUrl.split('/');
 		paths.pop();
 		const pathWithoutSort = paths.join('/');
-		return $page.url.pathname.startsWith(pathWithoutSort);
+		return page.url.pathname.startsWith(pathWithoutSort);
 	}
 </script>
 

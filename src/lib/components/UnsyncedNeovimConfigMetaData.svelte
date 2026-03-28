@@ -3,7 +3,11 @@
 	import Fa from 'svelte-fa';
 	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	import NeovimConfigMetaData from './NeovimConfigMetaData.svelte';
-	export let syncing: boolean;
+	interface Props {
+		syncing: boolean;
+	}
+
+	let { syncing }: Props = $props();
 </script>
 
 <h3 class="flex items-center gap-1 text-sm tracking-wide font-semibold pl-1">

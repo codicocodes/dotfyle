@@ -17,11 +17,15 @@
 	import { goto } from '$app/navigation';
 	import { isMaintenanceMode } from '$lib/utils';
 
-	export let repositories: GithubRepository[];
-	export let user: User;
+	interface Props {
+		repositories: GithubRepository[];
+		user: User;
+	}
 
-	let syncing = false;
-	let completed = false;
+	let { repositories, user }: Props = $props();
+
+	let syncing = $state(false);
+	let completed = $state(false);
 
 	async function syncSelectedRepository() {
 		if (
@@ -59,7 +63,7 @@
 {:else}
 	{#if syncing || completed}
 		<div class="flex w-full justify-center">
-			<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
+			<div class="w-2 h-2 rounded-full bg-main animate-pulse"></div>
 		</div>
 	{/if}
 
@@ -80,25 +84,29 @@
 				buttonCompleteLabel="Run sync"
 			>
 				<Step locked={!$unsyncedConfig.repo}>
-					<div slot="header">
-						<h2
-							class="mt-4 text-center font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
-						>
-							<Fa icon={faGithub} />select the github repository of your neovim config
-						</h2>
-					</div>
+					{#snippet header()}
+										<div >
+							<h2
+								class="mt-4 text-center font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
+							>
+								<Fa icon={faGithub} />select the github repository of your neovim config
+							</h2>
+						</div>
+									{/snippet}
 
 					<div in:fade|global>
 						<RepoPicker repositoriesInput={repositories} />
 					</div>
 				</Step>
 				<Step locked={!$unsyncedConfig.initFile}>
-					<h2
-						slot="header"
-						class="mt-4 text-center font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
-					>
-						<Fa icon={faFileCode} size="sm" /> confirm the configs root init file
-					</h2>
+					{#snippet header()}
+										<h2
+							
+							class="mt-4 text-center font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
+						>
+							<Fa icon={faFileCode} size="sm" /> confirm the configs root init file
+						</h2>
+									{/snippet}
 					{#if $unsyncedConfig.repo}
 						<div in:fade|global>
 							<InitFilePicker />
@@ -106,12 +114,14 @@
 					{/if}
 				</Step>
 				<Step>
-					<h2
-						slot="header"
-						class="mt-4 font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
-					>
-						<Fa icon={faRotate} size="sm" /> Sync your config with GitHub
-					</h2>
+					{#snippet header()}
+										<h2
+							
+							class="mt-4 font-light tracking-tight text-white sm:text-lg sm:tracking-tight lg:text-xl xl:text-2xl xl:tracking-tight flex items-center gap-2"
+						>
+							<Fa icon={faRotate} size="sm" /> Sync your config with GitHub
+						</h2>
+									{/snippet}
 					<div in:fade|global class="flex w-full items-center justify-center">
 						<div class="flex flex-col w-full max-w-5xl gap-2 mx-0 md:mx-12 my-2">
 							<UnsyncedNeovimConfigCard avatar={user.avatarUrl} />

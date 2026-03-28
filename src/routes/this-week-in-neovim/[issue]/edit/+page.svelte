@@ -1,14 +1,18 @@
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
 	import type { PageData } from './$types';
-	export let data: PageData;
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { faEye, faSave } from '@fortawesome/free-solid-svg-icons';
 	import { sanitizeHtml } from '$lib/utils';
 	import { marked } from 'marked';
-	let clean = '';
-	let preview = false;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data = $bindable() }: Props = $props();
+	let clean = $state('');
+	let preview = $state(false);
 
 	async function openPreview() {
 		clean = await sanitizeHtml(marked(data.post.content));
@@ -37,7 +41,7 @@
 		name="content"
 		class="editor-borders rounded-md w-full min-h-[800px] p-8 text-lg m-2"
 		bind:value={data.post.content}
-	/>
+	></textarea>
 </form>
 
 <style>

@@ -9,7 +9,11 @@
 	import type { PageData } from './$types';
 	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const readmeStructure = `# Title
 - plugin count badge

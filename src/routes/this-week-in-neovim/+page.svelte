@@ -10,7 +10,11 @@
 	import { copyToClipboard } from '$lib/utils';
 	import EmailSubscribe from '$lib/components/EmailSubscribe.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <svelte:head>
@@ -35,7 +39,7 @@
 			<button
 				title="An RSS feed to consume This Week in Neovim"
 				class="px-4 py-1 text-white rounded-lg flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
-				on:click={() => copyToClipboard('https://dotfyle.com/this-week-in-neovim/rss.xml')}
+				onclick={() => copyToClipboard('https://dotfyle.com/this-week-in-neovim/rss.xml')}
 			>
 				<Fa class="inline mr-2" size="xs" icon={faRss} />
 				This Week in Neovim
@@ -44,7 +48,7 @@
 			<button
 				title="An RSS feed to consume new Neovim plugins on Dotfyle"
 				class="px-4 py-1 text-white rounded-lg flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
-				on:click={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml')}
+				onclick={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml')}
 			>
 				<Fa class="inline mr-2" size="xs" icon={faRss} />
 				New Plugins

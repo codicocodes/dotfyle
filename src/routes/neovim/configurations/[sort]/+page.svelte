@@ -13,19 +13,23 @@
 	import Accordion from '$lib/components/accordion.svelte';
 	import PluginSearchNavigation from '$lib/components/PluginSearchNavigation.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	$: selectedPlugins = $page.url.searchParams.get('plugins')?.split(',').filter(Boolean) ?? [];
+	let { data }: Props = $props();
 
-	$: selectedPluginsSet = new Set(selectedPlugins);
+	let selectedPlugins = $derived($page.url.searchParams.get('plugins')?.split(',').filter(Boolean) ?? []);
 
-	$: selectedLanguageServers =
-		$page.url.searchParams.get('languageservers')?.split(',').filter(Boolean) ?? [];
+	let selectedPluginsSet = $derived(new Set(selectedPlugins));
 
-	$: selectedLanguageServersSet = new Set(selectedLanguageServers);
+	let selectedLanguageServers =
+		$derived($page.url.searchParams.get('languageservers')?.split(',').filter(Boolean) ?? []);
 
-	let availablePlugins: string[] = [];
-	let languageServers: string[] = [];
+	let selectedLanguageServersSet = $derived(new Set(selectedLanguageServers));
+
+	let availablePlugins: string[] = $state([]);
+	let languageServers: string[] = $state([]);
 
 	onMount(() => {
 		data.filter.languageServers.then((ls) => (languageServers = ls));
@@ -56,29 +60,32 @@
 				</div>
 			</div>
 			<Accordion>
-				<div slot="title" class="flex gap-2 items-center text-sm max-w-full">
-					<Fa icon={faFilter} size="sm" />
-					Filter by installed plugins and language servers
-				</div>
+				{#snippet title()}
+								<div  class="flex gap-2 items-center text-sm max-w-full">
+						<Fa icon={faFilter} size="sm" />
+						Filter by installed plugins and language servers
+					</div>
+							{/snippet}
 
-				<div slot="description" class="flex text-xs gap-1 flex-wrap">
-					{#each Array.from(selectedPluginsSet) as plugin}
-						<button
-							on:click={() => {
+				{#snippet description()}
+								<div  class="flex text-xs gap-1 flex-wrap">
+						{#each Array.from(selectedPluginsSet) as plugin}
+							<button
+								onclick={() => {
 								selectedPluginsSet.delete(plugin);
 								selectedPluginsSet = selectedPluginsSet;
 								navigate($page, 'page', '1');
 								navigate($page, 'plugins', Array.from(selectedPluginsSet).join(','), true);
 							}}
-							class="bg-white text-black px-2 py-1 rounded-full flex gap-2 items-center mt-1"
-						>
-							{plugin}
-							<Fa icon={faCircleXmark} size="sm" />
-						</button>
-					{/each}
-					{#each Array.from(selectedLanguageServersSet) as server}
-						<button
-							on:click={() => {
+								class="bg-white text-black px-2 py-1 rounded-full flex gap-2 items-center mt-1"
+							>
+								{plugin}
+								<Fa icon={faCircleXmark} size="sm" />
+							</button>
+						{/each}
+						{#each Array.from(selectedLanguageServersSet) as server}
+							<button
+								onclick={() => {
 								selectedLanguageServersSet.delete(server);
 								selectedLanguageServersSet = selectedLanguageServersSet;
 								navigate($page, 'page', '1');
@@ -89,37 +96,40 @@
 									true
 								);
 							}}
-							class="bg-white text-black px-2 py-1 rounded-full flex gap-2 items-center mt-1"
-						>
-							{server}
-							<Fa icon={faCircleXmark} size="sm" />
-						</button>
-					{/each}
-				</div>
+								class="bg-white text-black px-2 py-1 rounded-full flex gap-2 items-center mt-1"
+							>
+								{server}
+								<Fa icon={faCircleXmark} size="sm" />
+							</button>
+						{/each}
+					</div>
+							{/snippet}
 
-				<div slot="content" class="flex flex-col">
-					<MultiSelectFilter
-						title="Plugins"
-						on:updated={({ detail }) => {
-							navigate($page, 'page', '1');
-							navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
-							selectedPluginsSet = new Set(detail.selected);
-						}}
-						items={availablePlugins}
-						selected={selectedPluginsSet}
-					/>
+				{#snippet content()}
+								<div  class="flex flex-col">
+						<MultiSelectFilter
+							title="Plugins"
+							on:updated={({ detail }) => {
+								navigate($page, 'page', '1');
+								navigate($page, 'plugins', Array.from(detail.selected).join(','), true);
+								selectedPluginsSet = new Set(detail.selected);
+							}}
+							items={availablePlugins}
+							selected={selectedPluginsSet}
+						/>
 
-					<MultiSelectFilter
-						title="Language Servers"
-						on:updated={({ detail }) => {
-							navigate($page, 'page', '1');
-							navigate($page, 'languageservers', Array.from(detail.selected).join(','), true);
-							selectedLanguageServersSet = new Set(detail.selected);
-						}}
-						items={languageServers}
-						selected={selectedLanguageServersSet}
-					/>
-				</div>
+						<MultiSelectFilter
+							title="Language Servers"
+							on:updated={({ detail }) => {
+								navigate($page, 'page', '1');
+								navigate($page, 'languageservers', Array.from(detail.selected).join(','), true);
+								selectedLanguageServersSet = new Set(detail.selected);
+							}}
+							items={languageServers}
+							selected={selectedLanguageServersSet}
+						/>
+					</div>
+							{/snippet}
 			</Accordion>
 		</div>
 		<ol class="flex flex-col gap-2 my-2">

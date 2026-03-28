@@ -6,14 +6,23 @@
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 	import { fly } from 'svelte/transition';
 
-	export let expandAtCount = 20;
-	export let title: string;
-	export let items: string[];
-	export let selected: Set<string>;
+	interface Props {
+		expandAtCount?: number;
+		title: string;
+		items: string[];
+		selected: Set<string>;
+	}
 
-	let filter = '';
+	let {
+		expandAtCount = 20,
+		title,
+		items,
+		selected = $bindable()
+	}: Props = $props();
 
-	let expanded = false;
+	let filter = $state('');
+
+	let expanded = $state(false);
 
 	function unselectItem(item: string) {
 		selected.delete(item);
@@ -46,7 +55,7 @@
 			<button
 				in:fly|global
 				class={`py-1 px-2 cursor-pointer rounded bg-white focus:shadow-main font-medium text-black`}
-				on:click={() => {
+				onclick={() => {
 					selected.add(currItem);
 					selected = selected;
 					sendSelectionUpdated();
@@ -58,7 +67,7 @@
 
 		{#if !expanded}
 			<button
-				on:click={() => {
+				onclick={() => {
 					expanded = true;
 				}}
 				class="text-sm w-full font-semibold flex justify-center items-center gap-2"
@@ -68,7 +77,7 @@
 			</button>
 		{:else}
 			<button
-				on:click={() => {
+				onclick={() => {
 					expanded = false;
 				}}
 				class="text-sm w-full font-semibold flex justify-center items-center gap-2"

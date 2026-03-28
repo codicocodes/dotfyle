@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
 	import NeovimConfigCard from './NeovimConfigCard.svelte';
-	export let avatar: string;
+	interface Props {
+		avatar: string;
+	}
+
+	let { avatar }: Props = $props();
 </script>
 
 <NeovimConfigCard

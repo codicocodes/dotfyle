@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import 'nprogress/nprogress.css';
 	import '@fontsource-variable/inter';
@@ -32,6 +34,11 @@
 	import { page } from '$app/stores';
 	import { trpc } from '$lib/trpc/client';
 	import { getColorscheme, getTheme, setColorscheme, setTheme } from '$lib/theme';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	afterNavigate(async () => {
 		setTheme(getTheme());
@@ -55,7 +62,7 @@
 		$session.user = null;
 	};
 
-	let isOpen = false;
+	let isOpen = $state(false);
 
 	function close() {
 		isOpen = false;
@@ -65,7 +72,7 @@
 		isOpen = !isOpen;
 	}
 
-	let syncing = false;
+	let syncing = $state(false);
 	async function syncPlugins() {
 		syncing = true;
 		await fetch('/api/seeder/plugins');
@@ -78,16 +85,16 @@
 		showSpinner: false
 	});
 
-	$: {
+	run(() => {
 		if ($navigating) {
 			nProgress.start();
 		} else nProgress.done();
-	}
+	});
 	onMount(() => {
 		fetch('/api/auth/refresh', { method: 'POST' });
 	});
 
-	let showNavModal = false;
+	let showNavModal = $state(false);
 </script>
 
 <svelte:head>
@@ -158,7 +165,7 @@
 		</div>
 		<div class="flex gap-4 text-sm font-semibold items-center">
 			<ColorschemeSwitcher />
-			<button on:click={() => (showNavModal = true)} aria-label="Toggle navigation menu">
+			<button onclick={() => (showNavModal = true)} aria-label="Toggle navigation menu">
 				<Fa size="xl" class="block: sm:hidden h-full" icon={faBars} />
 			</button>
 			{#if $session.user}
@@ -171,7 +178,7 @@
 					<Fa icon={faPlus} size="xs" />
 				</a>
 				<button
-					on:click={toggle}
+					onclick={toggle}
 					type="button"
 					aria-expanded={isOpen}
 					aria-controls={isOpen ? 'user-menu' : undefined}
@@ -191,8 +198,8 @@
 				</button>
 			{:else if $session.loading}
 				<div class="sm:flex items-center gap-2">
-					<div class="hidden sm:block w-28 h-4 bg-white animate-pulse rounded" />
-					<div class="w-10 h-10 bg-white animate-pulse rounded-full" />
+					<div class="hidden sm:block w-28 h-4 bg-white animate-pulse rounded"></div>
+					<div class="w-10 h-10 bg-white animate-pulse rounded-full"></div>
 				</div>
 			{:else}
 				<div class="hidden sm:flex h-10">
@@ -208,10 +215,10 @@
 				<div class="flex flex-col w-full h-full bg-base-900 sm:bg-transparent">
 					{#if $session.user && isAdmin($session.user)}
 						<CoolTextOnHover>
-							<button class="px-4 py-2 flex gap-2 items-center" on:click={syncPlugins}>
+							<button class="px-4 py-2 flex gap-2 items-center" onclick={syncPlugins}>
 								<div class="force-white-text">
 									{#if syncing}
-										<div class="w-2 h-2 rounded-full bg-main animate-pulse" />
+										<div class="w-2 h-2 rounded-full bg-main animate-pulse"></div>
 									{:else}
 										<Fa icon={faSync} class="text-base-100" />
 									{/if}
@@ -222,7 +229,7 @@
 					{/if}
 					<CoolTextOnHover>
 						<a
-							on:click={close}
+							onclick={close}
 							href={`/${$session.user.username}`}
 							class="px-4 py-2 flex gap-2 items-center"
 						>
@@ -234,7 +241,7 @@
 					</CoolTextOnHover>
 					<CoolTextOnHover>
 						<a
-							on:click={close}
+							onclick={close}
 							href="/settings"
 							class="px-4 py-2 flex gap-2 items-center"
 						>
@@ -245,7 +252,7 @@
 						</a>
 					</CoolTextOnHover>
 					<CoolTextOnHover>
-						<button class="px-4 py-2 flex gap-2 items-center" on:click={logout}>
+						<button class="px-4 py-2 flex gap-2 items-center" onclick={logout}>
 							<div class="force-white-text">
 								<Fa icon={faSignOut} class="text-base-100" />
 							</div>
@@ -258,7 +265,7 @@
 		</div>
 	{/if}
 	<OuterLayout>
-		<slot />
+		{@render children?.()}
 
 		<footer class="flex flex-col max-w-full xl:max-w-7xl w-full sm:mt-4 px-4 sm:px-4 gap-4 mt-8">
 			<div class="sticky mx-auto grid sm:grid-cols-2 xl:grid-cols-3 gap-8 mb-8">

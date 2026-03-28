@@ -4,7 +4,7 @@
 	import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 
-	$: isLightMode = browser && getTheme() === 'light';
+	let isLightMode = $derived(browser && getTheme() === 'light');
 </script>
 
 <button
@@ -12,7 +12,7 @@
 	title={isLightMode ? 'Switch to dark mode' : 'Switch to light mode'}
 	type="button"
 	class="flex gap-4 w-full bg-black/30 p-4 rounded-lg justify-center items-center border-[1px] border-accent-muted hover:border-accent-bright"
-	on:click={() => {
+	onclick={() => {
 		isLightMode = !isLightMode;
 		setTheme(isLightMode ? 'light' : 'dark');
 	}}

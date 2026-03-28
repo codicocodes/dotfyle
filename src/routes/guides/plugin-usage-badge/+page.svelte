@@ -8,7 +8,11 @@
 	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const code = `<a href="https://dotfyle.com/plugins/{owner}/{name}">
   <img src="https://dotfyle.com/plugins/{owner}/{name}/shield" />
@@ -90,14 +94,16 @@
 						description={plugin.shortDescription}
 						thumbnail={plugin.media?.[0]}
 					>
-						<NeovimPluginMetaData
-							slot="footer"
-							stars={plugin.stars.toString()}
-							configCount={plugin.configCount}
-							category={plugin.category}
-							addedLastWeek={plugin.addedLastWeek}
-							name="{plugin.owner}/{plugin.name}"
-						/>
+						{#snippet footer()}
+												<NeovimPluginMetaData
+								
+								stars={plugin.stars.toString()}
+								configCount={plugin.configCount}
+								category={plugin.category}
+								addedLastWeek={plugin.addedLastWeek}
+								name="{plugin.owner}/{plugin.name}"
+							/>
+											{/snippet}
 					</RepositoryCard>
 				{/each}
 			</BigGridContainer>

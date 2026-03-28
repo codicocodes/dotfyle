@@ -7,9 +7,9 @@
 	import { browser } from '$app/environment';
 	import CoolText from './CoolText.svelte';
 
-	let isOpen = false;
+	let isOpen = $state(false);
 
-	$: colorscheme = browser && getColorscheme();
+	let colorscheme = $derived(browser && getColorscheme());
 
 	function close() {
 		isOpen = false;
@@ -18,17 +18,17 @@
 
 {#if isOpen}
 	<div
-		on:keypress={close}
-		on:click={close}
+		onkeypress={close}
+		onclick={close}
 		class="absolute h-full w-full bg-black/10 z-10 blur-lg"
-	/>
+	></div>
 {/if}
 
 <button
 	aria-label="Change colorscheme"
 	data-umami-event="Change colorscheme - Started"
 	type="button"
-	on:click={() => {
+	onclick={() => {
 		isOpen = true;
 	}}
 >
@@ -51,7 +51,7 @@
 		{#each colorschemes as theme}
 			<button
 				class="flex w-full sm:min-w-80 py-2 px-4 items-center justify-center bg-black/30 rounded-lg text-black {theme.bg} border-[2px] border-accent-muted hover:border-accent-bright"
-				on:click={() => {
+				onclick={() => {
 					setColorscheme(theme.name);
 					isOpen = false;
 					colorscheme = theme.name;

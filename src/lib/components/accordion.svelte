@@ -3,7 +3,19 @@
 	import Fa from 'svelte-fa';
 	import GlossyCard from './GlossyCard.svelte';
 	import { faCircleChevronDown, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-	export let open = false;
+	interface Props {
+		open?: boolean;
+		title?: import('svelte').Snippet;
+		description?: import('svelte').Snippet;
+		content?: import('svelte').Snippet;
+	}
+
+	let {
+		open = $bindable(false),
+		title,
+		description,
+		content
+	}: Props = $props();
 	const id = nanoid();
 </script>
 
@@ -14,18 +26,18 @@
 				type="button"
 				aria-expanded={open}
 				aria-controls={open ? id : undefined}
-				on:click={() => (open = !open)}
+				onclick={() => (open = !open)}
 				class="font-semibold text-xl w-full flex justify-between items-center h-full"
 			>
-				<slot name="title" />
+				{@render title?.()}
 
 				<Fa icon={!open ? faCircleChevronDown : faCircleChevronUp} size="sm" />
 			</button>
-			<slot name="description" />
+			{@render description?.()}
 		</div>
 		{#if open}
 			<div class="w-full" {id}>
-				<slot name="content" />
+				{@render content?.()}
 			</div>
 		{/if}
 	</div>

@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { stopPropagation, createBubbler, handlers } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import {
 		faArrowTrendUp,
 		faAt,
@@ -12,14 +15,25 @@
 	import Fa from 'svelte-fa';
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 
-	export let stars: string;
-	export let configCount: number;
-	export let category: string;
-	export let addedLastWeek: number;
-	export let links: string[] = [];
-	export let name: string;
+	interface Props {
+		stars: string;
+		configCount: number;
+		category: string;
+		addedLastWeek: number;
+		links?: string[];
+		name: string;
+	}
 
-	let isOpen = false;
+	let {
+		stars,
+		configCount,
+		category,
+		addedLastWeek,
+		links = [],
+		name
+	}: Props = $props();
+
+	let isOpen = $state(false);
 
 	function handleSeeLinks() {
 		isOpen = !isOpen;
@@ -65,8 +79,7 @@
 		{#if links.length > 0}
 			<button
 				class="relative px-2 rounded-lg text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
-				on:click|stopPropagation={handleSeeLinks}
-				on:click|stopPropagation
+				onclick={handlers(stopPropagation(handleSeeLinks), stopPropagation(bubble('click')))}
 				data-umami-event="Plugin Mention - Open"
 				title="Mentions of the plugin in this config"
 			>
@@ -74,7 +87,7 @@
 					<div
 						class="absolute right-0 top-10 z-50 bg-accent-muted text-white rounded"
 						id="user-menu"
-						on:blur={() => (isOpen = false)}
+						onblur={() => (isOpen = false)}
 					>
 						<div class="flex flex-col w-full h-full bg-base-900 sm:bg-transparent">
 							{#each links as link}

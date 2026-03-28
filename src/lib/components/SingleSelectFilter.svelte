@@ -6,14 +6,23 @@
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 	import { fly } from 'svelte/transition';
 
-	export let expandAtCount = 20;
-	export let title: string;
-	export let items: string[];
-	export let selected: string | null = null;
+	interface Props {
+		expandAtCount?: number;
+		title: string;
+		items: string[];
+		selected?: string | null;
+	}
 
-	let filter = '';
+	let {
+		expandAtCount = 20,
+		title,
+		items,
+		selected = $bindable(null)
+	}: Props = $props();
 
-	let expanded = false;
+	let filter = $state('');
+
+	let expanded = $state(false);
 
 	function unselectItem() {
 		selected = null;
@@ -42,7 +51,7 @@
 			<CoolTextWithChildren>
 				<button
 					class="flex gap-1 items-center bg-black/30 py-1 px-2 rounded font-semibold"
-					on:click={() => unselectItem()}
+					onclick={() => unselectItem()}
 				>
 					<div class="force-white-text">
 						<Fa icon={faX} size="xs" />
@@ -58,7 +67,7 @@
 			<button
 				in:fly|global
 				class={`py-1 px-2 cursor-pointer rounded bg-white focus:shadow-main font-medium text-black`}
-				on:click={() => {
+				onclick={() => {
 					selected = currItem;
 					sendSelectionUpdated();
 				}}
@@ -69,7 +78,7 @@
 
 		{#if !expanded}
 			<button
-				on:click={() => {
+				onclick={() => {
 					expanded = true;
 				}}
 				class="text-sm w-full font-semibold flex justify-center items-center gap-2"
@@ -79,7 +88,7 @@
 			</button>
 		{:else}
 			<button
-				on:click={() => {
+				onclick={() => {
 					expanded = false;
 				}}
 				class="text-sm w-full font-semibold flex justify-center items-center gap-2"

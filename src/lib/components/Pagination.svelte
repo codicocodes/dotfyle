@@ -3,14 +3,18 @@
 	import { navigate } from '$lib/navigate';
 	import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 	import Button from './Button.svelte';
-	export let page: Page;
-	export let previous: number | null;
-	export let next: number | null;
+	interface Props {
+		page: Page;
+		previous: number | null;
+		next: number | null;
+	}
+
+	let { page, previous, next }: Props = $props();
 </script>
 
 <div class="flex gap-2 justify-between text-lg font-medium">
 	{#if !previous}
-		<div class="" />
+		<div class=""></div>
 	{/if}
 	{#if previous}
 		<Button
@@ -23,7 +27,7 @@
 		/>
 	{/if}
 	{#if !next}
-		<div class="" />
+		<div class=""></div>
 	{/if}
 	{#if next}
 		<Button

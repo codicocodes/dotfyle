@@ -14,7 +14,11 @@
 	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 	import { session } from '$lib/stores/session';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <svelte:head>
@@ -99,14 +103,16 @@
 										description={plugin.shortDescription}
 										thumbnail={plugin.media[0]}
 									>
-										<NeovimPluginMetaData
-											slot="footer"
-											stars={plugin.stars.toString()}
-											configCount={plugin.configCount}
-											category={plugin.category}
-											addedLastWeek={plugin.addedLastWeek}
-											name="{plugin.owner}/{plugin.name}"
-										/>
+										{#snippet footer()}
+																				<NeovimPluginMetaData
+												
+												stars={plugin.stars.toString()}
+												configCount={plugin.configCount}
+												category={plugin.category}
+												addedLastWeek={plugin.addedLastWeek}
+												name="{plugin.owner}/{plugin.name}"
+											/>
+																			{/snippet}
 									</RepositoryCard>
 								</div>
 							{/each}
@@ -115,6 +121,6 @@
 				{/if}
 			</div>
 		</div>
-		<div class="col-span-10 sm:col-span-7 w-full" />
+		<div class="col-span-10 sm:col-span-7 w-full"></div>
 	</div>
 </OuterLayout>

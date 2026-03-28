@@ -23,9 +23,13 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
-	export let data: PageData;
-	$: ({ config, plugins, languageServers } = data);
-	$: pluginManager = plugins?.find((p) => p.category === 'plugin-manager')?.name ?? 'unknown';
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let { config, plugins, languageServers } = $derived(data);
+	let pluginManager = $derived(plugins?.find((p) => p.category === 'plugin-manager')?.name ?? 'unknown');
 
 	async function deleteConfig() {
 		await trpc($page).deleteConfig.mutate({ id: config.id });
@@ -115,39 +119,47 @@
 	{/if}
 
 	<Accordion>
-		<span slot="title" class="font-semibold">Install instructions</span>
+		{#snippet title()}
+				<span  class="font-semibold">Install instructions</span>
+			{/snippet}
 
-		<div slot="content" class="flex flex-col w-full gap-2">
-			<div class="flex w-full items-center gap-2 font-medium text-sm px-4">
-				<GlossyCard>
-					<div
-						class="flex items-center gap-2 p-2 font-medium text-sm px-4 w-full whitespace-normal"
-					>
-						Install requires Neovim 0.9+. Always review the code before installing a configuration.
-					</div>
-				</GlossyCard>
+		{#snippet content()}
+				<div  class="flex flex-col w-full gap-2">
+				<div class="flex w-full items-center gap-2 font-medium text-sm px-4">
+					<GlossyCard>
+						<div
+							class="flex items-center gap-2 p-2 font-medium text-sm px-4 w-full whitespace-normal"
+						>
+							Install requires Neovim 0.9+. Always review the code before installing a configuration.
+						</div>
+					</GlossyCard>
+				</div>
+				<span class="mx-4 font-medium tracking-wide whitespace-normal"
+					>Clone the repository and install plugins</span
+				>
+				<Highlight class="mx-4 rounded" code={getInstallCommand(config)} language={bash} />
+				<span class="mx-4 font-medium tracking-wide whitespace-normal"
+					>Open Neovim with this configuration</span
+				>
+				<Highlight class="mx-4 pb-4 rounded" code={getRunCommand(config)} language={bash} />
 			</div>
-			<span class="mx-4 font-medium tracking-wide whitespace-normal"
-				>Clone the repository and install plugins</span
-			>
-			<Highlight class="mx-4 rounded" code={getInstallCommand(config)} language={bash} />
-			<span class="mx-4 font-medium tracking-wide whitespace-normal"
-				>Open Neovim with this configuration</span
-			>
-			<Highlight class="mx-4 pb-4 rounded" code={getRunCommand(config)} language={bash} />
-		</div>
+			{/snippet}
 	</Accordion>
 	<Accordion>
-		<span slot="title" class="font-semibold">Language Servers</span>
-		<div slot="content" class="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 p-4">
-			{#each languageServers as ls}
-				<GlossyCard>
-					<div class="flex items-center gap-2 p-2 font-medium text-sm">
-						{ls.name}
-					</div>
-				</GlossyCard>
-			{/each}
-		</div>
+		{#snippet title()}
+				<span  class="font-semibold">Language Servers</span>
+			{/snippet}
+		{#snippet content()}
+				<div  class="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 p-4">
+				{#each languageServers as ls}
+					<GlossyCard>
+						<div class="flex items-center gap-2 p-2 font-medium text-sm">
+							{ls.name}
+						</div>
+					</GlossyCard>
+				{/each}
+			</div>
+			{/snippet}
 	</Accordion>
 
 	<div class="flex flex-col w-full">
@@ -162,23 +174,25 @@
 					description={plugin.shortDescription}
 					thumbnail={plugin.media?.[0]}
 				>
-					<NeovimPluginMetaData
-						slot="footer"
-						stars={plugin.stars.toString()}
-						configCount={plugin.configCount}
-						category={plugin.category}
-						addedLastWeek={plugin.addedLastWeek}
-						name="{plugin.owner}/{plugin.name}"
-						links={plugin.paths
-							.split(',')
-							.filter(Boolean)
-							.map(
-								(p) =>
-									`https://github.com/${data.config.owner}/${data.config.repo}/blob/${
-										data.config.sha || '-'
-									}/${p}`
-							)}
-					/>
+					{#snippet footer()}
+										<NeovimPluginMetaData
+							
+							stars={plugin.stars.toString()}
+							configCount={plugin.configCount}
+							category={plugin.category}
+							addedLastWeek={plugin.addedLastWeek}
+							name="{plugin.owner}/{plugin.name}"
+							links={plugin.paths
+								.split(',')
+								.filter(Boolean)
+								.map(
+									(p) =>
+										`https://github.com/${data.config.owner}/${data.config.repo}/blob/${
+											data.config.sha || '-'
+										}/${p}`
+								)}
+						/>
+									{/snippet}
 				</RepositoryCard>
 			{/each}
 		</div>

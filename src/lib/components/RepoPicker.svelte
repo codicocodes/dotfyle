@@ -7,7 +7,11 @@
 	import GridContainer from './GridContainer.svelte';
 	import type { GithubRepository } from '$lib/server/github/schema';
 	import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
-	export let repositoriesInput: GithubRepository[];
+	interface Props {
+		repositoriesInput: GithubRepository[];
+	}
+
+	let { repositoriesInput }: Props = $props();
 
 	const likelyConfigs = repositoriesInput.filter((r: GithubRepository) => {
 		return (
@@ -31,48 +35,60 @@
 	<div class="text-center">
 		<div class="flex flex-col gap-2 my-4">
 			<AccordionItem padding="py-1" open>
-				<span
-					slot="lead"
-					class="flex w-full justify-end tracking-wider font-light sm:text-left text-lg"
-					>likely configs
-				</span>
-				<Fa slot="summary" icon={faChevronDown} size="sm" />
-				<div slot="content">
-					<GridContainer>
-						{#each likelyConfigs as repo, _}
-							<button
-								on:click={() => selectConfigRepo(repo)}
-								on:keypress={() => selectConfigRepo(repo)}
-								in:slide|global
-							>
-								<RepoPickerItem name={repo.name} selected={$unsyncedConfig.repo === repo.name} />
-							</button>
-						{/each}
-					</GridContainer>
-				</div>
+				{#snippet lead()}
+								<span
+						
+						class="flex w-full justify-end tracking-wider font-light sm:text-left text-lg"
+						>likely configs
+					</span>
+							{/snippet}
+				{#snippet summary()}
+								<Fa  icon={faChevronDown} size="sm" />
+							{/snippet}
+				{#snippet content()}
+								<div >
+						<GridContainer>
+							{#each likelyConfigs as repo, _}
+								<button
+									onclick={() => selectConfigRepo(repo)}
+									onkeypress={() => selectConfigRepo(repo)}
+									in:slide|global
+								>
+									<RepoPickerItem name={repo.name} selected={$unsyncedConfig.repo === repo.name} />
+								</button>
+							{/each}
+						</GridContainer>
+					</div>
+							{/snippet}
 			</AccordionItem>
 		</div>
 		<div class="flex flex-col gap-2 my-4">
 			<AccordionItem padding="py-1">
-				<span
-					slot="lead"
-					class="flex w-full justify-end text-lg tracking-wider font-light sm:text-left"
-					>all repositories
-				</span>
-				<Fa slot="summary" icon={faChevronDown} size="sm" />
-				<div slot="content">
-					<GridContainer>
-						{#each repositories as repo, _}
-							<button
-								on:click={() => selectConfigRepo(repo)}
-								on:keypress={() => selectConfigRepo(repo)}
-								in:slide|global
-							>
-								<RepoPickerItem name={repo.name} selected={$unsyncedConfig.repo === repo.name} />
-							</button>
-						{/each}
-					</GridContainer>
-				</div>
+				{#snippet lead()}
+								<span
+						
+						class="flex w-full justify-end text-lg tracking-wider font-light sm:text-left"
+						>all repositories
+					</span>
+							{/snippet}
+				{#snippet summary()}
+								<Fa  icon={faChevronDown} size="sm" />
+							{/snippet}
+				{#snippet content()}
+								<div >
+						<GridContainer>
+							{#each repositories as repo, _}
+								<button
+									onclick={() => selectConfigRepo(repo)}
+									onkeypress={() => selectConfigRepo(repo)}
+									in:slide|global
+								>
+									<RepoPickerItem name={repo.name} selected={$unsyncedConfig.repo === repo.name} />
+								</button>
+							{/each}
+						</GridContainer>
+					</div>
+							{/snippet}
 			</AccordionItem>
 		</div>
 	</div>

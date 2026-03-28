@@ -14,9 +14,13 @@
 	import PluginSearchNavigation from '$lib/components/PluginSearchNavigation.svelte';
 	import SearchHeader from '$lib/components/SearchHeader.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	$: ogThumbnail = data.plugins?.flatMap((p) => p.media).find((m) => getMediaType(m) === 'image');
+	let { data }: Props = $props();
+
+	let ogThumbnail = $derived(data.plugins?.flatMap((p) => p.media).find((m) => getMediaType(m) === 'image'));
 </script>
 
 <svelte:head>
@@ -53,29 +57,31 @@
 								description={plugin.shortDescription}
 								thumbnail={plugin.media?.[0]}
 							>
-								<div slot="footer" class="flex gap-4 font-medium text-base">
-									<span
-										title="GitHub stars"
-										class="py-1 rounded-full flex gap-1 items-center font-semibold"
-									>
-										<Fa icon={faStar} />
-										{plugin.stars}
-									</span>
-									<span
-										title="Total installs on Dotfyle"
-										class="py-1 rounded-full flex gap-1 items-center font-semibold"
-									>
-										<Fa icon={faUsers} />
-										{plugin.configCount}
-									</span>
-									<span
-										title="Installs last week"
-										class="py-1 rounded-full flex gap-1 items-center font-semibold"
-									>
-										<Fa icon={faArrowTrendUp} />
-										{plugin.addedLastWeek}
-									</span>
-								</div>
+								{#snippet footer()}
+																<div  class="flex gap-4 font-medium text-base">
+										<span
+											title="GitHub stars"
+											class="py-1 rounded-full flex gap-1 items-center font-semibold"
+										>
+											<Fa icon={faStar} />
+											{plugin.stars}
+										</span>
+										<span
+											title="Total installs on Dotfyle"
+											class="py-1 rounded-full flex gap-1 items-center font-semibold"
+										>
+											<Fa icon={faUsers} />
+											{plugin.configCount}
+										</span>
+										<span
+											title="Installs last week"
+											class="py-1 rounded-full flex gap-1 items-center font-semibold"
+										>
+											<Fa icon={faArrowTrendUp} />
+											{plugin.addedLastWeek}
+										</span>
+									</div>
+															{/snippet}
 							</ShowcaseCard>
 						</li>
 					{/each}

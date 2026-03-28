@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { browser } from '$app/environment';
 	import Button from '$lib/components/Button.svelte';
 	import HtmlContent from '$lib/components/HtmlContent.svelte';
@@ -17,14 +19,18 @@
 	import Fa from 'svelte-fa';
 	import Comments from '$lib/components/Comments.svelte';
 	import EmailSubscribe from '$lib/components/EmailSubscribe.svelte';
-	export let data: PageData;
-	$: url = `https://dotfyle.com/this-week-in-neovim/${data.post.issue}`;
-	$: tweetText = `This Week in Neovim ${data.post.title.replace('#', '')}`;
-	$: {
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let url = $derived(`https://dotfyle.com/this-week-in-neovim/${data.post.issue}`);
+	let tweetText = $derived(`This Week in Neovim ${data.post.title.replace('#', '')}`);
+	run(() => {
 		if (browser) {
 			updateLatestReadTwinPost(data.post.issue);
 		}
-	}
+	});
 </script>
 
 <svelte:head>
@@ -104,7 +110,7 @@
 			<Button iconPosition="left" text="Previous" icon={faChevronLeft} />
 		</a>
 	{:else}
-		<div />
+		<div></div>
 	{/if}
 	{#if data.post.issue < data.post.total}
 		<a href="/this-week-in-neovim/{data.post.issue + 1}">

@@ -1,16 +1,27 @@
 <script lang="ts">
-	export let showModal: boolean;
-	export let username: string;
-	export let onClose: () => void;
-	export let onConfirm: () => Promise<void>;
+	import { self } from 'svelte/legacy';
 
-	let inputValue = '';
-	let loading = false;
+	interface Props {
+		showModal: boolean;
+		username: string;
+		onClose: () => void;
+		onConfirm: () => Promise<void>;
+	}
 
-	$: canConfirm = inputValue === username && !loading;
-	$: confirmButtonClass = canConfirm
+	let {
+		showModal,
+		username,
+		onClose,
+		onConfirm
+	}: Props = $props();
+
+	let inputValue = $state('');
+	let loading = $state(false);
+
+	let canConfirm = $derived(inputValue === username && !loading);
+	let confirmButtonClass = $derived(canConfirm
 		? 'border-red-500/60 hover:border-red-400 text-red-400'
-		: 'border-base-700 text-base-600 cursor-not-allowed';
+		: 'border-base-700 text-base-600 cursor-not-allowed');
 
 	async function handleConfirm() {
 		loading = true;
@@ -30,8 +41,8 @@
 {#if showModal}
 	<div
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
-		on:click|self={handleClose}
-		on:keydown={(e) => e.key === 'Escape' && handleClose()}
+		onclick={self(handleClose)}
+		onkeydown={(e) => e.key === 'Escape' && handleClose()}
 		role="dialog"
 		aria-modal="true"
 		aria-labelledby="delete-modal-title"
@@ -58,14 +69,14 @@
 			<div class="flex gap-2 justify-end">
 				<button
 					class="px-4 py-2 rounded-lg border border-base-700 hover:border-base-400 text-sm transition-all"
-					on:click={handleClose}
+					onclick={handleClose}
 					disabled={loading}
 				>
 					Cancel
 				</button>
 				<button
 					class="px-4 py-2 rounded-lg border text-sm transition-all {confirmButtonClass}"
-					on:click={handleConfirm}
+					onclick={handleConfirm}
 					disabled={!canConfirm}
 				>
 					{loading ? 'Deleting…' : 'Delete account'}

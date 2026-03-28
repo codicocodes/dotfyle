@@ -6,9 +6,9 @@
 	import { slide } from 'svelte/transition';
 	import GridContainer from '../GridContainer.svelte';
 	import RepoPickerItem from '../RepoPickerItem.svelte';
-	let error: string | undefined;
-	let loading = true;
-	let files: InitFile[] | undefined;
+	let error: string | undefined = $state();
+	let loading = $state(true);
+	let files: InitFile[] | undefined = $state();
 
 	function selectInitFile(f: InitFile) {
 		unsyncedConfig.update((c) => ({
@@ -40,7 +40,7 @@
 
 {#if loading}
 	<div class="flex w-full items-center justify-center gap-2 my-4">
-		<div class="w-2 h-2 rounded-full bg-main animate-pulse"/>
+		<div class="w-2 h-2 rounded-full bg-main animate-pulse"></div>
 		<h2 class="text-xl font-medium">Loading init files...</h2>
 	</div>
 {/if}
@@ -56,8 +56,8 @@
 		<GridContainer>
 			{#each files as file, i}
 				<button
-					on:click={() => selectInitFile(file)}
-					on:keypress={() => selectInitFile(file)}
+					onclick={() => selectInitFile(file)}
+					onkeypress={() => selectInitFile(file)}
 					in:slide|global
 				>
 					<RepoPickerItem name={file.path} selected={isSelectedFile(file, $unsyncedConfig)} />

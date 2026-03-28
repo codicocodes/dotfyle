@@ -1,5 +1,10 @@
 <script lang="ts">
-export let loading = false;
+  interface Props {
+    loading?: boolean;
+    children?: import('svelte').Snippet;
+  }
+
+  let { loading = false, children }: Props = $props();
 </script>
 <div
 	class="
@@ -8,5 +13,5 @@ export let loading = false;
     bg-black/30 text-ellipsis transition-colors border-[0.5px] border-accent-muted hover:border-accent-bright
   "
 >
-	<slot />
+	{@render children?.()}
 </div>

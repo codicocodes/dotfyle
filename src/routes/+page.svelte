@@ -32,9 +32,13 @@
 	import { onMount } from 'svelte';
 	import EmailSubscribe from '$lib/components/EmailSubscribe.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	let stars: number;
+	let { data }: Props = $props();
+
+	let stars: number = $state();
 
 	onMount(() => {
 		const rateLimitReset = localStorage.getItem('GITHUB_RATELIMIT_RESET');
@@ -152,7 +156,7 @@
 				<button
 					title="An RSS feed to consume new Neovim plugins on Dotfyle"
 					class="flex items-center justify-center w-8 h-8 text-white rounded-lg flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
-					on:click={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml')}
+					onclick={() => copyToClipboard('https://dotfyle.com/neovim/plugins/rss.xml')}
 				>
 					<Fa class="inline" size="xs" icon={faRss} />
 				</button>
@@ -166,7 +170,7 @@
 			<BigGridContainer>
 				{#each [null, null, null, null, null, null] as _n, _}
 					<GlossyCard loading>
-						<div class="min-h-[92px]" />
+						<div class="min-h-[92px]"></div>
 					</GlossyCard>
 				{/each}
 			</BigGridContainer>
@@ -179,14 +183,16 @@
 						description={plugin.shortDescription}
 						thumbnail={plugin.media?.[0]}
 					>
-						<NeovimPluginMetaData
-							slot="footer"
-							stars={plugin.stars.toString()}
-							configCount={plugin.configCount}
-							category={plugin.category}
-							addedLastWeek={plugin.addedLastWeek}
-							name="{plugin.owner}/{plugin.name}"
-						/>
+						{#snippet footer()}
+												<NeovimPluginMetaData
+								
+								stars={plugin.stars.toString()}
+								configCount={plugin.configCount}
+								category={plugin.category}
+								addedLastWeek={plugin.addedLastWeek}
+								name="{plugin.owner}/{plugin.name}"
+							/>
+											{/snippet}
 					</RepositoryCard>
 				{/each}
 			</BigGridContainer>
@@ -208,7 +214,7 @@
 			<BigGridContainer>
 				{#each [null, null, null, null, null, null] as _n, _}
 					<GlossyCard loading>
-						<div class="min-h-[92px]" />
+						<div class="min-h-[92px]"></div>
 					</GlossyCard>
 				{/each}
 			</BigGridContainer>
@@ -221,14 +227,16 @@
 						description={plugin.shortDescription}
 						thumbnail={plugin.media?.[0]}
 					>
-						<NeovimPluginMetaData
-							slot="footer"
-							stars={plugin.stars.toString()}
-							configCount={plugin.configCount}
-							category={plugin.category}
-							addedLastWeek={plugin.addedLastWeek}
-							name="{plugin.owner}/{plugin.name}"
-						/>
+						{#snippet footer()}
+												<NeovimPluginMetaData
+								
+								stars={plugin.stars.toString()}
+								configCount={plugin.configCount}
+								category={plugin.category}
+								addedLastWeek={plugin.addedLastWeek}
+								name="{plugin.owner}/{plugin.name}"
+							/>
+											{/snippet}
 					</RepositoryCard>
 				{/each}
 			</BigGridContainer>
@@ -259,7 +267,7 @@
 			<BigGridContainer>
 				{#each [null, null, null, null, null, null] as _n, _}
 					<GlossyCard loading>
-						<div class="min-h-[92px]" />
+						<div class="min-h-[92px]"></div>
 					</GlossyCard>
 				{/each}
 			</BigGridContainer>
@@ -292,7 +300,7 @@
 				<button
 					title="An RSS feed to consume This Week in Neovim"
 					class="flex items-center justify-center w-8 h-8 text-white rounded-lg flex-grow-1 text-sm border-[1px] border-accent-muted hover:border-secondary"
-					on:click={() => copyToClipboard('https://dotfyle.com/this-week-in-neovim/rss.xml')}
+					onclick={() => copyToClipboard('https://dotfyle.com/this-week-in-neovim/rss.xml')}
 				>
 					<Fa class="inline" size="xs" icon={faRss} />
 				</button>
@@ -310,17 +318,19 @@
 					description={issue.title}
 					disableMinHeight
 				>
-					<div slot="footer" class="flex gap-4 my-2 text-sm items-center">
-						<div class="flex gap-2 items-center justify-center">
-							<Fa icon={faNewspaper} />
-							Issue #{issue.issue}
-						</div>
+					{#snippet footer()}
+										<div  class="flex gap-4 my-2 text-sm items-center">
+							<div class="flex gap-2 items-center justify-center">
+								<Fa icon={faNewspaper} />
+								Issue #{issue.issue}
+							</div>
 
-						<div class="flex gap-2 items-center justify-center">
-							<Fa icon={faCalendarDay} />
-							{new Date(issue.publishedAt).toLocaleDateString()}
+							<div class="flex gap-2 items-center justify-center">
+								<Fa icon={faCalendarDay} />
+								{new Date(issue.publishedAt).toLocaleDateString()}
+							</div>
 						</div>
-					</div>
+									{/snippet}
 				</RepositoryCard>
 			{/each}
 		</BigGridContainer>

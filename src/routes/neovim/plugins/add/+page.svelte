@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import type { GithubRepository } from '$lib/server/github/schema';
@@ -14,24 +16,28 @@
 	import { session } from '$lib/stores/session';
 	import type { PageData } from './types';
 
-	export let data: PageData;
-	let pluginCategories: string[] = [];
-	let selectedCategory: string | null = null;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+	let pluginCategories: string[] = $state([]);
+	let selectedCategory: string | null = $state(null);
 	let openModal = false;
-	$: {
+	run(() => {
 		trpc($page)
 			.listPluginCategories.query()
 			.then((categories) => {
 				pluginCategories = categories;
 			});
-	}
-	let fullName = '';
+	});
+	let fullName = $state('');
 
-	$: [owner, name] = fullName.split('/');
-	let fetchedRepository: GithubRepository | undefined;
-	let pluginAlreadyExists = false;
-	let repositoryDoesNotExist = false;
-	let validationErrors: string[] = [];
+	let [owner, name] = $derived(fullName.split('/'));
+	let fetchedRepository: GithubRepository | undefined = $state();
+	let pluginAlreadyExists = $state(false);
+	let repositoryDoesNotExist = $state(false);
+	let validationErrors: string[] = $state([]);
 
 	function reset() {
 		openModal = false;
@@ -89,7 +95,7 @@
 			class="p-2 rounded {fetchedRepository
 				? 'bg-black/30'
 				: 'bg-white text-black'} rounded-lg border-[1px] border-accent-muted hover:border-accent-bright"
-			on:click={() => {
+			onclick={() => {
 				fetchedRepository = undefined;
 				fullName = '';
 				repositoryDoesNotExist = false;
@@ -111,10 +117,10 @@
 			<h3 class="flex text-xl font-semibold gap-2 flex-wrap">
 				Search for a plugin to add on Dotfyle
 			</h3>
-			<div class="flex gap-2" />
+			<div class="flex gap-2"></div>
 			<div class="w-full flex gap-2">
 				<input
-					on:change={() => {
+					onchange={() => {
 						pluginAlreadyExists = false;
 						repositoryDoesNotExist = false;
 					}}

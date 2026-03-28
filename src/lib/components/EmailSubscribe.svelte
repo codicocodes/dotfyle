@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
 	import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	let isfocused = false;
-	export let title = 'Email Newsletter';
-	export let description =
-		'Sign up with your email address to receive an email when a new issue of This Week in Neovim is available';
+	interface Props {
+		title?: string;
+		description?: string;
+	}
+
+	let { title = 'Email Newsletter', description = 'Sign up with your email address to receive an email when a new issue of This Week in Neovim is available' }: Props = $props();
 </script>
 
 <div

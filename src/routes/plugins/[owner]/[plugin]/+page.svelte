@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { stopPropagation } from 'svelte/legacy';
+
 	import Button from '$lib/components/Button.svelte';
 	import CoolLink from '$lib/components/CoolLink.svelte';
 	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
@@ -38,17 +40,21 @@
 	import ActionButton from '$lib/components/ActionButton.svelte';
 	import { githubDark } from 'svelte-highlight/styles';
 	import TextGeneration from '$lib/components/TextGeneration.svelte';
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	$: categoryPlugins = data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4);
+	let { data = $bindable() }: Props = $props();
 
-	let style = 'flat';
+	let categoryPlugins = $derived(data.categoryPlugins.filter((p) => p.name != data.plugin.name).slice(0, 4));
 
-	$: badgesHtml = `<a href="https://dotfyle.com/plugins/${data.plugin.owner}/${data.plugin.name}">\n\t<img src="https://dotfyle.com/plugins/${data.plugin.owner}/${data.plugin.name}/shield?style=${style}" />\n</a>`;
+	let style = $state('flat');
 
-	$: firstImage = data.media.filter((m) => getMediaType(m) === 'image')?.[0]?.url;
+	let badgesHtml = $derived(`<a href="https://dotfyle.com/plugins/${data.plugin.owner}/${data.plugin.name}">\n\t<img src="https://dotfyle.com/plugins/${data.plugin.owner}/${data.plugin.name}/shield?style=${style}" />\n</a>`);
 
-	let selectedMedia: Media | undefined;
+	let firstImage = $derived(data.media.filter((m) => getMediaType(m) === 'image')?.[0]?.url);
+
+	let selectedMedia: Media | undefined = $state();
 
 	async function deleteMedia(id: number) {
 		await trpc($page).deleteMedia.mutate({
@@ -64,11 +70,11 @@
 		}
 	}
 
-	let editingDescription = false;
+	let editingDescription = $state(false);
 
-	let editingInstallInstructions = false;
+	let editingInstallInstructions = $state(false);
 
-	let description = data.plugin.description;
+	let description = $state(data.plugin.description);
 
 	async function saveDescription() {
 		await trpc($page).savePluginDescription.mutate({
@@ -100,8 +106,8 @@
 		description = generated || 'failed generating';
 	}
 
-	let pluginManager = 'lazy.nvim';
-	let instructions = data.installInstructions?.[pluginManager]?.instructions ?? '';
+	let pluginManager = $state('lazy.nvim');
+	let instructions = $state(data.installInstructions?.[pluginManager]?.instructions ?? '');
 </script>
 
 <Modal
@@ -125,7 +131,7 @@
 		<div class="flex gap-1 my-2">
 			{#each ['lazy.nvim', 'packer.nvim'] as currPM}
 				<button
-					on:click={() => (pluginManager = currPM)}
+					onclick={() => (pluginManager = currPM)}
 					class={`flex items-center text-sm sm:text-xs text-black px-4 py-1 rounded ${
 						pluginManager === currPM ? 'bg-accent-muted' : 'bg-white'
 					}`}
@@ -177,7 +183,7 @@
 				autoplay
 				muted
 				playsinline
-			/>
+			></video>
 		{:else}
 			<img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />
 		{/if}
@@ -212,20 +218,22 @@
 
 				{#if $session.user && isAdmin($session.user)}
 					<ActionButton>
-						<div slot="actions" class="flex w-52 flex-col">
-							<button
-								on:click={() => (editingDescription = true)}
-								class="px-4 py-2 flex w-full gap-2 items-center justify-between"
-							>
-								<Fa icon={faEdit} /> Description
-							</button>
-							<button
-								on:click={() => (editingInstallInstructions = true)}
-								class="px-4 py-2 flex w-full gap-2 items-center justify-between"
-							>
-								<Fa icon={faEdit} /> Install instructions
-							</button>
-						</div>
+						{#snippet actions()}
+												<div  class="flex w-52 flex-col">
+								<button
+									onclick={() => (editingDescription = true)}
+									class="px-4 py-2 flex w-full gap-2 items-center justify-between"
+								>
+									<Fa icon={faEdit} /> Description
+								</button>
+								<button
+									onclick={() => (editingInstallInstructions = true)}
+									class="px-4 py-2 flex w-full gap-2 items-center justify-between"
+								>
+									<Fa icon={faEdit} /> Install instructions
+								</button>
+							</div>
+											{/snippet}
 					</ActionButton>
 				{/if}
 			</div>
@@ -338,13 +346,13 @@
 									muted
 									playsinline
 									class="rounded hover:cursor-pointer"
-									on:click={() => (selectedMedia = media)}
+									onclick={() => (selectedMedia = media)}
 									src={media.url}
-								/>
+								></video>
 							{:else}
 								<img
 									class="rounded hover:cursor-pointer"
-									on:click={() => (selectedMedia = media)}
+									onclick={() => (selectedMedia = media)}
 									alt=""
 									src={media.url}
 								/>
@@ -368,7 +376,7 @@
 					<div class="flex w-full gap-2">
 						{#each Object.keys(data.installInstructions).sort() as currPM}
 							<button
-								on:click={() => {
+								onclick={() => {
 									pluginManager = currPM;
 									instructions = data.installInstructions[currPM].instructions;
 								}}
@@ -384,7 +392,7 @@
 						<Highlight class="rounded" language={lua} code={instructions} />
 						<button
 							class="absolute right-4 top-4 border-[1px] border-transparent hover:border-accent-muted p-2 rounded"
-							on:click={() => {
+							onclick={() => {
 								copyToClipboard(instructions);
 							}}
 						>
@@ -451,14 +459,16 @@
 									description={plugin.shortDescription}
 									thumbnail={plugin.media?.[0]}
 								>
-									<NeovimPluginMetaData
-										slot="footer"
-										stars={plugin.stars.toString()}
-										configCount={plugin.configCount}
-										category={plugin.category}
-										addedLastWeek={plugin.addedLastWeek}
-										name="{plugin.owner}/{plugin.name}"
-									/>
+									{#snippet footer()}
+																		<NeovimPluginMetaData
+											
+											stars={plugin.stars.toString()}
+											configCount={plugin.configCount}
+											category={plugin.category}
+											addedLastWeek={plugin.addedLastWeek}
+											name="{plugin.owner}/{plugin.name}"
+										/>
+																	{/snippet}
 								</RepositoryCard>
 							</div>
 						{/each}
@@ -469,42 +479,46 @@
 	</div>
 	<div class="flex w-full flex-col gap-2 my-4">
 		<Accordion>
-			<div slot="title" class="flex w-full justify-between items-center gap-1 mr-4">
-				<h3 class="flex text-lg flex-grow">Plugin usage badge</h3>
+			{#snippet title()}
+						<div  class="flex w-full justify-between items-center gap-1 mr-4">
+					<h3 class="flex text-lg flex-grow">Plugin usage badge</h3>
 
-				<div class="flex gap-2 items-center">
-					<img
-						alt="plugin usage"
-						class="w-full h-full"
-						src="/plugins/{data.plugin.owner}/{data.plugin.name}/shield?style={style}"
-					/>
+					<div class="flex gap-2 items-center">
+						<img
+							alt="plugin usage"
+							class="w-full h-full"
+							src="/plugins/{data.plugin.owner}/{data.plugin.name}/shield?style={style}"
+						/>
+					</div>
 				</div>
-			</div>
-			<div slot="content" class="flex flex-col m-4 gap-2">
-				<div class="flex w-full gap-1">
-					{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
+					{/snippet}
+			{#snippet content()}
+						<div  class="flex flex-col m-4 gap-2">
+					<div class="flex w-full gap-1">
+						{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
+							<button
+								onclick={() => (style = currStyle)}
+								class={`flex items-center text-sm sm:text-xs text-black px-4 py-1 rounded ${
+									currStyle === style ? 'bg-accent-muted' : 'bg-white'
+								}`}
+							>
+								{currStyle}
+							</button>
+						{/each}
+
 						<button
-							on:click={() => (style = currStyle)}
-							class={`flex items-center text-sm sm:text-xs text-black px-4 py-1 rounded ${
-								currStyle === style ? 'bg-accent-muted' : 'bg-white'
-							}`}
+							data-umami-event="Plugin Badge - Copy markdown"
+							class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded bg-white border-[1px] border-accent-muted hover:border-main"
+							onclick={stopPropagation(() => copyToClipboard(badgesHtml))}
 						>
-							{currStyle}
-						</button>
-					{/each}
+							<Fa icon={faCopy} />
 
-					<button
-						data-umami-event="Plugin Badge - Copy markdown"
-						class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded bg-white border-[1px] border-accent-muted hover:border-main"
-						on:click|stopPropagation={() => copyToClipboard(badgesHtml)}
-					>
-						<Fa icon={faCopy} />
-
-						Copy</button
-					>
+							Copy</button
+						>
+					</div>
+					<Highlight class="text-sm tracking-wide rounded" code={badgesHtml} language={markdown} />
 				</div>
-				<Highlight class="text-sm tracking-wide rounded" code={badgesHtml} language={markdown} />
-			</div>
+					{/snippet}
 		</Accordion>
 	</div>
 </div>

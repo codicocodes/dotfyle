@@ -3,9 +3,13 @@
 	import Fa from 'svelte-fa';
 	import GlossyCard from './GlossyCard.svelte';
 
-	export let name: string;
 
-	export let selected: boolean;
+	interface Props {
+		name: string;
+		selected: boolean;
+	}
+
+	let { name, selected }: Props = $props();
 </script>
 
 <div class="w-80 md:w-auto">

@@ -1,8 +1,17 @@
 <script lang="ts">
-	export let title: string;
-	export let description: string;
-	export let url: string;
-	export let image = '/dotfyle.png';
+	interface Props {
+		title: string;
+		description: string;
+		url: string;
+		image?: string;
+	}
+
+	let {
+		title,
+		description,
+		url,
+		image = '/dotfyle.png'
+	}: Props = $props();
 </script>
 
 <meta name="description" content={description} />

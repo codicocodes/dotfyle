@@ -5,12 +5,16 @@
 	import CoolTextOnHover from './CoolTextOnHover.svelte';
 
 	import GlossyCard from './GlossyCard.svelte';
-	export let plugins: NeovimPluginWithCount[];
+	interface Props {
+		plugins: NeovimPluginWithCount[];
+	}
 
-	$: sorted = plugins.sort((a, b) => {
+	let { plugins }: Props = $props();
+
+	let sorted = $derived(plugins.sort((a, b) => {
 		if (a.category === b.category) return 0;
 		return a.category > b.category ? 1 : -1;
-	});
+	}));
 </script>
 
 <div>

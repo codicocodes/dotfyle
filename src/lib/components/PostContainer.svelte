@@ -2,7 +2,11 @@
 	import type { JsonPostContainer } from '$lib/types';
 	import BreakingChangePost from './BreakingChangePost.svelte';
 
-  export let post: JsonPostContainer
+	interface Props {
+		post: JsonPostContainer;
+	}
+
+	let { post }: Props = $props();
 </script>
 
 {#if post.breakingChange}

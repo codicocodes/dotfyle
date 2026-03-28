@@ -11,13 +11,17 @@
 	import { markdown } from 'svelte-highlight/languages';
 	import { githubDark } from 'svelte-highlight/styles';
 	import type { PageData } from './$types';
-	export let data: PageData;
-	let view = 'html';
+	interface Props {
+		data: PageData;
+	}
 
-	let style = 'flat';
-	$: badgesHtml = `<a href="https://dotfyle.com/${data.config.owner}/${data.config.slug}"><img src="https://dotfyle.com/${data.config.owner}/${data.config.slug}/badges/plugins?style=${style}" /></a>
+	let { data }: Props = $props();
+	let view = $state('html');
+
+	let style = $state('flat');
+	let badgesHtml = $derived(`<a href="https://dotfyle.com/${data.config.owner}/${data.config.slug}"><img src="https://dotfyle.com/${data.config.owner}/${data.config.slug}/badges/plugins?style=${style}" /></a>
 <a href="https://dotfyle.com/${data.config.owner}/${data.config.slug}"><img src="https://dotfyle.com/${data.config.owner}/${data.config.slug}/badges/leaderkey?style=${style}" /></a>
-<a href="https://dotfyle.com/${data.config.owner}/${data.config.slug}"><img src="https://dotfyle.com/${data.config.owner}/${data.config.slug}/badges/plugin-manager?style=${style}" /></a>`;
+<a href="https://dotfyle.com/${data.config.owner}/${data.config.slug}"><img src="https://dotfyle.com/${data.config.owner}/${data.config.slug}/badges/plugin-manager?style=${style}" /></a>`);
 </script>
 
 <svelte:head>
@@ -67,21 +71,21 @@
 
 	<div class="my-4 flex text-xl justify-between">
 		<div class="flex gap-8">
-			<button on:click={() => (view = 'html')}>
+			<button onclick={() => (view = 'html')}>
 				{#if view === 'html'}
 					<CoolText text="HTML" />
 				{:else}
 					<CoolTextOnHover>HTML</CoolTextOnHover>
 				{/if}
 			</button>
-			<button on:click={() => (view = 'markdown')}>
+			<button onclick={() => (view = 'markdown')}>
 				{#if view === 'markdown'}
 					<CoolText text="Markdown" />
 				{:else}
 					<CoolTextOnHover>Markdown</CoolTextOnHover>
 				{/if}
 			</button>
-			<button on:click={() => (view = 'badges')}>
+			<button onclick={() => (view = 'badges')}>
 				{#if view === 'badges'}
 					<CoolText text="Badges" />
 				{:else}
@@ -111,7 +115,7 @@
 							{#each ['flat', 'flat-square', 'plastic', 'for-the-badge', 'social'] as currStyle}
 								<GlossyCard>
 									<button
-										on:click={() => (style = currStyle)}
+										onclick={() => (style = currStyle)}
 										class="p-2 px-4 {currStyle === style ? 'bg-main/25' : ''}"
 									>
 										{currStyle}

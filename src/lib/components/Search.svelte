@@ -1,25 +1,32 @@
 <script lang="ts">
+	import { createBubbler, preventDefault } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { page } from '$app/stores';
 	import { navigate } from '$lib/navigate';
 	import { faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 
-	let search = $page.url.searchParams.get('q') ?? '';
+	let search = $state($page.url.searchParams.get('q') ?? '');
 
-	export let placeholder: string;
+	interface Props {
+		placeholder: string;
+	}
 
-	let isfocused = false;
-	let inputRef: HTMLInputElement;
+	let { placeholder }: Props = $props();
+
+	let isfocused = $state(false);
+	let inputRef: HTMLInputElement = $state();
 </script>
 
 <form
 	action=""
 	class="grow flex justify-center items-center gap-2"
-	on:change
-	on:submit|preventDefault={() => {
+	onchange={bubble('change')}
+	onsubmit={preventDefault(() => {
 		navigate($page, 'page', '1');
 		navigate($page, 'q', search, true);
-	}}
+	})}
 >
 	<!-- TODO: move to global search and move to other component-->
 	<div
@@ -34,13 +41,13 @@
 			bind:value={search}
 			{placeholder}
 			class="bg-transparent focus:outline-none w-full"
-			on:focus={() => (isfocused = true)}
-			on:blur={() => (isfocused = false)}
+			onfocus={() => (isfocused = true)}
+			onblur={() => (isfocused = false)}
 		/>
 		{#if search}
 			<button
 				type="button"
-				on:click={() => {
+				onclick={() => {
 					search = '';
 					navigate($page, 'q', search, true);
 					inputRef.focus();

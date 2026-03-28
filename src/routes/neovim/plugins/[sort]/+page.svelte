@@ -15,12 +15,16 @@
 	import Button from '$lib/components/Button.svelte';
 	import { copyToClipboard } from '$lib/utils';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	$: selectedCategories =
-		$page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? [];
+	let { data }: Props = $props();
 
-	$: selectedCategoriesSet = new Set(selectedCategories);
+	let selectedCategories =
+		$derived($page.url.searchParams.get('categories')?.split(',').filter(Boolean) ?? []);
+
+	let selectedCategoriesSet = $derived(new Set(selectedCategories));
 </script>
 
 <svelte:head>
@@ -58,39 +62,45 @@
 
 		<div class="mb-4">
 			<Accordion>
-				<div slot="title" class="flex gap-2 items-center text-sm max-w-full">
-					<Fa icon={faFilter} size="sm" />
-					Filter by plugin category
-				</div>
+				{#snippet title()}
+								<div  class="flex gap-2 items-center text-sm max-w-full">
+						<Fa icon={faFilter} size="sm" />
+						Filter by plugin category
+					</div>
+							{/snippet}
 
-				<div slot="description" class="flex text-xs gap-1 flex-wrap">
-					{#each Array.from(selectedCategoriesSet) as category}
-						<button
-							on:click={() => {
+				{#snippet description()}
+								<div  class="flex text-xs gap-1 flex-wrap">
+						{#each Array.from(selectedCategoriesSet) as category}
+							<button
+								onclick={() => {
 								selectedCategoriesSet.delete(category);
 								selectedCategoriesSet = selectedCategoriesSet;
 								navigate($page, 'page', '1');
 								navigate($page, 'categories', Array.from(selectedCategoriesSet).join(','), true);
 							}}
-							class="bg-white text-black px-2 py-1 rounded-full flex gap-2 items-center mt-1"
-						>
-							{category}
-							<Fa icon={faCircleXmark} size="sm" />
-						</button>
-					{/each}
-				</div>
+								class="bg-white text-black px-2 py-1 rounded-full flex gap-2 items-center mt-1"
+							>
+								{category}
+								<Fa icon={faCircleXmark} size="sm" />
+							</button>
+						{/each}
+					</div>
+							{/snippet}
 
-				<MultiSelectFilter
-					slot="content"
-					title="plugin categories"
-					on:updated={({ detail }) => {
-						navigate($page, 'page', '1');
-						navigate($page, 'categories', Array.from(detail.selected).join(','), true);
-						selectedCategoriesSet = new Set(detail.selected);
-					}}
-					items={data.categories}
-					selected={selectedCategoriesSet}
-				/>
+				{#snippet content()}
+								<MultiSelectFilter
+						
+						title="plugin categories"
+						on:updated={({ detail }) => {
+							navigate($page, 'page', '1');
+							navigate($page, 'categories', Array.from(detail.selected).join(','), true);
+							selectedCategoriesSet = new Set(detail.selected);
+						}}
+						items={data.categories}
+						selected={selectedCategoriesSet}
+					/>
+							{/snippet}
 			</Accordion>
 		</div>
 
@@ -105,14 +115,16 @@
 								description={plugin.shortDescription}
 								thumbnail={plugin.media?.[0]}
 							>
-								<NeovimPluginMetaData
-									slot="footer"
-									stars={plugin.stars.toString()}
-									configCount={plugin.configCount}
-									category={plugin.category}
-									addedLastWeek={plugin.addedLastWeek}
-									name="{plugin.owner}/{plugin.name}"
-								/>
+								{#snippet footer()}
+																<NeovimPluginMetaData
+										
+										stars={plugin.stars.toString()}
+										configCount={plugin.configCount}
+										category={plugin.category}
+										addedLastWeek={plugin.addedLastWeek}
+										name="{plugin.owner}/{plugin.name}"
+									/>
+															{/snippet}
 							</RepositoryCard>
 						</li>
 					{/each}

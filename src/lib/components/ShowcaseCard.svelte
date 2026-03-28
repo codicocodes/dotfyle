@@ -1,10 +1,21 @@
 <script lang="ts">
 	import type { Media } from '@prisma/client';
 	import { getMediaType } from '$lib/utils';
-	export let name: string;
-	export let link: string;
-	export let description: string;
-	export let thumbnail: Media;
+	interface Props {
+		name: string;
+		link: string;
+		description: string;
+		thumbnail: Media;
+		footer?: import('svelte').Snippet;
+	}
+
+	let {
+		name,
+		link,
+		description,
+		thumbnail,
+		footer
+	}: Props = $props();
 </script>
 
 <a
@@ -15,7 +26,7 @@
 		{#if getMediaType(thumbnail) === 'image'}
 			<img
 				class="h-full w-full object-cover rounded-lg text-xs"
-				on:error={() => console.log('failed loading thumbnail')}
+				onerror={() => console.log('failed loading thumbnail')}
 				style="object-position: center;"
 				src={thumbnail.url}
 				alt="{name} thumbnail"
@@ -24,13 +35,13 @@
 		{#if getMediaType(thumbnail) === 'video'}
 			<video
 				class="h-full w-full object-cover rounded-lg text-xs"
-				on:error={() => console.log('failed loading thumbnail')}
+				onerror={() => console.log('failed loading thumbnail')}
 				style="object-position: center;"
 				src={thumbnail.url}
 				autoplay
 				muted
 				playsinline
-			/>
+			></video>
 		{/if}
 	</div>
 	<div class="flex flex-col gap-1">
@@ -48,6 +59,6 @@
 				</div>
 			</div>
 		</div>
-		<slot name="footer" />
+		{@render footer?.()}
 	</div>
 </a>
