@@ -13,6 +13,7 @@
 	import { faDiscord, faGithub, faTwitch } from '@fortawesome/free-brands-svg-icons';
 	import {
 		faBars,
+		faGear,
 		faKeyboard,
 		faPlus,
 		faRss,
@@ -230,6 +231,18 @@
 							</div>
 							Profile</a
 						>
+					</CoolTextOnHover>
+					<CoolTextOnHover>
+						<a
+							on:click={close}
+							href="/settings"
+							class="px-4 py-2 flex gap-2 items-center"
+						>
+							<div class="force-white-text">
+								<Fa icon={faGear} class="text-base-100" />
+							</div>
+							Settings
+						</a>
 					</CoolTextOnHover>
 					<CoolTextOnHover>
 						<button class="px-4 py-2 flex gap-2 items-center" on:click={logout}>

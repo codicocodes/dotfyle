@@ -80,10 +80,15 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "transform": {
-      "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest"
+      "node_modules/variables/.+\\.(j|t)sx?$": ["ts-jest", {}],
+      "^.+\\.ts$": ["ts-jest", { "tsconfig": { "module": "commonjs", "preserveValueImports": false } }]
     },
     "transformIgnorePatterns": [
       "node_modules/(?!variables/.*)"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^\\$lib/(.*)$": "<rootDir>/src/lib/$1",
+      "^\\$env/static/public$": "<rootDir>/src/__mocks__/env-public.ts"
+    }
   }
 }

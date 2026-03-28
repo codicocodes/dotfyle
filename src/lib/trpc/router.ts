@@ -1,4 +1,5 @@
 import * as middlewares from './middlewares/auth';
+import { deleteAccount } from './procedures/deleteAccount';
 import { t } from './t';
 import { z } from 'zod';
 import {
@@ -596,6 +597,7 @@ export const router = t.router({
       });
     }),
 
+  deleteAccount,
   getDotfyleStatisitics: t.procedure.query(async () => {
     const installsP = prismaClient.neovimConfigPlugins.count();
     const usersP = prismaClient.user.count();
