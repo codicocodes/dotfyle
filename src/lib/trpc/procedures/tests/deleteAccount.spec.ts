@@ -2,12 +2,12 @@ jest.mock('$lib/server/prisma/users/service', () => ({ deleteUser: jest.fn() }))
 jest.mock('$lib/server/auth/services', () => ({ logout: jest.fn() }));
 jest.mock('$lib/utils', () => ({ isAdmin: jest.fn(() => false) }));
 
-import { t } from './t';
-import { deleteAccount } from './procedures/deleteAccount';
+import { t } from '../../t';
+import { deleteAccount } from '../deleteAccount';
 import { deleteUser } from '$lib/server/prisma/users/service';
 import { logout } from '$lib/server/auth/services';
 import { isAdmin } from '$lib/utils';
-import { makeCaller, mockUser, mockCookies } from './test-utils';
+import { makeCaller, mockUser, mockCookies } from '../../test-utils';
 
 const mockDeleteUser = jest.mocked(deleteUser);
 const mockLogout = jest.mocked(logout);
