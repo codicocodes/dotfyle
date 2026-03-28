@@ -12,7 +12,7 @@ export class GithubAuthFailed extends Error {
 export const parseCode = (url: URL) => {
   const code = url.searchParams.get('code');
   if (!code) {
-    throw redirect(GithubAuthFailed.status, GithubAuthFailed.retryLocation);
+    redirect(GithubAuthFailed.status, GithubAuthFailed.retryLocation);
   }
   return code;
 };
@@ -20,7 +20,7 @@ export const parseCode = (url: URL) => {
 export const fetchAccessToken = async (code: string) => {
   const { access_token } = await fetchGithubAccessToken(code);
   if (!access_token) {
-    throw redirect(GithubAuthFailed.status, GithubAuthFailed.failedLocation);
+    redirect(GithubAuthFailed.status, GithubAuthFailed.failedLocation);
   }
   return access_token;
 };

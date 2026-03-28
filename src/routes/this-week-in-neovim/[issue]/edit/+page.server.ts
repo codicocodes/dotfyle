@@ -9,21 +9,21 @@ export const load: PageServerLoad = async (event: PageServerLoadEvent) => {
   const issueStr = event.params.issue;
 
   if (!user) {
-    throw redirect(302, `/api/auth/github?next=this-week-in-neovim/${issueStr}/edit`);
+    redirect(302, `/api/auth/github?next=this-week-in-neovim/${issueStr}/edit`);
   }
 
   if (!isAdmin(user)) {
-    throw redirect(302, '/?error=permission_denied');
+    redirect(302, '/?error=permission_denied');
   }
 
   if (isNaN(Number(issueStr))) {
-    throw error(404);
+    error(404);
   }
   const issue = parseInt(issueStr, 10);
   const post = await trpc(event)
     .getTwinByIssue.query({ issue })
     .catch(() => {
-      throw error(404);
+      error(404);
     });
   return {
     post
@@ -34,7 +34,7 @@ export const actions: Action = {
   update: async (event: any) => {
     const issueStr = event.params.issue;
     if (isNaN(Number(issueStr))) {
-      throw error(404);
+      error(404);
     }
     const issue = parseInt(issueStr, 10);
     const data = await event.request.formData();
@@ -50,12 +50,12 @@ export const actions: Action = {
   publish: async (event: any) => {
     const issueStr = event.params.issue;
     if (isNaN(Number(issueStr))) {
-      throw error(404);
+      error(404);
     }
     const issue = parseInt(issueStr, 10);
     const post = await trpc(event).publishTwinIssue.mutate({
       issue
     });
-    throw redirect(302, `/this-week-in-neovim/${post.issue}`);
+    redirect(302, `/this-week-in-neovim/${post.issue}`);
   }
 };

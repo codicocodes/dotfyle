@@ -21,7 +21,7 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
       slug
     }) as unknown as LanguageServer[]
   ]).catch(() => {
-    throw error(404);
+    error(404);
   });
 
   return {

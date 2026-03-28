@@ -67,7 +67,7 @@ export const GET: RequestHandler = (event) => {
   const id = `${year}/${month}/${day}`;
   const issue = proxy[id];
   if (!issue) {
-    throw error(404);
+    error(404);
   }
-  throw redirect(302, `/this-week-in-neovim/${issue}`);
+  redirect(302, `/this-week-in-neovim/${issue}`);
 };

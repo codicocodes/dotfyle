@@ -15,7 +15,7 @@ export class AsyncApiManager {
 
   start() {
     if (this.running) {
-      throw error(429, 'limit');
+      error(429, 'limit');
     }
     this.running = true;
   }

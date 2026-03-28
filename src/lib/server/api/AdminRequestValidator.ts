@@ -28,11 +28,11 @@ export class AdminRequestValidator {
 
   validateAdmin(user: User | null) {
     if (!user) {
-      throw error(401, 'unauthorized');
+      error(401, 'unauthorized');
     }
     if (NODE_ENV === 'production') {
       if (!isAdmin(user)) {
-        throw error(403, 'forbidden');
+        error(403, 'forbidden');
       }
     }
   }

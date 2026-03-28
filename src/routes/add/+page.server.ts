@@ -5,6 +5,6 @@ import type { PageServerLoad, PageServerLoadEvent } from './$types';
 export const load: PageServerLoad = async (event: PageServerLoadEvent) => {
   const user = verifyToken(event.cookies);
   if (!user) {
-    throw redirect(302, '/api/auth/github?next=add');
+    redirect(302, '/api/auth/github?next=add');
   }
 };

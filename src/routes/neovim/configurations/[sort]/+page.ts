@@ -14,7 +14,7 @@ const getSorting = (event: PageLoadEvent) => {
   try {
     return z.enum(['top', 'new', 'plugins']).parse(sort);
   } catch {
-    throw error(404);
+    error(404);
   }
 };
 

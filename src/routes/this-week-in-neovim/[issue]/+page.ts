@@ -7,13 +7,13 @@ import { marked } from 'marked';
 export const load: PageLoad = async function load(event: PageLoadEvent) {
   const issueStr = event.params.issue;
   if (isNaN(Number(issueStr))) {
-    throw error(404);
+    error(404);
   }
   const issue = parseInt(issueStr, 10);
   const post = await trpc(event)
     .getTwinByIssue.query({ issue })
     .catch(() => {
-      throw error(404);
+      error(404);
     });
   const renderer = new marked.Renderer();
   const linkRenderer = renderer.link;

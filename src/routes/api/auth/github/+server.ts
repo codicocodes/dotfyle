@@ -7,5 +7,5 @@ export const GET: RequestHandler = function (e) {
   const url = next
     ? GITHUB_REDIRECT_URL + `&state=${JSON.stringify({ next })}`
     : GITHUB_REDIRECT_URL;
-  throw redirect(302, url);
+  redirect(302, url);
 };

@@ -46,7 +46,7 @@ const getSorting = (event: PageLoadEvent) => {
         return sorting;
     }
   } catch {
-    throw error(404);
+    error(404);
   }
 };
 

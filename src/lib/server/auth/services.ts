@@ -59,11 +59,11 @@ export async function login(c: Cookies, u: User, next: string | null): Promise<n
   const configs = await getConfigsByUserID(u.id);
   if (next) {
     const url = `${BASE_URL}/${next}`;
-    throw redirect(302, url);
+    redirect(302, url);
   } else if (configs.length > 0) {
-    throw redirect(302, `/${u.username}`);
+    redirect(302, `/${u.username}`);
   } else {
-    throw redirect(302, '/welcome');
+    redirect(302, '/welcome');
   }
 }
 
