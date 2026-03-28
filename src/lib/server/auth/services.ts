@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { JwtSecretError } from './errors';
 import { redirect, type Cookies } from '@sveltejs/kit';
 import { UserSchema } from '$lib/server/prisma/users/schema';
-import { getConfigsByUserID, getConfigsByUsername } from '../prisma/neovimconfigs/service';
+import { getConfigsByUserID } from '../prisma/neovimconfigs/service';
 import { BASE_URL } from './github/settings';
 
 export function getJwtAccessSecret(): string {

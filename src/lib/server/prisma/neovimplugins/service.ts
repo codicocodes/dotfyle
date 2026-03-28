@@ -54,7 +54,7 @@ const orderByWeeklyAdded: [
 const orderByPopularity: [
   {
     _count: 'desc';
-    neovimConfigPlugins: {};
+    neovimConfigPlugins: Record<string, unknown>;
   },
   {
     stars: 'desc';
@@ -346,7 +346,7 @@ export async function getPluginsBySlug(username: string, slug: string) {
 }
 
 export async function upsertNeovimPlugin(plugin: PluginDTO): Promise<NeovimPlugin> {
-  const { shortDescription, ...update } = plugin;
+  const { shortDescription: _shortDescription, ...update } = plugin;
   const savedPlugin = await prismaClient.neovimPlugin.upsert({
     where: {
       owner_name: {

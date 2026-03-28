@@ -18,12 +18,12 @@ export function trpc(init: TRPCClientInit) {
         true: httpLink({
           url:
             typeof window === 'undefined' ? `${init.url.origin}${url}` : `${location.origin}${url}`,
-          fetch: typeof window === 'undefined' && init ? init.fetch : init?.fetch ?? window.fetch
+          fetch: typeof window === 'undefined' && init ? init.fetch : (init?.fetch ?? window.fetch)
         }),
         false: httpBatchLink({
           url:
             typeof window === 'undefined' ? `${init.url.origin}${url}` : `${location.origin}${url}`,
-          fetch: typeof window === 'undefined' ? init.fetch : init?.fetch ?? window.fetch
+          fetch: typeof window === 'undefined' ? init.fetch : (init?.fetch ?? window.fetch)
         })
       })
     ]

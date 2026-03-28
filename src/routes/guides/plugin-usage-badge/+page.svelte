@@ -1,124 +1,124 @@
 <script lang="ts">
-	import Highlight from 'svelte-highlight';
-	import { markdown } from 'svelte-highlight/languages';
-	import github from 'svelte-highlight/styles/github-dark';
-	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
-	import type { PageData } from './$types';
-	import GlossyCard from '$lib/components/GlossyCard.svelte';
-	import RepositoryCard from '$lib/components/RepositoryCard.svelte';
-	import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
+  import Highlight from 'svelte-highlight';
+  import { markdown } from 'svelte-highlight/languages';
+  import github from 'svelte-highlight/styles/github-dark';
+  import BigGridContainer from '$lib/components/BigGridContainer.svelte';
+  import type { PageData } from './$types';
+  import GlossyCard from '$lib/components/GlossyCard.svelte';
+  import RepositoryCard from '$lib/components/RepositoryCard.svelte';
+  import NeovimPluginMetaData from '$lib/components/NeovimPluginMetaData.svelte';
 
-	interface Props {
-		data: PageData;
-	}
+  interface Props {
+    data: PageData;
+  }
 
-	let { data }: Props = $props();
+  let { data }: Props = $props();
 
-	const code = `<a href="https://dotfyle.com/plugins/{owner}/{name}">
+  const code = `<a href="https://dotfyle.com/plugins/{owner}/{name}">
   <img src="https://dotfyle.com/plugins/{owner}/{name}/shield" />
 </a>`;
 </script>
 
 <svelte:head>
-	{@html github}
-	<title>Showcase your Neovim plugins usage with a badge</title>
-	<meta
-		name="description"
-		content="Add a badge to your Neovim plugins GitHub Readme to show the number of configs on Dotfyle using your plugin. This helps users find other Neovim configs using your plugin."
-	/>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html github}
+  <title>Showcase your Neovim plugins usage with a badge</title>
+  <meta
+    name="description"
+    content="Add a badge to your Neovim plugins GitHub Readme to show the number of configs on Dotfyle using your plugin. This helps users find other Neovim configs using your plugin."
+  />
 </svelte:head>
 
 <div class="flex flex-col px-4 gap-4">
-	<div class="w-full justify-center text-left">
-		<h1 class="w-full text-left">Showcase your Neovim plugins usage with a badge</h1>
-		<p>
-			Add a badge to your Neovim plugins GitHub Readme to show the number of configs on Dotfyle
-			using your plugin. This helps users find other Neovim configs using your plugin.
-		</p>
-	</div>
+  <div class="w-full justify-center text-left">
+    <h1 class="w-full text-left">Showcase your Neovim plugins usage with a badge</h1>
+    <p>
+      Add a badge to your Neovim plugins GitHub Readme to show the number of configs on Dotfyle
+      using your plugin. This helps users find other Neovim configs using your plugin.
+    </p>
+  </div>
 
-	<div class="">
-		<a href="/plugins/nvim-treesitter/nvim-treesitter">
-			<img alt="tree sitter usage" src="/plugins/nvim-treesitter/nvim-treesitter/shield" />
-		</a>
-	</div>
-	<GlossyCard>
-		<section class="flex flex-col gap-2 p-4 w-full">
-			<h3>How to add your badge</h3>
-			<span class="inline whitespace-normal">
-				Add the following HTML to your plugins readme but replace <code
-					class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700"
-					>{'{owner}'}
-				</code>
-				and
-				<code class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700"
-					>{'{name}'}
-				</code>
-				with your GitHub username and repository name.
-			</span>
-			<Highlight class="rounded" {code} language={markdown} />
-		</section>
-	</GlossyCard>
-	<GlossyCard>
-		<section class="flex flex-col gap-2 p-4">
-			<h3>Query parameters</h3>
+  <div class="">
+    <a href="/plugins/nvim-treesitter/nvim-treesitter">
+      <img alt="tree sitter usage" src="/plugins/nvim-treesitter/nvim-treesitter/shield" />
+    </a>
+  </div>
+  <GlossyCard>
+    <section class="flex flex-col gap-2 p-4 w-full">
+      <h3>How to add your badge</h3>
+      <span class="inline whitespace-normal">
+        Add the following HTML to your plugins readme but replace <code
+          class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700"
+          >{'{owner}'}
+        </code>
+        and
+        <code class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700"
+          >{'{name}'}
+        </code>
+        with your GitHub username and repository name.
+      </span>
+      <Highlight class="rounded" {code} language={markdown} />
+    </section>
+  </GlossyCard>
+  <GlossyCard>
+    <section class="flex flex-col gap-2 p-4">
+      <h3>Query parameters</h3>
 
-			<div>
-				<code class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700">style</code>
-				<i>string</i>
-			</div>
+      <div>
+        <code class="w-auto rounded px-1 py-0.5 bg-base-400 border border-base-700">style</code>
+        <i>string</i>
+      </div>
 
-			<span>One of: flat (default), flat-square, plastic, for-the-badge, social </span>
+      <span>One of: flat (default), flat-square, plastic, for-the-badge, social </span>
 
-			<span>The example uses: flat</span>
-		</section>
-	</GlossyCard>
+      <span>The example uses: flat</span>
+    </section>
+  </GlossyCard>
 
-	<section class="flex flex-col gap-4">
-		<GlossyCard>
-			<div class="flex flex-col gap-2 p-4">
-				<h3>Plugins with the badge</h3>
+  <section class="flex flex-col gap-4">
+    <GlossyCard>
+      <div class="flex flex-col gap-2 p-4">
+        <h3>Plugins with the badge</h3>
 
-				<span class="whitespace-normal"
-					>These plugins added the Dotfyle usage badge to their GitHub Readme. Add the badge to your
-					plugins readme to get on the list. The list updates once a week.</span
-				>
-			</div>
-		</GlossyCard>
-		{#await data.loading.plugins then plugins}
-			<BigGridContainer>
-				{#each plugins as plugin, _}
-					<RepositoryCard
-						name="{plugin.owner}/{plugin.name}"
-						link="/plugins/{plugin.owner}/{plugin.name}"
-						description={plugin.shortDescription}
-						thumbnail={plugin.media?.[0]}
-					>
-						{#snippet footer()}
-												<NeovimPluginMetaData
-								
-								stars={plugin.stars.toString()}
-								configCount={plugin.configCount}
-								category={plugin.category}
-								addedLastWeek={plugin.addedLastWeek}
-								name="{plugin.owner}/{plugin.name}"
-							/>
-											{/snippet}
-					</RepositoryCard>
-				{/each}
-			</BigGridContainer>
-		{/await}
-	</section>
+        <span class="whitespace-normal"
+          >These plugins added the Dotfyle usage badge to their GitHub Readme. Add the badge to your
+          plugins readme to get on the list. The list updates once a week.</span
+        >
+      </div>
+    </GlossyCard>
+    {#await data.loading.plugins then plugins}
+      <BigGridContainer>
+        {#each plugins as plugin}
+          <RepositoryCard
+            name="{plugin.owner}/{plugin.name}"
+            link="/plugins/{plugin.owner}/{plugin.name}"
+            description={plugin.shortDescription}
+            thumbnail={plugin.media?.[0]}
+          >
+            {#snippet footer()}
+              <NeovimPluginMetaData
+                stars={plugin.stars.toString()}
+                configCount={plugin.configCount}
+                category={plugin.category}
+                addedLastWeek={plugin.addedLastWeek}
+                name="{plugin.owner}/{plugin.name}"
+              />
+            {/snippet}
+          </RepositoryCard>
+        {/each}
+      </BigGridContainer>
+    {/await}
+  </section>
 </div>
 
 <style lang="postcss">
-	h1 {
-		@apply text-2xl sm:text-3xl font-semibold tracking-wider my-4;
-	}
-	h3 {
-		@apply text-lg sm:text-xl font-semibold tracking-wider my-2;
-	}
-	p {
-		@apply text-sm sm:text-lg my-2 gap-2 break-words;
-	}
+  h1 {
+    @apply text-2xl sm:text-3xl font-semibold tracking-wider my-4;
+  }
+  h3 {
+    @apply text-lg sm:text-xl font-semibold tracking-wider my-2;
+  }
+  p {
+    @apply text-sm sm:text-lg my-2 gap-2 break-words;
+  }
 </style>

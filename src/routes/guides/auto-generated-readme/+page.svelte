@@ -1,21 +1,21 @@
 <script lang="ts">
-	import Highlight from 'svelte-highlight';
-	import { markdown } from 'svelte-highlight/languages';
-	import github from 'svelte-highlight/styles/github-dark';
-	import GlossyCard from '$lib/components/GlossyCard.svelte';
-	import BigGridContainer from '$lib/components/BigGridContainer.svelte';
-	import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
+  import Highlight from 'svelte-highlight';
+  import { markdown } from 'svelte-highlight/languages';
+  import github from 'svelte-highlight/styles/github-dark';
+  import GlossyCard from '$lib/components/GlossyCard.svelte';
+  import BigGridContainer from '$lib/components/BigGridContainer.svelte';
+  import NeovimConfigCard from '$lib/components/NeovimConfigCard.svelte';
 
-	import type { PageData } from './$types';
-	import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
+  import type { PageData } from './$types';
+  import GithubLoginButton from '$lib/components/GithubLoginButton.svelte';
 
-	interface Props {
-		data: PageData;
-	}
+  interface Props {
+    data: PageData;
+  }
 
-	let { data }: Props = $props();
+  let { data }: Props = $props();
 
-	const readmeStructure = `# Title
+  const readmeStructure = `# Title
 - plugin count badge
 - leaderkey badge
 - plugin manager badge
@@ -25,100 +25,100 @@
 ## Plugins
 
 ## Language Servers`;
-
 </script>
 
 <svelte:head>
-	{@html github}
-	<title>How to automatically create a README for your Neovim config</title>
-	<meta
-		name="description"
-		content="Showcase your leaderkey, plugin manager, plugins and language servers from your Neovim config on your GitHub readme."
-	/>
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html github}
+  <title>How to automatically create a README for your Neovim config</title>
+  <meta
+    name="description"
+    content="Showcase your leaderkey, plugin manager, plugins and language servers from your Neovim config on your GitHub readme."
+  />
 </svelte:head>
 
 <div class="flex flex-col px-4 gap-4">
-	<div class="w-full justify-center text-left">
-		<h1 class="w-full text-left">How to automatically create a README for your Neovim config</h1>
-		<p>
-			Showcase your leaderkey, plugin manager, plugins and language servers from your Neovim config
-			on your GitHub readme.
-		</p>
-	</div>
-	<GlossyCard>
-		<section class="flex flex-col gap-2 p-4 w-full">
-			<h3>How it works</h3>
-			<span class="inline whitespace-normal"
-				>Dotfyle generates custom markdown based on metadata from your Neovim config.</span
-			>
-			<Highlight language={markdown} code={readmeStructure} />
-			<span class="inline whitespace-normal">
-				You can change the markdown to your needs before saving it to GitHub.
-			</span>
+  <div class="w-full justify-center text-left">
+    <h1 class="w-full text-left">How to automatically create a README for your Neovim config</h1>
+    <p>
+      Showcase your leaderkey, plugin manager, plugins and language servers from your Neovim config
+      on your GitHub readme.
+    </p>
+  </div>
+  <GlossyCard>
+    <section class="flex flex-col gap-2 p-4 w-full">
+      <h3>How it works</h3>
+      <span class="inline whitespace-normal"
+        >Dotfyle generates custom markdown based on metadata from your Neovim config.</span
+      >
+      <Highlight language={markdown} code={readmeStructure} />
+      <span class="inline whitespace-normal">
+        You can change the markdown to your needs before saving it to GitHub.
+      </span>
 
-			<span class="whitespace-normal">
-				If you don't want to use the generated readme, you can use just the Dotfyle badges
-				showcasing the number of plugins installed, your plugin manager, and your leaderkey.
-			</span>
-		</section>
-	</GlossyCard>
+      <span class="whitespace-normal">
+        If you don't want to use the generated readme, you can use just the Dotfyle badges
+        showcasing the number of plugins installed, your plugin manager, and your leaderkey.
+      </span>
+    </section>
+  </GlossyCard>
 
-	<GlossyCard>
-		<section class="flex flex-col gap-2 p-4 w-full">
-			<h3>How to find your README</h3>
-			<span class="inline whitespace-normal">
-				Navigate to your Neovim config on Dotfyle at <code class="bg-black px-1 py-0.5 rounded"
-					>profile > config
-				</code>. If you're logged in you will have an option to navigate to your readme. If not, you
-				can add <code class="bg-black px-1 py-0.5 rounded">/readme</code> to the end of the url. Copy
-				the markdown from this page and use it on your GitHub readme.
-			</span>
-			<span class="inline whitespace-normal">
-				A good way to find your config page is to login.
-			</span>
+  <GlossyCard>
+    <section class="flex flex-col gap-2 p-4 w-full">
+      <h3>How to find your README</h3>
+      <span class="inline whitespace-normal">
+        Navigate to your Neovim config on Dotfyle at <code class="bg-black px-1 py-0.5 rounded"
+          >profile > config
+        </code>. If you're logged in you will have an option to navigate to your readme. If not, you
+        can add <code class="bg-black px-1 py-0.5 rounded">/readme</code> to the end of the url. Copy
+        the markdown from this page and use it on your GitHub readme.
+      </span>
+      <span class="inline whitespace-normal">
+        A good way to find your config page is to login.
+      </span>
 
-			<GithubLoginButton />
-		</section>
-	</GlossyCard>
-	<section class="flex flex-col gap-4">
-		<GlossyCard>
-			<div class="flex flex-col gap-2 p-4">
-				<h3>Configs with Dotfyle generated README</h3>
+      <GithubLoginButton />
+    </section>
+  </GlossyCard>
+  <section class="flex flex-col gap-4">
+    <GlossyCard>
+      <div class="flex flex-col gap-2 p-4">
+        <h3>Configs with Dotfyle generated README</h3>
 
-				<span class="whitespace-normal">
-					These neovim configs added the Dotfyle generated README to their GitHub. The list updates
-					once a day.
-				</span>
-			</div>
-		</GlossyCard>
-		{#await data.loading.configs then configs}
-			<BigGridContainer>
-				{#each configs as config, _}
-					<NeovimConfigCard
-						slug={config.slug}
-						repo={config.repo}
-						owner={config.owner}
-						avatar={config.ownerAvatar}
-						initFile={config.initFile}
-						root={config.root}
-						stars={config.stars.toString()}
-						pluginCount={config.pluginCount.toString()}
-						loc={config.linesOfCode}
-					/>
-				{/each}
-			</BigGridContainer>
-		{/await}
-	</section>
+        <span class="whitespace-normal">
+          These neovim configs added the Dotfyle generated README to their GitHub. The list updates
+          once a day.
+        </span>
+      </div>
+    </GlossyCard>
+    {#await data.loading.configs then configs}
+      <BigGridContainer>
+        {#each configs as config}
+          <NeovimConfigCard
+            slug={config.slug}
+            repo={config.repo}
+            owner={config.owner}
+            avatar={config.ownerAvatar}
+            initFile={config.initFile}
+            root={config.root}
+            stars={config.stars.toString()}
+            pluginCount={config.pluginCount.toString()}
+            loc={config.linesOfCode}
+          />
+        {/each}
+      </BigGridContainer>
+    {/await}
+  </section>
 </div>
 
 <style lang="postcss">
-	h1 {
-		@apply text-2xl sm:text-3xl font-semibold tracking-wider my-4;
-	}
-	h3 {
-		@apply text-lg sm:text-xl font-semibold tracking-wider my-2;
-	}
-	p {
-		@apply text-sm sm:text-lg my-2 gap-2 break-words;
-	}
+  h1 {
+    @apply text-2xl sm:text-3xl font-semibold tracking-wider my-4;
+  }
+  h3 {
+    @apply text-lg sm:text-xl font-semibold tracking-wider my-2;
+  }
+  p {
+    @apply text-sm sm:text-lg my-2 gap-2 break-words;
+  }
 </style>

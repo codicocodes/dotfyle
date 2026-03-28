@@ -111,7 +111,6 @@ export async function getConfigsForPlugin(
   return configs.map(attachMetaData);
 }
 
-
 export async function getConfigBySlug(
   owner: string,
   slug: string

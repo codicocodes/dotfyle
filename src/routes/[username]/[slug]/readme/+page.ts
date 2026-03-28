@@ -99,7 +99,7 @@ ${getRunCommand(config)}
     .concat(outro)
     .trim();
 
-  const html = sanitizeHtml(marked(readme));
+  const html = await sanitizeHtml(marked(readme));
 
   return {
     config,

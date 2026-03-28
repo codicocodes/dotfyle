@@ -1,0 +1,4 @@
+git diff --cached --name-only | xargs prettier --write --ignore-unknown
+git add $(git diff --cached --name-only)
+pnpm run lint
+pnpm run test

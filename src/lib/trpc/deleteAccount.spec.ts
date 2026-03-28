@@ -39,7 +39,7 @@ describe('deleteAccount', () => {
 
   it('throws UNAUTHORIZED and skips deletion when not authenticated', async () => {
     await expect(makeCaller(createCaller, null).deleteAccount()).rejects.toMatchObject({
-      code: 'UNAUTHORIZED',
+      code: 'UNAUTHORIZED'
     });
 
     expect(mockDeleteUser).not.toHaveBeenCalled();
@@ -50,7 +50,7 @@ describe('deleteAccount', () => {
     mockIsAdmin.mockReturnValue(true);
 
     await expect(makeCaller(createCaller, mockUser).deleteAccount()).rejects.toMatchObject({
-      code: 'FORBIDDEN',
+      code: 'FORBIDDEN'
     });
 
     expect(mockDeleteUser).not.toHaveBeenCalled();

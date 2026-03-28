@@ -1,16 +1,16 @@
 <script>
-	import Button from '$lib/components/Button.svelte';
-	import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+  import Button from '$lib/components/Button.svelte';
+  import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 </script>
 
 <form class="w-full flex gap-2 justify-center" method="POST">
-	<div class="flex flex-col">
-		<label class=""> issue number </label>
-		<input autofocus type="number" class="rounded px-2 text-gray" name="issue"/>
-	</div>
-	<div class="flex flex-col">
-		<label class="">days ago</label>
-		<input type="number" class="rounded px-2 text-gray" name="days"/>
-	</div>
-	<Button text="Create" icon={faPlusCircle} />
+  <div class="flex flex-col">
+    <label for="issue"> issue number </label>
+    <input id="issue" type="number" class="rounded px-2 text-gray" name="issue" />
+  </div>
+  <div class="flex flex-col">
+    <label for="days">days ago</label>
+    <input id="days" type="number" class="rounded px-2 text-gray" name="days" />
+  </div>
+  <Button text="Create" icon={faPlusCircle} />
 </form>

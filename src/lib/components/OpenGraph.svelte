@@ -1,17 +1,12 @@
 <script lang="ts">
-	interface Props {
-		title: string;
-		description: string;
-		url: string;
-		image?: string;
-	}
+  interface Props {
+    title: string;
+    description: string;
+    url: string;
+    image?: string;
+  }
 
-	let {
-		title,
-		description,
-		url,
-		image = '/dotfyle.png'
-	}: Props = $props();
+  let { title, description, url, image = '/dotfyle.png' }: Props = $props();
 </script>
 
 <meta name="description" content={description} />
@@ -26,5 +21,4 @@
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description.replaceAll('#', '')} />
 <meta name="twitter:image" content={image} />
-<link rel="canonical" href="{url}" />
-
+<link rel="canonical" href={url} />

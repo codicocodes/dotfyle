@@ -4,7 +4,6 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import type { TRPCError, inferRouterContext, ProcedureType } from '@trpc/server';
 import { createTRPCHandle } from 'trpc-sveltekit';
-import { verifyToken } from '$lib/server/auth/services';
 import { NODE_ENV } from '$env/static/private';
 
 console.log('Starting server: ', { NODE_ENV });

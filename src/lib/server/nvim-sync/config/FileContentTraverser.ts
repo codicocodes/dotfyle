@@ -1,5 +1,5 @@
 import { fetchFile } from '$lib/server/github/api';
-import type { GithubNode, GithubTree } from '$lib/server/github/schema';
+import type { GithubTree } from '$lib/server/github/schema';
 
 export class GithubFileContentTraverser {
   private nodeQueue: { sha: string; path: string }[];

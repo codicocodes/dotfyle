@@ -62,7 +62,6 @@ export async function syncExistingRepoInfo(token: string, config: NeovimConfig) 
   return upsertNeovimConfig(config.userId, upsertDTO);
 }
 
-
 export function validateConfigPath(root: GithubTree, path: string): undefined {
   for (const node of root.tree) {
     if (node.path === path) {

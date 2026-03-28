@@ -10,7 +10,7 @@ export const mockUser = {
   githubId: 12345,
   username: 'testuser',
   avatarUrl: 'https://example.com/avatar.png',
-  createdAt: new Date(),
+  createdAt: new Date()
 };
 
 export function makeContext(user: User): Context {
@@ -20,7 +20,7 @@ export function makeContext(user: User): Context {
     getAuthenticatedUser() {
       if (!user) throw new TRPCError({ code: 'UNAUTHORIZED' });
       return user;
-    },
+    }
   };
 }
 

@@ -1,7 +1,6 @@
 import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
 import {
-  getAllPlugins,
   getUnsyncedPlugins,
   upsertManyNeovimPlugins
 } from '$lib/server/prisma/neovimplugins/service';

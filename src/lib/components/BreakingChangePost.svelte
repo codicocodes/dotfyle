@@ -1,51 +1,53 @@
 <script lang="ts">
-	import type { JsonBreakingChangePost } from '$lib/types';
-	import { humanizeAbsolute } from '$lib/utils';
-	import { faGithub } from '@fortawesome/free-brands-svg-icons';
-	import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
-	import CoolText from './CoolText.svelte';
-	import CoolTextOnHover from './CoolTextOnHover.svelte';
+  import type { JsonBreakingChangePost } from '$lib/types';
+  import { humanizeAbsolute } from '$lib/utils';
+  import { faGithub } from '@fortawesome/free-brands-svg-icons';
+  import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
+  import Fa from 'svelte-fa';
+  import CoolText from './CoolText.svelte';
+  import CoolTextOnHover from './CoolTextOnHover.svelte';
 
-	interface Props {
-		post: JsonBreakingChangePost;
-	}
+  interface Props {
+    post: JsonBreakingChangePost;
+  }
 
-	let { post }: Props = $props();
+  let { post }: Props = $props();
 
-	const date = new Date(post.createdAt);
-	const url = `/plugins/${post.breakingChange.plugin.owner}/${post.breakingChange.plugin.name}`;
-	const title = `Breaking change in ${post.breakingChange.plugin.name}`;
-	const text = post.title;
-	const githubLink = post.breakingChange.externalUrl;
-	const shortSha = post.breakingChange.sha.substring(0, 6);
+  let date = $derived(new Date(post.createdAt));
+  let url = $derived(
+    `/plugins/${post.breakingChange.plugin.owner}/${post.breakingChange.plugin.name}`
+  );
+  let title = $derived(`Breaking change in ${post.breakingChange.plugin.name}`);
+  let text = $derived(post.title);
+  let githubLink = $derived(post.breakingChange.externalUrl);
+  let shortSha = $derived(post.breakingChange.sha.substring(0, 6));
 </script>
 
 <div
-	class="relative flex flex-col justify-between overflow-hidden rounded-md bg-black/30 transition-colors w-full border-[0.5px] border-accent-muted hover:border-accent-bright py-2"
+  class="relative flex flex-col justify-between overflow-hidden rounded-md bg-black/30 transition-colors w-full border-[0.5px] border-accent-muted hover:border-accent-bright py-2"
 >
-	<div class="flex items-center space-x-2 pt-2 py-1 pl-5">
-		<CoolTextOnHover>
-			<a class="flex gap-2 items-center" href={url}>
-				<div class="text-sm font-semibold tracking-wide">
-					{title}
-				</div>
-				<Fa class="force-white-text" size="sm" icon={faChevronCircleRight} />
-			</a>
-		</CoolTextOnHover>
-	</div>
-	<div class="flex items-center space-x-2 pl-5">
-		<div class="flex gap-2 text-sm font-normal tracking-wide">
-			<a class="flex gap-1 w-auto items-center" href={githubLink} target="_blank">
-				<Fa size="sm" icon={faGithub} />
-				<CoolText text={shortSha} />
-			</a>
-			{humanizeAbsolute(date)}
-		</div>
-	</div>
-	<div class="flex items-center space-x-2 p-2 pl-5 h-full">
-		<span class="text-sm font-normal tracking-wide flex gap-2">
-			{text}
-		</span>
-	</div>
+  <div class="flex items-center space-x-2 pt-2 py-1 pl-5">
+    <CoolTextOnHover>
+      <a class="flex gap-2 items-center" href={url}>
+        <div class="text-sm font-semibold tracking-wide">
+          {title}
+        </div>
+        <Fa class="force-white-text" size="sm" icon={faChevronCircleRight} />
+      </a>
+    </CoolTextOnHover>
+  </div>
+  <div class="flex items-center space-x-2 pl-5">
+    <div class="flex gap-2 text-sm font-normal tracking-wide">
+      <a class="flex gap-1 w-auto items-center" href={githubLink} target="_blank">
+        <Fa size="sm" icon={faGithub} />
+        <CoolText text={shortSha} />
+      </a>
+      {humanizeAbsolute(date)}
+    </div>
+  </div>
+  <div class="flex items-center space-x-2 p-2 pl-5 h-full">
+    <span class="text-sm font-normal tracking-wide flex gap-2">
+      {text}
+    </span>
+  </div>
 </div>
