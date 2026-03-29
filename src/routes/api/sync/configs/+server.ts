@@ -40,6 +40,12 @@ async function* getConfigSyncTasks() {
             });
             return;
           }
+          if (e.status === 404) {
+            await prismaClient.neovimConfig.update({
+              where: { id: config.id },
+              data: { lastSyncedAt: new Date() }
+            });
+          }
           if (e.status === 401) {
             await deleteGithubToken(config.userId);
             console.log(
