@@ -55,4 +55,4 @@ async function* getSyncTasks() {
   }
 }
 
-export const GET: RequestHandler = createAsyncTaskApi(getSyncTasks);
+export const GET: RequestHandler = createAsyncTaskApi('SYNC_PLUGINS', getSyncTasks);

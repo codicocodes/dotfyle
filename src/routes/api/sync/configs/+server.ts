@@ -27,4 +27,4 @@ async function* getConfigSyncTasks() {
   }
 }
 
-export const GET: RequestHandler = createAsyncTaskApi(getConfigSyncTasks);
+export const GET: RequestHandler = createAsyncTaskApi('SYNC_CONFIGS', getConfigSyncTasks);
