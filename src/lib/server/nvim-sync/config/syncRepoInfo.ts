@@ -55,6 +55,11 @@ export async function syncReadme(token: string, config: NeovimConfig) {
 
 export async function syncExistingRepoInfo(token: string, config: NeovimConfig) {
   const repo = await fetchGithubRepositoryByName(token, config.owner, config.repo);
+  if (repo.name !== config.repo || repo.owner.login !== config.owner) {
+    console.log(
+      `[SYNC_CONFIGS] [WARNING] Redirected ${config.owner}/${config.repo} → ${repo.owner.login}/${repo.name}`
+    );
+  }
   const upsertDTO = upsertNeovimConfigDTOFactory(config.owner, config.root, config.initFile, repo);
   return upsertNeovimConfig(config.userId, upsertDTO);
 }
