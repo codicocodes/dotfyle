@@ -54,3 +54,7 @@ export async function getUserByUsername(username: string): Promise<User> {
 export async function deleteUser(userId: number): Promise<void> {
   await prismaClient.user.delete({ where: { id: userId } });
 }
+
+export async function deleteGithubToken(userId: number): Promise<void> {
+  await prismaClient.githubToken.delete({ where: { userId } });
+}

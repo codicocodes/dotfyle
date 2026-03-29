@@ -3,6 +3,7 @@ import { NeovimConfigSyncerFactory } from '$lib/server/nvim-sync/config/NeovimCo
 import { syncExistingRepoInfo, syncReadme } from '$lib/server/nvim-sync/config/syncRepoInfo';
 import { getConfigsWithToken } from '$lib/server/prisma/neovimconfigs/service';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
+import { deleteGithubToken } from '$lib/server/prisma/users/service';
 import type { RequestHandler } from '@sveltejs/kit';
 
 const PAGE_SIZE = 50;
@@ -29,7 +30,16 @@ async function* getConfigSyncTasks() {
             }
             await syncer.treeSync();
           })
-        ]);
+        ]).catch(async (e: { status?: number }) => {
+          if (e.status === 401) {
+            await deleteGithubToken(config.userId);
+            console.log(
+              `[SYNC_CONFIGS] Deleted invalid token for user ${config.userId} (${config.owner})`
+            );
+            return;
+          }
+          throw e;
+        });
       };
       synced++;
     }
