@@ -32,6 +32,9 @@ async function runWorkerPool(jobName: string, source: AsyncIterable<() => Promis
       console.log(
         `[${jobName}] Rate limited (limit: ${err.rateLimitLimit ?? 'unknown'}). Resets at: ${reset}`
       );
+      console.log(
+        `[${jobName}] Job Stopped Early. [COMPLETED] ${tasksCompleted} [SUCCESS] ${tasksSucceeded} [FAILURE] ${tasksFailed}`
+      );
       throw e;
     }
     console.log(
@@ -53,11 +56,10 @@ async function runWorkerPool(jobName: string, source: AsyncIterable<() => Promis
         tasksCompleted++;
         await next.value();
         tasksSucceeded++;
-      } catch (e) {
-        handleTaskError(e);
-        tasksFailed++;
-      } finally {
         console.log(`[${jobName}] Task [${tasksCompleted}] SUCCESS.`);
+      } catch (e) {
+        tasksFailed++;
+        handleTaskError(e);
       }
     }
   }
