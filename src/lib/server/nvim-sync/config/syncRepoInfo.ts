@@ -93,6 +93,18 @@ export async function syncExistingRepoInfo(token: string, config: NeovimConfig) 
       }
     }
     if (nameChanged) {
+      const existingWithNewName = await prismaClient.neovimConfig.findUnique({
+        where: {
+          owner_repo_root: { owner: repo.owner.login, repo: repo.name, root: config.root }
+        }
+      });
+      if (existingWithNewName) {
+        console.log(
+          `[SYNC_CONFIGS] [WARNING] ${config.owner}/${config.repo} -> ${repo.name} — stale duplicate, deleting`
+        );
+        await prismaClient.neovimConfig.delete({ where: { id: config.id } });
+        return existingWithNewName;
+      }
       await prismaClient.neovimConfig.update({
         where: { id: config.id },
         data: { repo: repo.name }
