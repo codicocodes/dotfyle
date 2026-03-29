@@ -21,7 +21,10 @@ export const GET: RequestHandler = async function (event: RequestEvent) {
       const syncer = new PluginSyncer(token, plugin);
       await syncer.sync();
     } catch (e) {
-      console.error(`Failed to sync ${plugin.owner}/${plugin.name}:`, e);
+      const err = e as { status?: number; message?: string };
+      console.log(
+        `Failed to sync ${plugin.owner}/${plugin.name} [${err?.status ?? 'unknown'}]: ${err?.message ?? e}`
+      );
     }
   }
 
