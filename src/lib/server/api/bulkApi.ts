@@ -12,7 +12,10 @@ function handleTaskError(e: unknown, stop: () => void) {
     rateLimitReset?: number;
     rateLimitLimit?: number;
   };
-  if (err?.status === 403) {
+
+  const isForbidden = err?.status === 403;
+  const isSuspendedAccount = err?.message?.includes('Sorry. Your account was suspended');
+  if (isForbidden && !isSuspendedAccount) {
     stop();
     const reset = new Date((err.rateLimitReset ?? 0) * 1000).toUTCString();
     console.log(`Rate limited (limit: ${err.rateLimitLimit ?? 'unknown'}). Resets at: ${reset}`);
