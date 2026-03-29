@@ -30,7 +30,7 @@ async function* getConfigSyncTasks() {
             }
             await syncer.treeSync();
           })
-        ]).catch(async (e: { status?: number }) => {
+        ]).catch(async (e: { status?: number; message?: string }) => {
           if (e.status === 401) {
             await deleteGithubToken(config.userId);
             console.log(
@@ -38,7 +38,7 @@ async function* getConfigSyncTasks() {
             );
             return;
           }
-          throw e;
+          throw { ...e, message: `${config.owner}/${config.repo}: ${e.message ?? e}` };
         });
       };
       synced++;
