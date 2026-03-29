@@ -37,6 +37,7 @@ export async function scrapeRockerBooAwesomeNeovim() {
       rawPlugins
         .map(parseCategory)
         .filter(isTrackedCategory)
+        .filter(hasMarkdownLink)
         .map(parsePlugin)
         .filter(hasGithubLink)
         .filter((p) => p.name)
@@ -49,19 +50,25 @@ function isValidRepo(plugin: PluginDTO) {
   return !name.includes('#');
 }
 
+function hasMarkdownLink(plugin: RawPlugin) {
+  return /\[.*?\]\(.*?\)/.test(plugin.item);
+}
+
 function hasGithubLink(plugin: PluginDTO) {
   return plugin.link.startsWith('https://github.com');
 }
 
 function parsePluginLink(item: string): string {
   const match = /\(([^)]+)\)/.exec(item);
-  if (!match || typeof match[1] !== 'string') throw new Error('Unexpected');
+  if (!match || typeof match[1] !== 'string')
+    throw new Error(`parsePluginLink: no link found in: ${JSON.stringify(item)}`);
   return match[1];
 }
 
 function parsePluginFullName(item: string): string {
   const match = /\[(.*?)\]/.exec(item);
-  if (!match || typeof match[1] !== 'string') throw new Error('Unexpected');
+  if (!match || typeof match[1] !== 'string')
+    throw new Error(`parsePluginFullName: no name found in: ${JSON.stringify(item)}`);
   let name = match[1];
   switch (name) {
     // incorrectly entered plugin name in rockerBOO/awesome-neovim
