@@ -24,7 +24,8 @@ export class PluginSyncer {
   }
   async sync() {
     const repo = await fetchGithubRepositoryByName(this.token, this.plugin.owner, this.plugin.name);
-    await Promise.all([this.syncStars(repo), this.syncReadme(repo), this.syncBreakingChanges()]);
+    // syncBreakingChanges temporarily disabled — commits API not currently used in UI
+    await Promise.all([this.syncStars(repo), this.syncReadme(repo)]);
     return this.updatePlugin();
   }
 

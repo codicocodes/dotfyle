@@ -143,9 +143,12 @@ const selectConfigCount = {
   }
 } as const;
 
-export async function getAllPlugins() {
+export async function getAllPlugins(skip = 0, take = 50) {
   const nestedPluginData = await prismaClient.neovimPlugin.findMany({
-    select: selectConfigCount
+    select: selectConfigCount,
+    orderBy: { lastSyncedAt: 'asc' },
+    skip,
+    take
   });
   return nestedPluginData.map(flattenConfigCount);
 }

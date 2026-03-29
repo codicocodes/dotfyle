@@ -1,80 +1,72 @@
 import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
 import { error, type RequestEvent } from '@sveltejs/kit';
-import pLimit from 'p-limit';
 
-export class AsyncApiManager {
-  runner = pLimit(10);
-  queue: Promise<void>[] = [];
-  running = false;
-  isRateLimited = false;
-  tasksDone = 0;
+type AsyncTaskSource = () => AsyncIterable<() => Promise<void>>;
 
-  validate(event: RequestEvent) {
-    new AdminRequestValidator(event).validate();
+const CONCURRENCY = 10;
+
+function handleTaskError(e: unknown, stop: () => void) {
+  const err = e as {
+    status?: number;
+    message?: string;
+    rateLimitReset?: number;
+    rateLimitLimit?: number;
+  };
+  if (err?.status === 403) {
+    stop();
+    const reset = new Date((err.rateLimitReset ?? 0) * 1000).toUTCString();
+    console.log(`Rate limited (limit: ${err.rateLimitLimit ?? 'unknown'}). Resets at: ${reset}`);
+    throw e;
   }
-
-  start() {
-    if (this.running) {
-      error(429, 'limit');
-    }
-    this.running = true;
-  }
-
-  handleTaskError(e: any) {
-    if (e instanceof Error) {
-      console.log(`Failed task`, e.message, e);
-    }
-    if (e.status === 403) {
-      this.isRateLimited = true;
-      const reset = e.response.headers['x-ratelimit-reset'];
-      console.log('Rate limit will reset at UTC: ', new Date(reset * 1000));
-    }
-  }
-
-  handleFinally(totalTasks: number) {
-    return () => {
-      this.tasksDone++;
-      console.log(`${this.tasksDone}/${totalTasks} tasks done.`);
-    };
-  }
-
-  async deferCleanup() {
-    await Promise.all(this.queue);
-    console.log('Async job completed.');
-    this.isRateLimited = false;
-    this.tasksDone = 0;
-    this.queue = [];
-    this.runner = pLimit(10);
-    this.running = false;
-  }
-
-  addToQueue(callback: () => Promise<void>) {
-    this.queue.push(this.runner(callback));
-  }
+  console.log(`Failed task [${err?.status ?? 'unknown'}]: ${err?.message ?? e}`);
 }
 
-type asyncTaskGetter = () => Promise<(() => Promise<void>)[]>;
+async function runWorkerPool(source: AsyncIterable<() => Promise<void>>) {
+  const iterator = source[Symbol.asyncIterator]();
+  let rateLimited = false;
+  let tasksDone = 0;
 
-export function createAsyncTaskApi(getAsyncTasks: asyncTaskGetter) {
-  const manager = new AsyncApiManager();
-  return async (event: RequestEvent) => {
-    manager.validate(event);
-    manager.start();
+  const stop = () => {
+    rateLimited = true;
+  };
 
-    const tasks = await getAsyncTasks();
-
-    for (const task of tasks) {
-      manager.addToQueue(async () => {
-        if (manager.isRateLimited) {
-          return;
-        }
-        return task()
-          .catch((e) => manager.handleTaskError(e))
-          .finally(manager.handleFinally(tasks.length));
-      });
+  async function worker() {
+    while (!rateLimited) {
+      let next: IteratorResult<() => Promise<void>>;
+      try {
+        next = await iterator.next();
+      } catch (e) {
+        handleTaskError(e, stop);
+        return;
+      }
+      if (next.done) return;
+      try {
+        await next.value();
+      } catch (e) {
+        handleTaskError(e, stop);
+      } finally {
+        tasksDone++;
+        console.log(`Task ${tasksDone} done.`);
+      }
     }
+  }
 
-    manager.deferCleanup();
+  await Promise.all(Array.from({ length: CONCURRENCY }, () => worker()));
+  console.log('Async job completed.');
+}
+
+export function createAsyncTaskApi(getAsyncTasks: AsyncTaskSource) {
+  let running = false;
+  return async (event: RequestEvent) => {
+    new AdminRequestValidator(event).validate();
+    if (running) error(429, 'limit');
+    running = true;
+
+    runWorkerPool(getAsyncTasks())
+      .catch((e) => console.error('Sync job failed:', e))
+      .finally(() => {
+        running = false;
+      });
 
     return new Response('Sync started');
   };

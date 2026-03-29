@@ -1,5 +1,4 @@
 import { AdminRequestValidator } from '$lib/server/api/AdminRequestValidator';
-import { createAsyncTaskApi } from '$lib/server/api/bulkApi';
 import {
   getUnsyncedPlugins,
   upsertManyNeovimPlugins
@@ -9,18 +8,22 @@ import { scrapeRockerBooAwesomeNeovim, getTrackedPlugins } from '$lib/server/see
 import { PluginSyncer } from '$lib/server/sync/plugins/sync';
 import type { RequestEvent, RequestHandler } from '@sveltejs/kit';
 
-const getSyncTasks = async () => {
-  const [token, plugins] = await Promise.all([getAdminGithubToken(), getUnsyncedPlugins()]);
-  return plugins.map((plugin) => async () => {
-    const syncer = new PluginSyncer(token, plugin);
-    await syncer.sync();
-  });
-};
-
 export const GET: RequestHandler = async function (event: RequestEvent) {
   new AdminRequestValidator(event).validate();
+
   await upsertManyNeovimPlugins(getTrackedPlugins());
-  const plugins = await scrapeRockerBooAwesomeNeovim();
-  await upsertManyNeovimPlugins(plugins);
-  return createAsyncTaskApi(getSyncTasks)(event);
+  const scraped = await scrapeRockerBooAwesomeNeovim();
+  await upsertManyNeovimPlugins(scraped);
+
+  const [token, plugins] = await Promise.all([getAdminGithubToken(), getUnsyncedPlugins()]);
+  for (const plugin of plugins) {
+    try {
+      const syncer = new PluginSyncer(token, plugin);
+      await syncer.sync();
+    } catch (e) {
+      console.error(`Failed to sync ${plugin.owner}/${plugin.name}:`, e);
+    }
+  }
+
+  return new Response('Sync completed');
 };

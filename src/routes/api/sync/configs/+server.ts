@@ -5,19 +5,26 @@ import { getConfigsWithToken } from '$lib/server/prisma/neovimconfigs/service';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
 import type { RequestHandler } from '@sveltejs/kit';
 
-const getConfigSyncTasks = async () => {
+const PAGE_SIZE = 50;
+
+async function* getConfigSyncTasks() {
   const trackedPlugins = await getAllNeovimPluginNames();
-  const configs = await getConfigsWithToken();
-  const syncFactory = new NeovimConfigSyncerFactory(trackedPlugins);
-  return configs.map(({ _token, ...config }) => {
-    return async () => {
-      await Promise.all([
-        syncExistingRepoInfo(_token, config),
-        syncReadme(_token, config),
-        syncFactory.create(_token, config).then((syncer) => syncer.treeSync())
-      ]);
-    };
-  });
-};
+  const factory = new NeovimConfigSyncerFactory(trackedPlugins);
+  let skip = 0;
+  while (true) {
+    const configs = await getConfigsWithToken(skip, PAGE_SIZE);
+    if (!configs.length) break;
+    for (const { _token, ...config } of configs) {
+      yield async () => {
+        await Promise.all([
+          syncExistingRepoInfo(_token, config),
+          syncReadme(_token, config),
+          factory.create(_token, config).then((syncer) => syncer.treeSync())
+        ]);
+      };
+    }
+    skip += PAGE_SIZE;
+  }
+}
 
 export const GET: RequestHandler = createAsyncTaskApi(getConfigSyncTasks);

@@ -32,7 +32,7 @@ const sortings = {
   ]
 } as const;
 
-export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
+export async function getConfigsWithToken(skip = 0, take = 50): Promise<NeovimConfigWithToken[]> {
   const configs = await prismaClient.neovimConfig.findMany({
     include: {
       user: {
@@ -44,7 +44,10 @@ export async function getConfigsWithToken(): Promise<NeovimConfigWithToken[]> {
           }
         }
       }
-    }
+    },
+    orderBy: { id: 'asc' },
+    skip,
+    take
   });
   return configs
     .map(({ user, ...config }) => {
