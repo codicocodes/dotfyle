@@ -13,6 +13,7 @@
     disabled?: boolean;
     type?: 'submit' | 'button' | 'reset' | null | undefined;
     formaction?: string | undefined;
+    onclick?: ((e: MouseEvent) => void) | undefined;
   }
 
   let {
@@ -23,13 +24,14 @@
     iconPosition = 'right',
     disabled = false,
     type = 'submit',
-    formaction = undefined
+    formaction = undefined,
+    onclick = undefined
   }: Props = $props();
 </script>
 
 <button
   {formaction}
-  onclick={bubble('click')}
+  onclick={onclick ?? bubble('click')}
   class={`${
     disabled || loading ? 'cursor-not-allowed' : ''
   } border-[1px] transition-all border-accent-muted bg-black/30  p-2 py-1 xl:px-4 xl:py-1 rounded-lg border-[1px] border-accent-muted flex gap-1 items-center ${

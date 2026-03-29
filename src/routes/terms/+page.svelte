@@ -86,8 +86,7 @@
   h2 {
     @apply text-3xl sm:text-4xl font-bold tracking-wider my-2;
   }
-  p,
-  ul {
+  p {
     @apply text-xl tracking-wide my-8 leading-8;
   }
   a {

@@ -9,7 +9,7 @@
   import { fade } from 'svelte/transition';
   import InitFilePicker from '$lib/components/welcome-steps/InitFilePicker.svelte';
   import { unsyncedConfig } from '$lib/stores/unsyncedConfigStore';
-  import type { User } from '@prisma/client';
+  import type { SessionUser } from '$lib/stores/session';
   import UnsyncedNeovimConfigCard from '$lib/components/UnsyncedNeovimConfigCard.svelte';
   import UnsyncedNeovimConfigMetaData from '$lib/components/UnsyncedNeovimConfigMetaData.svelte';
   import type { GithubRepository } from '$lib/server/github/schema';
@@ -19,7 +19,7 @@
 
   interface Props {
     repositories: GithubRepository[];
-    user: User;
+    user: SessionUser;
   }
 
   let { repositories, user }: Props = $props();

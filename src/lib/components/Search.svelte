@@ -16,7 +16,7 @@
   let { placeholder }: Props = $props();
 
   let isfocused = $state(false);
-  let inputRef: HTMLInputElement = $state();
+  let inputRef: HTMLInputElement = $state() as HTMLInputElement;
 </script>
 
 <form

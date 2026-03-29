@@ -65,7 +65,7 @@
                 href="/this-week-in-neovim/{post.issue}"
               >
                 <span class="min-w-[150px]"
-                  >{new Date(post.publishedAt).toLocaleDateString()}
+                  >{new Date(post.publishedAt!).toLocaleDateString()}
                 </span>
                 <span class="hidden sm:flex gap-4 items-center text-right">
                   {post.title}

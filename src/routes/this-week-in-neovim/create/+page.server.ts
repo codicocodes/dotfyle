@@ -1,9 +1,9 @@
 import { trpc } from '$lib/trpc/client';
 import { redirect } from '@sveltejs/kit';
 import { z } from 'zod';
-import type { Action } from './$types';
+import type { Actions } from './$types';
 
-export const actions: Action = {
+export const actions: Actions = {
   default: async (event: any) => {
     const data = await event.request.formData();
     const issue = Number(data.get('issue'));

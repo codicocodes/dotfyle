@@ -25,7 +25,7 @@ export const createNeovimPlugin = t.procedure
   .mutation(async ({ input: { owner, name, category }, ctx }) => {
     const token = await getGithubToken(ctx.user!.id);
     const repository = await fetchGithubRepositoryByName(token, owner, name);
-    if (!isAdmin(ctx!.user)) {
+    if (!isAdmin(ctx.user!)) {
       validateRepositoryDataIsNeovimPlugin(repository);
     }
     const pluginDTO = {

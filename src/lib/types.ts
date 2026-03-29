@@ -1,8 +1,12 @@
 import type { BreakingChange, NeovimPlugin, Post } from '@prisma/client';
 
-export type JsonPlugin = Omit<NeovimPlugin, 'createdAt' | 'lastSyncedAt'> & {
+export type JsonPlugin = Omit<
+  NeovimPlugin,
+  'createdAt' | 'lastSyncedAt' | 'dotfyleShieldAddedAt'
+> & {
   createdAt: string;
   lastSyncedAt: string | null;
+  dotfyleShieldAddedAt: string | null;
 };
 
 export type JsonBreakingChange = BreakingChange & {

@@ -26,7 +26,7 @@
 
 <form method="POST">
   <div class="flex gap-2 mx-2">
-    <Button type="button" icon={faEye} text="Preview" on:click={openPreview} />
+    <Button type="button" icon={faEye} text="Preview" onclick={openPreview} />
     <Button formaction="?/update" icon={faSave} text="Save" />
     <Button formaction="?/publish" icon={faSave} text="Publish" />
   </div>
@@ -44,7 +44,7 @@
   ></textarea>
 </form>
 
-<style>
+<style lang="postcss">
   .editor-borders {
     @apply outline-none border-solid border-2 bg-transparent;
   }

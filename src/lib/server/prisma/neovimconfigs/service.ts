@@ -1,4 +1,4 @@
-import { Prisma, type NeovimConfig, type WhereType } from '@prisma/client';
+import { Prisma, type NeovimConfig } from '@prisma/client';
 import { prismaClient } from '../client';
 import { paginator } from '../pagination';
 import type {
@@ -213,7 +213,7 @@ export async function fixStaleUsernames(userId: number, owner: string) {
 }
 
 export async function getConfigs(
-  where: WhereType<NeovimConfig>
+  where: Prisma.NeovimConfigWhereInput
 ): Promise<NeovimConfigWithMetaData[]> {
   const configs = await prismaClient.neovimConfig.findMany({
     include: {

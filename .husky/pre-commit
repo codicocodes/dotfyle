@@ -1,4 +1,5 @@
 git diff --cached --name-only --diff-filter=d | xargs prettier --write --ignore-unknown
 git add $(git diff --cached --name-only --diff-filter=d)
+pnpm run check
 pnpm run lint
 pnpm run test

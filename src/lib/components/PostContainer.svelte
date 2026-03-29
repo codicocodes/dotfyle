@@ -10,5 +10,5 @@
 </script>
 
 {#if post.breakingChange}
-  <BreakingChangePost {post} />
+  <BreakingChangePost post={post as import('$lib/types').JsonBreakingChangePost} />
 {/if}

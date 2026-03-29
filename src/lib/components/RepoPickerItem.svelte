@@ -18,7 +18,7 @@
         selected ? '' : 'bg-black/30'
       }`}
     >
-      <Fa icon={faCircle} size="xs" class={selected && 'text-main'} />
+      <Fa icon={faCircle} size="xs" class={selected ? 'text-main' : undefined} />
       <span class="font-lg truncate text-ellipsis">
         {name}
       </span>

@@ -166,7 +166,7 @@
     <div class="flex gap-4 text-sm font-semibold items-center">
       <ColorschemeSwitcher />
       <button onclick={() => (showNavModal = true)} aria-label="Toggle navigation menu">
-        <Fa size="xl" class="block: sm:hidden h-full" icon={faBars} />
+        <Fa size="lg" class="block: sm:hidden h-full" icon={faBars} />
       </button>
       {#if $session.user}
         <a
@@ -209,11 +209,11 @@
     </div>
   </header>
 
-  {#if isOpen}
+  {#if isOpen && $session.user}
     <div class="absolute right-0 w-40 mt-2 mr-6 z-50" id="user-menu">
       <GlossyCard>
         <div class="flex flex-col w-full h-full bg-base-900 sm:bg-transparent">
-          {#if $session.user && isAdmin($session.user)}
+          {#if isAdmin($session.user)}
             <CoolTextOnHover>
               <button class="px-4 py-2 flex gap-2 items-center" onclick={syncPlugins}>
                 <div class="force-white-text">

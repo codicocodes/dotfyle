@@ -53,8 +53,9 @@ const orderByWeeklyAdded: [
 
 const orderByPopularity: [
   {
-    _count: 'desc';
-    neovimConfigPlugins: Record<string, unknown>;
+    neovimConfigPlugins: {
+      _count: 'desc';
+    };
   },
   {
     stars: 'desc';

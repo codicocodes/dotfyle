@@ -85,7 +85,7 @@
     </div>
     <div class="flex gap-1 items-center justify-between font-semibold">
       {#if $session.user?.id === config.userId}
-        <Button text="Delete" icon={faTrash} on:click={deleteConfig} />
+        <Button text="Delete" icon={faTrash} onclick={deleteConfig} />
       {/if}
       <a href="https://github.com/{config.owner}/{config.repo}" target="_blank">
         <Button text="GitHub" icon={faGithub} />

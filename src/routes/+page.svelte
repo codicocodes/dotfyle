@@ -38,7 +38,7 @@
 
   let { data }: Props = $props();
 
-  let stars: number = $state();
+  let stars: number = $state(0);
 
   onMount(() => {
     const rateLimitReset = localStorage.getItem('GITHUB_RATELIMIT_RESET');
@@ -325,7 +325,7 @@
 
               <div class="flex gap-2 items-center justify-center">
                 <Fa icon={faCalendarDay} />
-                {new Date(issue.publishedAt).toLocaleDateString()}
+                {new Date(issue.publishedAt!).toLocaleDateString()}
               </div>
             </div>
           {/snippet}

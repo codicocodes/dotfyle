@@ -172,22 +172,16 @@
   <Modal showModal={!!selectedMedia} onClose={() => (selectedMedia = undefined)}>
     {#if $session.user && isAdmin($session.user)}
       <div class="flex gap-2 my-2">
-        <Button on:click={() => deleteMedia(selectedMedia.id)} icon={faDeleteLeft} text="Delete" />
+        <Button onclick={() => deleteMedia(selectedMedia!.id)} icon={faDeleteLeft} text="Delete" />
         <Button
-          on:click={() => toggleThumbnail(selectedMedia.id)}
-          icon={selectedMedia.thumbnail ? faToggleOff : faToggleOn}
-          text={selectedMedia.thumbnail ? 'Remove as thumbnail' : 'Make into thumbnail'}
+          onclick={() => toggleThumbnail(selectedMedia!.id)}
+          icon={selectedMedia!.thumbnail ? faToggleOff : faToggleOn}
+          text={selectedMedia!.thumbnail ? 'Remove as thumbnail' : 'Make into thumbnail'}
         />
       </div>
     {/if}
     {#if getMediaType(selectedMedia) === 'video'}
-      <video
-        class="rounded:cursor-pointer"
-        alt="video"
-        src={selectedMedia.url}
-        autoplay
-        muted
-        playsinline
+      <video class="rounded:cursor-pointer" src={selectedMedia.url} autoplay muted playsinline
       ></video>
     {:else}
       <img class="rounded:cursor-pointer" alt="" src={selectedMedia.url} />

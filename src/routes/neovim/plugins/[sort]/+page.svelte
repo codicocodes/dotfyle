@@ -50,7 +50,7 @@
         <PluginSearchNavigation />
         <Button
           iconPosition="left"
-          on:click={() =>
+          onclick={() =>
             copyToClipboard(
               'https://dotfyle.com/neovim/plugins/rss.xml',
               'Plugin RSS Feed url copied to clipboard'

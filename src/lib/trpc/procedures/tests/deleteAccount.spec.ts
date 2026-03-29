@@ -1,6 +1,8 @@
-jest.mock('$lib/server/prisma/users/service', () => ({ deleteUser: jest.fn() }));
-jest.mock('$lib/server/auth/services', () => ({ logout: jest.fn() }));
-jest.mock('$lib/utils', () => ({ isAdmin: jest.fn(() => false) }));
+import { vi, beforeEach } from 'vitest';
+
+vi.mock('$lib/server/prisma/users/service', () => ({ deleteUser: vi.fn() }));
+vi.mock('$lib/server/auth/services', () => ({ logout: vi.fn() }));
+vi.mock('$lib/utils', () => ({ isAdmin: vi.fn(() => false) }));
 
 import { t } from '../../t';
 import { deleteAccount } from '../deleteAccount';
@@ -9,14 +11,16 @@ import { logout } from '$lib/server/auth/services';
 import { isAdmin } from '$lib/utils';
 import { makeCaller, mockUser, mockCookies } from '../../test-utils';
 
-const mockDeleteUser = jest.mocked(deleteUser);
-const mockLogout = jest.mocked(logout);
-const mockIsAdmin = jest.mocked(isAdmin);
+const mockDeleteUser = vi.mocked(deleteUser);
+const mockLogout = vi.mocked(logout);
+const mockIsAdmin = vi.mocked(isAdmin);
 
 const router = t.router({ deleteAccount });
 const createCaller = t.createCallerFactory(router);
 
-beforeEach(() => jest.clearAllMocks());
+beforeEach(() => {
+  vi.clearAllMocks();
+});
 
 describe('deleteAccount', () => {
   it('deletes the authenticated user and clears the session', async () => {

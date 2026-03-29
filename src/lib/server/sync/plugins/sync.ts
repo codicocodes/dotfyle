@@ -11,7 +11,7 @@ import type { NeovimPlugin, User } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 
 export class PluginSyncer {
-  plugin: NeovimPlugin;
+  plugin: Omit<NeovimPlugin, 'readme'> & { readme?: string | null };
   configCount: number;
   mediaParser: GithubMediaParser;
   constructor(
@@ -114,7 +114,7 @@ export class PluginSyncer {
 
   async updatePlugin() {
     this.plugin.lastSyncedAt = new Date();
-    await updatePlugin(this.plugin);
+    await updatePlugin(this.plugin as NeovimPlugin);
     return {
       configCount: this.configCount,
       ...this.plugin

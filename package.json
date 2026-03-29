@@ -7,9 +7,9 @@
     "dev": "vite dev",
     "build": "npx prisma migrate deploy && npx prisma generate && vite build",
     "preview": "vite preview",
-    "test": "jest",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test": "vitest --run",
     "test:unit": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
@@ -23,7 +23,6 @@
     "@sveltejs/adapter-node": "^2.0.0",
     "@sveltejs/kit": "^2.5.27",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
-    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/marked": "^4.3.2",
     "@types/nprogress": "^0.2.3",
@@ -37,7 +36,6 @@
     "eslint-plugin-svelte": "^2.46.1",
     "highlight.js": "^11.11.1",
     "husky": "^9.1.7",
-    "jest": "^29.7.0",
     "marked": "^4.3.0",
     "nprogress": "^0.2.0",
     "postcss": "^8.5.4",
@@ -52,7 +50,6 @@
     "svelte-check": "^4.0.0",
     "svelte-highlight": "^7.8.3",
     "tailwindcss": "^3.4.17",
-    "ts-jest": "^29.3.4",
     "tslib": "^2.8.1",
     "typescript": "^5.5.0",
     "unified": "^10.1.2",
@@ -77,31 +74,5 @@
     "svelte-fa": "^4.0.4",
     "trpc-sveltekit": "^3.6.3",
     "zod": "^3.25.36"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "transform": {
-      "node_modules/variables/.+\\.(j|t)sx?$": [
-        "ts-jest",
-        {}
-      ],
-      "^.+\\.ts$": [
-        "ts-jest",
-        {
-          "tsconfig": {
-            "module": "commonjs",
-            "preserveValueImports": false
-          }
-        }
-      ]
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!variables/.*)"
-    ],
-    "moduleNameMapper": {
-      "^\\$lib/(.*)$": "<rootDir>/src/lib/$1",
-      "^\\$env/static/public$": "<rootDir>/src/__mocks__/env-public.ts"
-    }
   }
 }

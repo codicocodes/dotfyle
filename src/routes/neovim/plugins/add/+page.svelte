@@ -122,7 +122,7 @@
         />
         <Button
           type="submit"
-          on:click={fetchRepository}
+          onclick={fetchRepository}
           disabled={!owner || !name || repositoryDoesNotExist || pluginAlreadyExists}
           icon={faSearch}
           text="Search"
@@ -155,13 +155,17 @@
         link=""
         description={fetchedRepository.description ?? ''}
       >
-        <NeovimPluginMetaData
-          stars={fetchedRepository.stargazers_count.toString()}
-          configCount={0}
-          category={selectedCategory ?? 'UNKNOWN CATEGORY'}
-          addedLastWeek={0}
-          name="{owner}/{name}"
-        />
+        {#snippet footer()}
+          {#if fetchedRepository}
+            <NeovimPluginMetaData
+              stars={fetchedRepository.stargazers_count.toString()}
+              configCount={0}
+              category={selectedCategory ?? 'UNKNOWN CATEGORY'}
+              addedLastWeek={0}
+              name="{owner}/{name}"
+            />
+          {/if}
+        {/snippet}
       </RepositoryCard>
 
       <ul class="text-red-400">
@@ -193,12 +197,12 @@
       selected={selectedCategory}
     />
     <Button
-      disabled={isAdmin($session.user)
+      disabled={$session.user && isAdmin($session.user)
         ? !selectedCategory
         : !selectedCategory || validationErrors.length !== 0}
       text="Save Plugin"
       icon={faFloppyDisk}
-      on:click={savePlugin}
+      onclick={savePlugin}
       event="Add Plugin - Create"
     />
   {/if}

@@ -2,7 +2,7 @@ import { verifyToken } from '$lib/server/auth/services';
 import { trpc } from '$lib/trpc/client';
 import { isAdmin } from '$lib/utils';
 import { error, redirect } from '@sveltejs/kit';
-import type { Action, PageServerLoad, PageServerLoadEvent } from './$types';
+import type { Actions, PageServerLoad, PageServerLoadEvent } from './$types';
 
 export const load: PageServerLoad = async (event: PageServerLoadEvent) => {
   const user = verifyToken(event.cookies);
@@ -30,7 +30,7 @@ export const load: PageServerLoad = async (event: PageServerLoadEvent) => {
   };
 };
 
-export const actions: Action = {
+export const actions: Actions = {
   update: async (event: any) => {
     const issueStr = event.params.issue;
     if (isNaN(Number(issueStr))) {

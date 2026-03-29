@@ -1,5 +1,6 @@
 import type { User } from '@prisma/client';
-import { JWT_ACCESS_SECRET, NODE_ENV } from '$env/static/private';
+import { JWT_ACCESS_SECRET } from '$env/static/private';
+import { dev } from '$app/environment';
 import jwt from 'jsonwebtoken';
 import { JwtSecretError } from './errors';
 import { redirect, type Cookies } from '@sveltejs/kit';
@@ -29,7 +30,7 @@ export function createCookie(cookies: Cookies, token: string, maxAge: number = 6
   cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
     path: '/',
-    secure: NODE_ENV === 'production',
+    secure: !dev,
     sameSite: 'lax',
     maxAge
   });

@@ -19,7 +19,7 @@
   {#if previous}
     <Button
       disabled={!previous}
-      on:click={() => navigate(page, 'page', String(previous ?? 1), true)}
+      onclick={() => navigate(page, 'page', String(previous ?? 1), true)}
       iconPosition="left"
       icon={faArrowLeft}
       text="previous"
@@ -32,7 +32,7 @@
   {#if next}
     <Button
       disabled={!next}
-      on:click={() => navigate(page, 'page', String(next ?? 1), true)}
+      onclick={() => navigate(page, 'page', String(next ?? 1), true)}
       iconPosition="right"
       icon={faArrowRight}
       text="next"

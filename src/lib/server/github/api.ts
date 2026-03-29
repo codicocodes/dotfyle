@@ -21,7 +21,7 @@ export const fetchGithubRepositories = async (
   const gh = new Octokit({
     auth: `token ${token}`
   });
-  const reposData = await gh.paginate(gh.repos.listForUser, { username, per_page: 100 });
+  const reposData = await gh.paginate('GET /users/{username}/repos', { username, per_page: 100 });
   const repos = z.array(GithubRepository).parse(reposData);
   return repos;
 };

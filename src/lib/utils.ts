@@ -1,10 +1,7 @@
 import { toast } from '@zerodevx/svelte-toast';
-import type { Media, User } from '@prisma/client';
+import type { Media } from '@prisma/client';
 import { PUBLIC_ADMIN_USER_GITHUB_ID, PUBLIC_MAINTENANCE_ENABLED } from '$env/static/public';
-import { unified } from 'unified';
-import rehypeParse from 'rehype-parse/lib';
-import rehypeSanitize from 'rehype-sanitize';
-import rehypeStringify from 'rehype-stringify/lib';
+export { sanitizeHtml } from '$lib/sanitize';
 
 // source https://gist.github.com/jweyrich/f39c496b83f73d2c5b0587f4d841651b
 interface TimeUnit {
@@ -54,17 +51,8 @@ export function daysAgo(days: number) {
 
 export const ADMIN_GITHUB_ID = Number(PUBLIC_ADMIN_USER_GITHUB_ID);
 
-export function isAdmin(user: User): boolean {
+export function isAdmin(user: { githubId: number }): boolean {
   return user.githubId === ADMIN_GITHUB_ID;
-}
-
-export async function sanitizeHtml(html: string) {
-  const clean = await unified()
-    .use(rehypeParse)
-    .use(rehypeStringify)
-    .use(rehypeSanitize)
-    .process(html);
-  return clean.toString();
 }
 
 export function getMediaType(media: Media): 'image' | 'video' {

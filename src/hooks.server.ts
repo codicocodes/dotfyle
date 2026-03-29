@@ -4,9 +4,9 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import type { TRPCError, inferRouterContext, ProcedureType } from '@trpc/server';
 import { createTRPCHandle } from 'trpc-sveltekit';
-import { NODE_ENV } from '$env/static/private';
+import { dev } from '$app/environment';
 
-console.log('Starting server: ', { NODE_ENV });
+console.log('Starting server: ', { dev });
 
 export const onError = (opts: {
   ctx?: inferRouterContext<Router>;

@@ -1,2 +1,0 @@
-export const PUBLIC_ADMIN_USER_GITHUB_ID = '999999';
-export const PUBLIC_MAINTENANCE_ENABLED = 'false';

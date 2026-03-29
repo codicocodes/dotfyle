@@ -14,7 +14,7 @@
 
   let { showModal, onClose, header, children }: Props = $props();
 
-  let dialog: HTMLDialogElement = $state();
+  let dialog: HTMLDialogElement = $state() as HTMLDialogElement;
 
   run(() => {
     if (dialog && showModal) dialog.showModal();
@@ -31,7 +31,7 @@
     {@render header?.()}
     {@render children?.()}
     <div class="flex w-full justify-center">
-      <Button icon={faCheck} text="Done" loading={false} on:click={() => dialog.close()} />
+      <Button icon={faCheck} text="Done" loading={false} onclick={() => dialog.close()} />
     </div>
   </div>
 </dialog>

@@ -3,6 +3,7 @@
   import { unsyncedConfig, type UnsyncedConfig } from '$lib/stores/unsyncedConfigStore';
   import { trpc } from '$lib/trpc/client';
   import { onMount } from 'svelte';
+  import { page } from '$app/stores';
   import { slide } from 'svelte/transition';
   import GridContainer from '../GridContainer.svelte';
   import RepoPickerItem from '../RepoPickerItem.svelte';
@@ -26,7 +27,7 @@
 
   onMount(async () => {
     if (!$unsyncedConfig.repo || !$unsyncedConfig.branch) return;
-    await trpc()
+    await trpc($page)
       .findRepoInitFiles.query({ repo: $unsyncedConfig.repo, branch: $unsyncedConfig.branch })
       .then((f) => {
         files = f;

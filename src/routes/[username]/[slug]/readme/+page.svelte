@@ -100,7 +100,7 @@
       <a href="/{data.config.owner}/{data.config.slug}" class="flex items-center">
         <CoolTextOnHover>back to config</CoolTextOnHover>
       </a>
-      <Button icon={faCopy} text="Copy README" on:click={() => copyToClipboard(data.readme)} />
+      <Button icon={faCopy} text="Copy README" onclick={() => copyToClipboard(data.readme)} />
     </div>
   </div>
   <hr class="my-4" />
@@ -127,7 +127,7 @@
               <Button
                 icon={faCopy}
                 text="Copy Badges"
-                on:click={() => copyToClipboard(badgesHtml)}
+                onclick={() => copyToClipboard(badgesHtml)}
               />
             </div>
 
@@ -148,10 +148,6 @@
 </div>
 
 <style lang="postcss">
-  textarea {
-    @apply bg-transparent text-xl;
-  }
-
   button {
     @apply font-semibold cursor-pointer;
   }

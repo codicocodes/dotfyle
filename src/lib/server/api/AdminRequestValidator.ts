@@ -1,4 +1,4 @@
-import { NODE_ENV } from '$env/static/private';
+import { dev } from '$app/environment';
 import { verifyToken } from '$lib/server/auth/services';
 import { isAdmin } from '$lib/utils';
 import { error, type RequestEvent } from '@sveltejs/kit';
@@ -30,7 +30,7 @@ export class AdminRequestValidator {
     if (!user) {
       error(401, 'unauthorized');
     }
-    if (NODE_ENV === 'production') {
+    if (!dev) {
       if (!isAdmin(user)) {
         error(403, 'forbidden');
       }
