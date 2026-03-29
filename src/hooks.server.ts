@@ -5,6 +5,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import type { TRPCError, inferRouterContext, ProcedureType } from '@trpc/server';
 import { createTRPCHandle } from 'trpc-sveltekit';
 import { dev } from '$app/environment';
+import { env } from '$env/dynamic/private';
 
 console.log('Starting server: ', { dev });
 
@@ -25,6 +26,8 @@ export const onError = (opts: {
 };
 
 export const profilePerformance: Handle = async ({ event, resolve }) => {
+  if (env.LOG_REQUESTS !== '1') return resolve(event);
+
   const route = event.url.pathname;
   const qs = event.url.search;
 
