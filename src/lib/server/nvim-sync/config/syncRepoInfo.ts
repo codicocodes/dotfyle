@@ -22,10 +22,7 @@ export async function syncInitialRepoInfo(
 }
 
 export async function syncReadme(token: string, config: NeovimConfig) {
-  const readme = await fetchReadme(token, config.owner, config.repo).catch(() => {
-    console.log('Error fetching readme');
-    return '';
-  });
+  const readme = await fetchReadme(token, config.owner, config.repo).catch(() => '');
 
   const shields = ['leaderkey', 'plugins', 'plugin-manager'].map((shield) => {
     return `https://dotfyle.com/${config.owner}/${config.slug}/badges/${shield}`;
