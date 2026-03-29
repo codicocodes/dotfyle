@@ -68,7 +68,7 @@
     "jsonwebtoken": "^9.0.3",
     "nanoid": "^5.1.7",
     "openai": "^4.104.0",
-    "p-limit": "github:sindresorhus/p-limit",
+    "p-limit": "^6.2.0",
     "rss": "^1.2.2",
     "svelte-fa": "^4.0.4",
     "trpc-sveltekit": "^3.6.3",

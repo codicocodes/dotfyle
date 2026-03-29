@@ -42,8 +42,8 @@ importers:
         specifier: ^4.104.0
         version: 4.104.0(ws@8.17.1)(zod@3.25.76)
       p-limit:
-        specifier: github:sindresorhus/p-limit
-        version: https://codeload.github.com/sindresorhus/p-limit/tar.gz/9f52583119f0cb0d85c6fec600c94a21fd89d060
+        specifier: ^6.2.0
+        version: 6.2.0
       rss:
         specifier: ^1.2.2
         version: 1.2.2
@@ -1716,10 +1716,9 @@ packages:
     resolution: {integrity: sha512-/Eaoq+QyLSiXQ4lyYV23f14mZRQcXnxfHrN0vCai+ak9G0pp9iEQukIIZq5NccEvwRB8PUnZT0KsOoDCINS1qQ==}
     engines: {node: '>=18'}
 
-  p-limit@https://codeload.github.com/sindresorhus/p-limit/tar.gz/9f52583119f0cb0d85c6fec600c94a21fd89d060:
-    resolution: {tarball: https://codeload.github.com/sindresorhus/p-limit/tar.gz/9f52583119f0cb0d85c6fec600c94a21fd89d060}
-    version: 7.3.0
-    engines: {node: '>=20'}
+  p-limit@6.2.0:
+    resolution: {integrity: sha512-kuUqqHNUqoIWp/c467RI4X6mmyuojY5jGutNU0wVTmEOOfcuwLqyMVoAi9MKi2Ak+5i9+nhmrK4ufZE8069kHA==}
+    engines: {node: '>=18'}
 
   p-locate@5.0.0:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
@@ -3836,7 +3835,7 @@ snapshots:
     dependencies:
       yocto-queue: 1.2.2
 
-  p-limit@https://codeload.github.com/sindresorhus/p-limit/tar.gz/9f52583119f0cb0d85c6fec600c94a21fd89d060:
+  p-limit@6.2.0:
     dependencies:
       yocto-queue: 1.2.2
 
