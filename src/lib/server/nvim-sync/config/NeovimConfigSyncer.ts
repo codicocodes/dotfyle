@@ -37,6 +37,10 @@ export class NeovimConfigSyncer {
     );
   }
 
+  get treeSha() {
+    return this.tree.sha;
+  }
+
   async treeSync(): Promise<NeovimConfigWithPlugins> {
     return await this.fileSyncer();
   }

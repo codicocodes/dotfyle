@@ -45,6 +45,7 @@ export type NestedNeovimConfigWithToken = NeovimConfig & {
 
 export interface NeovimConfigWithToken extends NeovimConfig {
   _token: string;
+  _lastSyncSha: string | null;
 }
 
 export interface NeovimConfigWithPlugins extends NeovimConfig {

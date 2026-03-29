@@ -14,12 +14,18 @@ async function* getConfigSyncTasks() {
   while (true) {
     const configs = await getConfigsWithToken(skip, PAGE_SIZE);
     if (!configs.length) break;
-    for (const { _token, ...config } of configs) {
+    for (const { _token, _lastSyncSha, ...config } of configs) {
       yield async () => {
         await Promise.all([
           syncExistingRepoInfo(_token, config),
           syncReadme(_token, config),
-          factory.create(_token, config).then((syncer) => syncer.treeSync())
+          factory.create(_token, config).then(async (syncer) => {
+            if (_lastSyncSha && syncer.treeSha === _lastSyncSha) {
+              console.log(`[SYNC_CONFIGS] Skipped ${config.owner}/${config.repo} — sha unchanged`);
+              return;
+            }
+            await syncer.treeSync();
+          })
         ]);
       };
     }

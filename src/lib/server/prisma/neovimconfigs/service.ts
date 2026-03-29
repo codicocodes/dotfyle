@@ -43,6 +43,11 @@ export async function getConfigsWithToken(skip = 0, take = 50): Promise<NeovimCo
             }
           }
         }
+      },
+      syncs: {
+        orderBy: { syncedAt: 'desc' },
+        take: 1,
+        select: { sha: true }
       }
     },
     orderBy: { id: 'asc' },
@@ -50,10 +55,11 @@ export async function getConfigsWithToken(skip = 0, take = 50): Promise<NeovimCo
     take
   });
   return configs
-    .map(({ user, ...config }) => {
+    .map(({ user, syncs, ...config }) => {
       return {
         ...config,
-        _token: user.githubToken?.accessToken
+        _token: user.githubToken?.accessToken,
+        _lastSyncSha: syncs[0]?.sha ?? null
       };
     })
     .filter((c) => !!c._token) as NeovimConfigWithToken[];
