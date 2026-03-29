@@ -55,6 +55,9 @@
     "vite": "^5.4.21",
     "vitest": "^1.6.1"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "type": "module",
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
