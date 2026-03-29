@@ -13,5 +13,3 @@ vite.config.ts.timestamp-*
 # Playwright
 /test-results/
 
-# Sentry
-.sentryclirc
