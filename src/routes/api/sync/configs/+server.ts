@@ -4,6 +4,8 @@ import { syncExistingRepoInfo, syncReadme } from '$lib/server/nvim-sync/config/s
 import { getConfigsWithToken } from '$lib/server/prisma/neovimconfigs/service';
 import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/service';
 import { deleteGithubToken } from '$lib/server/prisma/users/service';
+import { RepoTransferredError } from '$lib/server/nvim-sync/config/syncRepoInfo';
+import { prismaClient } from '$lib/server/prisma/client';
 import type { RequestHandler } from '@sveltejs/kit';
 
 const PAGE_SIZE = 50;
@@ -31,6 +33,13 @@ async function* getConfigSyncTasks() {
             await syncer.treeSync();
           })
         ]).catch(async (e: { status?: number; message?: string }) => {
+          if (e instanceof RepoTransferredError) {
+            await prismaClient.neovimConfig.update({
+              where: { id: e.configId },
+              data: { lastSyncedAt: new Date() }
+            });
+            return;
+          }
           if (e.status === 401) {
             await deleteGithubToken(config.userId);
             console.log(

@@ -1,4 +1,10 @@
 import { fetchGithubRepositoryByName, fetchReadme } from '$lib/server/github/api';
+
+export class RepoTransferredError extends Error {
+  constructor(public configId: number) {
+    super('Repo has been transferred to a different dotfyle user');
+  }
+}
 import type { GithubRepository, GithubTree } from '$lib/server/github/schema';
 import { prismaClient } from '$lib/server/prisma/client';
 import type { CreateNeovimConfigDTO } from '$lib/server/prisma/neovimconfigs/schema';
@@ -55,12 +61,50 @@ export async function syncReadme(token: string, config: NeovimConfig) {
 
 export async function syncExistingRepoInfo(token: string, config: NeovimConfig) {
   const repo = await fetchGithubRepositoryByName(token, config.owner, config.repo);
-  if (repo.name !== config.repo || repo.owner.login !== config.owner) {
-    console.log(
-      `[SYNC_CONFIGS] [WARNING] Redirected ${config.owner}/${config.repo} → ${repo.owner.login}/${repo.name}`
-    );
+  const ownerChanged = repo.owner.login !== config.owner;
+  const nameChanged = repo.name !== config.repo;
+  if (ownerChanged || nameChanged) {
+    if (ownerChanged) {
+      const newOwnerUser = await prismaClient.user.findUnique({
+        where: { username: repo.owner.login }
+      });
+      const isRename = !newOwnerUser || newOwnerUser.id === config.userId;
+      if (isRename) {
+        console.log(
+          `[SYNC_CONFIGS] [WARNING] Redirected ${config.owner}/${config.repo} -> ${repo.owner.login}/${repo.name}. Updating data.`
+        );
+        await prismaClient.user.update({
+          where: { id: config.userId },
+          data: {
+            username: repo.owner.login,
+            neovimConfigs: {
+              updateMany: {
+                where: { owner: config.owner },
+                data: { owner: repo.owner.login }
+              }
+            }
+          }
+        });
+      } else {
+        console.log(
+          `[SYNC_CONFIGS] [WARNING] ${config.owner}/${config.repo} owner changed to ${repo.owner.login} who is a different dotfyle user — skipping sync`
+        );
+        throw new RepoTransferredError(config.id);
+      }
+    }
+    if (nameChanged) {
+      await prismaClient.neovimConfig.update({
+        where: { id: config.id },
+        data: { repo: repo.name }
+      });
+    }
   }
-  const upsertDTO = upsertNeovimConfigDTOFactory(config.owner, config.root, config.initFile, repo);
+  const upsertDTO = upsertNeovimConfigDTOFactory(
+    repo.owner.login,
+    config.root,
+    config.initFile,
+    repo
+  );
   return upsertNeovimConfig(config.userId, upsertDTO);
 }
 
