@@ -498,7 +498,6 @@
             {/each}
 
             <button
-              data-umami-event="Plugin Badge - Copy markdown"
               class="flex w-auto gap-1 items-center text-sm sm:text-xs text-black px-4 py-1 rounded bg-white border-[1px] border-accent-muted hover:border-main"
               onclick={stopPropagation(() => copyToClipboard(badgesHtml))}
             >

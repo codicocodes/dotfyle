@@ -28,7 +28,6 @@
 
 <button
   aria-label="Change colorscheme"
-  data-umami-event="Change colorscheme - Started"
   type="button"
   onclick={() => {
     isOpen = true;

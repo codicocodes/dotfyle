@@ -7,7 +7,6 @@
   interface Props {
     text: string;
     icon: IconDefinition;
-    event?: string | undefined;
     loading?: boolean;
     iconPosition?: 'right' | 'left';
     disabled?: boolean;
@@ -19,7 +18,6 @@
   let {
     text,
     icon,
-    event = undefined,
     loading = false,
     iconPosition = 'right',
     disabled = false,
@@ -38,7 +36,6 @@
     loading ? 'hover:cursor-not-allowed hover:bg-white/10' : 'hover:border-secondary'
   }`}
   {type}
-  data-umami-event={event}
   disabled={disabled || loading}
 >
   {#if iconPosition === 'right'}

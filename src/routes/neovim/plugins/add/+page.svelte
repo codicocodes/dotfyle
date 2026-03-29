@@ -126,7 +126,6 @@
           disabled={!owner || !name || repositoryDoesNotExist || pluginAlreadyExists}
           icon={faSearch}
           text="Search"
-          event="Add Plugin - Search"
         />
       </div>
       <ul class="text-red-400 flex flex-col">
@@ -203,7 +202,6 @@
       text="Save Plugin"
       icon={faFloppyDisk}
       onclick={savePlugin}
-      event="Add Plugin - Create"
     />
   {/if}
 </div>

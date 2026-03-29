@@ -99,11 +99,6 @@
 
 <svelte:head>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <script
-    async
-    src="https://umami-production-7f33.up.railway.app/script.js"
-    data-website-id="e1c8c45f-d36f-4793-9d07-fb8bdcf458b3"
-  ></script>
 </svelte:head>
 
 <SvelteToast />
@@ -173,7 +168,6 @@
           href="/neovim/plugins/add"
           class="border-[0.5px] border-base-400 bg-black/30 p-2 rounded"
           title="add plugin"
-          data-umami-event="Add Plugin - Started"
         >
           <Fa icon={faPlus} size="xs" />
         </a>

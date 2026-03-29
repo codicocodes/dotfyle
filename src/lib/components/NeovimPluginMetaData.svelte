@@ -73,7 +73,6 @@
       <button
         class="relative px-2 rounded-lg text-xs flex gap-1 items-center font-medium bg-white text-black hover:bg-accent-muted"
         onclick={handlers(stopPropagation(handleSeeLinks), stopPropagation(bubble('click')))}
-        data-umami-event="Plugin Mention - Open"
         title="Mentions of the plugin in this config"
       >
         {#if isOpen}
@@ -85,12 +84,7 @@
             <div class="flex flex-col w-full h-full bg-base-900 sm:bg-transparent">
               {#each links as link}
                 <CoolTextOnHover>
-                  <a
-                    data-umami-event="Plugin Mention - Navigate"
-                    class="px-4 py-2 flex gap-2 items-center"
-                    target="_blank"
-                    href={link}
-                  >
+                  <a class="px-4 py-2 flex gap-2 items-center" target="_blank" href={link}>
                     <div class="force-white-text">
                       <Fa icon={faExternalLink} class="text-base-100" />
                     </div>
