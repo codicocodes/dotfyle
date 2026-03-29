@@ -53,11 +53,12 @@ async function runWorkerPool(jobName: string, source: AsyncIterable<() => Promis
       }
       if (next.done) return;
       try {
-        tasksCompleted++;
         await next.value();
+        tasksCompleted++;
         tasksSucceeded++;
         console.log(`[${jobName}] Task [${tasksCompleted}] SUCCESS.`);
       } catch (e) {
+        tasksCompleted++;
         tasksFailed++;
         handleTaskError(e);
       }
