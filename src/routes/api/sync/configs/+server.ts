@@ -6,15 +6,18 @@ import { getAllNeovimPluginNames } from '$lib/server/prisma/neovimplugins/servic
 import type { RequestHandler } from '@sveltejs/kit';
 
 const PAGE_SIZE = 50;
+const SYNC_LIMIT = 500;
 
 async function* getConfigSyncTasks() {
   const trackedPlugins = await getAllNeovimPluginNames();
   const factory = new NeovimConfigSyncerFactory(trackedPlugins);
   let skip = 0;
-  while (true) {
+  let synced = 0;
+  while (synced < SYNC_LIMIT) {
     const configs = await getConfigsWithToken(skip, PAGE_SIZE);
     if (!configs.length) break;
     for (const { _token, _lastSyncSha, ...config } of configs) {
+      if (synced >= SYNC_LIMIT) break;
       yield async () => {
         await Promise.all([
           syncExistingRepoInfo(_token, config),
@@ -28,6 +31,7 @@ async function* getConfigSyncTasks() {
           })
         ]);
       };
+      synced++;
     }
     skip += PAGE_SIZE;
   }

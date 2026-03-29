@@ -1,4 +1,5 @@
 import { Prisma, type NeovimConfig } from '@prisma/client';
+import { daysAgo } from '$lib/utils';
 import { prismaClient } from '../client';
 import { paginator } from '../pagination';
 import type {
@@ -34,6 +35,9 @@ const sortings = {
 
 export async function getConfigsWithToken(skip = 0, take = 50): Promise<NeovimConfigWithToken[]> {
   const configs = await prismaClient.neovimConfig.findMany({
+    where: {
+      lastSyncedAt: { lt: daysAgo(7) }
+    },
     include: {
       user: {
         select: {
@@ -50,7 +54,7 @@ export async function getConfigsWithToken(skip = 0, take = 50): Promise<NeovimCo
         select: { sha: true }
       }
     },
-    orderBy: { id: 'asc' },
+    orderBy: { lastSyncedAt: 'asc' },
     skip,
     take
   });
