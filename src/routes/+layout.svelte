@@ -43,16 +43,18 @@
   afterNavigate(async () => {
     setTheme(getTheme());
     setColorscheme(getColorscheme());
-    // Add your error handling...
     if (!$refetch) return;
     $refetch = false;
-    const user = await trpc($page).getUser.query(undefined, {
-      context: {
-        skipBatch: true
-      }
-    });
-    $session.user = user;
-    $session.loading = false;
+    try {
+      const user = await trpc($page).getUser.query(undefined, {
+        context: {
+          skipBatch: true
+        }
+      });
+      $session.user = user;
+    } finally {
+      $session.loading = false;
+    }
   });
 
   const logout = async () => {
