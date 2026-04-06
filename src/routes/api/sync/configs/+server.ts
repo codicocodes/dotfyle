@@ -34,14 +34,14 @@ async function* getConfigSyncTasks() {
           })
         ]).catch(async (e: { status?: number; message?: string }) => {
           if (e instanceof RepoTransferredError) {
-            await prismaClient.neovimConfig.update({
+            await prismaClient.neovimConfig.updateMany({
               where: { id: e.configId },
               data: { lastSyncedAt: new Date() }
             });
             return;
           }
           if (e.status === 404) {
-            await prismaClient.neovimConfig.update({
+            await prismaClient.neovimConfig.updateMany({
               where: { id: config.id },
               data: { lastSyncedAt: new Date() }
             });

@@ -37,24 +37,16 @@ export async function syncReadme(token: string, config: NeovimConfig) {
   const hasShield = shields.filter((s) => readme.includes(s)).length > 0;
 
   if (!config.dotfyleShieldAddedAt && hasShield) {
-    await prismaClient.neovimConfig.update({
-      where: {
-        id: config.id
-      },
-      data: {
-        dotfyleShieldAddedAt: new Date()
-      }
+    await prismaClient.neovimConfig.updateMany({
+      where: { id: config.id },
+      data: { dotfyleShieldAddedAt: new Date() }
     });
   }
 
   if (config.dotfyleShieldAddedAt && !hasShield) {
-    await prismaClient.neovimConfig.update({
-      where: {
-        id: config.id
-      },
-      data: {
-        dotfyleShieldAddedAt: null
-      }
+    await prismaClient.neovimConfig.updateMany({
+      where: { id: config.id },
+      data: { dotfyleShieldAddedAt: null }
     });
   }
 }
@@ -105,7 +97,7 @@ export async function syncExistingRepoInfo(token: string, config: NeovimConfig) 
         await prismaClient.neovimConfig.delete({ where: { id: config.id } });
         return existingWithNewName;
       }
-      await prismaClient.neovimConfig.update({
+      await prismaClient.neovimConfig.updateMany({
         where: { id: config.id },
         data: { repo: repo.name }
       });
