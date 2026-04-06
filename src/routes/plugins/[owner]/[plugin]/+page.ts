@@ -1,4 +1,6 @@
 import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
+import { error } from '@sveltejs/kit';
+import { TRPCClientError } from '@trpc/client';
 import { trpc } from '$lib/trpc/client';
 import type { PageLoad, PageLoadEvent } from './$types';
 
@@ -20,7 +22,10 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
           return null;
         }),
       trpc(event).getInstallInstructions.query({ owner, name })
-    ]);
+    ]).catch((e) => {
+      if (e instanceof TRPCClientError && e.data?.code === 'NOT_FOUND') error(404);
+      throw e;
+    });
   return {
     plugin,
     configs: configs as unknown as NeovimConfigWithMetaData[],

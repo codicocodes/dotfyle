@@ -1,4 +1,6 @@
 import { getPlugin } from '$lib/server/prisma/neovimplugins/service';
+import { Prisma } from '@prisma/client';
+import { error } from '@sveltejs/kit';
 import type { RequestEvent, RequestHandler } from './$types';
 
 const BASE_URL =
@@ -7,7 +9,10 @@ const BASE_URL =
 export const GET: RequestHandler = async function (event: RequestEvent) {
   const { owner, plugin: plugin } = event.params;
   const style = event.url.searchParams.get('style') ?? 'flat';
-  const neovimPlugin = await getPlugin(owner, plugin);
+  const neovimPlugin = await getPlugin(owner, plugin).catch((e) => {
+    if (e instanceof Prisma.NotFoundError) error(404);
+    throw e;
+  });
   const usage = neovimPlugin.configCount;
   const url = BASE_URL.replaceAll('{repo-owner}', owner)
     .replaceAll('{repo-name}', plugin)

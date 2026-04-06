@@ -1,7 +1,8 @@
 import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/schema';
+import { error } from '@sveltejs/kit';
+import { TRPCClientError } from '@trpc/client';
 import { trpc } from '$lib/trpc/client';
 import type { LanguageServer } from '@prisma/client';
-import { error } from '@sveltejs/kit';
 import type { PageLoad, PageLoadEvent } from './$types';
 
 export const load: PageLoad = async function load(event: PageLoadEvent) {
@@ -20,8 +21,9 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
       username,
       slug
     }) as unknown as LanguageServer[]
-  ]).catch(() => {
-    error(404);
+  ]).catch((e) => {
+    if (e instanceof TRPCClientError && e.data?.code === 'NOT_FOUND') error(404);
+    throw e;
   });
 
   return {

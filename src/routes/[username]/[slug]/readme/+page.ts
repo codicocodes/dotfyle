@@ -3,6 +3,7 @@ import type { NeovimConfigWithMetaData } from '$lib/server/prisma/neovimconfigs/
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import type { PageLoad, PageLoadEvent } from './$types';
 import { error } from '@sveltejs/kit';
+import { TRPCClientError } from '@trpc/client';
 import { marked } from 'marked';
 import { sanitizeHtml } from '$lib/utils';
 import { trpc } from '$lib/trpc/client';
@@ -24,8 +25,9 @@ export const load: PageLoad = async function load(event: PageLoadEvent) {
       username,
       slug
     }) as unknown as LanguageServer[]
-  ]).catch(() => {
-    error(404);
+  ]).catch((e) => {
+    if (e instanceof TRPCClientError && e.data?.code === 'NOT_FOUND') error(404);
+    throw e;
   });
 
   let readme = `# ${config.repo}/${config.root}\n\n`;
