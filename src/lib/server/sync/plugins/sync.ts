@@ -6,6 +6,7 @@ import { prismaClient } from '$lib/server/prisma/client';
 import type { NeovimPluginWithCount } from '$lib/server/prisma/neovimplugins/schema';
 import { getPlugin, updatePlugin } from '$lib/server/prisma/neovimplugins/service';
 import { getGithubToken } from '$lib/server/prisma/users/service';
+import { orderedUniqueMedia } from './mediaOrder';
 import { daysAgo, hasBeenOneDay, isAdmin } from '$lib/utils';
 import type { NeovimPlugin, User } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
@@ -62,46 +63,44 @@ export class PluginSyncer {
   }
 
   async syncMedia(readme: string, repo: GithubRepository) {
-    const media = this.mediaParser.findMediaUrls(
+    const urls = this.mediaParser.findMediaUrls(
       readme,
       this.plugin.owner,
       this.plugin.name,
       repo.default_branch
     );
     const data = await Promise.all(
-      media.map(async (url) => {
-        return fetch(url).then((r) => {
-          const type = r.headers.get('Content-Type') ?? '';
-          if (!type) {
-            console.log(`missing Content-Type for ${url}`, {
-              owner: this.plugin.owner,
-              name: this.plugin.name,
-              status: r.status,
-              statusText: r.statusText
-            });
-          }
-          return {
-            url,
-            type,
-            neovimPluginId: this.plugin.id
-          };
-        });
+      orderedUniqueMedia(urls).map(async ({ url, position }) => {
+        const r = await fetch(url);
+        const type = r.headers.get('Content-Type') ?? '';
+        if (!type) {
+          console.log(`missing Content-Type for ${url}`, {
+            owner: this.plugin.owner,
+            name: this.plugin.name,
+            status: r.status,
+            statusText: r.statusText
+          });
+        }
+        return {
+          url,
+          type,
+          position,
+          neovimPluginId: this.plugin.id
+        };
       })
     );
 
     // TODO: 1. allow multiple plugins per media url
     // TODO: 2. Remove stale media
-    await Promise.all([
-      data.map(async (m) => {
-        return await prismaClient.media.upsert({
-          where: {
-            url: m.url
-          },
+    await Promise.all(
+      data.map((m) =>
+        prismaClient.media.upsert({
+          where: { url: m.url },
           create: m,
           update: m
-        });
-      })
-    ]);
+        })
+      )
+    );
   }
 
   syncHasDotfyleShield(readme: string) {

@@ -1,6 +1,7 @@
 import { daysAgo } from '$lib/utils';
 import type { NeovimPlugin } from '@prisma/client';
 import { prismaClient } from '../client';
+import { mediaCoverOrderBy } from '../media/service';
 import { paginator, type PaginatedResult } from '../pagination';
 import type {
   NeovimPluginIdentifier,
@@ -132,9 +133,7 @@ const selectConfigCount = {
   addedLastWeek: true,
   dotfyleShieldAddedAt: true,
   media: {
-    orderBy: {
-      thumbnail: 'desc'
-    }
+    orderBy: mediaCoverOrderBy
   },
   _count: {
     select: {
