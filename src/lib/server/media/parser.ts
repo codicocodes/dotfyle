@@ -26,6 +26,7 @@ export class GithubMediaParser {
   }
 
   findMediaUrls(readme: string, user: string, repo: string, branch: string): string[] {
+    // URLs are emitted grouped by source type below, not strict README order.
     const validGithubLinkRegex =
       /https:\/\/(raw|user-images).githubusercontent.com\/[a-zA-Z0-9/]+\/[a-zA-Z0-9/\-._]+.(png|jpg|jpeg|mp4|gif)/g;
 
