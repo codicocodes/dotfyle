@@ -1,5 +1,6 @@
 import RSS from 'rss';
 import { prismaClient } from '$lib/server/prisma/client';
+import { mediaCoverOrderBy } from '$lib/server/prisma/media/service';
 import { marked } from 'marked';
 import { getMediaType, sanitizeHtml } from '$lib/utils';
 import fs from 'fs';
@@ -14,9 +15,7 @@ export async function createPluginsRssFeed() {
   const plugins = await prismaClient.neovimPlugin.findMany({
     include: {
       media: {
-        orderBy: {
-          thumbnail: 'desc'
-        }
+        orderBy: mediaCoverOrderBy
       }
     },
     orderBy: {

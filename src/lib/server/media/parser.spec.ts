@@ -120,4 +120,17 @@ describe('GithubMediaParser.findMediaUrls()', () => {
     const media = run(md, 'MunifTanjim', 'nui.nvim', 'main');
     expect(media[0]).toEqual(output);
   });
+
+  // Group-priority order: absolute url emitted before an earlier relative one.
+  it('emits by source group, not document position', () => {
+    const readme = [
+      '![relative first](./assets/a.png)',
+      '![absolute second](https://raw.githubusercontent.com/me/repo/main/b.png)'
+    ].join('\n');
+    const media = run(readme, 'me', 'repo', 'main');
+    expect(media).toEqual([
+      'https://raw.githubusercontent.com/me/repo/main/b.png',
+      'https://raw.githubusercontent.com/me/repo/main/assets/a.png'
+    ]);
+  });
 });
