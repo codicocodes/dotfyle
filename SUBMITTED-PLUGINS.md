@@ -23,6 +23,7 @@
 
 - llllvvuu/nvim-js-actions
 - julienvincent/nvim-paredit
+- pederbe/ripscope
 - bennypowers/webc.nvim
 - calops/hmts.nvim
 
